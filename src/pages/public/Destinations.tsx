@@ -4,9 +4,10 @@ import { api } from '../../services/api';
 import { Destination } from '../../types';
 import { DestinationCard } from '../../components/travel/DestinationCard';
 import { TravelPatternBg } from '../../components/travel/TravelPatternBg';
+import { fallbackData } from '../../data/fallbackData';
 
 export const Destinations: React.FC = () => {
-  const [destinations, setDestinations] = useState<Destination[]>([]);
+  const [destinations, setDestinations] = useState<Destination[]>((fallbackData.destinations || []) as any);
   const [search, setSearch] = useState('');
   const [selectedRegion, setSelectedRegion] = useState('all');
   const [isLoading, setIsLoading] = useState(true);

@@ -7,11 +7,12 @@ import { PackageCard } from '../../components/travel/PackageCard';
 import { CustomTripModal } from '../../components/travel/CustomTripModal';
 import { TravelPatternBg } from '../../components/travel/TravelPatternBg';
 import { Button } from '../../components/common/Button';
+import { fallbackData } from '../../data/fallbackData';
 
 export const Packages: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [packages, setPackages] = useState<Package[]>([]);
-  const [destinations, setDestinations] = useState<Destination[]>([]);
+  const [packages, setPackages] = useState<Package[]>((fallbackData.packages || []) as any);
+  const [destinations, setDestinations] = useState<Destination[]>((fallbackData.destinations || []) as any);
   const [isLoading, setIsLoading] = useState(true);
 
   // Filters state

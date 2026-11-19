@@ -33,6 +33,7 @@ import { TravelPatternBg } from '../../components/travel/TravelPatternBg';
 import { Button } from '../../components/common/Button';
 import { Badge } from '../../components/common/Badge';
 import { resolveMediaUrl } from '../../utils/mediaUrl';
+import { fallbackData } from '../../data/fallbackData';
 
 interface ContextType {
   openTripModal: () => void;
@@ -40,18 +41,20 @@ interface ContextType {
 
 export const Home: React.FC = () => {
   const context = useOutletContext<ContextType>();
-  const [banners, setBanners] = useState<HeroBanner[]>([]);
+  const [banners, setBanners] = useState<HeroBanner[]>((fallbackData.hero_banners || []) as any);
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [customVideoInput, setCustomVideoInput] = useState('');
-  const [destinations, setDestinations] = useState<Destination[]>([]);
+  const [destinations, setDestinations] = useState<Destination[]>((fallbackData.destinations || []) as any);
   const [selectedRegion, setSelectedRegion] = useState('all');
-  const [packages, setPackages] = useState<Package[]>([]);
+  const [packages, setPackages] = useState<Package[]>((fallbackData.packages || []) as any);
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [groupTours, setGroupTours] = useState<Package[]>([]);
-  const [services, setServices] = useState<TravelService[]>([]);
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [groupTours, setGroupTours] = useState<Package[]>(
+    ((fallbackData.packages || []).filter((p: any) => p.category === 'Group Tours')) as any
+  );
+  const [services, setServices] = useState<TravelService[]>((fallbackData.travel_services || []) as any);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>((fallbackData.testimonials || []) as any);
+  const [loading, setLoading] = useState(false);
 
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
@@ -142,25 +145,23 @@ export const Home: React.FC = () => {
 
   const loadHomeData = async () => {
     try {
-      setLoading(true);
       const [bannersData, destsData, pkgsData, toursData, srvsData, testsData] = await Promise.all([
-        api.getBanners().catch(() => []),
-        api.getDestinations().catch(() => []),
-        api.getPackages({ limit: 12 }).catch(() => []),
-        api.getGroupTours().catch(() => []),
-        api.getServices().catch(() => []),
-        api.getTestimonials().catch(() => [])
+        api.getBanners().catch(() => fallbackData.hero_banners),
+        api.getDestinations().catch(() => fallbackData.destinations),
+        api.getPackages({ limit: 12 }).catch(() => fallbackData.packages),
+        api.getGroupTours().catch(() => (fallbackData.packages || []).filter((p: any) => p.category === 'Group Tours')),
+        api.getServices().catch(() => fallbackData.travel_services),
+        api.getTestimonials().catch(() => fallbackData.testimonials)
       ]);
 
-      setBanners(bannersData.length > 0 ? bannersData : defaultBanners);
-      setDestinations(destsData);
-      setPackages(pkgsData);
-      setGroupTours(toursData);
-      setServices(srvsData);
-      setTestimonials(testsData);
+      if (bannersData && bannersData.length > 0) setBanners(bannersData);
+      if (destsData && destsData.length > 0) setDestinations(destsData);
+      if (pkgsData && pkgsData.length > 0) setPackages(pkgsData);
+      if (toursData && toursData.length > 0) setGroupTours(toursData);
+      if (srvsData && srvsData.length > 0) setServices(srvsData);
+      if (testsData && testsData.length > 0) setTestimonials(testsData);
     } catch (e) {
-      console.error('Failed to load homepage data:', e);
-      setBanners(defaultBanners);
+      console.warn('Failed to load homepage data, keeping instant fallback fixtures:', e);
     } finally {
       setLoading(false);
     }

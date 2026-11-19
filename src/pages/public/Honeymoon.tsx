@@ -6,9 +6,12 @@ import { PackageCard } from '../../components/travel/PackageCard';
 import { CustomTripModal } from '../../components/travel/CustomTripModal';
 import { TravelPatternBg } from '../../components/travel/TravelPatternBg';
 import { Button } from '../../components/common/Button';
+import { fallbackData } from '../../data/fallbackData';
 
 export const Honeymoon: React.FC = () => {
-  const [packages, setPackages] = useState<Package[]>([]);
+  const [packages, setPackages] = useState<Package[]>(
+    ((fallbackData.packages || []).filter((p: any) => p.category === 'Honeymoon Packages')) as any
+  );
   const [isTripModalOpen, setIsTripModalOpen] = useState(false);
   const [selectedPkg, setSelectedPkg] = useState<Package | null>(null);
 

@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Plane, Bus, Car, Ship, Building2, FileCheck, ShieldCheck, MapPin, CheckCircle, Compass, Send } from 'lucide-react';
 import { api } from '../../services/api';
 import { TravelService } from '../../types';
+import { fallbackData } from '../../data/fallbackData';
 import { ServiceEnquiryModal } from '../../components/travel/ServiceEnquiryModal';
 import { TravelPatternBg } from '../../components/travel/TravelPatternBg';
 import { Button } from '../../components/common/Button';
 
 export const Services: React.FC = () => {
-  const [services, setServices] = useState<TravelService[]>([]);
+  const [services, setServices] = useState<TravelService[]>(() => fallbackData.travel_services);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedService, setSelectedService] = useState<TravelService | null>(null);
 

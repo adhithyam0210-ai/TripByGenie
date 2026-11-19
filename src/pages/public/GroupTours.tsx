@@ -2,13 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { Users, Calendar, CheckCircle2, ShieldCheck, ArrowRight } from 'lucide-react';
 import { api } from '../../services/api';
 import { Package } from '../../types';
+import { fallbackData } from '../../data/fallbackData';
 import { CustomTripModal } from '../../components/travel/CustomTripModal';
 import { TravelPatternBg } from '../../components/travel/TravelPatternBg';
 import { Button } from '../../components/common/Button';
 import { Link } from 'react-router-dom';
 
 export const GroupTours: React.FC = () => {
-  const [tours, setTours] = useState<Package[]>([]);
+  const [tours, setTours] = useState<Package[]>(() =>
+    fallbackData.packages.filter(p => p.category === 'Group Tours' || (p.available_seats && p.available_seats > 0))
+  );
   const [isTripModalOpen, setIsTripModalOpen] = useState(false);
   const [selectedTour, setSelectedTour] = useState<Package | null>(null);
 
