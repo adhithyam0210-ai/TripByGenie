@@ -350,7 +350,7 @@ export const fallbackData = {
       "subtitle": "Surfing Free",
       "image_desktop": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1920&q=85",
       "image_mobile": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80",
-      "video_url": "\"C:\\Users\\welcome\\Downloads\\WhatsApp Video 2026-11-19 at 3.04.55 PM.mp4\"",
+      "video_url": "/videos/bali-surfing.mp4",
       "cta_text": "Explore Packages",
       "cta_link": "/packages",
       "display_order": 5,

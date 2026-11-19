@@ -850,6 +850,10 @@ export const Home: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {[
                     {
+                      name: 'Bali Surfing (Local Video)',
+                      url: '/videos/bali-surfing.mp4'
+                    },
+                    {
                       name: 'Maldives Overwater Resort',
                       url: 'https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-a-luxury-resort-in-the-maldives-42777-large.mp4'
                     },

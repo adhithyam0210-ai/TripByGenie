@@ -491,6 +491,7 @@ export const AdminBanners: React.FC = () => {
                     </span>
                     <div className="grid grid-cols-2 gap-2">
                       {[
+                        { name: 'Bali Surfing (Local Video)', url: '/videos/bali-surfing.mp4' },
                         { name: 'Maldives Overwater Resort', url: 'https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-a-luxury-resort-in-the-maldives-42777-large.mp4' },
                         { name: 'Scenic Mountain Slope', url: 'https://assets.mixkit.co/videos/preview/mixkit-curved-road-on-a-mountain-slope-42776-large.mp4' },
                         { name: 'Turquoise Ocean Waves', url: 'https://assets.mixkit.co/videos/preview/mixkit-top-aerial-shot-of-seashore-with-turquoise-water-43224-large.mp4' },
