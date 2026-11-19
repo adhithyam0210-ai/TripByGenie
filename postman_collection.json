@@ -1,0 +1,322 @@
+{
+  "info": {
+    "name": "TripByGenie - 4-Role Travel & CRM Platform API (v1)",
+    "_postman_id": "8f7aac69-e809-493f-8ff9-f1b260c456b3",
+    "description": "Production RESTful API Collection for TripByGenie unified B2C, CRM, and B2B Agent Platform with RBAC",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000/api/v1" },
+    { "key": "adminToken", "value": "" },
+    { "key": "staffToken", "value": "" },
+    { "key": "agentToken", "value": "" },
+    { "key": "customerToken", "value": "" },
+    { "key": "samplePackageId", "value": "" },
+    { "key": "sampleLeadId", "value": "" },
+    { "key": "sampleOrderId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "01. Public & Auth",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/health"
+          }
+        },
+        {
+          "name": "Public Landing Data (B2C Catalog - No B2B Leaks)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/public/landing-data"
+          }
+        },
+        {
+          "name": "Customer Sign-up + Atomic Lead Creation",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/signup",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"full_name\": \"Ananya Sharma\",\n  \"email\": \"ananya.travel@example.com\",\n  \"password\": \"TravelPass2026!\",\n  \"phone\": \"+91 98765 43210\",\n  \"package_id\": \"{{samplePackageId}}\",\n  \"pax_count\": 2,\n  \"travel_date\": \"2026-12-20\",\n  \"notes\": \"Honeymoon package inquiry for December\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Admin Login",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/login",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"identifier\": \"admin@travelgenie.com\",\n  \"password\": \"Admin@123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Staff Login",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/login",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"identifier\": \"priya.staff@travelgenie.com\",\n  \"password\": \"Staff@123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Agent Login",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/login",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"identifier\": \"vikram.agent@globetrotters.com\",\n  \"password\": \"Agent@123\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "02. Admin Operations & CMS (ADMIN Only)",
+      "item": [
+        {
+          "name": "Get Packages (CMS with Dual Pricing)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/admin/packages",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }]
+          }
+        },
+        {
+          "name": "Create Tour Package (Dual Pricing Rule)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/admin/packages",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Golden Triangle Royal Heritage Tour\",\n  \"destination\": \"Rajasthan\",\n  \"duration_days\": 5,\n  \"duration_nights\": 4,\n  \"b2c_price\": 38000,\n  \"b2b_offer_price\": 28500,\n  \"itinerary_details\": [\n    { \"day\": 1, \"title\": \"Delhi City Tour & Red Fort\" },\n    { \"day\": 2, \"title\": \"Drive to Agra & Sunset at Taj Mahal\" }\n  ],\n  \"inclusions\": [\"Heritage Palace Stay\", \"All Meals\", \"AC Sedan Guide\"],\n  \"exclusions\": [\"Flights\", \"Monument Entry Fees\"]\n}"
+            }
+          }
+        },
+        {
+          "name": "Provision Staff Account",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/admin/users",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"full_name\": \"Arun Menon\",\n  \"email\": \"arun.staff@travelgenie.com\",\n  \"phone\": \"+91 94444 55555\",\n  \"role\": \"STAFF\",\n  \"password\": \"StaffSecure2026!\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Provision B2B Agent Account",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/admin/users",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"full_name\": \"Zenith B2B Voyages\",\n  \"email\": \"agent@zenithvoyages.in\",\n  \"phone\": \"+91 98222 33444\",\n  \"role\": \"AGENT\",\n  \"password\": \"AgentSecure2026!\"\n}"
+            }
+          }
+        },
+        {
+          "name": "View Unassigned Leads",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/admin/leads?status=NEW",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }]
+          }
+        },
+        {
+          "name": "Assign Lead to Staff",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/admin/leads/{{sampleLeadId}}/assign",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"staff_id\": \"usr_staff_priya\"\n}"
+            }
+          }
+        },
+        {
+          "name": "B2B Wholesale Orders & Revenue Audit",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/admin/orders",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }]
+          }
+        }
+      ]
+    },
+    {
+      "name": "03. Staff CRM Pipeline (STAFF & ADMIN)",
+      "item": [
+        {
+          "name": "Get My Assigned Leads Queue",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/staff/leads/my-queue",
+            "header": [{ "key": "Authorization", "value": "Bearer {{staffToken}}" }]
+          }
+        },
+        {
+          "name": "Log Interaction (Call, WhatsApp, Email, Note)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/staff/leads/{{sampleLeadId}}/interactions",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{staffToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"channel\": \"CALL\",\n  \"summary\": \"Spoke with customer. Shared customized itinerary with private houseboat and candle-light dinner.\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Advance Pipeline Stage (NEW -> ASSIGNED -> CONTACTED -> QUOTE_SENT -> CONVERTED)",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/staff/leads/{{sampleLeadId}}/stage",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{staffToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"stage\": \"QUOTE_SENT\",\n  \"quoted_price\": 76000,\n  \"next_followup_at\": \"2026-11-25T10:00:00.000Z\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Trigger Travel Voucher Generation (when CONVERTED)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/staff/leads/{{sampleLeadId}}/voucher",
+            "header": [{ "key": "Authorization", "value": "Bearer {{staffToken}}" }]
+          }
+        }
+      ]
+    },
+    {
+      "name": "04. Agent B2B Reseller Portal (AGENT & ADMIN)",
+      "item": [
+        {
+          "name": "Get B2B Wholesale Catalog (Exposes B2B Offer Price & Margin)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/agent/catalog",
+            "header": [{ "key": "Authorization", "value": "Bearer {{agentToken}}" }]
+          }
+        },
+        {
+          "name": "Create Wholesale Order (Idempotent + Profit Snapshot)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/agent/orders",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{agentToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"package_id\": \"{{samplePackageId}}\",\n  \"pax_count\": 2,\n  \"traveler_details\": [\n    { \"name\": \"Suresh Raina\", \"age\": 38, \"gender\": \"M\" },\n    { \"name\": \"Pooja Raina\", \"age\": 35, \"gender\": \"F\" }\n  ],\n  \"agent_selling_price\": 72000,\n  \"idempotency_key\": \"IDEMP-AGT-ORD-001\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Payment Gateway Webhook (Transitions to PAID)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/agent/orders/webhook",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-razorpay-signature", "value": "mock_sig_991823" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"event\": \"payment.captured\",\n  \"order_id\": \"{{sampleOrderId}}\",\n  \"order_number\": \"ORD-2026-99182\",\n  \"payment_reference\": \"RZP_PAY_881920\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Download White-Labeled Voucher for Client",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/agent/orders/{{sampleOrderId}}/voucher",
+            "header": [{ "key": "Authorization", "value": "Bearer {{agentToken}}" }]
+          }
+        }
+      ]
+    },
+    {
+      "name": "05. RBAC Negative Security Matrix (Expects 401 / 403)",
+      "item": [
+        {
+          "name": "Unauthenticated Call to Protected Route (Expect 401)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/admin/packages"
+          }
+        },
+        {
+          "name": "Customer Accessing Admin CMS (Expect 403 FORBIDDEN_ROLE)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/admin/packages",
+            "header": [{ "key": "Authorization", "value": "Bearer {{customerToken}}" }]
+          }
+        },
+        {
+          "name": "Customer Accessing B2B Wholesale Catalog (Expect 403 FORBIDDEN_ROLE)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/agent/catalog",
+            "header": [{ "key": "Authorization", "value": "Bearer {{customerToken}}" }]
+          }
+        },
+        {
+          "name": "Staff Accessing Admin User Provisioning (Expect 403 FORBIDDEN_ROLE)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/admin/users",
+            "header": [{ "key": "Authorization", "value": "Bearer {{staffToken}}" }]
+          }
+        },
+        {
+          "name": "Agent Accessing Staff Lead Queue (Expect 403 FORBIDDEN_ROLE)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/staff/leads/my-queue",
+            "header": [{ "key": "Authorization", "value": "Bearer {{agentToken}}" }]
+          }
+        }
+      ]
+    }
+  ]
+}
