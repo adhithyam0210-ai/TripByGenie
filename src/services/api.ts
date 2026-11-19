@@ -1,3 +1,5 @@
+import { fallbackData } from '../data/fallbackData';
+
 const API_BASE = '/api';
 
 export const getAuthToken = (): string | null => {
@@ -76,36 +78,109 @@ export const api = {
   getPublicAgency: (slug?: string) =>
     request<{ agency: any; settings: any }>(`/public/agency${slug ? `?slug=${slug}` : ''}`),
 
-  getBanners: (agency_id?: string) =>
-    request<any[]>(`/public/banners${agency_id ? `?agency_id=${agency_id}` : ''}`),
-
-  getDestinations: (params?: { region?: string; featured?: boolean; agency_id?: string }) => {
-    const q = new URLSearchParams();
-    if (params?.region) q.append('region', params.region);
-    if (params?.featured) q.append('featured', 'true');
-    if (params?.agency_id) q.append('agency_id', params.agency_id);
-    return request<any[]>(`/public/destinations?${q.toString()}`);
-  },
-
-  getDestinationBySlug: (slug: string) =>
-    request<{ destination: any; packages: any[] }>(`/public/destinations/${slug}`),
-
-  getPackages: (params?: any) => {
-    const q = new URLSearchParams();
-    if (params) {
-      for (const [k, v] of Object.entries(params)) {
-        if (v !== undefined && v !== null && v !== '') q.append(k, String(v));
-      }
+  getBanners: async (agency_id?: string) => {
+    try {
+      const data = await request<any[]>(`/public/banners${agency_id ? `?agency_id=${agency_id}` : ''}`);
+      if (Array.isArray(data) && data.length > 0) return data;
+      return fallbackData.hero_banners;
+    } catch {
+      return fallbackData.hero_banners;
     }
-    return request<any[]>(`/public/packages?${q.toString()}`);
   },
 
-  getPackageBySlug: (slug: string) =>
-    request<{ package: any; destination: any; itineraries: any[] }>(`/public/packages/${slug}`),
+  getDestinations: async (params?: { region?: string; featured?: boolean; agency_id?: string }) => {
+    try {
+      const q = new URLSearchParams();
+      if (params?.region) q.append('region', params.region);
+      if (params?.featured) q.append('featured', 'true');
+      if (params?.agency_id) q.append('agency_id', params.agency_id);
+      const data = await request<any[]>(`/public/destinations?${q.toString()}`);
+      if (Array.isArray(data) && data.length > 0) return data;
+      return fallbackData.destinations;
+    } catch {
+      let list = fallbackData.destinations;
+      if (params?.region) list = list.filter(d => d.region.toLowerCase() === params.region?.toLowerCase());
+      if (params?.featured) list = list.filter(d => d.is_featured);
+      return list;
+    }
+  },
 
-  getGroupTours: () => request<any[]>('/public/group-tours'),
-  getServices: () => request<any[]>('/public/services'),
-  getTestimonials: () => request<any[]>('/public/testimonials'),
+  getDestinationBySlug: async (slug: string) => {
+    try {
+      return await request<{ destination: any; packages: any[] }>(`/public/destinations/${slug}`);
+    } catch {
+      const dest = fallbackData.destinations.find(d => d.slug === slug) || fallbackData.destinations[0];
+      const pkgs = fallbackData.packages.filter(p => p.destination_id === dest.id);
+      return { destination: dest, packages: pkgs };
+    }
+  },
+
+  getPackages: async (params?: any) => {
+    try {
+      const q = new URLSearchParams();
+      if (params) {
+        for (const [k, v] of Object.entries(params)) {
+          if (v !== undefined && v !== null && v !== '') q.append(k, String(v));
+        }
+      }
+      const data = await request<any[]>(`/public/packages?${q.toString()}`);
+      if (Array.isArray(data) && data.length > 0) return data;
+      return fallbackData.packages;
+    } catch {
+      let list = fallbackData.packages;
+      if (params?.category && params.category !== 'all' && params.category !== 'All Packages') {
+        list = list.filter(p => p.category.toLowerCase() === params.category.toLowerCase());
+      }
+      if (params?.search) {
+        const s = params.search.toLowerCase();
+        list = list.filter(p => (p.title + ' ' + p.destination).toLowerCase().includes(s));
+      }
+      if (params?.destination_id) list = list.filter(p => p.destination_id === params.destination_id);
+      if (params?.limit) list = list.slice(0, Number(params.limit));
+      return list;
+    }
+  },
+
+  getPackageBySlug: async (slug: string) => {
+    try {
+      return await request<{ package: any; destination: any; itineraries: any[] }>(`/public/packages/${slug}`);
+    } catch {
+      const pkg = fallbackData.packages.find(p => p.slug === slug) || fallbackData.packages[0];
+      const dest = fallbackData.destinations.find(d => d.id === pkg.destination_id) || fallbackData.destinations[0];
+      const itineraries = fallbackData.package_itineraries.filter(i => i.package_id === pkg.id);
+      return { package: pkg, destination: dest, itineraries };
+    }
+  },
+
+  getGroupTours: async () => {
+    try {
+      const data = await request<any[]>('/public/group-tours');
+      if (Array.isArray(data) && data.length > 0) return data;
+      return fallbackData.packages.filter(p => p.category === 'Group Tours');
+    } catch {
+      return fallbackData.packages.filter(p => p.category === 'Group Tours');
+    }
+  },
+
+  getServices: async () => {
+    try {
+      const data = await request<any[]>('/public/services');
+      if (Array.isArray(data) && data.length > 0) return data;
+      return fallbackData.travel_services;
+    } catch {
+      return fallbackData.travel_services;
+    }
+  },
+
+  getTestimonials: async () => {
+    try {
+      const data = await request<any[]>('/public/testimonials');
+      if (Array.isArray(data) && data.length > 0) return data;
+      return fallbackData.testimonials;
+    } catch {
+      return fallbackData.testimonials;
+    }
+  },
 
   submitEnquiry: (data: any) =>
     request<{ success: boolean; message: string; lead_id: string }>('/public/enquiry', {

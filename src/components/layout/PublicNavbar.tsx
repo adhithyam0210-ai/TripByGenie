@@ -142,7 +142,7 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
         <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 flex items-center justify-between gap-4">
           {/* Logo & Brand matching tripbygenie.in */}
           <div className="shrink-0">
-            <BrandLogo size="md" to="/" />
+            <BrandLogo size="md" to="/" onClick={() => setIsMobileMenuOpen(false)} />
           </div>
 
           {/* Desktop Navigation Links — Blue Pill Buttons matching Image 2 */}
@@ -408,7 +408,7 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
               {/* Header */}
               <div className="flex items-center justify-between border-b border-white/10 pb-3">
                 <div className="bg-white px-3 py-1.5 rounded-xl shadow-xs">
-                  <BrandLogo size="sm" to="/" />
+                  <BrandLogo size="sm" to="/" onClick={() => setIsMobileMenuOpen(false)} />
                 </div>
                 <button
                   onClick={() => setIsMobileMenuOpen(false)}
@@ -501,25 +501,26 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
 
                 <Link
                   to="/honeymoon"
-                  className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-white/10 transition-colors text-[#FF795C]"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block px-3 py-2 rounded-xl hover:bg-white/10 transition-colors text-white"
                 >
-                  <Heart className="w-4 h-4" />
-                  <span>Honeymoon Packages</span>
+                  Honeymoon Packages
                 </Link>
 
                 <Link
                   to="/group-tours"
-                  className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-white/10 transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block px-3 py-2 rounded-xl hover:bg-white/10 transition-colors text-white"
                 >
-                  <Users className="w-4 h-4 text-[#55C9BD]" />
-                  <span>Group Tours</span>
+                  Group Tours
                 </Link>
 
                 <Link
                   to="/services"
-                  className="block px-3 py-2 rounded-xl hover:bg-white/10 transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block px-3 py-2 rounded-xl hover:bg-white/10 transition-colors text-white"
                 >
-                  Travel Services
+                  Tickets Bookings
                 </Link>
 
                 <Link

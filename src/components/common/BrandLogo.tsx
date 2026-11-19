@@ -6,19 +6,26 @@ interface BrandLogoProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';
   to?: string;
   variant?: 'light' | 'dark' | 'auto';
+  onClick?: (e: React.MouseEvent) => void;
 }
 
 export const BrandLogo: React.FC<BrandLogoProps> = ({
   className = '',
   size = 'md',
   to = '/',
-  variant = 'auto'
+  variant = 'auto',
+  onClick
 }) => {
   const heightClasses = {
     sm: 'h-8',
     md: 'h-10 sm:h-11',
     lg: 'h-12 sm:h-14',
     xl: 'h-16'
+  };
+
+  const handleClick = (e: React.MouseEvent) => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (onClick) onClick(e);
   };
 
   const logoImg = (
@@ -48,11 +55,19 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
 
   if (to) {
     return (
-      <Link to={to} className="inline-block transition-transform hover:scale-[1.02] focus:outline-none">
+      <Link
+        to={to}
+        onClick={handleClick}
+        className="inline-block transition-transform hover:scale-[1.02] focus:outline-none"
+      >
         {logoImg}
       </Link>
     );
   }
 
-  return logoImg;
+  return (
+    <div onClick={handleClick} className="cursor-pointer">
+      {logoImg}
+    </div>
+  );
 };
