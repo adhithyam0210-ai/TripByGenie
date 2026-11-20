@@ -10,6 +10,8 @@ interface AuthContextType {
   role: UserRole | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  loading: boolean;
+  currentAgency: Agency | null;
   login: (email: string, password: string) => Promise<UserRole>;
   demoLogin: (role: UserRole, agency_slug?: string) => Promise<UserRole>;
   register: (data: any) => Promise<void>;
@@ -141,10 +143,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       value={{
         user,
         agency,
+        currentAgency: agency,
         token,
         role: user ? user.role : null,
         isAuthenticated: !!user,
         isLoading,
+        loading: isLoading,
         login,
         demoLogin,
         register,

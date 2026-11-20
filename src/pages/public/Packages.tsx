@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { Search, Filter, SlidersHorizontal } from 'lucide-react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import { Search, Filter, SlidersHorizontal, MapPin, RefreshCw } from 'lucide-react';
 import { api } from '../../services/api';
 import { Package, Destination } from '../../types';
 import { PackageCard } from '../../components/travel/PackageCard';
+import { DestinationOverviewCard } from '../../components/travel/DestinationOverviewCard';
+import { DestinationAccordion } from '../../components/travel/DestinationAccordion';
 import { CustomTripModal } from '../../components/travel/CustomTripModal';
 import { TravelPatternBg } from '../../components/travel/TravelPatternBg';
 import { Button } from '../../components/common/Button';
@@ -11,6 +13,7 @@ import { fallbackData } from '../../data/fallbackData';
 
 export const Packages: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [packages, setPackages] = useState<Package[]>((fallbackData.packages || []) as any);
   const [destinations, setDestinations] = useState<Destination[]>((fallbackData.destinations || []) as any);
   const [isLoading, setIsLoading] = useState(true);
@@ -20,7 +23,7 @@ export const Packages: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || 'all');
   const [selectedDestination, setSelectedDestination] = useState(searchParams.get('destination') || 'all');
   const [duration, setDuration] = useState('all');
-  const [maxPrice, setMaxPrice] = useState(200000);
+  const [maxPrice, setMaxPrice] = useState(500000);
   const [sortBy, setSortBy] = useState('featured');
 
   const [isTripModalOpen, setIsTripModalOpen] = useState(false);
@@ -30,11 +33,23 @@ export const Packages: React.FC = () => {
     loadData();
   }, []);
 
+  // Sync state with URL parameters cleanly
+  useEffect(() => {
+    const s = searchParams.get('search') || '';
+    setSearchTerm(s);
+
+    const cat = searchParams.get('category') || 'all';
+    setSelectedCategory(cat);
+
+    const dest = searchParams.get('destination') || 'all';
+    setSelectedDestination(dest);
+  }, [searchParams]);
+
   const loadData = async () => {
     try {
       const [pkgs, dests] = await Promise.all([api.getPackages(), api.getDestinations()]);
-      setPackages(pkgs);
-      setDestinations(dests);
+      if (Array.isArray(pkgs) && pkgs.length > 0) setPackages(pkgs);
+      if (Array.isArray(dests) && dests.length > 0) setDestinations(dests);
     } catch (e) {
       console.error(e);
     } finally {
@@ -52,32 +67,97 @@ export const Packages: React.FC = () => {
     'Weekend Getaways'
   ];
 
-  // Client filtering
-  let filtered = packages.filter((pkg) => {
-    // Category
-    if (selectedCategory !== 'all' && pkg.category.toLowerCase() !== selectedCategory.toLowerCase()) {
-      return false;
+  // Detect matching destination from either search term or destination dropdown
+  const activeDestination = useMemo(() => {
+    if (selectedDestination !== 'all') {
+      return destinations.find((d) => d && (d.id === selectedDestination || d.slug === selectedDestination));
     }
-    // Destination
-    if (selectedDestination !== 'all' && pkg.destination_id !== selectedDestination) {
-      return false;
-    }
-    // Max price
-    if (pkg.public_price > maxPrice) {
-      return false;
-    }
-    // Duration
-    if (duration === 'short' && pkg.duration_days > 4) return false;
-    if (duration === 'medium' && (pkg.duration_days < 5 || pkg.duration_days > 7)) return false;
-    if (duration === 'long' && pkg.duration_days <= 7) return false;
-
-    // Search query
     if (searchTerm.trim()) {
-      const q = searchTerm.toLowerCase();
-      const matchTitle = pkg.title.toLowerCase().includes(q);
-      const matchDesc = pkg.description.toLowerCase().includes(q);
-      const matchCat = pkg.category.toLowerCase().includes(q);
-      if (!matchTitle && !matchDesc && !matchCat) return false;
+      const q = searchTerm.trim().toLowerCase();
+      // Look for exact slug or exact name
+      const exactMatch = destinations.find((d) => {
+        if (!d) return false;
+        const dName = (d.name || '').toLowerCase();
+        const dSlug = (d.slug || '').toLowerCase();
+        return dName === q || dSlug === q;
+      });
+      if (exactMatch) return exactMatch;
+
+      // Look for substring match
+      return destinations.find((d) => {
+        if (!d) return false;
+        const dName = (d.name || '').toLowerCase();
+        const dSlug = (d.slug || '').toLowerCase();
+        const dCountry = (d.country || '').toLowerCase();
+        return (
+          (q.length >= 3 && dName.includes(q)) ||
+          (dName.length >= 3 && q.includes(dName)) ||
+          (q === 'usa' && (dName.includes('united states') || dSlug.includes('united-states'))) ||
+          (q === 'dubai' && (dSlug.includes('dubai') || dSlug.includes('uae')))
+        );
+      });
+    }
+    return null;
+  }, [destinations, selectedDestination, searchTerm]);
+
+  // Client filtering
+  let filtered = (packages || []).filter((pkg) => {
+    if (!pkg) return false;
+    const pkgCategory = pkg.category || 'Domestic Holiday Packages';
+    const pkgTitle = pkg.title || '';
+    const pkgDesc = pkg.description || '';
+    const pkgPrice = Number(pkg.public_price || pkg.b2c_price || pkg.price || 0);
+    const pkgDays = Number(pkg.duration_days || 4);
+
+    // Category filter
+    if (selectedCategory !== 'all' && pkgCategory.toLowerCase() !== selectedCategory.toLowerCase()) {
+      return false;
+    }
+
+    // Destination dropdown filter
+    if (selectedDestination !== 'all') {
+      const matchesDest = pkg.destination_id === selectedDestination;
+      const curDest = destinations.find((d) => d && d.id === selectedDestination);
+      const matchesName = curDest && curDest.name && pkgTitle.toLowerCase().includes(curDest.name.toLowerCase());
+      if (!matchesDest && !matchesName) {
+        return false;
+      }
+    }
+
+    // Max price filter
+    if (pkgPrice > maxPrice) {
+      return false;
+    }
+
+    // Duration filter
+    if (duration === 'short' && pkgDays > 4) return false;
+    if (duration === 'medium' && (pkgDays < 5 || pkgDays > 7)) return false;
+    if (duration === 'long' && pkgDays <= 7) return false;
+
+    // Search query filter
+    if (searchTerm.trim()) {
+      const q = searchTerm.toLowerCase().trim();
+      const dest = destinations.find((d) => d && d.id === pkg.destination_id);
+      const matchTitle = pkgTitle.toLowerCase().includes(q);
+      const matchDesc = pkgDesc.toLowerCase().includes(q);
+      const matchCat = pkgCategory.toLowerCase().includes(q);
+      const matchDestName = dest && dest.name ? dest.name.toLowerCase().includes(q) : false;
+      const matchDestCountry = dest && dest.country ? dest.country.toLowerCase().includes(q) : false;
+      const matchDestRegion = dest && dest.region ? dest.region.toLowerCase().includes(q) : false;
+      const matchHighlights = Array.isArray(pkg.highlights)
+        ? pkg.highlights.some((h) => typeof h === 'string' && h.toLowerCase().includes(q))
+        : false;
+
+      // If activeDestination is detected, also match all packages linked to it
+      const matchActiveDest = activeDestination && (
+        pkg.destination_id === activeDestination.id ||
+        (dest && dest.id === activeDestination.id) ||
+        (activeDestination.name && pkgTitle.toLowerCase().includes(activeDestination.name.toLowerCase()))
+      );
+
+      if (!matchTitle && !matchDesc && !matchCat && !matchDestName && !matchDestCountry && !matchDestRegion && !matchHighlights && !matchActiveDest) {
+        return false;
+      }
     }
 
     return true;
@@ -85,15 +165,23 @@ export const Packages: React.FC = () => {
 
   // Sorting
   filtered.sort((a, b) => {
-    if (sortBy === 'price_asc') return a.public_price - b.public_price;
-    if (sortBy === 'price_desc') return b.public_price - a.public_price;
-    if (sortBy === 'duration') return a.duration_days - b.duration_days;
+    if (sortBy === 'price_asc') return (a.public_price || a.price || 0) - (b.public_price || b.price || 0);
+    if (sortBy === 'price_desc') return (b.public_price || b.price || 0) - (a.public_price || a.price || 0);
+    if (sortBy === 'duration') return (a.duration_days || 0) - (b.duration_days || 0);
     return (b.is_featured ? 1 : 0) - (a.is_featured ? 1 : 0);
   });
 
   const handleEnquire = (pkg: Package) => {
     setSelectedPackageForEnquiry(pkg);
     setIsTripModalOpen(true);
+  };
+
+  const handleResetFilters = () => {
+    setSelectedCategory('all');
+    setSelectedDestination('all');
+    setSearchTerm('');
+    setDuration('all');
+    setSearchParams({});
   };
 
   return (
@@ -123,7 +211,7 @@ export const Packages: React.FC = () => {
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
               type="text"
-              placeholder="Search by package name..."
+              placeholder="Search by package or destination..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-9 pr-3 py-2 rounded-xl text-xs font-semibold bg-[#F8F1E7]/50 border border-[#EFE7DA] focus:outline-none focus:border-[#FF795C]"
@@ -190,22 +278,39 @@ export const Packages: React.FC = () => {
           </div>
         </div>
 
+        {/* Detailed Destination Overview Card (Matching Image 1 from tripbygenie.in) */}
+        {activeDestination && (
+          <div className="mb-10 space-y-8 animate-in fade-in slide-in-from-top-2 duration-300">
+            <DestinationOverviewCard
+              destination={activeDestination}
+              onViewPackages={() => {
+                document.getElementById('packages-results-section')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            />
+
+            {/* Travel Guide & Information Accordion (About, Best Budget, etc.) */}
+            <DestinationAccordion destination={activeDestination} />
+          </div>
+        )}
+
         {/* Results Counter & Active Pills */}
-        <div className="flex items-center justify-between mb-6 text-xs text-[#173247]/70">
+        <div id="packages-results-section" className="flex items-center justify-between mb-6 text-xs text-[#173247]/70 scroll-mt-24">
           <div>
             Showing <strong className="text-[#082C43]">{filtered.length}</strong> available holiday packages
+            {activeDestination && (
+              <span className="ml-1 text-slate-500">
+                for <span className="font-bold text-[#FF795C]">{activeDestination.name}</span>
+              </span>
+            )}
           </div>
 
           {(selectedCategory !== 'all' || selectedDestination !== 'all' || searchTerm) && (
             <button
-              onClick={() => {
-                setSelectedCategory('all');
-                setSelectedDestination('all');
-                setSearchTerm('');
-              }}
-              className="text-[#FF795C] font-semibold hover:underline cursor-pointer"
+              onClick={handleResetFilters}
+              className="text-[#FF795C] font-semibold hover:underline cursor-pointer flex items-center gap-1"
             >
-              Reset Filters
+              <RefreshCw className="w-3 h-3" />
+              <span>Reset Filters</span>
             </button>
           )}
         </div>
@@ -231,27 +336,26 @@ export const Packages: React.FC = () => {
             </Button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filtered.map((pkg) => (
               <PackageCard
                 key={pkg.id}
-                packageData={pkg}
-                onEnquire={handleEnquire}
+                package={pkg}
+                onEnquire={() => handleEnquire(pkg)}
               />
             ))}
           </div>
         )}
       </div>
 
-      {/* Enquiry Modal */}
+      {/* Custom Trip Enquiry Modal */}
       <CustomTripModal
         isOpen={isTripModalOpen}
         onClose={() => {
           setIsTripModalOpen(false);
           setSelectedPackageForEnquiry(null);
         }}
-        initialDestination={selectedPackageForEnquiry?.title || ''}
-        initialPackageId={selectedPackageForEnquiry?.id || ''}
+        preselectedPackage={selectedPackageForEnquiry || undefined}
       />
     </div>
   );

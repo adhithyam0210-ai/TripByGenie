@@ -30,10 +30,13 @@ export const Destinations: React.FC = () => {
   const regions = [
     { id: 'all', label: 'All Destinations' },
     { id: 'India', label: 'Incredible India' },
+    { id: 'Australia & Pacific', label: 'Australia & Pacific' },
     { id: 'Asia', label: 'Asia' },
     { id: 'Europe', label: 'Europe' },
     { id: 'Island Destinations', label: 'Island Paradises' },
-    { id: 'Middle East', label: 'Middle East' }
+    { id: 'Middle East', label: 'Middle East' },
+    { id: 'America', label: 'Americas' },
+    { id: 'Africa', label: 'Africa' }
   ];
 
   const filtered = destinations.filter((d) => {

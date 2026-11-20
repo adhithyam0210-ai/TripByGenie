@@ -17,7 +17,8 @@ import {
   Send,
   Globe2,
   Calendar,
-  Layers
+  Layers,
+  Search
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { Button } from '../common/Button';
@@ -69,11 +70,11 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
   const internationalDestinations = [
     {
       continent: 'Asia',
-      countries: ['Bali', 'Thailand', 'Singapore', 'Malaysia', 'Vietnam', 'Japan', 'Hong Kong', 'Indonesia', 'Kazakhstan', 'Uzbekistan']
+      countries: ['Bali', 'Thailand', 'Singapore', 'Malaysia', 'Vietnam', 'Japan', 'Hong Kong', 'Indonesia', 'Cambodia', 'China', 'South Korea', 'Philippines', 'Taiwan', 'Kazakhstan', 'Uzbekistan']
     },
     {
       continent: 'Europe',
-      countries: ['Switzerland', 'France', 'Italy', 'Greece', 'United Kingdom', 'Austria', 'Germany', 'Spain', 'Netherlands', 'Iceland']
+      countries: ['Switzerland', 'France', 'Italy', 'Greece', 'United Kingdom', 'London', 'Austria', 'Germany', 'Spain', 'Netherlands', 'Iceland', 'Croatia', 'Norway', 'Portugal', 'Turkey']
     },
     {
       continent: 'Island Escapes',
@@ -89,7 +90,7 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
     },
     {
       continent: 'America & Pacific',
-      countries: ['USA', 'Canada', 'Alaska', 'Australia', 'New Zealand', 'Fiji']
+      countries: ['Australia', 'New Zealand', 'Fiji', 'USA', 'Canada', 'Alaska', 'South America']
     }
   ];
 
@@ -98,34 +99,155 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
     {
       region: 'South India',
       badge: 'Specialist',
-      spots: ['Kerala (Munnar & Alleppey)', 'Ooty & Nilgiris', 'Kodaikanal', 'Coorg (Scotland of India)', 'Bangalore & Mysore', 'Hyderabad City']
+      spots: ['Kerala', 'Tamil Nadu', 'Karnataka', 'Bangalore', 'Mysore', 'Kochi', 'Hyderabad', 'Ooty']
     },
     {
       region: 'North India',
       badge: 'Popular',
-      spots: ['Kashmir Paradise', 'Ladakh & Pangong', 'Manali & Rohtang', 'Shimla & Kufri', 'Agra Taj Mahal', 'Jaipur & Rajasthan']
+      spots: ['Delhi', 'Manali', 'Shimla', 'Jaipur', 'Ladakh', 'Jammu and Kashmir', 'Agra']
     },
     {
-      region: 'North East',
+      region: 'East & North East',
       badge: 'Scenic',
-      spots: ['Gangtok & Sikkim', 'Darjeeling Hills', 'Pelling & Kanchenjunga', 'Arunachal Pradesh', 'Shillong & Meghalaya']
+      spots: ['Gangtok', 'Pelling', 'Darjeeling', 'West Bengal', 'Arunachal Pradesh']
     },
     {
-      region: 'West & Islands',
-      badge: 'Beach',
-      spots: ['Goa Beaches & Cruises', 'Andaman & Nicobar Islands', 'Mumbai & Pune', 'Maharashtra Western Ghats']
+      region: 'West India',
+      badge: 'Beach & Hills',
+      spots: ['Goa', 'Pune', 'Mumbai', 'Maharashtra']
     },
     {
       region: 'Spiritual Tours',
       badge: 'Devotion',
-      spots: ['Ayodhya Ram Mandir', 'Tirupati Balaji Darshan', 'Haridwar & Rishikesh', 'Kashi & Varanasi', 'Madurai Meenakshi & Rameshwaram']
+      spots: ['Ayodhya', 'Tirupati', 'Haridwar & Rishikesh']
     },
     {
-      region: 'Educational & MICE',
-      badge: 'Corporate',
-      spots: ['School Study Trips', 'College Industrial Visits', 'Corporate MICE Retreats', 'Team Outbound Camps']
+      region: 'Honeymoon Special',
+      badge: 'Romantic',
+      spots: ['Munnar', 'Andaman', 'Kodaikanal', 'Coorg', 'Kashmir']
     }
   ];
+
+  // Honeymoon spots matching tripbygenie.in
+  const honeymoonDestinations = [
+    {
+      type: 'India Romantic Escapes',
+      spots: ['Kerala', 'Munnar', 'Andaman', 'Goa', 'Shimla', 'Manali', 'Kashmir', 'Ooty', 'Kodaikanal', 'Coorg']
+    },
+    {
+      type: 'International Honeymoon',
+      spots: ['Maldives', 'Bali', 'Switzerland', 'Mauritius', 'Paris', 'Italy', 'Greece', 'Dubai', 'Thailand', 'Singapore', 'Australia']
+    }
+  ];
+
+  // Ticketing & travel services matching tripbygenie.in
+  const ticketingServices = [
+    { name: 'Flight Tickets Booking', desc: 'Domestic & International airlines with 24/7 rebooking support', icon: 'Plane', path: '/services' },
+    { name: 'Train & IRCTC Bookings', desc: 'Confirmed tatkal & premium express bookings across India', icon: 'Clock', path: '/services' },
+    { name: 'Bus Tickets Booking', desc: 'Luxury AC Volvo, sleeper coaches & intercity transfers', icon: 'MapPin', path: '/services' },
+    { name: 'Hotel & Resort Stays', desc: 'Handpicked 4-star & 5-star verified boutique properties', icon: 'ShieldCheck', path: '/services' },
+    { name: 'Visa & Forex Support', desc: 'Fast-track visa filing, embassy appointments & currency exchange', icon: 'Globe2', path: '/services' }
+  ];
+
+  const getCleanSearchTerm = (item: string) => {
+    return item.replace(/\s*\([^)]*\)/g, '').replace(' / UAE', '').trim();
+  };
+
+  const getDestinationSlug = (name: string): string => {
+    const clean = name.replace(/\s*\([^)]*\)/g, '').replace(' / UAE', '').trim();
+    const map: Record<string, string> = {
+      'Australia': 'australia',
+      'Singapore': 'singapore',
+      'Bali': 'bali',
+      'Thailand': 'thailand',
+      'Malaysia': 'malaysia',
+      'Vietnam': 'vietnam',
+      'Japan': 'japan',
+      'Hong Kong': 'hong-kong',
+      'Indonesia': 'indonesia',
+      'Cambodia': 'cambodia',
+      'China': 'china',
+      'South Korea': 'south-korea',
+      'Philippines': 'philippines',
+      'Taiwan': 'taiwan',
+      'Kazakhstan': 'kazakhstan',
+      'Uzbekistan': 'uzbekistan',
+      'Switzerland': 'switzerland',
+      'France': 'france-paris',
+      'Paris': 'france-paris',
+      'Italy': 'italy',
+      'Greece': 'greece',
+      'United Kingdom': 'united-kingdom',
+      'London': 'london',
+      'Austria': 'austria',
+      'Germany': 'germany',
+      'Spain': 'spain',
+      'Netherlands': 'netherlands',
+      'Iceland': 'iceland',
+      'Croatia': 'croatia',
+      'Norway': 'norway',
+      'Portugal': 'portugal',
+      'Turkey': 'turkey',
+      'Maldives': 'maldives',
+      'Mauritius': 'mauritius',
+      'Sri Lanka': 'sri-lanka',
+      'Seychelles': 'seychelles',
+      'Madagascar': 'madagascar',
+      'Reunion': 'reunion',
+      'Dubai': 'dubai',
+      'Dubai / UAE': 'dubai',
+      'UAE': 'uae',
+      'Egypt': 'egypt',
+      'Jordan': 'jordan',
+      'Oman': 'oman',
+      'Qatar': 'qatar',
+      'Israel': 'israel',
+      'Kenya': 'kenya',
+      'South Africa': 'south-africa',
+      'Morocco': 'morocco',
+      'Zimbabwe': 'zimbabwe',
+      'Tanzania': 'tanzania',
+      'New Zealand': 'new-zealand',
+      'Fiji': 'fiji',
+      'USA': 'united-states',
+      'Canada': 'canada',
+      'Alaska': 'alaska',
+      'South America': 'south-america',
+      'Kerala': 'kerala',
+      'Tamil Nadu': 'tamil-nadu',
+      'Karnataka': 'karnataka',
+      'Bangalore': 'bangalore',
+      'Mysore': 'mysore',
+      'Kochi': 'kochi',
+      'Hyderabad': 'hyderabad',
+      'Ooty': 'ooty',
+      'Delhi': 'delhi',
+      'Manali': 'manali',
+      'Shimla': 'shimla',
+      'Jaipur': 'jaipur',
+      'Ladakh': 'ladakh',
+      'Jammu and Kashmir': 'jammu-and-kashmir',
+      'Agra': 'agra',
+      'Gangtok': 'gangtok',
+      'Pelling': 'pelling',
+      'Darjeeling': 'darjeeling',
+      'West Bengal': 'west-bengal',
+      'Arunachal Pradesh': 'arunachal-pradesh',
+      'Goa': 'goa',
+      'Pune': 'pune',
+      'Mumbai': 'mumbai',
+      'Maharashtra': 'maharashtra',
+      'Ayodhya': 'ayodhya',
+      'Tirupati': 'tirupati',
+      'Haridwar & Rishikesh': 'haridwar-rishikesh',
+      'Munnar': 'munnar',
+      'Andaman': 'andaman',
+      'Kodaikanal': 'kodaikanal',
+      'Coorg': 'coorg',
+      'Kashmir': 'kashmir'
+    };
+    return map[clean] || map[name] || clean.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  };
 
   return (
     <>
@@ -216,7 +338,7 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
                           {col.countries.map((c) => (
                             <li key={c}>
                               <Link
-                                to={`/packages?search=${encodeURIComponent(c)}`}
+                                to={`/destinations/${getDestinationSlug(c)}`}
                                 onClick={() => setActiveDropdown(null)}
                                 className="text-xs text-gray-700 hover:text-[#FF795C] hover:translate-x-1 transition-all flex items-center justify-between py-0.5 group"
                               >
@@ -296,7 +418,7 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
                           {col.spots.map((spot) => (
                             <li key={spot}>
                               <Link
-                                to={`/packages?search=${encodeURIComponent(spot.split(' ')[0])}`}
+                                to={`/destinations/${getDestinationSlug(spot)}`}
                                 onClick={() => setActiveDropdown(null)}
                                 className="text-xs text-gray-700 hover:text-[#FF795C] hover:translate-x-1 transition-all flex items-center justify-between py-0.5 group"
                               >
@@ -328,29 +450,120 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
               )}
             </div>
 
-            {/* 5. Honeymoon (Direct Link/Button - No Dropdown) */}
-            <Link
-              to="/honeymoon"
-              className={`px-4.5 py-1.5 2xl:px-5 2xl:py-2 rounded-full text-sm font-semibold transition-all shadow-xs flex items-center justify-center ${
-                location.pathname === '/honeymoon'
-                  ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-md'
-                  : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
-              }`}
-            >
-              Honeymoon
-            </Link>
+            {/* 5. Honeymoon ▾ (Dropdown with India & International Romantic Getaways) */}
+            <div className="relative dropdown-container">
+              <button
+                type="button"
+                onClick={() => setActiveDropdown(activeDropdown === 'honeymoon' ? null : 'honeymoon')}
+                className={`px-4.5 py-1.5 2xl:px-5 2xl:py-2 rounded-full text-sm font-semibold transition-all shadow-xs flex items-center gap-1.5 justify-center ${
+                  location.pathname === '/honeymoon' || activeDropdown === 'honeymoon'
+                    ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-md'
+                    : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
+                }`}
+              >
+                <span>Honeymoon</span>
+                <span className="text-[10px] transform translate-y-[0.5px]">▼</span>
+              </button>
 
-            {/* 6. Tickets Bookings (Direct Link/Button - No Dropdown) */}
-            <Link
-              to="/services"
-              className={`px-4.5 py-1.5 2xl:px-5 2xl:py-2 rounded-full text-sm font-semibold transition-all shadow-xs flex items-center justify-center ${
-                location.pathname === '/services'
-                  ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-md'
-                  : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
-              }`}
-            >
-              Tickets Bookings
-            </Link>
+              {activeDropdown === 'honeymoon' && (
+                <div className="absolute top-full -left-20 w-[620px] bg-white rounded-3xl shadow-2xl border border-[#EFE7DA] p-6 animate-in fade-in slide-in-from-top-2 duration-200 text-[#082C43] z-50">
+                  <div className="flex items-center justify-between border-b border-gray-100 pb-3 mb-4">
+                    <div className="flex items-center gap-2">
+                      <Heart className="w-5 h-5 text-rose-500 fill-rose-500" />
+                      <span className="text-sm font-bold uppercase tracking-wider text-[#082C43]">
+                        Handpicked Honeymoon Packages
+                      </span>
+                    </div>
+                    <Link
+                      to="/honeymoon"
+                      onClick={() => setActiveDropdown(null)}
+                      className="text-xs font-bold text-[#FF795C] hover:underline"
+                    >
+                      All Honeymoon Tours →
+                    </Link>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-6">
+                    {honeymoonDestinations.map((col) => (
+                      <div key={col.type} className="space-y-2">
+                        <h4 className="text-xs font-bold uppercase tracking-wider text-[#17648A] border-b border-gray-100 pb-1">
+                          {col.type}
+                        </h4>
+                        <ul className="space-y-1">
+                          {col.spots.map((spot) => (
+                            <li key={spot}>
+                              <Link
+                                to={`/destinations/${getDestinationSlug(spot)}`}
+                                onClick={() => setActiveDropdown(null)}
+                                className="text-xs text-gray-700 hover:text-[#FF795C] hover:translate-x-1 transition-all flex items-center justify-between py-0.5 group"
+                              >
+                                <span>{spot}</span>
+                                <span className="text-[10px] text-gray-300 group-hover:text-[#FF795C]">›</span>
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* 6. Tickets Bookings ▾ (Dropdown with Flight, Train, Bus & Visa Services) */}
+            <div className="relative dropdown-container">
+              <button
+                type="button"
+                onClick={() => setActiveDropdown(activeDropdown === 'tickets' ? null : 'tickets')}
+                className={`px-4.5 py-1.5 2xl:px-5 2xl:py-2 rounded-full text-sm font-semibold transition-all shadow-xs flex items-center gap-1.5 justify-center ${
+                  location.pathname === '/services' || activeDropdown === 'tickets'
+                    ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-md'
+                    : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
+                }`}
+              >
+                <span>Tickets Bookings</span>
+                <span className="text-[10px] transform translate-y-[0.5px]">▼</span>
+              </button>
+
+              {activeDropdown === 'tickets' && (
+                <div className="absolute top-full -right-10 w-[420px] bg-white rounded-3xl shadow-2xl border border-[#EFE7DA] p-5 animate-in fade-in slide-in-from-top-2 duration-200 text-[#082C43] z-50">
+                  <div className="flex items-center justify-between border-b border-gray-100 pb-3 mb-3">
+                    <span className="text-xs font-bold uppercase tracking-wider text-[#082C43]">
+                      Tickets & Travel Services
+                    </span>
+                    <Link
+                      to="/services"
+                      onClick={() => setActiveDropdown(null)}
+                      className="text-xs font-bold text-[#FF795C] hover:underline"
+                    >
+                      View All Services →
+                    </Link>
+                  </div>
+
+                  <div className="space-y-2">
+                    {ticketingServices.map((svc) => (
+                      <Link
+                        key={svc.name}
+                        to={svc.path}
+                        onClick={() => setActiveDropdown(null)}
+                        className="p-2.5 rounded-xl hover:bg-[#F8F1E7]/60 transition-all flex items-start gap-3 group border border-transparent hover:border-[#EFE7DA]"
+                      >
+                        <Plane className="w-4 h-4 text-[#FF795C] mt-0.5 shrink-0" />
+                        <div>
+                          <div className="text-xs font-bold text-[#082C43] group-hover:text-[#FF795C] flex items-center justify-between">
+                            <span>{svc.name}</span>
+                            <span className="text-[10px] text-gray-300 group-hover:text-[#FF795C]">›</span>
+                          </div>
+                          <p className="text-[11px] text-slate-500 leading-snug mt-0.5">
+                            {svc.desc}
+                          </p>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
 
             {/* 7. Contact Us */}
             <Link
@@ -362,6 +575,15 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
               }`}
             >
               Contact Us
+            </Link>
+
+            {/* Red Search Button matching Image 1 */}
+            <Link
+              to="/packages"
+              className="w-8 h-8 rounded-full bg-[#E50914] hover:bg-[#C10811] text-white flex items-center justify-center shadow-md transition-all shrink-0 ml-1"
+              title="Search Packages"
+            >
+              <Search className="w-4 h-4" />
             </Link>
           </nav>
 
@@ -452,7 +674,8 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
                             {cat.countries.map(c => (
                               <Link
                                 key={c}
-                                to={`/packages?search=${encodeURIComponent(c)}`}
+                                to={`/destinations/${getDestinationSlug(c)}`}
+                                onClick={() => setIsMobileMenuOpen(false)}
                                 className="hover:text-[#FF795C] py-0.5"
                               >
                                 {c}
@@ -486,7 +709,8 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
                             {reg.spots.map(s => (
                               <Link
                                 key={s}
-                                to={`/packages?search=${encodeURIComponent(s.split(' ')[0])}`}
+                                to={`/destinations/${getDestinationSlug(s)}`}
+                                onClick={() => setIsMobileMenuOpen(false)}
                                 className="block hover:text-[#55C9BD] py-0.5"
                               >
                                 {s}

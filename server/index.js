@@ -352,15 +352,25 @@ app.get('/api/public/destinations', (req, res) => {
   res.json(destinations);
 });
 
-// Destination Details by Slug
+// Destination Details by Slug or ID
 app.get('/api/public/destinations/:slug', (req, res) => {
   const { slug } = req.params;
-  const destination = db.findOne('destinations', (d) => d.slug === slug);
+  const cleanSlug = (slug || '').toLowerCase().trim();
+  const destination = db.findOne('destinations', (d) => 
+    (d.slug && d.slug.toLowerCase() === cleanSlug) || 
+    (d.id && d.id.toLowerCase() === cleanSlug) || 
+    (d.name && d.name.toLowerCase() === cleanSlug) ||
+    (d.name && d.name.toLowerCase().replace(/\s+/g, '-') === cleanSlug)
+  );
   if (!destination) {
     return res.status(404).json({ error: 'Destination not found.' });
   }
 
-  const packages = db.findAll('packages', (p) => p.destination_id === destination.id && p.is_published);
+  const packages = db.findAll('packages', (p) => 
+    (p.destination_id === destination.id || 
+     (p.title && p.title.toLowerCase().includes(destination.name.toLowerCase()))) && 
+    (p.is_published !== false)
+  );
   res.json({ destination, packages });
 });
 
@@ -415,7 +425,7 @@ app.get('/api/public/packages', (req, res) => {
 // Package Details by Slug
 app.get('/api/public/packages/:slug', (req, res) => {
   const { slug } = req.params;
-  const pkg = db.findOne('packages', (p) => p.slug === slug);
+  const pkg = db.findOne('packages', (p) => p.slug === slug || p.id === slug);
   if (!pkg) {
     return res.status(404).json({ error: 'Package not found.' });
   }

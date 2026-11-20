@@ -240,8 +240,17 @@ export const api = {
     try {
       return await request<{ destination: any; packages: any[] }>(`/public/destinations/${slug}`);
     } catch {
-      const dest = fallbackData.destinations.find((d: any) => d.slug === slug) || fallbackData.destinations[0];
-      const pkgs = fallbackData.packages.filter((p: any) => p.destination_id === dest.id);
+      const q = (slug || '').toLowerCase().trim();
+      const dest = fallbackData.destinations.find((d: any) => 
+        (d.slug && d.slug.toLowerCase() === q) || 
+        (d.id && d.id.toLowerCase() === q) || 
+        (d.name && d.name.toLowerCase() === q) ||
+        (d.name && d.name.toLowerCase().replace(/\s+/g, '-') === q)
+      ) || fallbackData.destinations[0];
+      const pkgs = fallbackData.packages.filter((p: any) => 
+        p.destination_id === dest.id || 
+        (p.title && dest.name && p.title.toLowerCase().includes(dest.name.toLowerCase()))
+      );
       return { destination: dest, packages: pkgs };
     }
   },

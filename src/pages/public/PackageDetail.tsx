@@ -24,7 +24,8 @@ import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
 
 export const PackageDetail: React.FC = () => {
-  const { slug } = useParams<{ slug: string }>();
+  const { slug, id } = useParams<{ slug?: string; id?: string }>();
+  const packageSlug = slug || id || '';
   const navigate = useNavigate();
   const { user, isAuthenticated, agency } = useAuth();
   const { success, error } = useToast();
@@ -46,8 +47,8 @@ export const PackageDetail: React.FC = () => {
   const [isSubmittingBooking, setIsSubmittingBooking] = useState(false);
 
   useEffect(() => {
-    if (slug) loadPackage(slug);
-  }, [slug]);
+    if (packageSlug) loadPackage(packageSlug);
+  }, [packageSlug]);
 
   const loadPackage = async (packageSlug: string) => {
     setIsLoading(true);

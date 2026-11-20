@@ -86,6 +86,13 @@ export interface Destination {
   package_count: number;
   is_featured: boolean;
   is_published: boolean;
+  capital?: string;
+  currency?: string;
+  climate?: string;
+  language?: string;
+  season?: string;
+  tips?: string[];
+  accordions?: { title: string; content: string }[];
 }
 
 export interface PackageItinerary {

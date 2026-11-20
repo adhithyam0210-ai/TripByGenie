@@ -122,12 +122,25 @@ export const App: React.FC = () => {
         <Route path="/destinations" element={<Destinations />} />
         <Route path="/destinations/:slug" element={<DestinationDetail />} />
         <Route path="/packages" element={<Packages />} />
-        <Route path="/packages/:id" element={<PackageDetail />} />
+        <Route path="/packages/:slug" element={<PackageDetail />} />
         <Route path="/honeymoon" element={<Honeymoon />} />
         <Route path="/group-tours" element={<GroupTours />} />
         <Route path="/services" element={<Services />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+
+        {/* Direct destination URLs matching tripbygenie.in/:slug/ */}
+        <Route path="/australia" element={<Navigate to="/destinations/australia" replace />} />
+        <Route path="/singapore" element={<Navigate to="/destinations/singapore" replace />} />
+        <Route path="/kerala" element={<Navigate to="/destinations/kerala" replace />} />
+        <Route path="/bali" element={<Navigate to="/destinations/bali" replace />} />
+        <Route path="/maldives" element={<Navigate to="/destinations/maldives" replace />} />
+        <Route path="/switzerland" element={<Navigate to="/destinations/switzerland" replace />} />
+        <Route path="/dubai" element={<Navigate to="/destinations/dubai" replace />} />
+        <Route path="/thailand" element={<Navigate to="/destinations/thailand" replace />} />
+        <Route path="/malaysia" element={<Navigate to="/destinations/malaysia" replace />} />
+        <Route path="/vietnam" element={<Navigate to="/destinations/vietnam" replace />} />
+        <Route path="/japan" element={<Navigate to="/destinations/japan" replace />} />
       </Route>
 
       {/* Auth Pages */}
