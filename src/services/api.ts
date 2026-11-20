@@ -286,13 +286,31 @@ export const api = {
   },
 
   getPackageBySlug: async (slug: string) => {
+    const dedupe = (list: any[]) => {
+      const map = new Map<number, any>();
+      for (const it of list || []) {
+        const day = Number(it.day_number) || 1;
+        if (!map.has(day) || ((it.description?.length || 0) > (map.get(day).description?.length || 0))) {
+          map.set(day, it);
+        }
+      }
+      return Array.from(map.values()).sort((a, b) => a.day_number - b.day_number);
+    };
+
     try {
-      return await request<{ package: any; destination: any; itineraries: any[] }>(`/public/packages/${slug}`);
+      const res = await request<{ package: any; destination: any; itineraries: any[] }>(`/public/packages/${slug}`);
+      if (res && res.package) {
+        return {
+          ...res,
+          itineraries: dedupe(res.itineraries || [])
+        };
+      }
+      throw new Error('Package not found');
     } catch {
-      const pkg = fallbackData.packages.find((p: any) => p.slug === slug) || fallbackData.packages[0];
-      const dest = fallbackData.destinations.find((d: any) => d.id === pkg.destination_id) || fallbackData.destinations[0];
-      const itineraries = fallbackData.package_itineraries.filter((i: any) => i.package_id === pkg.id);
-      return { package: pkg, destination: dest, itineraries };
+      const pkg = (fallbackData.packages || []).find((p: any) => p.slug === slug || p.id === slug) || fallbackData.packages[0];
+      const dest = (fallbackData.destinations || []).find((d: any) => d.id === pkg.destination_id) || fallbackData.destinations[0];
+      const rawItineraries = (fallbackData.package_itineraries || []).filter((i: any) => i.package_id === pkg.id);
+      return { package: pkg, destination: dest, itineraries: dedupe(rawItineraries) };
     }
   },
 

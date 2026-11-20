@@ -431,8 +431,21 @@ app.get('/api/public/packages/:slug', (req, res) => {
   }
 
   const destination = db.findById('destinations', pkg.destination_id);
-  const itineraries = db.findAll('package_itineraries', (it) => it.package_id === pkg.id);
-  itineraries.sort((a, b) => a.day_number - b.day_number);
+  const rawItineraries = db.findAll('package_itineraries', (it) => it.package_id === pkg.id);
+  // Strict deduplication by day_number
+  const dayMap = new Map();
+  for (const it of rawItineraries) {
+    const day = Number(it.day_number) || 1;
+    if (!dayMap.has(day)) {
+      dayMap.set(day, it);
+    } else {
+      const existing = dayMap.get(day);
+      if ((it.description?.length || 0) > (existing.description?.length || 0)) {
+        dayMap.set(day, it);
+      }
+    }
+  }
+  const itineraries = Array.from(dayMap.values()).sort((a, b) => a.day_number - b.day_number);
 
   const { wholesale_price, ...safePackage } = pkg;
   res.json({
