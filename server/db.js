@@ -43,7 +43,23 @@ class DatabaseEngine {
     }
   }
 
+  checkReload() {
+    try {
+      if (fs.existsSync(DB_FILE)) {
+        const stat = fs.statSync(DB_FILE);
+        if (!this.lastMtime || stat.mtimeMs > this.lastMtime) {
+          const raw = fs.readFileSync(DB_FILE, 'utf8');
+          this.data = JSON.parse(raw);
+          this.lastMtime = stat.mtimeMs;
+        }
+      }
+    } catch (e) {
+      // ignore
+    }
+  }
+
   getTable(table) {
+    this.checkReload();
     if (!this.data[table]) {
       this.data[table] = [];
     }

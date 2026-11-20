@@ -425,7 +425,13 @@ app.get('/api/public/packages', (req, res) => {
 // Package Details by Slug
 app.get('/api/public/packages/:slug', (req, res) => {
   const { slug } = req.params;
-  const pkg = db.findOne('packages', (p) => p.slug === slug || p.id === slug);
+  const cleanSlug = decodeURIComponent(slug || '').toLowerCase().trim().replace(/\/+$/, '');
+  const pkg = db.findOne('packages', (p) => {
+    if (!p) return false;
+    const pSlug = (p.slug || '').toLowerCase().trim().replace(/\/+$/, '');
+    const pId = (p.id || '').toLowerCase().trim();
+    return pSlug === cleanSlug || pId === cleanSlug;
+  });
   if (!pkg) {
     return res.status(404).json({ error: 'Package not found.' });
   }

@@ -297,8 +297,9 @@ export const api = {
       return Array.from(map.values()).sort((a, b) => a.day_number - b.day_number);
     };
 
+    const cleanSlug = decodeURIComponent(slug || '').toLowerCase().trim().replace(/\/+$/, '');
     try {
-      const res = await request<{ package: any; destination: any; itineraries: any[] }>(`/public/packages/${slug}`);
+      const res = await request<{ package: any; destination: any; itineraries: any[] }>(`/public/packages/${encodeURIComponent(cleanSlug)}`);
       if (res && res.package) {
         return {
           ...res,
@@ -307,7 +308,12 @@ export const api = {
       }
       throw new Error('Package not found');
     } catch {
-      const pkg = (fallbackData.packages || []).find((p: any) => p.slug === slug || p.id === slug) || fallbackData.packages[0];
+      const pkg = (fallbackData.packages || []).find((p: any) => {
+        if (!p) return false;
+        const pSlug = (p.slug || '').toLowerCase().trim().replace(/\/+$/, '');
+        const pId = (p.id || '').toLowerCase().trim();
+        return pSlug === cleanSlug || pId === cleanSlug;
+      }) || fallbackData.packages[0];
       const dest = (fallbackData.destinations || []).find((d: any) => d.id === pkg.destination_id) || fallbackData.destinations[0];
       const rawItineraries = (fallbackData.package_itineraries || []).filter((i: any) => i.package_id === pkg.id);
       return { package: pkg, destination: dest, itineraries: dedupe(rawItineraries) };
