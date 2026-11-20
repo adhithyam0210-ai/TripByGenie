@@ -89,7 +89,7 @@ export const ItineraryTimeline: React.FC<ItineraryTimelineProps> = ({ itinerarie
           return (
             <div
               key={day.id || `day_${day.day_number}`}
-              className="bg-white rounded-xl sm:rounded-2xl border border-slate-100 shadow-[0_2px_10px_rgba(0,0,0,0.03)] hover:shadow-md transition-all overflow-hidden"
+              className="bg-white rounded-xl sm:rounded-2xl border border-[#E5EFF5] shadow-[0_4px_20px_rgba(23,100,138,0.08)] hover:shadow-lg transition-all overflow-hidden"
             >
               {/* Day Accordion Header */}
               <button

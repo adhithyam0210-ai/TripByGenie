@@ -12,7 +12,9 @@ import {
   ShieldCheck,
   Send,
   ArrowLeft,
-  Phone
+  Phone,
+  Compass,
+  Navigation
 } from 'lucide-react';
 import { api } from '../../services/api';
 import { Package, Destination, PackageItinerary } from '../../types';
@@ -55,10 +57,21 @@ export const PackageDetail: React.FC = () => {
     setIsLoading(true);
     try {
       const data = await api.getPackageBySlug(packageSlug);
+      if ((data as any)?.is_destination) {
+        navigate(`/destinations/${(data as any).destination_slug || packageSlug}`, { replace: true });
+        return;
+      }
       setPkg(data.package);
       setDestination(data.destination);
       setItineraries(data.itineraries || []);
     } catch (e) {
+      try {
+        const destData = await api.getDestinationBySlug(packageSlug);
+        if (destData && destData.destination) {
+          navigate(`/destinations/${packageSlug}`, { replace: true });
+          return;
+        }
+      } catch {}
       console.error(e);
     } finally {
       setIsLoading(false);
@@ -227,6 +240,59 @@ export const PackageDetail: React.FC = () => {
                 Day-by-Day Detailed Itinerary
               </h3>
               <ItineraryTimeline itineraries={itineraries} />
+            </div>
+
+            {/* Package Summary Section (Section 5) */}
+            <div className="bg-white rounded-2xl border border-[#E5EFF5] shadow-[0_4px_20px_rgba(23,100,138,0.08)] p-6 space-y-4">
+              <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                <h3 className="text-base font-bold text-[#082C43] font-display flex items-center gap-2">
+                  <Compass className="w-5 h-5 text-[#00A854]" />
+                  Package Summary
+                </h3>
+                <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-[#00A854]/10 text-[#00A854] border border-[#00A854]/20">
+                  Verified Itinerary
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5 text-xs">
+                <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+                  <span className="text-slate-400 font-medium block mb-1">Duration</span>
+                  <strong className="text-sm text-[#082C43] font-bold">
+                    {pkg.duration_days} Days / {pkg.duration_nights || Math.max(1, pkg.duration_days - 1)} Nights
+                  </strong>
+                </div>
+
+                <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+                  <span className="text-slate-400 font-medium block mb-1">Starting & Ending Route</span>
+                  <strong className="text-sm text-[#082C43] font-bold flex items-center gap-1.5">
+                    <Navigation className="w-3.5 h-3.5 text-[#00A854] shrink-0" />
+                    <span>{pkg.starting_location || 'Arrival'} → {pkg.ending_location || 'Departure'}</span>
+                  </strong>
+                </div>
+
+                <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100 sm:col-span-2 md:col-span-1">
+                  <span className="text-slate-400 font-medium block mb-1">Itinerary Schedule</span>
+                  <strong className="text-sm text-[#00A854] font-bold">
+                    {itineraries.length || pkg.duration_days} Days Covered
+                  </strong>
+                </div>
+              </div>
+
+              {(pkg.destinations_covered && pkg.destinations_covered.length > 0) && (
+                <div className="pt-2 border-t border-slate-100">
+                  <span className="text-xs text-slate-500 font-semibold block mb-2">Destinations Covered During Trip:</span>
+                  <div className="flex flex-wrap gap-2">
+                    {pkg.destinations_covered.map((dest, idx) => (
+                      <span
+                        key={idx}
+                        className="px-3 py-1 rounded-full bg-[#00A854]/10 text-[#00A854] font-bold text-xs border border-[#00A854]/25"
+                      >
+                        {dest}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Inclusions & Exclusions */}

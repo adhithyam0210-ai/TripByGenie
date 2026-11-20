@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   Compass,
   Menu,
@@ -31,8 +31,9 @@ interface PublicNavbarProps {
 }
 
 export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) => {
-  const { user, isAuthenticated, getRoleDashboardPath, currentAgency } = useAuth();
+  const { user, isAuthenticated, getRoleDashboardPath, currentAgency, demoLogin, logout } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -553,8 +554,137 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
             </Link>
           </nav>
 
-          {/* Right Action: Plan Trip CTA */}
-          <div className="hidden lg:flex items-center gap-3">
+          {/* Right Action: Plan Trip CTA & Quick Login */}
+          <div className="hidden lg:flex items-center gap-2.5">
+            {/* Quick Login button near Plan Your Trip for easy testing */}
+            <div className="relative dropdown-container">
+              <div className="flex items-center shadow-xs">
+                <Link
+                  to={isAuthenticated ? getRoleDashboardPath() : '/login'}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-l-xl text-xs font-bold transition-all border border-[#EFE7DA] bg-white text-[#082C43] hover:text-[#FF795C] hover:bg-[#F8F1E7]/50"
+                  title="Staff, Agent, Admin & Customer Login"
+                >
+                  <User className="w-3.5 h-3.5 text-[#55C9BD]" />
+                  <span>{isAuthenticated ? (user?.role ? user.role.toUpperCase() : 'Dashboard') : 'Login'}</span>
+                </Link>
+
+                <button
+                  type="button"
+                  onClick={() => setActiveDropdown(activeDropdown === 'quick-login' ? null : 'quick-login')}
+                  className="p-1.5 rounded-r-xl border-y border-r border-[#EFE7DA] bg-white hover:bg-[#F8F1E7]/50 text-slate-500 hover:text-[#082C43] transition-colors cursor-pointer"
+                  title="Switch Role / Easy Login"
+                >
+                  <ChevronDown className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              {/* Quick Role Switcher Dropdown */}
+              {activeDropdown === 'quick-login' && (
+                <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-white border border-[#EFE7DA] shadow-xl p-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150 text-xs">
+                  <div className="px-3 py-2 border-b border-[#EFE7DA] mb-1">
+                    <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider block">
+                      Easy Login (Quick Switch)
+                    </span>
+                    <p className="text-[11px] text-slate-600 font-medium">
+                      One-click test access to any portal:
+                    </p>
+                  </div>
+
+                  <div className="space-y-1">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        demoLogin('admin').then(() => {
+                          navigate('/admin/packages');
+                          setActiveDropdown(null);
+                        });
+                      }}
+                      className="w-full text-left px-3 py-2 rounded-xl hover:bg-emerald-50 text-[#082C43] hover:text-[#00A854] font-semibold flex items-center justify-between transition-colors cursor-pointer"
+                    >
+                      <span className="flex items-center gap-2">
+                        <Shield className="w-3.5 h-3.5 text-emerald-600" />
+                        Admin CRM
+                      </span>
+                      <span className="text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-bold">Admin</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        demoLogin('agent').then(() => {
+                          navigate('/agent/packages');
+                          setActiveDropdown(null);
+                        });
+                      }}
+                      className="w-full text-left px-3 py-2 rounded-xl hover:bg-orange-50 text-[#082C43] hover:text-[#FF795C] font-semibold flex items-center justify-between transition-colors cursor-pointer"
+                    >
+                      <span className="flex items-center gap-2">
+                        <Briefcase className="w-3.5 h-3.5 text-[#FF795C]" />
+                        Agent Marketplace
+                      </span>
+                      <span className="text-[10px] bg-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-bold">Agent</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        demoLogin('staff').then(() => {
+                          navigate('/staff/leads');
+                          setActiveDropdown(null);
+                        });
+                      }}
+                      className="w-full text-left px-3 py-2 rounded-xl hover:bg-sky-50 text-[#082C43] hover:text-[#004c8f] font-semibold flex items-center justify-between transition-colors cursor-pointer"
+                    >
+                      <span className="flex items-center gap-2">
+                        <Users className="w-3.5 h-3.5 text-[#004c8f]" />
+                        Staff Operations
+                      </span>
+                      <span className="text-[10px] bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded font-bold">Staff</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        demoLogin('customer').then(() => {
+                          navigate('/customer/dashboard');
+                          setActiveDropdown(null);
+                        });
+                      }}
+                      className="w-full text-left px-3 py-2 rounded-xl hover:bg-teal-50 text-[#082C43] hover:text-[#55C9BD] font-semibold flex items-center justify-between transition-colors cursor-pointer"
+                    >
+                      <span className="flex items-center gap-2">
+                        <User className="w-3.5 h-3.5 text-[#55C9BD]" />
+                        Customer Portal
+                      </span>
+                      <span className="text-[10px] bg-teal-100 text-teal-800 px-1.5 py-0.5 rounded font-bold">User</span>
+                    </button>
+                  </div>
+
+                  <div className="pt-2 mt-1 border-t border-[#EFE7DA] flex items-center justify-between px-2">
+                    <Link
+                      to="/login"
+                      onClick={() => setActiveDropdown(null)}
+                      className="text-[11px] font-bold text-[#FF795C] hover:underline"
+                    >
+                      Standard Login Page →
+                    </Link>
+                    {isAuthenticated && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          logout();
+                          setActiveDropdown(null);
+                        }}
+                        className="text-[11px] text-rose-600 font-bold hover:underline cursor-pointer"
+                      >
+                        Sign Out
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+
             <Button
               variant="primary"
               size="sm"
@@ -581,7 +711,7 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
               onClick={onOpenTripModal}
               className="text-xs bg-[#FF795C] hover:bg-[#e06348] text-white px-2.5 py-1.5 rounded-lg font-bold transition-all shadow-xs"
             >
-              Enquire
+              Plan Trip
             </button>
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}

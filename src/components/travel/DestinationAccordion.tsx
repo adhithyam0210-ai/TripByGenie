@@ -42,8 +42,8 @@ export const DestinationAccordion: React.FC<DestinationAccordionProps> = ({ dest
     }
   ];
 
-  // Open the 2nd item (index 1) by default matching user screenshot, or item 0
-  const [openIndices, setOpenIndices] = useState<number[]>([1]);
+  // Open the 1st item (index 0 - About Destination) by default
+  const [openIndices, setOpenIndices] = useState<number[]>([0]);
 
   const toggleItem = (idx: number) => {
     if (openIndices.includes(idx)) {

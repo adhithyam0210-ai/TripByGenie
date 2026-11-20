@@ -133,6 +133,10 @@ export interface Package {
   available_seats?: number;
   total_seats?: number;
   upcoming_date?: string;
+  starting_location?: string;
+  ending_location?: string;
+  destinations_covered?: string[];
+  original_source_url?: string;
   created_at: string;
 }
 

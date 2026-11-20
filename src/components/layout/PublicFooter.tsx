@@ -28,15 +28,48 @@ export const PublicFooter: React.FC = () => {
             <div className="pt-2 space-y-2 text-xs text-white/80">
               <div className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-[#FF795C] shrink-0 mt-0.5" />
-                <span>Trip by Genie, Regional Head Office: Anna Salai, Chennai, Tamil Nadu 600002, India (Serving all South India)</span>
+                <div className="text-xs text-white/80 leading-relaxed">
+                  <p>A, E, Trip By Genie, 31, W Jones Rd, Periyapet, Saidapet, Chennai, Tamil Nadu 600015</p>
+                  <div className="mt-1">
+                    <a
+                      href="https://www.google.com/maps/place/Trip+By+Genie/@13.0252636,80.22315,17z/data=!3m1!4b1!4m6!3m5!1s0x3a5267f9e4481ac9:0x55e6d69a7d4a8e3!8m2!3d13.0252636!4d80.2257249!16s%2Fg%2F11l2bvylrx?entry=ttu"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-[11px] font-bold text-[#55C9BD] hover:text-white hover:underline transition-colors"
+                    >
+                      <span>Open in Google Maps</span>
+                      <ArrowUpRight className="w-3 h-3" />
+                    </a>
+                  </div>
+                </div>
               </div>
               <div className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-[#55C9BD] shrink-0" />
-                <span>Direct Contact: <strong>+91 (44) 46071374</strong> / WhatsApp: <strong>+91 99404 63566</strong></span>
+                <span>
+                  Direct Call:{' '}
+                  <a href="tel:+914446071374" className="font-bold text-white hover:text-[#55C9BD] hover:underline">
+                    +91 (44) 46071374
+                  </a>
+                  {' '}/ WhatsApp:{' '}
+                  <a
+                    href="https://wa.me/919940463566?text=Hi%20TripbyGenie,%20I%20would%20like%20to%20enquire%20about%20a%20tour%20package"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-bold text-[#55C9BD] hover:text-white hover:underline"
+                  >
+                    +91 99404 63566
+                  </a>
+                </span>
               </div>
               <div className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-[#FF795C] shrink-0" />
-                <span>info@tripbygenie.com</span>
+                <a href="mailto:info@tripbygenie.in" className="hover:text-white hover:underline">
+                  info@tripbygenie.in
+                </a>
+                <span className="text-white/40">/</span>
+                <a href="mailto:info@tripbygenie.com" className="hover:text-white hover:underline">
+                  info@tripbygenie.com
+                </a>
               </div>
               <div className="flex items-center gap-2.5 text-white/60">
                 <Clock className="w-4 h-4 text-[#55C9BD] shrink-0" />

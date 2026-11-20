@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Send, MessageSquare, Clock, ShieldCheck } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, MessageSquare, Clock, ShieldCheck, ExternalLink, ArrowUpRight } from 'lucide-react';
 import { api } from '../../services/api';
 import { useToast } from '../../context/ToastContext';
 import { useAuth } from '../../context/AuthContext';
@@ -17,6 +17,18 @@ export const Contact: React.FC = () => {
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Canonical contact information
+  const phone1 = '+91 (44) 46071374';
+  const phone1Clean = '+914446071374';
+  const phone2 = '+91 99404 63566';
+  const phone2Clean = '+919940463566';
+  const whatsappNumber = '919940463566';
+  const whatsappLink = `https://wa.me/${whatsappNumber}?text=Hi%20TripbyGenie,%20I%20would%20like%20to%20enquire%20about%20a%20tour%20package`;
+  const primaryEmail = 'info@tripbygenie.in';
+  const secondaryEmail = 'info@tripbygenie.com';
+  const officeAddress = 'A, E, Trip By Genie, 31, W Jones Rd, Periyapet, Saidapet, Chennai, Tamil Nadu 600015';
+  const mapsLink = 'https://www.google.com/maps/place/Trip+By+Genie/@13.0252636,80.22315,17z/data=!3m1!4b1!4m6!3m5!1s0x3a5267f9e4481ac9:0x55e6d69a7d4a8e3!8m2!3d13.0252636!4d80.2257249!16s%2Fg%2F11l2bvylrx?entry=ttu';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,7 +67,7 @@ export const Contact: React.FC = () => {
             We're Here For You
           </span>
           <h1 className="text-3xl sm:text-5xl font-extrabold font-display">
-            Contact Travel Genie
+            Contact Trip by Genie
           </h1>
           <p className="text-sm sm:text-base text-white/80 max-w-xl mx-auto">
             Have a question about a package, looking for customized travel design, or interested in becoming a B2B travel agent partner? Get in touch today.
@@ -66,7 +78,7 @@ export const Contact: React.FC = () => {
       {/* Main Content */}
       <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 pt-14">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-          {/* Contact Details */}
+          {/* Contact Details Column */}
           <div className="lg:col-span-5 space-y-6">
             <div>
               <span className="text-xs font-bold uppercase tracking-wider text-[#FF795C] block mb-1">
@@ -77,43 +89,117 @@ export const Contact: React.FC = () => {
               </h2>
             </div>
 
-            <div className="p-6 rounded-2xl bg-white border border-[#EFE7DA] shadow-xs space-y-4">
+            <div className="p-6 rounded-2xl bg-white border border-[#EFE7DA] shadow-xs space-y-5">
+              {/* Head Office Address */}
               <div className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-[#FF795C] shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="text-xs font-bold text-[#082C43]">Bengaluru Flagship Office</h4>
+                  <h4 className="text-xs font-bold text-[#082C43]">Regional Head Office (South India)</h4>
                   <p className="text-xs text-[#173247]/70 mt-0.5 leading-relaxed">
-                    {agency?.address || 'Travel Genie Heights, 4th Floor, MG Road, Bengaluru, Karnataka 560001, India'}
+                    {officeAddress}
                   </p>
+                  <div className="mt-1.5">
+                    <a
+                      href={mapsLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-xs font-bold text-[#004c8f] hover:text-[#FF795C] hover:underline transition-colors"
+                    >
+                      <span>Open in Google Maps</span>
+                      <ArrowUpRight className="w-3.5 h-3.5" />
+                    </a>
+                  </div>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 pt-3 border-t border-[#EFE7DA]">
+              {/* Direct Phone Numbers */}
+              <div className="flex items-start gap-3 pt-4 border-t border-[#EFE7DA]">
                 <Phone className="w-5 h-5 text-[#55C9BD] shrink-0 mt-0.5" />
-                <div>
-                  <h4 className="text-xs font-bold text-[#082C43]">Phone & WhatsApp Desk</h4>
-                  <p className="text-xs text-[#173247]/70 mt-0.5">
-                    {agency?.phone || '+91 98765 43210'} / +91 80 4123 9900
+                <div className="space-y-1">
+                  <h4 className="text-xs font-bold text-[#082C43]">Direct Phone Line</h4>
+                  <p className="text-xs text-[#173247]/70">
+                    Click to call our customer reservation desk directly:
                   </p>
+                  <div className="flex flex-wrap items-center gap-3 pt-1">
+                    <a
+                      href={`tel:${phone1Clean}`}
+                      className="text-xs font-bold text-[#082C43] hover:text-[#FF795C] hover:underline bg-[#F8F1E7] px-3 py-1.5 rounded-lg border border-[#EFE7DA] transition-colors inline-flex items-center gap-1.5"
+                    >
+                      <Phone className="w-3 h-3 text-[#55C9BD]" />
+                      {phone1}
+                    </a>
+                    <a
+                      href={`tel:${phone2Clean}`}
+                      className="text-xs font-bold text-[#082C43] hover:text-[#FF795C] hover:underline bg-[#F8F1E7] px-3 py-1.5 rounded-lg border border-[#EFE7DA] transition-colors inline-flex items-center gap-1.5"
+                    >
+                      <Phone className="w-3 h-3 text-[#55C9BD]" />
+                      {phone2}
+                    </a>
+                  </div>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 pt-3 border-t border-[#EFE7DA]">
+              {/* WhatsApp Support Link */}
+              <div className="flex items-start gap-3 pt-4 border-t border-[#EFE7DA]">
+                <MessageSquare className="w-5 h-5 text-[#00A854] shrink-0 mt-0.5" />
+                <div className="space-y-1">
+                  <h4 className="text-xs font-bold text-[#082C43]">WhatsApp Instant Support Desk</h4>
+                  <p className="text-xs text-[#173247]/70">
+                    Instant quotes, itinerary customized queries & 24/7 on-tour assistance:
+                  </p>
+                  <div className="pt-1">
+                    <a
+                      href={whatsappLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-xs font-bold text-white bg-[#00A854] hover:bg-emerald-600 px-3.5 py-1.5 rounded-xl transition-all shadow-sm"
+                    >
+                      <MessageSquare className="w-3.5 h-3.5" />
+                      Chat on WhatsApp (+91 99404 63566)
+                      <ArrowUpRight className="w-3 h-3" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              {/* Email Addresses */}
+              <div className="flex items-start gap-3 pt-4 border-t border-[#EFE7DA]">
                 <Mail className="w-5 h-5 text-[#17648A] shrink-0 mt-0.5" />
-                <div>
+                <div className="space-y-1">
                   <h4 className="text-xs font-bold text-[#082C43]">Email Inquiries</h4>
-                  <p className="text-xs text-[#173247]/70 mt-0.5">
-                    {agency?.email || 'info@tripbygenie.in'}
+                  <p className="text-xs text-[#173247]/70">
+                    Write to our specialist travel consultants:
                   </p>
+                  <div className="flex flex-wrap items-center gap-3 pt-1">
+                    <a
+                      href={`mailto:${primaryEmail}`}
+                      className="text-xs font-bold text-[#17648A] hover:text-[#FF795C] hover:underline bg-[#F8F1E7] px-3 py-1.5 rounded-lg border border-[#EFE7DA] transition-colors inline-flex items-center gap-1.5"
+                    >
+                      <Mail className="w-3 h-3 text-[#17648A]" />
+                      {primaryEmail}
+                    </a>
+                    <a
+                      href={`mailto:${secondaryEmail}`}
+                      className="text-xs font-bold text-[#17648A] hover:text-[#FF795C] hover:underline bg-[#F8F1E7] px-3 py-1.5 rounded-lg border border-[#EFE7DA] transition-colors inline-flex items-center gap-1.5"
+                    >
+                      <Mail className="w-3 h-3 text-[#17648A]" />
+                      {secondaryEmail}
+                    </a>
+                  </div>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 pt-3 border-t border-[#EFE7DA]">
+              {/* Working Hours */}
+              <div className="flex items-start gap-3 pt-4 border-t border-[#EFE7DA]">
                 <Clock className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
                 <div>
                   <h4 className="text-xs font-bold text-[#082C43]">Working Hours</h4>
-                  <p className="text-xs text-[#173247]/70 mt-0.5">
-                    Mon - Sat: 9:00 AM - 8:00 PM IST (24/7 WhatsApp emergency assistance for travelers on tour)
+                  <p className="text-xs text-[#173247]/70 mt-0.5 leading-relaxed">
+                    Mon - Sat: 9:00 AM - 8:30 PM IST
+                    <br />
+                    <span className="text-emerald-700 font-semibold">
+                      (24/7 dedicated WhatsApp emergency assistance for travelers currently on tour)
+                    </span>
                   </p>
                 </div>
               </div>

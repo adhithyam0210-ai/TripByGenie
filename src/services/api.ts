@@ -300,7 +300,10 @@ export const api = {
     const cleanSlug = decodeURIComponent(slug || '').toLowerCase().trim().replace(/\/+$/, '');
     try {
       const res = await request<{ package: any; destination: any; itineraries: any[] }>(`/public/packages/${encodeURIComponent(cleanSlug)}`);
-      if (res && res.package) {
+      if (res) {
+        if ((res as any).is_destination) {
+          return res;
+        }
         return {
           ...res,
           itineraries: dedupe(res.itineraries || [])
@@ -308,12 +311,26 @@ export const api = {
       }
       throw new Error('Package not found');
     } catch {
+      // Check if it matches a destination in fallbackData
+      const destMatch = (fallbackData.destinations || []).find((d: any) => {
+        if (!d) return false;
+        const dSlug = (d.slug || '').toLowerCase().trim();
+        const dId = (d.id || '').toLowerCase().trim();
+        return dSlug === cleanSlug || dId === cleanSlug || dId === `dest_${cleanSlug.replace(/-/g, '_')}`;
+      });
+      if (destMatch) {
+        return { is_destination: true, destination_slug: destMatch.slug || cleanSlug, package: null, destination: destMatch, itineraries: [] } as any;
+      }
+
       const pkg = (fallbackData.packages || []).find((p: any) => {
         if (!p) return false;
         const pSlug = (p.slug || '').toLowerCase().trim().replace(/\/+$/, '');
         const pId = (p.id || '').toLowerCase().trim();
         return pSlug === cleanSlug || pId === cleanSlug;
-      }) || fallbackData.packages[0];
+      });
+      if (!pkg) {
+        throw new Error('Package not found');
+      }
       const dest = (fallbackData.destinations || []).find((d: any) => d.id === pkg.destination_id) || fallbackData.destinations[0];
       const rawItineraries = (fallbackData.package_itineraries || []).filter((i: any) => i.package_id === pkg.id);
       return { package: pkg, destination: dest, itineraries: dedupe(rawItineraries) };
@@ -538,16 +555,51 @@ export const api = {
       return fallbackData.packages;
     }
   },
+  getAdminPackageItineraries: async (packageId: string) => {
+    try {
+      return await request<any[]>(`/admin/packages/${packageId}/itineraries`);
+    } catch {
+      return (fallbackData.package_itineraries || [])
+        .filter((it: any) => it.package_id === packageId)
+        .sort((a: any, b: any) => a.day_number - b.day_number);
+    }
+  },
   createAdminPackage: (data: any) =>
     request<any>('/admin/packages', {
       method: 'POST',
       body: JSON.stringify(data)
     }),
-  updateAdminPackage: (id: string, data: any) =>
-    request<any>(`/admin/packages/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify(data)
-    }),
+  updateAdminPackage: async (id: string, data: any) => {
+    try {
+      return await request<any>(`/admin/packages/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data)
+      });
+    } catch (e) {
+      // Local fallback sync
+      const pIdx = fallbackData.packages?.findIndex((p: any) => p.id === id);
+      if (pIdx !== -1) {
+        fallbackData.packages[pIdx] = { ...fallbackData.packages[pIdx], ...data };
+      }
+      if (Array.isArray(data.itineraries)) {
+        fallbackData.package_itineraries = (fallbackData.package_itineraries || []).filter(
+          (it: any) => it.package_id !== id
+        );
+        data.itineraries.forEach((it: any, idx: number) => {
+          fallbackData.package_itineraries.push({
+            id: `itin_${id}_day_${it.day_number || idx + 1}`,
+            package_id: id,
+            day_number: it.day_number || idx + 1,
+            title: it.title,
+            description: it.description,
+            meals: it.meals || 'Breakfast Included',
+            activities: it.activities || 'Sightseeing & Transfers'
+          });
+        });
+      }
+      return fallbackData.packages[pIdx];
+    }
+  },
   deleteAdminPackage: (id: string) =>
     request<any>(`/admin/packages/${id}`, { method: 'DELETE' }),
 

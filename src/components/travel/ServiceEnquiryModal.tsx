@@ -20,7 +20,6 @@ import {
   ArrowRight,
   ArrowLeftRight,
   Luggage,
-  Sparkles,
   Info,
   Check
 } from 'lucide-react';

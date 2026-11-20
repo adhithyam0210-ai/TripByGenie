@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Users, TrendingUp, MapPin, Sparkles, Compass, ShieldCheck } from 'lucide-react';
+import { ArrowLeft, Users, TrendingUp, MapPin, Compass, ShieldCheck } from 'lucide-react';
 import { api } from '../../services/api';
 import { Destination, Package } from '../../types';
 import { PackageCard } from '../../components/travel/PackageCard';
@@ -192,9 +192,8 @@ export const DestinationDetail: React.FC = () => {
 
           {/* Essential Facts and Insights Article */}
           <div className="border-t border-[#EFE7DA] pt-6">
-            <h3 className="text-lg sm:text-xl font-bold text-[#082C43] font-display mb-4 flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-[#FF795C]" />
-              <span>Essential Facts and Insights About {destination.name}</span>
+            <h3 className="text-lg sm:text-xl font-bold text-[#082C43] font-display mb-4">
+              Essential Facts and Insights About {destination.name}
             </h3>
 
             <div className="space-y-4 text-xs sm:text-[13px] text-slate-700 leading-relaxed max-w-5xl">

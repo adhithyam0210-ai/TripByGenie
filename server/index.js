@@ -433,6 +433,15 @@ app.get('/api/public/packages/:slug', (req, res) => {
     return pSlug === cleanSlug || pId === cleanSlug;
   });
   if (!pkg) {
+    const dest = db.findOne('destinations', (d) => {
+      if (!d) return false;
+      const dSlug = (d.slug || '').toLowerCase().trim();
+      const dId = (d.id || '').toLowerCase().trim();
+      return dSlug === cleanSlug || dId === cleanSlug || dId === `dest_${cleanSlug.replace(/-/g, '_')}`;
+    });
+    if (dest) {
+      return res.json({ is_destination: true, destination_slug: dest.slug || cleanSlug });
+    }
     return res.status(404).json({ error: 'Package not found.' });
   }
 
@@ -1291,13 +1300,63 @@ app.post('/api/admin/packages', authenticate, authorize(['admin']), (req, res) =
   res.status(201).json(newPackage);
 });
 
+app.get('/api/admin/packages/:id/itineraries', authenticate, authorize(['admin']), (req, res) => {
+  const itins = db.findAll('package_itineraries', (it) => it.package_id === req.params.id);
+  const dayMap = new Map();
+  for (const it of itins) {
+    const day = Number(it.day_number) || 1;
+    if (!dayMap.has(day)) {
+      dayMap.set(day, it);
+    } else {
+      const existing = dayMap.get(day);
+      if ((it.description?.length || 0) > (existing.description?.length || 0)) {
+        dayMap.set(day, it);
+      }
+    }
+  }
+  const sorted = Array.from(dayMap.values()).sort((a, b) => a.day_number - b.day_number);
+  res.json(sorted);
+});
+
 app.put('/api/admin/packages/:id', authenticate, authorize(['admin']), (req, res) => {
   const pkg = db.findById('packages', req.params.id);
-  if (!pkg || pkg.agency_id !== req.user.agency_id) {
+  if (!pkg) {
+    const dest = db.findOne('destinations', (d) => {
+      if (!d) return false;
+      const dSlug = (d.slug || '').toLowerCase().trim();
+      const dId = (d.id || '').toLowerCase().trim();
+      return dSlug === cleanSlug || dId === cleanSlug || dId === `dest_${cleanSlug.replace(/-/g, '_')}`;
+    });
+    if (dest) {
+      return res.json({ is_destination: true, destination_slug: dest.slug || cleanSlug });
+    }
     return res.status(404).json({ error: 'Package not found.' });
   }
 
-  const updated = db.update('packages', pkg.id, req.body);
+  const { itineraries, ...packageUpdates } = req.body;
+  const updated = db.update('packages', pkg.id, packageUpdates);
+
+  if (Array.isArray(itineraries)) {
+    // Delete existing itineraries for this package
+    const currentItins = db.getTable('package_itineraries');
+    db.data['package_itineraries'] = currentItins.filter((it) => it.package_id !== pkg.id);
+
+    // Insert updated itineraries
+    for (let i = 0; i < itineraries.length; i++) {
+      const it = itineraries[i];
+      const dayNum = Number(it.day_number) || (i + 1);
+      db.insert('package_itineraries', {
+        package_id: pkg.id,
+        day_number: dayNum,
+        title: it.title || `Day ${dayNum}`,
+        description: it.description || '',
+        meals: it.meals || 'Breakfast Included',
+        activities: it.activities || 'Sightseeing & Transfers'
+      });
+    }
+    db.persist();
+  }
+
   res.json(updated);
 });
 
