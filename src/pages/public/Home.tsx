@@ -59,15 +59,15 @@ export const Home: React.FC = () => {
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
 
-  // Dedicated slides matching tripbygenie.in with high-definition imagery & video support
+  // Dedicated slides with ultra-sharp 4K imagery & video support
   const defaultBanners: HeroBanner[] = [
     {
       id: 'banner_1',
       agency_id: 'agency_travel_genie',
       title: 'Crafting Journeys, Creating Memories!',
       subtitle: 'Discover The Best Travel Agency in South India for World Class Travel Experiences. Handcrafted holidays to Kerala, Europe, Maldives, Bali & beyond.',
-      image_desktop: 'https://tripbygenie.in/wp-content/uploads/2025/06/Website-images-1-1.png',
-      image_mobile: 'https://tripbygenie.in/wp-content/uploads/2025/06/Website-images-1-1.png',
+      image_desktop: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2560&q=90',
+      image_mobile: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1080&q=85',
       cta_text: 'Explore Packages',
       cta_link: '/packages',
       secondary_cta_text: 'Plan Your Trip',
@@ -80,8 +80,8 @@ export const Home: React.FC = () => {
       agency_id: 'agency_travel_genie',
       title: 'Experience Unforgettable Journeys Across The Globe',
       subtitle: 'From the romantic Swiss Alps and Parisian boulevards to private overwater villas in Maldives & tropical Bali retreats.',
-      image_desktop: 'https://tripbygenie.in/wp-content/uploads/2025/06/Website-images-2-1.png',
-      image_mobile: 'https://tripbygenie.in/wp-content/uploads/2025/06/Website-images-2-1.png',
+      image_desktop: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=2560&q=90',
+      image_mobile: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1080&q=85',
       cta_text: 'International Tours',
       cta_link: '/packages?category=International%20Holiday%20Packages',
       secondary_cta_text: 'Custom Itinerary',
@@ -94,8 +94,8 @@ export const Home: React.FC = () => {
       agency_id: 'agency_travel_genie',
       title: 'Cherish Pure Romance in Exotic Honeymoon Getaways',
       subtitle: 'Candlelight beach dinners in Maldives, serene shikara rides in Kashmir, and private pool villas in Bali & Langkawi.',
-      image_desktop: 'https://tripbygenie.in/wp-content/uploads/2025/06/Website-images-3.png',
-      image_mobile: 'https://tripbygenie.in/wp-content/uploads/2025/06/Website-images-3.png',
+      image_desktop: 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=2560&q=90',
+      image_mobile: 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=1080&q=85',
       cta_text: 'Honeymoon Specials',
       cta_link: '/honeymoon',
       secondary_cta_text: 'Plan Honeymoon',
@@ -108,8 +108,8 @@ export const Home: React.FC = () => {
       agency_id: 'agency_travel_genie',
       title: 'South India & Kerala Escapes with Dedicated Tour Assistance',
       subtitle: 'Misty tea gardens of Munnar, houseboats in Alleppey, Princess of Hills Kodaikanal, and temple heritage circuits with pure South Indian dining.',
-      image_desktop: 'https://tripbygenie.in/wp-content/uploads/2025/06/Website-images-5.png',
-      image_mobile: 'https://tripbygenie.in/wp-content/uploads/2025/06/Website-images-5.png',
+      image_desktop: 'https://images.unsplash.com/photo-1595815771614-ade9d652a65d?auto=format&fit=crop&w=2560&q=90',
+      image_mobile: 'https://images.unsplash.com/photo-1595815771614-ade9d652a65d?auto=format&fit=crop&w=1080&q=85',
       cta_text: 'Explore South India',
       cta_link: '/destinations',
       secondary_cta_text: 'Book Cab & Tour',
@@ -122,8 +122,8 @@ export const Home: React.FC = () => {
       agency_id: 'agency_travel_genie',
       title: 'BALI & TROPICAL ISLANDS',
       subtitle: 'Surfing, coral reefs, and luxury private pool villas with custom guided excursions.',
-      image_desktop: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1920&q=85',
-      image_mobile: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80',
+      image_desktop: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=2560&q=90',
+      image_mobile: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1080&q=85',
       video_url: '/videos/bali-surfing.mp4',
       cta_text: 'Explore Packages',
       cta_link: '/packages',
@@ -286,22 +286,24 @@ export const Home: React.FC = () => {
       <section className="relative min-h-[520px] sm:min-h-[75vh] lg:min-h-[82vh] flex flex-col justify-center py-10 sm:py-16 text-white overflow-hidden bg-[#041D30]">
         {/* Background Media: Dual Layer - ALWAYS renders crisp photo backdrop, overlays video when playing */}
         <div className="absolute inset-0 z-0 overflow-hidden bg-[#082C43]">
-          {/* 1. Underlying High-Res Photo (Instant load, mobile reliable, zero black frames) */}
+          {/* 1. Underlying Ultra-HD 4K Photo Backdrop (Instant load, crisp sharpness, zero degradation) */}
           <img
             key={`hero-img-${currentBanner.id || currentBannerIndex}`}
-            src={resolveMediaUrl(currentBanner.image_mobile || currentBanner.image_desktop || 'https://tripbygenie.in/wp-content/uploads/2025/06/Website-images-1-1.png')}
+            src={resolveMediaUrl(currentBanner.image_desktop || currentBanner.image_mobile || 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2560&q=90')}
+            srcSet={`${resolveMediaUrl(currentBanner.image_mobile || currentBanner.image_desktop)} 1080w, ${resolveMediaUrl(currentBanner.image_desktop || currentBanner.image_mobile)} 2560w`}
+            sizes="100vw"
             alt={currentBanner.title}
-            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
+            className="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-700"
             loading="eager"
             onError={(e) => {
               const target = e.currentTarget;
               target.onerror = null;
               if (currentBanner.image_desktop && target.src !== currentBanner.image_desktop) {
                 target.src = currentBanner.image_desktop;
-              } else if (!target.src.includes('1506744038136')) {
-                target.src = 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=85';
+              } else if (!target.src.includes('1507525428034')) {
+                target.src = 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2560&q=90';
               } else {
-                target.src = 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1920&q=85';
+                target.src = 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=2560&q=90';
               }
             }}
           />
@@ -343,8 +345,8 @@ export const Home: React.FC = () => {
           )}
 
           {/* Clean legibility scrim: subtle left vignette for white text, 100% natural photo/video clarity */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/35 to-black/15 pointer-events-none" />
-          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/25 to-transparent pointer-events-none" />
+          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/30 to-transparent pointer-events-none" />
         </div>
 
         {/* Left Navigation Arrow - Hidden on narrow mobile to prevent overlapping banner text */}

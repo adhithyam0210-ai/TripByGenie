@@ -534,15 +534,6 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
             >
               Contact Us
             </Link>
-
-            {/* Red Search Button matching Image 1 */}
-            <Link
-              to="/packages"
-              className="w-8 h-8 rounded-full bg-[#E50914] hover:bg-[#C10811] text-white flex items-center justify-center shadow-md transition-all shrink-0 ml-1"
-              title="Search Packages"
-            >
-              <Search className="w-4 h-4" />
-            </Link>
           </nav>
 
           {/* Right Action: Plan Trip CTA */}
