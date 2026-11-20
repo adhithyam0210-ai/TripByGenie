@@ -20,6 +20,7 @@ import { ItineraryTimeline } from '../../components/travel/ItineraryTimeline';
 import { CustomTripModal } from '../../components/travel/CustomTripModal';
 import { Button } from '../../components/common/Button';
 import { Badge } from '../../components/common/Badge';
+import { getPackageFallbackImage } from '../../components/travel/PackageCard';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
 
@@ -151,24 +152,39 @@ export const PackageDetail: React.FC = () => {
         </div>
 
         {/* Gallery / Images Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-10 h-72 sm:h-96 rounded-2xl overflow-hidden shadow-lg border border-[#EFE7DA]">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-10 h-72 sm:h-96 rounded-2xl overflow-hidden shadow-lg border border-[#EFE7DA] bg-slate-100">
           <div className="md:col-span-2 h-full">
             <img
-              src={pkg.cover_image}
+              src={pkg.cover_image || getPackageFallbackImage(pkg.title, pkg.destination, pkg.category)}
               alt={pkg.title}
               className="w-full h-full object-cover"
+              onError={(e) => {
+                const target = e.currentTarget;
+                target.onerror = null;
+                target.src = getPackageFallbackImage(pkg.title, pkg.destination, pkg.category);
+              }}
             />
           </div>
           <div className="hidden md:flex flex-col gap-3 h-full">
             <img
-              src={pkg.gallery?.[1] || pkg.cover_image}
+              src={pkg.gallery?.[1] || pkg.cover_image || getPackageFallbackImage(pkg.title, pkg.destination, pkg.category)}
               alt="Gallery 1"
               className="w-full h-1/2 object-cover"
+              onError={(e) => {
+                const target = e.currentTarget;
+                target.onerror = null;
+                target.src = getPackageFallbackImage(pkg.title, pkg.destination, pkg.category);
+              }}
             />
             <img
-              src={pkg.gallery?.[2] || pkg.cover_image}
+              src={pkg.gallery?.[2] || pkg.cover_image || getPackageFallbackImage(pkg.title, pkg.destination, pkg.category)}
               alt="Gallery 2"
               className="w-full h-1/2 object-cover"
+              onError={(e) => {
+                const target = e.currentTarget;
+                target.onerror = null;
+                target.src = getPackageFallbackImage(pkg.title, pkg.destination, pkg.category);
+              }}
             />
           </div>
         </div>

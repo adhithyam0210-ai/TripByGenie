@@ -12,6 +12,35 @@ interface PackageCardProps {
   isAgentView?: boolean;
 }
 
+export const getPackageFallbackImage = (title = '', destination = '', category = ''): string => {
+  const s = `${title} ${destination} ${category}`.toLowerCase();
+  if (s.includes('kerala') || s.includes('munnar') || s.includes('alleppey') || s.includes('kochi')) {
+    return 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=800&q=80';
+  }
+  if (s.includes('maldives') || s.includes('beach') || s.includes('island') || s.includes('mauritius') || s.includes('seychelles')) {
+    return 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=800&q=80';
+  }
+  if (s.includes('europe') || s.includes('swiss') || s.includes('france') || s.includes('italy') || s.includes('paris')) {
+    return 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80';
+  }
+  if (s.includes('bali') || s.includes('thailand') || s.includes('vietnam') || s.includes('singapore') || s.includes('asia')) {
+    return 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80';
+  }
+  if (s.includes('australia') || s.includes('sydney') || s.includes('melbourne') || s.includes('pacific')) {
+    return 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=800&q=80';
+  }
+  if (s.includes('dubai') || s.includes('egypt') || s.includes('middle east')) {
+    return 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80';
+  }
+  if (s.includes('kashmir') || s.includes('ladakh') || s.includes('himachal') || s.includes('manali')) {
+    return 'https://images.unsplash.com/photo-1595815771614-ade9d652a65d?auto=format&fit=crop&w=800&q=80';
+  }
+  if (s.includes('honeymoon') || s.includes('romantic')) {
+    return 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=800&q=80';
+  }
+  return 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80';
+};
+
 export const PackageCard: React.FC<PackageCardProps> = ({
   packageData,
   package: pkgProp,
@@ -24,7 +53,7 @@ export const PackageCard: React.FC<PackageCardProps> = ({
   const pkgTitle = data.title || 'Curated Holiday Package';
   const pkgSlug = data.slug || data.id;
   const pkgCategory = data.category || 'Domestic Holiday Packages';
-  const pkgImage = data.cover_image || (data as any).image || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80';
+  const pkgImage = data.cover_image || (data as any).image || getPackageFallbackImage(pkgTitle, (data as any).destination, pkgCategory);
   const pkgPrice = Number(isAgentView ? (data.b2b_price || data.price) : (data.public_price || data.b2c_price || data.price || 25000));
   const pkgDays = Number(data.duration_days || 4);
   const pkgNights = Number(data.duration_nights || Math.max(1, pkgDays - 1));
@@ -32,12 +61,17 @@ export const PackageCard: React.FC<PackageCardProps> = ({
   return (
     <div className="group rounded-2xl bg-white border border-[#EFE7DA] shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col h-full">
       {/* Cover Image & Badges */}
-      <div className="relative h-56 overflow-hidden bg-slate-100">
+      <div className="relative h-48 sm:h-56 overflow-hidden bg-slate-100">
         <img
           src={pkgImage}
           alt={pkgTitle}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
           loading="lazy"
+          onError={(e) => {
+            const target = e.currentTarget;
+            target.onerror = null;
+            target.src = getPackageFallbackImage(pkgTitle, (data as any).destination || '', pkgCategory);
+          }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#041D30]/80 via-transparent to-black/20" />
 
@@ -103,16 +137,16 @@ export const PackageCard: React.FC<PackageCardProps> = ({
               {isAgentView ? 'Agent Net B2B' : 'Starting From'}
             </div>
             <div className="flex items-baseline gap-1">
-              <span className="text-lg font-black text-[#082C43]">
+              <span className="text-base sm:text-lg font-black text-[#082C43]">
                 ₹{pkgPrice.toLocaleString('en-IN')}
               </span>
               <span className="text-[10px] text-[#173247]/60">/person</span>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             <Link to={`/packages/${pkgSlug}`}>
-              <Button variant="secondary" size="sm" className="px-3 text-xs">
+              <Button variant="secondary" size="sm" className="px-2.5 sm:px-3 text-xs whitespace-nowrap">
                 View <ArrowRight className="w-3 h-3 ml-1" />
               </Button>
             </Link>
@@ -122,7 +156,7 @@ export const PackageCard: React.FC<PackageCardProps> = ({
                 variant="primary"
                 size="sm"
                 onClick={() => onEnquire(data)}
-                className="px-3 text-xs"
+                className="px-2.5 sm:px-3 text-xs whitespace-nowrap"
               >
                 Enquire
               </Button>

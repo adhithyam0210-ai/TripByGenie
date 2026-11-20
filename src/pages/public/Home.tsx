@@ -66,8 +66,8 @@ export const Home: React.FC = () => {
       agency_id: 'agency_travel_genie',
       title: 'Crafting Journeys, Creating Memories!',
       subtitle: 'Discover The Best Travel Agency in South India for World Class Travel Experiences. Handcrafted holidays to Kerala, Europe, Maldives, Bali & beyond.',
-      image_desktop: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1920&q=85',
-      image_mobile: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=800&q=80',
+      image_desktop: 'https://tripbygenie.in/wp-content/uploads/2025/06/Website-images-1-1.png',
+      image_mobile: 'https://tripbygenie.in/wp-content/uploads/2025/06/Website-images-1-1.png',
       cta_text: 'Explore Packages',
       cta_link: '/packages',
       secondary_cta_text: 'Plan Your Trip',
@@ -80,8 +80,8 @@ export const Home: React.FC = () => {
       agency_id: 'agency_travel_genie',
       title: 'Experience Unforgettable Journeys Across The Globe',
       subtitle: 'From the romantic Swiss Alps and Parisian boulevards to private overwater villas in Maldives & tropical Bali retreats.',
-      image_desktop: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=85',
-      image_mobile: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
+      image_desktop: 'https://tripbygenie.in/wp-content/uploads/2025/06/Website-images-2-1.png',
+      image_mobile: 'https://tripbygenie.in/wp-content/uploads/2025/06/Website-images-2-1.png',
       cta_text: 'International Tours',
       cta_link: '/packages?category=International%20Holiday%20Packages',
       secondary_cta_text: 'Custom Itinerary',
@@ -94,8 +94,8 @@ export const Home: React.FC = () => {
       agency_id: 'agency_travel_genie',
       title: 'Cherish Pure Romance in Exotic Honeymoon Getaways',
       subtitle: 'Candlelight beach dinners in Maldives, serene shikara rides in Kashmir, and private pool villas in Bali & Langkawi.',
-      image_desktop: 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=1920&q=85',
-      image_mobile: 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=800&q=80',
+      image_desktop: 'https://tripbygenie.in/wp-content/uploads/2025/06/Website-images-3.png',
+      image_mobile: 'https://tripbygenie.in/wp-content/uploads/2025/06/Website-images-3.png',
       cta_text: 'Honeymoon Specials',
       cta_link: '/honeymoon',
       secondary_cta_text: 'Plan Honeymoon',
@@ -108,8 +108,8 @@ export const Home: React.FC = () => {
       agency_id: 'agency_travel_genie',
       title: 'South India & Kerala Escapes with Dedicated Tour Assistance',
       subtitle: 'Misty tea gardens of Munnar, houseboats in Alleppey, Princess of Hills Kodaikanal, and temple heritage circuits with pure South Indian dining.',
-      image_desktop: 'https://images.unsplash.com/photo-1595815771614-ade9d652a65d?auto=format&fit=crop&w=1920&q=85',
-      image_mobile: 'https://images.unsplash.com/photo-1595815771614-ade9d652a65d?auto=format&fit=crop&w=800&q=80',
+      image_desktop: 'https://tripbygenie.in/wp-content/uploads/2025/06/Website-images-5.png',
+      image_mobile: 'https://tripbygenie.in/wp-content/uploads/2025/06/Website-images-5.png',
       cta_text: 'Explore South India',
       cta_link: '/destinations',
       secondary_cta_text: 'Book Cab & Tour',
@@ -124,7 +124,7 @@ export const Home: React.FC = () => {
       subtitle: 'Surfing, coral reefs, and luxury private pool villas with custom guided excursions.',
       image_desktop: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1920&q=85',
       image_mobile: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80',
-      video_url: 'https://assets.mixkit.co/videos/preview/mixkit-waves-coming-to-the-beach-5016-large.mp4',
+      video_url: '/videos/bali-surfing.mp4',
       cta_text: 'Explore Packages',
       cta_link: '/packages',
       secondary_cta_text: 'Plan Your Trip',
@@ -283,19 +283,26 @@ export const Home: React.FC = () => {
       {/* ======================================================== */}
       {/* SECTION 1: HERO BANNER SLIDER (Wanderly & tripbygenie.in) */}
       {/* ======================================================== */}
-      <section className="relative min-h-[75vh] sm:min-h-[85vh] flex flex-col justify-center py-12 sm:py-20 text-white overflow-hidden bg-[#041D30]">
+      <section className="relative min-h-[520px] sm:min-h-[75vh] lg:min-h-[82vh] flex flex-col justify-center py-10 sm:py-16 text-white overflow-hidden bg-[#041D30]">
         {/* Background Media: Dual Layer - ALWAYS renders crisp photo backdrop, overlays video when playing */}
         <div className="absolute inset-0 z-0 overflow-hidden bg-[#082C43]">
           {/* 1. Underlying High-Res Photo (Instant load, mobile reliable, zero black frames) */}
           <img
             key={`hero-img-${currentBanner.id || currentBannerIndex}`}
-            src={resolveMediaUrl(currentBanner.image_desktop || currentBanner.image_mobile || 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1920&q=85')}
+            src={resolveMediaUrl(currentBanner.image_mobile || currentBanner.image_desktop || 'https://tripbygenie.in/wp-content/uploads/2025/06/Website-images-1-1.png')}
             alt={currentBanner.title}
             className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
             loading="eager"
             onError={(e) => {
               const target = e.currentTarget;
-              target.src = 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1920&q=85';
+              target.onerror = null;
+              if (currentBanner.image_desktop && target.src !== currentBanner.image_desktop) {
+                target.src = currentBanner.image_desktop;
+              } else if (!target.src.includes('1506744038136')) {
+                target.src = 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=85';
+              } else {
+                target.src = 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1920&q=85';
+              }
             }}
           />
 
@@ -303,20 +310,31 @@ export const Home: React.FC = () => {
           {currentBanner.video_url && !videoError && (
             <video
               key={`hero-vid-${currentBanner.video_url}`}
+              ref={(el) => {
+                if (el) {
+                  el.muted = true;
+                  el.defaultMuted = true;
+                  const playPromise = el.play();
+                  if (playPromise !== undefined) {
+                    playPromise.catch(() => {
+                      // Autoplay blocked by mobile browser - show crisp photo backdrop
+                      setVideoError(true);
+                    });
+                  }
+                }
+              }}
               autoPlay
               loop
               muted
               playsInline
-              webkit-playsinline="true"
-              x5-playsinline="true"
-              preload="metadata"
+              preload="auto"
               poster={resolveMediaUrl(currentBanner.image_desktop || currentBanner.image_mobile)}
               onLoadedData={() => setVideoLoaded(true)}
               onError={() => {
                 console.warn('Video failed or blocked on mobile, revealing photo backdrop');
                 setVideoError(true);
               }}
-              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
+              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 pointer-events-none ${
                 videoLoaded ? 'opacity-100' : 'opacity-0'
               }`}
             >
@@ -325,47 +343,63 @@ export const Home: React.FC = () => {
           )}
 
           {/* Clean legibility scrim: subtle left vignette for white text, 100% natural photo/video clarity */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/45 via-black/15 to-transparent pointer-events-none" />
-          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/35 to-black/15 pointer-events-none" />
+          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
         </div>
 
-        {/* Left Navigation Arrow - Only displayed when there IS a previous slide */}
+        {/* Left Navigation Arrow - Hidden on narrow mobile to prevent overlapping banner text */}
         {currentBannerIndex > 0 && (
           <button
             onClick={() => setCurrentBannerIndex((prev) => Math.max(0, prev - 1))}
-            className="absolute left-2 sm:left-6 lg:left-8 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-black/25 hover:bg-black/60 text-white/80 hover:text-white backdrop-blur-xs border border-white/20 flex items-center justify-center shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 group"
+            className="hidden sm:flex absolute left-3 sm:left-6 lg:left-8 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/30 hover:bg-black/60 text-white/90 hover:text-white backdrop-blur-xs border border-white/20 items-center justify-center shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 group cursor-pointer"
             aria-label="Previous Slide"
           >
             <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 group-hover:-translate-x-0.5 transition-transform" />
           </button>
         )}
 
-        {/* Right Navigation Arrow - Only displayed when there IS a next slide */}
+        {/* Right Navigation Arrow - Hidden on narrow mobile to prevent overlapping banner text */}
         {currentBannerIndex < activeBanners.length - 1 && (
           <button
             onClick={() => setCurrentBannerIndex((prev) => Math.min(activeBanners.length - 1, prev + 1))}
-            className="absolute right-2 sm:right-6 lg:right-8 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-black/25 hover:bg-black/60 text-white/80 hover:text-white backdrop-blur-xs border border-white/20 flex items-center justify-center shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 group"
+            className="hidden sm:flex absolute right-3 sm:right-6 lg:right-8 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/30 hover:bg-black/60 text-white/90 hover:text-white backdrop-blur-xs border border-white/20 items-center justify-center shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 group cursor-pointer"
             aria-label="Next Slide"
           >
             <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 group-hover:translate-x-0.5 transition-transform" />
           </button>
         )}
 
+        {/* Slide Indicator Dots - Always visible & touch friendly */}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 bg-black/30 backdrop-blur-xs px-3 py-1.5 rounded-full border border-white/15">
+          {activeBanners.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => setCurrentBannerIndex(idx)}
+              className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                currentBannerIndex === idx
+                  ? 'w-6 bg-[#FF795C]'
+                  : 'w-2 bg-white/60 hover:bg-white'
+              }`}
+              aria-label={`Go to slide ${idx + 1}`}
+            />
+          ))}
+        </div>
+
         {/* Hero Content Container */}
-        <div className="relative z-10 max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 my-auto py-8">
-          <div className="max-w-4xl space-y-4 sm:space-y-6 sm:pl-8 lg:pl-16 2xl:pl-20">
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl 2xl:text-7xl font-extrabold text-white tracking-tight leading-[1.15] sm:leading-[1.1] font-display drop-shadow-md">
+        <div className="relative z-10 max-w-[1600px] w-full mx-auto px-5 sm:px-8 lg:px-12 2xl:px-16 my-auto py-6 sm:py-8">
+          <div className="max-w-4xl space-y-3.5 sm:space-y-6 sm:pl-4 lg:pl-10">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.2] sm:leading-[1.1] font-display drop-shadow-md">
               {currentBanner.title}
             </h1>
 
-            <p className="text-sm sm:text-base lg:text-lg text-white/95 max-w-3xl font-medium leading-relaxed drop-shadow-sm">
+            <p className="text-xs sm:text-base lg:text-lg text-white/95 max-w-2xl font-medium leading-relaxed drop-shadow-sm">
               {currentBanner.subtitle}
             </p>
 
             {/* CTAs */}
-            <div className="flex flex-wrap items-center gap-3 sm:gap-4 pt-1 sm:pt-2">
-              <Link to={currentBanner.cta_link || '/packages'}>
-                <Button variant="primary" size="md" className="shadow-xl shadow-[#FF795C]/35 text-xs sm:text-sm font-bold sm:h-11 sm:px-6">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2 sm:pt-4 max-w-md sm:max-w-none">
+              <Link to={currentBanner.cta_link || '/packages'} className="w-full sm:w-auto">
+                <Button variant="primary" size="md" className="w-full sm:w-auto shadow-xl shadow-[#FF795C]/35 text-xs sm:text-sm font-bold h-11 sm:h-12 px-6">
                   {currentBanner.cta_text || 'Explore Packages'}
                 </Button>
               </Link>
@@ -373,7 +407,7 @@ export const Home: React.FC = () => {
                 variant="white"
                 size="md"
                 onClick={handleOpenTripModal}
-                className="text-xs sm:text-sm font-bold shadow-md sm:h-11 sm:px-6"
+                className="w-full sm:w-auto text-xs sm:text-sm font-bold shadow-md h-11 sm:h-12 px-6 text-[#082C43]"
               >
                 Plan Your Trip
               </Button>
@@ -411,6 +445,12 @@ export const Home: React.FC = () => {
                     src={cat.img}
                     alt={cat.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      target.onerror = null;
+                      target.src = 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=600&q=80';
+                    }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#082C43]/90 via-[#082C43]/30 to-transparent" />
                   <span className="absolute top-4 right-4 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[#FF795C] text-white shadow-sm">

@@ -40,6 +40,11 @@ export const DestinationOverviewCard: React.FC<DestinationOverviewCardProps> = (
               alt={destination.name}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
               loading="lazy"
+              onError={(e) => {
+                const target = e.currentTarget;
+                target.onerror = null;
+                target.src = 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1200&q=85';
+              }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
             <div className="absolute bottom-4 left-4 text-white">
@@ -107,19 +112,19 @@ export const DestinationOverviewCard: React.FC<DestinationOverviewCardProps> = (
           </div>
 
           {/* Action Button */}
-          <div>
+          <div className="pt-2">
             {onViewPackages ? (
               <button
                 type="button"
                 onClick={onViewPackages}
-                className="inline-flex items-center justify-center px-6 py-2.5 rounded-full bg-[#E50914] hover:bg-[#C10811] text-white text-xs font-bold shadow-md transition-all cursor-pointer"
+                className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 rounded-full bg-[#E50914] hover:bg-[#C10811] text-white text-xs sm:text-sm font-bold shadow-md transition-all cursor-pointer"
               >
                 View All Packages
               </button>
             ) : (
               <a
                 href="#packages-grid"
-                className="inline-flex items-center justify-center px-6 py-2.5 rounded-full bg-[#E50914] hover:bg-[#C10811] text-white text-xs font-bold shadow-md transition-all cursor-pointer"
+                className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 rounded-full bg-[#E50914] hover:bg-[#C10811] text-white text-xs sm:text-sm font-bold shadow-md transition-all cursor-pointer"
               >
                 View All Packages
               </a>

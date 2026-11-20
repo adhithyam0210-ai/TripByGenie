@@ -19,6 +19,11 @@ export const DestinationCard: React.FC<DestinationCardProps> = ({ destination })
         alt={destination.name}
         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
         loading="lazy"
+        onError={(e) => {
+          const target = e.currentTarget;
+          target.onerror = null;
+          target.src = 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80';
+        }}
       />
 
       {/* Multi-gradient overlay for readability */}

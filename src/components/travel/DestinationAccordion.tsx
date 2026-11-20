@@ -112,7 +112,7 @@ export const DestinationAccordion: React.FC<DestinationAccordionProps> = ({ dest
               {/* Collapsible Content */}
               {isOpen && (
                 <div className="px-5 sm:px-7 pb-6 pt-1 text-xs sm:text-[13.5px] text-slate-700 leading-relaxed animate-in fade-in slide-in-from-top-1 duration-150">
-                  <div className="pl-8.5 pr-2 pt-1">
+                  <div className="pl-0 sm:pl-8.5 pr-2 pt-1">
                     {item.content.includes('\n') ? (
                       <div className="space-y-2">
                         {item.content.split('\n').map((line, lIdx) => (

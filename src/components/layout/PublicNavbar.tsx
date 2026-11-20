@@ -510,60 +510,18 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
               )}
             </div>
 
-            {/* 6. Tickets Bookings ▾ (Dropdown with Flight, Train, Bus & Visa Services) */}
-            <div className="relative dropdown-container">
-              <button
-                type="button"
-                onClick={() => setActiveDropdown(activeDropdown === 'tickets' ? null : 'tickets')}
-                className={`px-4.5 py-1.5 2xl:px-5 2xl:py-2 rounded-full text-sm font-semibold transition-all shadow-xs flex items-center gap-1.5 justify-center ${
-                  location.pathname === '/services' || activeDropdown === 'tickets'
-                    ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-md'
-                    : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
-                }`}
-              >
-                <span>Tickets Bookings</span>
-                <span className="text-[10px] transform translate-y-[0.5px]">▼</span>
-              </button>
-
-              {activeDropdown === 'tickets' && (
-                <div className="absolute top-full -right-10 w-[420px] bg-white rounded-3xl shadow-2xl border border-[#EFE7DA] p-5 animate-in fade-in slide-in-from-top-2 duration-200 text-[#082C43] z-50">
-                  <div className="flex items-center justify-between border-b border-gray-100 pb-3 mb-3">
-                    <span className="text-xs font-bold uppercase tracking-wider text-[#082C43]">
-                      Tickets & Travel Services
-                    </span>
-                    <Link
-                      to="/services"
-                      onClick={() => setActiveDropdown(null)}
-                      className="text-xs font-bold text-[#FF795C] hover:underline"
-                    >
-                      View All Services →
-                    </Link>
-                  </div>
-
-                  <div className="space-y-2">
-                    {ticketingServices.map((svc) => (
-                      <Link
-                        key={svc.name}
-                        to={svc.path}
-                        onClick={() => setActiveDropdown(null)}
-                        className="p-2.5 rounded-xl hover:bg-[#F8F1E7]/60 transition-all flex items-start gap-3 group border border-transparent hover:border-[#EFE7DA]"
-                      >
-                        <Plane className="w-4 h-4 text-[#FF795C] mt-0.5 shrink-0" />
-                        <div>
-                          <div className="text-xs font-bold text-[#082C43] group-hover:text-[#FF795C] flex items-center justify-between">
-                            <span>{svc.name}</span>
-                            <span className="text-[10px] text-gray-300 group-hover:text-[#FF795C]">›</span>
-                          </div>
-                          <p className="text-[11px] text-slate-500 leading-snug mt-0.5">
-                            {svc.desc}
-                          </p>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
+            {/* 6. Tickets Bookings (Direct link button, no dropdown) */}
+            <Link
+              to="/services"
+              onClick={() => setActiveDropdown(null)}
+              className={`px-4.5 py-1.5 2xl:px-5 2xl:py-2 rounded-full text-sm font-semibold transition-all shadow-xs flex items-center justify-center whitespace-nowrap ${
+                location.pathname === '/services'
+                  ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-md'
+                  : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
+              }`}
+            >
+              Tickets Bookings
+            </Link>
 
             {/* 7. Contact Us */}
             <Link
