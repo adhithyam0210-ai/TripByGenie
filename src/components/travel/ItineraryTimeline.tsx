@@ -39,13 +39,12 @@ export const ItineraryTimeline: React.FC<ItineraryTimelineProps> = ({ itinerarie
 
   const formatTitle = (dayNumber: number, rawTitle?: string) => {
     if (!rawTitle) return `Day ${dayNumber}`;
-    const clean = rawTitle.trim();
-    // Normalize existing "Day 1: ...", "Day 1 - ...", "Day 1 : ..."
-    const match = clean.match(/^Day\s*\d+\s*[:\-–—\.]\s*(.*)$/i);
-    if (match && match[1]) {
-      return `Day ${dayNumber}: ${match[1].trim()}`;
+    let clean = rawTitle.trim();
+    // Strip any leading "Day X:", "Day X -", "Day X.", etc., even if duplicated
+    while (/^Day\s*\d+\s*[:\-–—\.]?\s*/i.test(clean)) {
+      clean = clean.replace(/^Day\s*\d+\s*[:\-–—\.]?\s*/i, '').trim();
     }
-    return `Day ${dayNumber}: ${clean}`;
+    return clean ? `Day ${dayNumber}: ${clean}` : `Day ${dayNumber}`;
   };
 
   if (!displayItineraries || displayItineraries.length === 0) {
