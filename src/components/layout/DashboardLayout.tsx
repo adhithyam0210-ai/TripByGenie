@@ -66,6 +66,21 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     fetchAgencies();
   }, [location.pathname]);
 
+  // Prevent background chain scrolling when mobile drawer is open
+  useEffect(() => {
+    if (isMobileSidebarOpen) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.touchAction = 'none';
+    } else {
+      document.body.style.overflow = '';
+      document.body.style.touchAction = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.touchAction = '';
+    };
+  }, [isMobileSidebarOpen]);
+
   const fetchNotifications = async () => {
     try {
       const data = await api.getNotifications();
@@ -261,20 +276,21 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         {/* Top Header */}
         <header className="sticky top-0 z-30 bg-white border-b border-[#EFE7DA] px-4 sm:px-6 py-3 flex items-center justify-between shadow-xs">
           {/* Mobile hamburger & Title */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
             <button
               onClick={() => setIsMobileSidebarOpen(true)}
-              className="lg:hidden p-2 rounded-lg text-[#082C43] hover:bg-[#F8F1E7]"
+              className="lg:hidden p-2 rounded-lg text-[#082C43] hover:bg-[#F8F1E7] shrink-0"
+              aria-label="Open navigation menu"
             >
               <Menu className="w-5 h-5" />
             </button>
 
-            <div>
-              <h1 className="text-lg md:text-xl font-bold text-[#082C43] font-display leading-tight">
+            <div className="min-w-0">
+              <h1 className="text-base sm:text-lg md:text-xl font-bold text-[#082C43] font-display leading-tight truncate">
                 {title}
               </h1>
               {subtitle && (
-                <p className="text-xs text-[#173247]/60 hidden sm:block leading-tight">
+                <p className="text-xs text-[#173247]/60 hidden sm:block leading-tight truncate">
                   {subtitle}
                 </p>
               )}
@@ -444,25 +460,133 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
       {/* Mobile Sidebar Drawer */}
       {isMobileSidebarOpen && (
-        <div className="fixed inset-0 z-50 flex lg:hidden">
+        <div
+          className="fixed inset-0 z-50 flex lg:hidden overscroll-contain"
+          style={{ overscrollBehavior: 'contain' }}
+        >
           <div
             className="fixed inset-0 bg-[#041D30]/60 backdrop-blur-xs"
             onClick={() => setIsMobileSidebarOpen(false)}
           />
-          <div className="relative w-72 bg-[#082C43] text-white flex flex-col z-50 p-4">
+          <div
+            className="relative w-80 max-w-[85vw] bg-[#082C43] text-white flex flex-col z-50 p-4 shadow-2xl overscroll-contain"
+            style={{ overscrollBehavior: 'contain' }}
+          >
             <div className="flex items-center justify-between pb-3 border-b border-white/10">
-              <div className="bg-white px-2 py-1.5 rounded-xl">
-                <BrandLogo size="sm" to="/" />
+              <div className="bg-white px-2.5 py-1.5 rounded-xl shadow-xs">
+                <BrandLogo size="sm" to="/" onClick={() => setIsMobileSidebarOpen(false)} />
               </div>
               <button
                 onClick={() => setIsMobileSidebarOpen(false)}
                 className="p-1 rounded-lg text-white/60 hover:text-white"
+                aria-label="Close menu"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <nav className="py-4 space-y-1 flex-1 overflow-y-auto">
+            {/* User Profile Capsule in Mobile Drawer */}
+            <div className="my-3 p-3 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between">
+              <div className="flex items-center gap-2.5 truncate">
+                <img
+                  src={user?.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80'}
+                  alt={user?.name}
+                  className="w-8 h-8 rounded-full object-cover border border-white/20 shrink-0"
+                />
+                <div className="truncate">
+                  <span className="text-xs font-bold text-white block truncate leading-tight">
+                    {user?.name}
+                  </span>
+                  <span className="text-[10px] text-[#55C9BD] uppercase font-bold tracking-wider">
+                    {role === 'admin'
+                      ? 'Administrator'
+                      : role === 'staff'
+                      ? 'Staff Operations'
+                      : role === 'agent'
+                      ? 'B2B Partner'
+                      : 'Traveler'}
+                  </span>
+                </div>
+              </div>
+              <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#17648A] text-white shrink-0 uppercase">
+                {role}
+              </span>
+            </div>
+
+            {/* Quick Role Switcher (Mobile testing helper) */}
+            <div className="mb-2 p-2 rounded-xl bg-black/20 border border-white/5">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#55C9BD] block mb-1.5">
+                Switch Portal Role:
+              </span>
+              <div className="grid grid-cols-2 gap-1.5 text-xs">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsMobileSidebarOpen(false);
+                    demoLogin('staff');
+                  }}
+                  className={`p-2 rounded-lg font-bold text-left flex items-center gap-1.5 transition-all cursor-pointer ${
+                    role === 'staff'
+                      ? 'bg-[#55C9BD] text-[#082C43] shadow-xs'
+                      : 'bg-white/5 hover:bg-white/10 text-white/90'
+                  }`}
+                >
+                  <UserCheck className="w-3.5 h-3.5 shrink-0" />
+                  <span className="truncate">Staff CRM</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsMobileSidebarOpen(false);
+                    demoLogin('agent');
+                  }}
+                  className={`p-2 rounded-lg font-bold text-left flex items-center gap-1.5 transition-all cursor-pointer ${
+                    role === 'agent'
+                      ? 'bg-amber-400 text-amber-950 shadow-xs'
+                      : 'bg-white/5 hover:bg-white/10 text-white/90'
+                  }`}
+                >
+                  <Briefcase className="w-3.5 h-3.5 shrink-0" />
+                  <span className="truncate">B2B Agent</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsMobileSidebarOpen(false);
+                    demoLogin('admin');
+                  }}
+                  className={`p-2 rounded-lg font-bold text-left flex items-center gap-1.5 transition-all cursor-pointer ${
+                    role === 'admin'
+                      ? 'bg-[#FF795C] text-white shadow-xs'
+                      : 'bg-white/5 hover:bg-white/10 text-white/90'
+                  }`}
+                >
+                  <Shield className="w-3.5 h-3.5 shrink-0" />
+                  <span className="truncate">Admin CRM</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsMobileSidebarOpen(false);
+                    demoLogin('customer');
+                  }}
+                  className={`p-2 rounded-lg font-bold text-left flex items-center gap-1.5 transition-all cursor-pointer ${
+                    role === 'customer'
+                      ? 'bg-emerald-400 text-emerald-950 shadow-xs'
+                      : 'bg-white/5 hover:bg-white/10 text-white/90'
+                  }`}
+                >
+                  <Users className="w-3.5 h-3.5 shrink-0" />
+                  <span className="truncate">Customer</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Mobile Navigation Links */}
+            <nav className="py-2 space-y-1 flex-1 overflow-y-auto">
               {navLinks.map((item) => {
                 const isActive = location.pathname === item.path;
                 const Icon = item.icon;
@@ -470,24 +594,45 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                   <Link
                     key={item.path}
                     to={item.path}
-                    className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold ${
-                      isActive ? 'bg-[#FF795C] text-white' : 'text-white/80 hover:bg-white/10'
+                    onClick={() => setIsMobileSidebarOpen(false)}
+                    className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-semibold transition-all ${
+                      isActive
+                        ? 'bg-[#FF795C] text-white shadow-md'
+                        : 'text-white/80 hover:bg-white/10'
                     }`}
                   >
-                    <Icon className="w-4 h-4" />
-                    <span>{item.name}</span>
+                    <div className="flex items-center gap-3">
+                      <Icon className="w-4 h-4" />
+                      <span>{item.name}</span>
+                    </div>
+                    {item.badge && (
+                      <span className="text-[10px] px-1.5 py-0.2 rounded-full font-bold bg-white/20 text-white">
+                        {item.badge}
+                      </span>
+                    )}
                   </Link>
                 );
               })}
             </nav>
 
-            <div className="pt-4 border-t border-white/10">
+            {/* Bottom Actions */}
+            <div className="pt-3 border-t border-white/10 space-y-2">
+              <Link
+                to="/"
+                onClick={() => setIsMobileSidebarOpen(false)}
+                className="w-full flex items-center justify-center gap-2 text-xs font-bold p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-[#55C9BD] transition-colors"
+              >
+                <Globe2 className="w-4 h-4" />
+                <span>Visit Public Travel Site</span>
+                <ExternalLink className="w-3 h-3 opacity-70" />
+              </Link>
+
               <button
                 onClick={() => {
                   setIsMobileSidebarOpen(false);
                   setIsSignOutConfirmOpen(true);
                 }}
-                className="w-full flex items-center justify-center gap-2 text-xs font-bold p-2.5 rounded-xl bg-white/10 text-white hover:bg-white/20"
+                className="w-full flex items-center justify-center gap-2 text-xs font-bold p-2.5 rounded-xl bg-red-600/80 hover:bg-red-600 text-white shadow-sm transition-colors cursor-pointer"
               >
                 <LogOut className="w-4 h-4" />
                 Sign Out

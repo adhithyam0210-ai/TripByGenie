@@ -398,18 +398,22 @@ export const Home: React.FC = () => {
               {currentBanner.subtitle}
             </p>
 
-            {/* CTAs */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2 sm:pt-4 max-w-md sm:max-w-none">
-              <Link to={currentBanner.cta_link || '/packages'} className="w-full sm:w-auto">
-                <Button variant="primary" size="md" className="w-full sm:w-auto shadow-xl shadow-[#FF795C]/35 text-xs sm:text-sm font-bold h-11 sm:h-12 px-6">
+            {/* Small Left-Aligned Action Buttons */}
+            <div className="flex flex-row items-center justify-start gap-2.5 sm:gap-3 pt-1 sm:pt-3">
+              <Link to={currentBanner.cta_link || '/packages'}>
+                <Button
+                  variant="primary"
+                  size="sm"
+                  className="shadow-md shadow-[#FF795C]/30 text-xs font-bold px-4 py-2 h-9 sm:h-9.5 rounded-xl cursor-pointer"
+                >
                   {currentBanner.cta_text || 'Explore Packages'}
                 </Button>
               </Link>
               <Button
                 variant="white"
-                size="md"
+                size="sm"
                 onClick={handleOpenTripModal}
-                className="w-full sm:w-auto text-xs sm:text-sm font-bold shadow-md h-11 sm:h-12 px-6 text-[#082C43]"
+                className="text-xs font-bold shadow-xs px-4 py-2 h-9 sm:h-9.5 rounded-xl text-[#082C43] hover:bg-white/95 cursor-pointer"
               >
                 Plan Your Trip
               </Button>
@@ -586,14 +590,6 @@ export const Home: React.FC = () => {
                 onEnquire={() => handleOpenTripModal()}
               />
             ))}
-          </div>
-
-          <div className="mt-12 text-center">
-            <Link to="/packages">
-              <Button variant="primary" size="lg" className="shadow-lg shadow-[#FF795C]/25 font-bold text-sm">
-                View All Holiday Packages
-              </Button>
-            </Link>
           </div>
         </div>
       </section>

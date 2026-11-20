@@ -29,11 +29,31 @@
   --color-text: #173247;
 }
 
+html {
+  scroll-behavior: smooth;
+  overscroll-behavior-y: none;
+  overscroll-behavior-x: none;
+}
+
 body {
   font-family: var(--font-sans);
   color: #173247;
   background-color: #FFFDF8;
   overflow-x: hidden;
+  overscroll-behavior-y: none;
+  overscroll-behavior-x: none;
+}
+
+/* Eliminate Chain Scrolling / Scroll Leaks on all nested scroll areas */
+.overscroll-contain,
+.overflow-y-auto,
+.overflow-x-auto,
+.overflow-auto,
+[data-scrollable],
+aside,
+dialog {
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 h1, h2, h3, .font-display {

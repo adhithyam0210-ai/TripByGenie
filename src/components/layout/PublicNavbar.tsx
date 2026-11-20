@@ -14,6 +14,8 @@ import {
   Heart,
   Users,
   ShieldCheck,
+  Shield,
+  Briefcase,
   Send,
   Globe2,
   Calendar,
@@ -49,6 +51,21 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
     setIsMobileMenuOpen(false);
     setActiveDropdown(null);
   }, [location.pathname]);
+
+  // Prevent background chain scrolling when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.touchAction = 'none';
+    } else {
+      document.body.style.overflow = '';
+      document.body.style.touchAction = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.touchAction = '';
+    };
+  }, [isMobileMenuOpen]);
 
   // Close dropdown on click outside
   useEffect(() => {
@@ -549,18 +566,26 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
             </Button>
           </div>
 
-          {/* Mobile Menu Hamburger */}
-          <div className="flex xl:hidden items-center gap-2">
+          {/* Mobile Menu Actions & Hamburger */}
+          <div className="flex xl:hidden items-center gap-1.5 sm:gap-2">
+            <Link
+              to="/login"
+              className="text-xs bg-[#082C43] hover:bg-[#003b73] text-white px-2.5 py-1.5 rounded-lg font-bold flex items-center gap-1 transition-all shadow-xs"
+              title="Staff, Agent & Customer Login"
+            >
+              <User className="w-3.5 h-3.5 text-[#55C9BD]" />
+              <span>Login</span>
+            </Link>
             <button
               type="button"
               onClick={onOpenTripModal}
-              className="text-xs bg-[#FF795C] text-white px-3 py-1.5 rounded-lg font-bold sm:hidden"
+              className="text-xs bg-[#FF795C] hover:bg-[#e06348] text-white px-2.5 py-1.5 rounded-lg font-bold transition-all shadow-xs"
             >
               Enquire
             </button>
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 rounded-xl text-[#082C43] hover:bg-gray-100 focus:outline-none"
+              className="p-1.5 sm:p-2 rounded-xl text-[#082C43] hover:bg-gray-100 focus:outline-none"
               aria-label="Toggle Menu"
             >
               {isMobileMenuOpen ? <X className="w-6 h-6 text-[#FF795C]" /> : <Menu className="w-6 h-6 text-[#082C43]" />}
@@ -573,8 +598,14 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
       {/* MOBILE NAVIGATION DRAWER (Full Categories & Phone)       */}
       {/* ======================================================== */}
       {isMobileMenuOpen && (
-        <div className="xl:hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex justify-end animate-in fade-in">
-          <div className="w-full max-w-sm bg-[#082C43] text-white h-full overflow-y-auto p-6 flex flex-col justify-between shadow-2xl">
+        <div
+          className="xl:hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex justify-end animate-in fade-in overscroll-contain"
+          style={{ overscrollBehavior: 'contain' }}
+        >
+          <div
+            className="w-full max-w-sm bg-[#082C43] text-white h-full overflow-y-auto p-6 flex flex-col justify-between shadow-2xl overscroll-contain"
+            style={{ overscrollBehavior: 'contain' }}
+          >
             <div className="space-y-6">
               {/* Header */}
               <div className="flex items-center justify-between border-b border-white/10 pb-3">
@@ -720,17 +751,82 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
               </Button>
 
               {isAuthenticated && user ? (
-                <Link to={getRoleDashboardPath(user.role)}>
-                  <Button variant="outline" size="md" className="w-full text-white border-white/30 text-xs font-bold">
-                    Go to {user.role.toUpperCase()} Dashboard
-                  </Button>
-                </Link>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between text-xs text-white/80 bg-white/10 p-2.5 rounded-xl border border-white/10">
+                    <span className="font-semibold">Logged in as <strong className="text-[#55C9BD]">{user.name}</strong></span>
+                    <span className="text-[10px] bg-[#FF795C] text-white px-2 py-0.5 rounded-full font-bold uppercase">{user.role}</span>
+                  </div>
+                  <Link to={getRoleDashboardPath(user.role)} onClick={() => setIsMobileMenuOpen(false)}>
+                    <Button variant="outline" size="md" className="w-full text-white border-white/30 text-xs font-bold hover:bg-white/10">
+                      Go to {user.role.toUpperCase()} Workspace →
+                    </Button>
+                  </Link>
+                </div>
               ) : (
-                <Link to="/login">
-                  <Button variant="outline" size="md" className="w-full text-white border-white/30 text-xs font-bold">
-                    Sign In / Unified CRM Portal
-                  </Button>
-                </Link>
+                <div className="space-y-2.5">
+                  <div className="text-[11px] font-bold uppercase tracking-wider text-[#55C9BD] flex items-center justify-between">
+                    <span className="flex items-center gap-1.5">
+                      <ShieldCheck className="w-3.5 h-3.5" />
+                      <span>Staff & Partner Access Portals</span>
+                    </span>
+                    <Link
+                      to="/login"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="text-[#FF795C] text-[10px] font-bold lowercase hover:underline"
+                    >
+                      all logins →
+                    </Link>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2 text-xs">
+                    <Link
+                      to="/login?role=staff"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 flex flex-col text-left transition-colors group"
+                    >
+                      <span className="font-bold text-white flex items-center gap-1.5 group-hover:text-[#55C9BD]">
+                        <Users className="w-3.5 h-3.5 text-[#55C9BD]" />
+                        Staff CRM
+                      </span>
+                      <span className="text-[10px] text-white/60 mt-0.5">Leads & Follow-ups</span>
+                    </Link>
+
+                    <Link
+                      to="/login?role=agent"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 flex flex-col text-left transition-colors group"
+                    >
+                      <span className="font-bold text-white flex items-center gap-1.5 group-hover:text-amber-400">
+                        <Briefcase className="w-3.5 h-3.5 text-amber-400" />
+                        B2B Agent
+                      </span>
+                      <span className="text-[10px] text-white/60 mt-0.5">Wholesale Net Rates</span>
+                    </Link>
+
+                    <Link
+                      to="/login?role=admin"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 flex flex-col text-left transition-colors group"
+                    >
+                      <span className="font-bold text-white flex items-center gap-1.5 group-hover:text-[#FF795C]">
+                        <Shield className="w-3.5 h-3.5 text-[#FF795C]" />
+                        Admin CRM
+                      </span>
+                      <span className="text-[10px] text-white/60 mt-0.5">Executive Command</span>
+                    </Link>
+
+                    <Link
+                      to="/login?role=customer"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 flex flex-col text-left transition-colors group"
+                    >
+                      <span className="font-bold text-white flex items-center gap-1.5 group-hover:text-emerald-400">
+                        <User className="w-3.5 h-3.5 text-emerald-400" />
+                        Customer
+                      </span>
+                      <span className="text-[10px] text-white/60 mt-0.5">Bookings & Hub</span>
+                    </Link>
+                  </div>
+                </div>
               )}
 
               <div className="bg-white/5 p-3 rounded-xl text-xs space-y-1.5 text-white/80">

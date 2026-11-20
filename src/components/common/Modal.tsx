@@ -24,10 +24,12 @@ export const Modal: React.FC<ModalProps> = ({
     };
     if (isOpen) {
       document.body.style.overflow = 'hidden';
+      document.body.style.touchAction = 'none';
       window.addEventListener('keydown', handleKeyDown);
     }
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = '';
+      document.body.style.touchAction = '';
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [isOpen, onClose]);
@@ -45,9 +47,13 @@ export const Modal: React.FC<ModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#041D30]/60 backdrop-blur-sm animate-in fade-in duration-200">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#041D30]/60 backdrop-blur-sm animate-in fade-in duration-200"
+      style={{ overscrollBehavior: 'contain' }}
+    >
       <div
         className={`w-full ${maxWidthClasses[maxWidth]} bg-white rounded-2xl shadow-2xl border border-[#EFE7DA] overflow-hidden flex flex-col max-h-[90vh]`}
+        style={{ overscrollBehavior: 'contain' }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
@@ -64,8 +70,13 @@ export const Modal: React.FC<ModalProps> = ({
           </button>
         </div>
 
-        {/* Content */}
-        <div className="p-6 overflow-y-auto">{children}</div>
+        {/* Content with strict overscroll containment */}
+        <div
+          className="p-6 overflow-y-auto overscroll-contain"
+          style={{ overscrollBehavior: 'contain' }}
+        >
+          {children}
+        </div>
       </div>
     </div>
   );

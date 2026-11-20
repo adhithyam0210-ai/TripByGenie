@@ -3,6 +3,7 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import { DashboardLayout } from './components/layout/DashboardLayout';
 import { PublicLayout } from './components/layout/PublicLayout';
+import { ScrollToTop } from './components/common/ScrollToTop';
 
 // Public Pages
 import { Home } from './pages/public/Home';
@@ -115,7 +116,9 @@ export const App: React.FC = () => {
   const authRedirect = getAuthRedirect();
 
   return (
-    <Routes>
+    <>
+      <ScrollToTop />
+      <Routes>
       {/* Public Pages with Top Bar, Nav Menu, and Footer */}
       <Route element={<PublicLayout />}>
         <Route path="/" element={<Home />} />
@@ -392,5 +395,6 @@ export const App: React.FC = () => {
       {/* Catch-all */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
+    </>
   );
 };
