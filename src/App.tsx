@@ -56,6 +56,7 @@ import { AdminBookings } from './pages/admin/AdminBookings';
 import { AdminPayments } from './pages/admin/AdminPayments';
 import { AdminReports } from './pages/admin/AdminReports';
 import { AdminSettings } from './pages/admin/AdminSettings';
+import { AdminUsers } from './pages/admin/AdminUsers';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -82,10 +83,14 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, allowedRoles 
   }
 
   if (!allowedRoles.includes(user.role)) {
+    // Super Admin has universal access to all dashboards and role tabs
+    if (user.role === 'admin') {
+      return <>{children}</>;
+    }
     // Redirect to their appropriate dashboard
     switch (user.role) {
-      case 'admin':
-        return <Navigate to="/admin/dashboard" replace />;
+      case 'manager':
+        return <Navigate to="/manager/dashboard" replace />;
       case 'staff':
         return <Navigate to="/staff/dashboard" replace />;
       case 'agent':
@@ -107,6 +112,7 @@ export const App: React.FC = () => {
     if (!isAuthenticated || !user) return null;
     switch (user.role) {
       case 'admin': return '/admin/dashboard';
+      case 'manager': return '/manager/dashboard';
       case 'staff': return '/staff/dashboard';
       case 'agent': return '/agent/dashboard';
       default: return '/customer/dashboard';
@@ -293,20 +299,28 @@ export const App: React.FC = () => {
         }
       />
 
-      {/* Admin Routes */}
+      {/* Super Admin & ID Management Routes */}
       <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
       <Route
         path="/admin/dashboard"
         element={
-          <ProtectedRoute allowedRoles={['admin']}>
+          <ProtectedRoute allowedRoles={['admin', 'manager']}>
             <AdminDashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/users"
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <AdminUsers />
           </ProtectedRoute>
         }
       />
       <Route
         path="/admin/leads"
         element={
-          <ProtectedRoute allowedRoles={['admin']}>
+          <ProtectedRoute allowedRoles={['admin', 'manager']}>
             <AdminLeads />
           </ProtectedRoute>
         }
@@ -314,7 +328,7 @@ export const App: React.FC = () => {
       <Route
         path="/admin/staff"
         element={
-          <ProtectedRoute allowedRoles={['admin']}>
+          <ProtectedRoute allowedRoles={['admin', 'manager']}>
             <AdminStaff />
           </ProtectedRoute>
         }
@@ -322,7 +336,7 @@ export const App: React.FC = () => {
       <Route
         path="/admin/agents"
         element={
-          <ProtectedRoute allowedRoles={['admin']}>
+          <ProtectedRoute allowedRoles={['admin', 'manager']}>
             <AdminAgents />
           </ProtectedRoute>
         }
@@ -330,7 +344,7 @@ export const App: React.FC = () => {
       <Route
         path="/admin/customers"
         element={
-          <ProtectedRoute allowedRoles={['admin']}>
+          <ProtectedRoute allowedRoles={['admin', 'manager']}>
             <AdminCustomers />
           </ProtectedRoute>
         }
@@ -338,7 +352,7 @@ export const App: React.FC = () => {
       <Route
         path="/admin/packages"
         element={
-          <ProtectedRoute allowedRoles={['admin']}>
+          <ProtectedRoute allowedRoles={['admin', 'manager']}>
             <AdminPackages />
           </ProtectedRoute>
         }
@@ -346,7 +360,7 @@ export const App: React.FC = () => {
       <Route
         path="/admin/destinations"
         element={
-          <ProtectedRoute allowedRoles={['admin']}>
+          <ProtectedRoute allowedRoles={['admin', 'manager']}>
             <AdminDestinations />
           </ProtectedRoute>
         }
@@ -354,7 +368,7 @@ export const App: React.FC = () => {
       <Route
         path="/admin/banners"
         element={
-          <ProtectedRoute allowedRoles={['admin']}>
+          <ProtectedRoute allowedRoles={['admin', 'manager']}>
             <AdminBanners />
           </ProtectedRoute>
         }
@@ -362,7 +376,7 @@ export const App: React.FC = () => {
       <Route
         path="/admin/bookings"
         element={
-          <ProtectedRoute allowedRoles={['admin']}>
+          <ProtectedRoute allowedRoles={['admin', 'manager']}>
             <AdminBookings />
           </ProtectedRoute>
         }
@@ -370,7 +384,7 @@ export const App: React.FC = () => {
       <Route
         path="/admin/payments"
         element={
-          <ProtectedRoute allowedRoles={['admin']}>
+          <ProtectedRoute allowedRoles={['admin', 'manager']}>
             <AdminPayments />
           </ProtectedRoute>
         }
@@ -378,7 +392,7 @@ export const App: React.FC = () => {
       <Route
         path="/admin/reports"
         element={
-          <ProtectedRoute allowedRoles={['admin']}>
+          <ProtectedRoute allowedRoles={['admin', 'manager']}>
             <AdminReports />
           </ProtectedRoute>
         }
@@ -386,7 +400,106 @@ export const App: React.FC = () => {
       <Route
         path="/admin/settings"
         element={
-          <ProtectedRoute allowedRoles={['admin']}>
+          <ProtectedRoute allowedRoles={['admin', 'manager']}>
+            <AdminSettings />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Manager Operations Routes (Mirror operational tools with Manager branding) */}
+      <Route path="/manager" element={<Navigate to="/manager/dashboard" replace />} />
+      <Route
+        path="/manager/dashboard"
+        element={
+          <ProtectedRoute allowedRoles={['manager', 'admin']}>
+            <AdminDashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/manager/leads"
+        element={
+          <ProtectedRoute allowedRoles={['manager', 'admin']}>
+            <AdminLeads />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/manager/staff"
+        element={
+          <ProtectedRoute allowedRoles={['manager', 'admin']}>
+            <AdminStaff />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/manager/agents"
+        element={
+          <ProtectedRoute allowedRoles={['manager', 'admin']}>
+            <AdminAgents />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/manager/customers"
+        element={
+          <ProtectedRoute allowedRoles={['manager', 'admin']}>
+            <AdminCustomers />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/manager/packages"
+        element={
+          <ProtectedRoute allowedRoles={['manager', 'admin']}>
+            <AdminPackages />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/manager/destinations"
+        element={
+          <ProtectedRoute allowedRoles={['manager', 'admin']}>
+            <AdminDestinations />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/manager/banners"
+        element={
+          <ProtectedRoute allowedRoles={['manager', 'admin']}>
+            <AdminBanners />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/manager/bookings"
+        element={
+          <ProtectedRoute allowedRoles={['manager', 'admin']}>
+            <AdminBookings />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/manager/payments"
+        element={
+          <ProtectedRoute allowedRoles={['manager', 'admin']}>
+            <AdminPayments />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/manager/reports"
+        element={
+          <ProtectedRoute allowedRoles={['manager', 'admin']}>
+            <AdminReports />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/manager/settings"
+        element={
+          <ProtectedRoute allowedRoles={['manager', 'admin']}>
             <AdminSettings />
           </ProtectedRoute>
         }

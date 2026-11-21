@@ -555,7 +555,7 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
           </nav>
 
           {/* Right Action: Plan Trip CTA & Quick Login */}
-          <div className="hidden lg:flex items-center gap-2.5">
+          <div className="hidden lg:flex items-center gap-2.5 shrink-0">
             {/* Quick Login button near Plan Your Trip for easy testing */}
             <div className="relative dropdown-container">
               <div className="flex items-center shadow-xs">
@@ -595,17 +595,34 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
                       type="button"
                       onClick={() => {
                         demoLogin('admin').then(() => {
-                          navigate('/admin/packages');
+                          navigate('/admin/dashboard');
                           setActiveDropdown(null);
                         });
                       }}
-                      className="w-full text-left px-3 py-2 rounded-xl hover:bg-emerald-50 text-[#082C43] hover:text-[#00A854] font-semibold flex items-center justify-between transition-colors cursor-pointer"
+                      className="w-full text-left px-3 py-2 rounded-xl hover:bg-orange-50 text-[#082C43] hover:text-[#FF795C] font-semibold flex items-center justify-between transition-colors cursor-pointer"
                     >
                       <span className="flex items-center gap-2">
-                        <Shield className="w-3.5 h-3.5 text-emerald-600" />
-                        Admin CRM
+                        <Shield className="w-3.5 h-3.5 text-[#FF795C]" />
+                        Super Admin
                       </span>
-                      <span className="text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-bold">Admin</span>
+                      <span className="text-[10px] bg-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-bold">Admin</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        demoLogin('manager').then(() => {
+                          navigate('/manager/dashboard');
+                          setActiveDropdown(null);
+                        });
+                      }}
+                      className="w-full text-left px-3 py-2 rounded-xl hover:bg-purple-50 text-[#082C43] hover:text-purple-700 font-semibold flex items-center justify-between transition-colors cursor-pointer"
+                    >
+                      <span className="flex items-center gap-2">
+                        <ShieldCheck className="w-3.5 h-3.5 text-purple-600" />
+                        Manager CRM
+                      </span>
+                      <span className="text-[10px] bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded font-bold">Manager</span>
                     </button>
 
                     <button
@@ -689,10 +706,10 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
               variant="primary"
               size="sm"
               onClick={onOpenTripModal}
-              className="shadow-md shadow-[#FF795C]/25 text-xs font-bold"
+              className="shadow-md shadow-[#FF795C]/25 text-xs font-bold whitespace-nowrap shrink-0 h-9 px-3.5 inline-flex items-center gap-1.5"
             >
-              <Send className="w-3.5 h-3.5 mr-1.5" />
-              Plan Your Trip
+              <Send className="w-3.5 h-3.5 shrink-0" />
+              <span className="whitespace-nowrap">Plan Your Trip</span>
             </Button>
           </div>
 

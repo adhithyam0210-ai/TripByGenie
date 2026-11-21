@@ -504,6 +504,41 @@ export const api = {
   deleteAdminLead: (id: string) =>
     request<any>(`/admin/leads/${id}`, { method: 'DELETE' }),
 
+  getAdminUsers: async (params?: { role?: string; search?: string }) => {
+    try {
+      const q = new URLSearchParams();
+      if (params?.role) q.append('role', params.role);
+      if (params?.search) q.append('search', params.search);
+      return await request<any[]>(`/admin/users?${q.toString()}`);
+    } catch {
+      let users = fallbackData.users;
+      if (params?.role && params.role !== 'all') {
+        users = users.filter((u: any) => u.role === params.role);
+      }
+      if (params?.search) {
+        const s = params.search.toLowerCase();
+        users = users.filter((u: any) =>
+          u.name?.toLowerCase().includes(s) ||
+          u.email?.toLowerCase().includes(s) ||
+          u.display_id?.toLowerCase().includes(s)
+        );
+      }
+      return users;
+    }
+  },
+  createAdminUser: (data: any) =>
+    request<any>('/admin/users', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    }),
+  updateAdminUser: (id: string, data: any) =>
+    request<any>(`/admin/users/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data)
+    }),
+  deleteAdminUser: (id: string) =>
+    request<any>(`/admin/users/${id}`, { method: 'DELETE' }),
+
   getAdminStaff: async () => {
     try {
       return await request<any[]>('/admin/staff');

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation, useSearchParams } from 'react-router-dom';
-import { Mail, Lock, LogIn, Shield, User, Briefcase, UserCheck, KeyRound, Building2, CheckCircle2 } from 'lucide-react';
+import { Mail, Lock, LogIn, Shield, ShieldCheck, User, Briefcase, UserCheck, KeyRound, Building2, CheckCircle2 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
 import { Button } from '../../components/common/Button';
@@ -14,12 +14,12 @@ export const Login: React.FC = () => {
   const { login, demoLogin, getRoleDashboardPath } = useAuth();
   const { success, error } = useToast();
 
-  const [activeTab, setActiveTab] = useState<'staff' | 'agent' | 'admin' | 'customer'>(() => {
+  const [activeTab, setActiveTab] = useState<'admin' | 'manager' | 'staff' | 'agent' | 'customer'>(() => {
     const r = searchParams.get('role')?.toLowerCase();
-    if (r === 'staff' || r === 'agent' || r === 'admin' || r === 'customer') {
-      return r;
+    if (r === 'staff' || r === 'agent' || r === 'admin' || r === 'customer' || r === 'manager') {
+      return r as any;
     }
-    return 'staff'; // Default to staff/agent focus per request
+    return 'admin'; // Default to admin/manager
   });
 
   const [email, setEmail] = useState('');
@@ -29,8 +29,8 @@ export const Login: React.FC = () => {
 
   useEffect(() => {
     const r = searchParams.get('role')?.toLowerCase();
-    if (r === 'staff' || r === 'agent' || r === 'admin' || r === 'customer') {
-      setActiveTab(r);
+    if (r === 'staff' || r === 'agent' || r === 'admin' || r === 'customer' || r === 'manager') {
+      setActiveTab(r as any);
     }
   }, [searchParams]);
 
@@ -55,7 +55,7 @@ export const Login: React.FC = () => {
     }
   };
 
-  const handleDemoLogin = async (role: 'admin' | 'staff' | 'agent' | 'customer', agencySlug?: string) => {
+  const handleDemoLogin = async (role: 'admin' | 'manager' | 'staff' | 'agent' | 'customer', agencySlug?: string) => {
     setIsLoading(true);
     try {
       const userRole = await demoLogin(role, agencySlug);
@@ -70,6 +70,26 @@ export const Login: React.FC = () => {
 
   // Role info configuration for intuitive mobile & desktop UX
   const roleConfig = {
+    admin: {
+      label: 'Super Admin',
+      badge: 'Executive',
+      icon: Shield,
+      color: '#FF795C',
+      bgLight: 'bg-[#FF795C]/10 text-[#082C43] border-[#FF795C]/30',
+      activeTabClass: 'bg-[#082C43] text-white shadow-md',
+      desc: 'Super Admin control: Provision IDs, manage all roles, and oversee all operational tabs.',
+      sampleEmail: 'admin@travelgenie.com'
+    },
+    manager: {
+      label: 'Manager CRM',
+      badge: 'Operations',
+      icon: ShieldCheck,
+      color: '#8B5CF6',
+      bgLight: 'bg-purple-500/10 text-purple-900 border-purple-500/30',
+      activeTabClass: 'bg-purple-800 text-white shadow-md',
+      desc: 'Operations & catalog control: Customer leads allocation to staff, packages, bookings, and destinations.',
+      sampleEmail: 'manager@travelgenie.com'
+    },
     staff: {
       label: 'Staff CRM',
       badge: 'Operations',
@@ -77,7 +97,7 @@ export const Login: React.FC = () => {
       color: '#55C9BD',
       bgLight: 'bg-[#55C9BD]/10 text-[#082C43] border-[#55C9BD]/40',
       activeTabClass: 'bg-[#082C43] text-white shadow-md',
-      desc: 'Lead management, customer inquiries, custom itineraries & follow-ups.',
+      desc: 'Assigned customer leads, custom itineraries, consultations & follow-ups.',
       sampleEmail: 'priya.staff@travelgenie.com'
     },
     agent: {
@@ -89,16 +109,6 @@ export const Login: React.FC = () => {
       activeTabClass: 'bg-[#082C43] text-white shadow-md',
       desc: 'B2B net pricing, package wholesale purchasing & agent ledger balance.',
       sampleEmail: 'vikram.agent@globetrotters.com'
-    },
-    admin: {
-      label: 'Admin Portal',
-      badge: 'Executive',
-      icon: Shield,
-      color: '#FF795C',
-      bgLight: 'bg-[#FF795C]/10 text-[#082C43] border-[#FF795C]/30',
-      activeTabClass: 'bg-[#082C43] text-white shadow-md',
-      desc: 'Multi-agency control, staff allocation, bookings, and financial analytics.',
-      sampleEmail: 'admin@travelgenie.com'
     },
     customer: {
       label: 'Customer Hub',
@@ -139,8 +149,8 @@ export const Login: React.FC = () => {
             <span className="text-[11px] font-bold uppercase tracking-wider text-[#17648A] block mb-2">
               Select Your Access Role:
             </span>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 p-1 bg-[#F8F1E7] rounded-2xl border border-[#EFE7DA]">
-              {(['staff', 'agent', 'admin', 'customer'] as const).map((r) => {
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-1.5 p-1 bg-[#F8F1E7] rounded-2xl border border-[#EFE7DA]">
+              {(['admin', 'manager', 'staff', 'agent', 'customer'] as const).map((r) => {
                 const conf = roleConfig[r];
                 const Icon = conf.icon;
                 const isSelected = activeTab === r;
@@ -278,7 +288,31 @@ export const Login: React.FC = () => {
               <span>Direct 1-Click Role Switcher</span>
             </div>
 
-            <div className="grid grid-cols-2 gap-2 text-xs">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
+              <button
+                type="button"
+                onClick={() => handleDemoLogin('admin')}
+                className="flex items-center gap-2 p-2 rounded-xl border border-[#082C43]/20 bg-[#082C43]/5 hover:bg-[#082C43] hover:text-white font-semibold transition-all text-left cursor-pointer group"
+              >
+                <Shield className="w-3.5 h-3.5 text-[#FF795C] shrink-0" />
+                <div className="truncate">
+                  <span className="block font-bold truncate">Super Admin</span>
+                  <span className="text-[10px] text-slate-500 group-hover:text-inherit">Aditya (Admin)</span>
+                </div>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleDemoLogin('manager')}
+                className="flex items-center gap-2 p-2 rounded-xl border border-purple-500/30 bg-purple-500/5 hover:bg-purple-700 hover:text-white font-semibold transition-all text-left cursor-pointer group"
+              >
+                <ShieldCheck className="w-3.5 h-3.5 text-purple-600 shrink-0" />
+                <div className="truncate">
+                  <span className="block font-bold truncate">Manager CRM</span>
+                  <span className="text-[10px] text-slate-500 group-hover:text-inherit">Rajesh (Operations)</span>
+                </div>
+              </button>
+
               <button
                 type="button"
                 onClick={() => handleDemoLogin('staff')}
@@ -305,20 +339,8 @@ export const Login: React.FC = () => {
 
               <button
                 type="button"
-                onClick={() => handleDemoLogin('admin')}
-                className="flex items-center gap-2 p-2 rounded-xl border border-[#082C43]/20 bg-[#082C43]/5 hover:bg-[#082C43] hover:text-white font-semibold transition-all text-left cursor-pointer group"
-              >
-                <Shield className="w-3.5 h-3.5 text-[#FF795C] shrink-0" />
-                <div className="truncate">
-                  <span className="block font-bold truncate">Admin CRM</span>
-                  <span className="text-[10px] text-slate-500 group-hover:text-inherit">Aditya (CEO)</span>
-                </div>
-              </button>
-
-              <button
-                type="button"
                 onClick={() => handleDemoLogin('customer')}
-                className="flex items-center gap-2 p-2 rounded-xl border border-emerald-500/30 bg-emerald-500/5 hover:bg-emerald-600 hover:text-white font-semibold transition-all text-left cursor-pointer group"
+                className="flex items-center gap-2 p-2 rounded-xl border border-emerald-500/30 bg-emerald-500/5 hover:bg-emerald-600 hover:text-white font-semibold transition-all text-left cursor-pointer group col-span-2 sm:col-span-1"
               >
                 <User className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
                 <div className="truncate">

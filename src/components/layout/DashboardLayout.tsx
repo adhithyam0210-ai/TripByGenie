@@ -15,6 +15,7 @@ import {
   Bell,
   LogOut,
   ChevronDown,
+  ChevronRight,
   Menu,
   X,
   UserCheck,
@@ -25,9 +26,11 @@ import {
   ShoppingBag,
   ExternalLink,
   Shield,
+  ShieldCheck,
   RefreshCw,
   Check,
-  Globe2
+  Globe2,
+  KeyRound
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { api } from '../../services/api';
@@ -59,6 +62,34 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const [isSignOutConfirmOpen, setIsSignOutConfirmOpen] = useState(false);
   const [notifications, setNotifications] = useState<AppNotification[]>([]);
   const [agenciesList, setAgenciesList] = useState<any[]>([]);
+
+  // Super Admin left sidebar tabs with dropdowns
+  const [adminDropdowns, setAdminDropdowns] = useState<Record<string, boolean>>({
+    manager: true,
+    staff: false,
+    agent: false,
+    customer: false
+  });
+
+  const toggleAdminDropdown = (section: string) => {
+    setAdminDropdowns((prev) => ({ ...prev, [section]: !prev[section] }));
+  };
+
+  // Auto-expand the dropdown containing the active route
+  useEffect(() => {
+    if (role === 'admin') {
+      const p = location.pathname;
+      if (p.includes('/manager') || p.includes('/admin/packages') || p.includes('/admin/leads') || p.includes('/admin/bookings') || p.includes('/admin/destinations') || p.includes('/admin/banners') || p.includes('/admin/payments') || p.includes('/admin/reports') || p.includes('/admin/settings')) {
+        setAdminDropdowns((prev) => ({ ...prev, manager: true }));
+      } else if (p.includes('/staff') || p.includes('/admin/staff')) {
+        setAdminDropdowns((prev) => ({ ...prev, staff: true }));
+      } else if (p.includes('/agent') || p.includes('/admin/agents')) {
+        setAdminDropdowns((prev) => ({ ...prev, agent: true }));
+      } else if (p.includes('/customer') || p.includes('/admin/customers')) {
+        setAdminDropdowns((prev) => ({ ...prev, customer: true }));
+      }
+    }
+  }, [location.pathname, role]);
 
   useEffect(() => {
     setIsMobileSidebarOpen(false);
@@ -119,22 +150,92 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     }
   };
 
+  // Admin Portal Dropdown Sections
+  const adminSections = [
+    {
+      id: 'manager',
+      name: 'Manager Operations',
+      icon: ShieldCheck,
+      color: 'text-purple-400',
+      badge: 'Core',
+      badgeColor: 'bg-purple-500/20 text-purple-300',
+      items: [
+        { name: 'Operations Overview', path: '/manager/dashboard', icon: LayoutDashboard },
+        { name: 'Holiday Packages', path: '/admin/packages', icon: Layers },
+        { name: 'Leads & Enquiries', path: '/admin/leads', icon: Users, badge: 'Assign' },
+        { name: 'Bookings & Trips', path: '/admin/bookings', icon: CalendarCheck },
+        { name: 'Destinations Catalog', path: '/admin/destinations', icon: MapPin },
+        { name: 'Hero Banners', path: '/admin/banners', icon: Image },
+        { name: 'Payments & Invoices', path: '/admin/payments', icon: CreditCard },
+        { name: 'Reports & Analytics', path: '/admin/reports', icon: BarChart3 },
+        { name: 'Agency Settings', path: '/admin/settings', icon: Settings }
+      ]
+    },
+    {
+      id: 'staff',
+      name: 'Staff Operations',
+      icon: UserCheck,
+      color: 'text-[#55C9BD]',
+      badge: 'Team',
+      badgeColor: 'bg-[#55C9BD]/20 text-[#55C9BD]',
+      items: [
+        { name: 'Staff Roster & Allocation', path: '/admin/staff', icon: UserCheck },
+        { name: 'Assigned Leads', path: '/staff/leads', icon: Users },
+        { name: 'Follow-ups Agenda', path: '/staff/follow-ups', icon: Clock },
+        { name: 'Staff Conversions', path: '/staff/bookings', icon: CalendarCheck }
+      ]
+    },
+    {
+      id: 'agent',
+      name: 'B2B Agent Portal',
+      icon: Briefcase,
+      color: 'text-amber-400',
+      badge: 'B2B',
+      badgeColor: 'bg-amber-500/20 text-amber-300',
+      items: [
+        { name: 'Registered Agents', path: '/admin/agents', icon: Briefcase },
+        { name: 'Wholesale Marketplace', path: '/agent/marketplace', icon: ShoppingBag },
+        { name: 'Purchase Orders', path: '/agent/purchases', icon: FileText },
+        { name: 'Wholesale Ledger', path: '/agent/transactions', icon: CreditCard }
+      ]
+    },
+    {
+      id: 'customer',
+      name: 'Customer Hub',
+      icon: Users,
+      color: 'text-emerald-400',
+      badge: 'Client',
+      badgeColor: 'bg-emerald-500/20 text-emerald-300',
+      items: [
+        { name: 'Customer Directory', path: '/admin/customers', icon: Users },
+        { name: 'Customer Enquiries', path: '/customer/enquiries', icon: FileText },
+        { name: 'Customer Bookings', path: '/customer/bookings', icon: CalendarCheck },
+        { name: 'Payment Receipts', path: '/customer/payments', icon: CreditCard }
+      ]
+    }
+  ];
+
   // Nav menus configured per role
   const getNavLinks = () => {
     if (role === 'admin') {
       return [
-        { name: 'Dashboard', path: '/admin/dashboard', icon: LayoutDashboard },
-        { name: 'Leads & Enquiries', path: '/admin/leads', icon: Users, badge: 'Core' },
-        { name: 'Staff Management', path: '/admin/staff', icon: UserCheck },
-        { name: 'B2B Travel Agents', path: '/admin/agents', icon: Briefcase },
-        { name: 'Customer Directory', path: '/admin/customers', icon: Users },
-        { name: 'Holiday Packages', path: '/admin/packages', icon: Layers },
-        { name: 'Destinations', path: '/admin/destinations', icon: MapPin },
-        { name: 'Hero Banners', path: '/admin/banners', icon: Image },
-        { name: 'Bookings & Trips', path: '/admin/bookings', icon: CalendarCheck },
-        { name: 'Payments & Ledger', path: '/admin/payments', icon: CreditCard },
-        { name: 'Reports & CSV', path: '/admin/reports', icon: BarChart3 },
-        { name: 'Agency Settings', path: '/admin/settings', icon: Settings }
+        { name: 'Super Admin Dashboard', path: '/admin/dashboard', icon: LayoutDashboard },
+        { name: 'ID & Role Management', path: '/admin/users', icon: KeyRound, badge: 'Super' }
+      ];
+    } else if (role === 'manager') {
+      return [
+        { name: 'Manager Overview', path: '/manager/dashboard', icon: LayoutDashboard },
+        { name: 'Leads & Enquiries', path: '/manager/leads', icon: Users, badge: 'Assign' },
+        { name: 'Staff Management', path: '/manager/staff', icon: UserCheck },
+        { name: 'Holiday Packages', path: '/manager/packages', icon: Layers },
+        { name: 'Destinations', path: '/manager/destinations', icon: MapPin },
+        { name: 'Hero Banners', path: '/manager/banners', icon: Image },
+        { name: 'Bookings & Trips', path: '/manager/bookings', icon: CalendarCheck },
+        { name: 'B2B Travel Agents', path: '/manager/agents', icon: Briefcase },
+        { name: 'Customer Directory', path: '/manager/customers', icon: Users },
+        { name: 'Payments & Ledger', path: '/manager/payments', icon: CreditCard },
+        { name: 'Reports & CSV', path: '/manager/reports', icon: BarChart3 },
+        { name: 'Agency Settings', path: '/manager/settings', icon: Settings }
       ];
     } else if (role === 'staff') {
       return [
@@ -179,7 +280,9 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           </div>
           <span className="text-[10px] uppercase font-bold text-[#55C9BD] tracking-wider block text-center">
             {role === 'admin'
-              ? 'Administrator CRM'
+              ? 'Super Administrator'
+              : role === 'manager'
+              ? 'Operations Manager'
               : role === 'staff'
               ? 'Staff Operations'
               : role === 'agent'
@@ -203,34 +306,145 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
         {/* Sidebar Navigation */}
         <nav className="p-3 flex-1 overflow-y-auto space-y-1">
-          {navLinks.map((item) => {
-            const isActive = location.pathname === item.path;
-            const Icon = item.icon;
+          {role === 'admin' ? (
+            <div className="space-y-3">
+              {/* Top Executive Links */}
+              <div className="space-y-1">
+                {navLinks.map((item) => {
+                  const isActive = location.pathname === item.path;
+                  const Icon = item.icon;
+                  return (
+                    <Link
+                      key={item.path}
+                      to={item.path}
+                      className={`flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-semibold transition-all ${
+                        isActive
+                          ? 'bg-[#FF795C] text-white shadow-md shadow-[#FF795C]/25'
+                          : 'text-white/90 hover:bg-white/10 hover:text-white'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-[#FF795C]'}`} />
+                        <span>{item.name}</span>
+                      </div>
+                      {item.badge && (
+                        <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
+                          isActive ? 'bg-white/20 text-white' : 'bg-[#FF795C]/20 text-[#FF795C]'
+                        }`}>
+                          {item.badge}
+                        </span>
+                      )}
+                    </Link>
+                  );
+                })}
+              </div>
 
-            return (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
-                  isActive
-                    ? 'bg-[#FF795C] text-white shadow-md shadow-[#FF795C]/25'
-                    : 'text-white/80 hover:bg-white/10 hover:text-white'
-                }`}
-              >
-                <div className="flex items-center gap-2.5">
-                  <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-[#55C9BD]'}`} />
-                  <span>{item.name}</span>
-                </div>
-                {item.badge && (
-                  <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
-                    isActive ? 'bg-white/20 text-white' : 'bg-[#55C9BD]/20 text-[#55C9BD]'
-                  }`}>
-                    {item.badge}
-                  </span>
-                )}
-              </Link>
-            );
-          })}
+              {/* Collapsible Dropdown Tabs for Roles */}
+              <div className="pt-2 border-t border-white/10 space-y-2">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-white/40 px-2 block">
+                  All Portals & Role Tabs
+                </span>
+
+                {adminSections.map((sec) => {
+                  const isOpen = adminDropdowns[sec.id];
+                  const SectionIcon = sec.icon;
+                  const isAnyChildActive = sec.items.some((i) => location.pathname === i.path);
+
+                  return (
+                    <div key={sec.id} className="rounded-xl overflow-hidden bg-black/15 border border-white/5">
+                      {/* Section Header Button with Dropdown arrow */}
+                      <button
+                        type="button"
+                        onClick={() => toggleAdminDropdown(sec.id)}
+                        className={`w-full flex items-center justify-between p-2.5 text-xs font-bold transition-colors cursor-pointer text-left ${
+                          isAnyChildActive
+                            ? 'bg-white/10 text-white'
+                            : 'hover:bg-white/5 text-white/90'
+                        }`}
+                      >
+                        <div className="flex items-center gap-2">
+                          <SectionIcon className={`w-4 h-4 ${sec.color}`} />
+                          <span>{sec.name}</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <span className={`text-[9px] px-1.5 py-0.2 rounded font-bold ${sec.badgeColor}`}>
+                            {sec.badge}
+                          </span>
+                          <ChevronDown
+                            className={`w-3.5 h-3.5 text-white/60 transition-transform duration-200 ${
+                              isOpen ? 'rotate-180' : ''
+                            }`}
+                          />
+                        </div>
+                      </button>
+
+                      {/* Dropdown Items */}
+                      {isOpen && (
+                        <div className="p-1 space-y-0.5 bg-[#041D30]/80 border-t border-white/5">
+                          {sec.items.map((sub) => {
+                            const isSubActive = location.pathname === sub.path;
+                            const SubIcon = sub.icon;
+                            return (
+                              <Link
+                                key={sub.path}
+                                to={sub.path}
+                                className={`flex items-center justify-between pl-4 pr-3 py-1.5 rounded-lg text-[11px] font-medium transition-all ${
+                                  isSubActive
+                                    ? 'bg-[#FF795C] text-white font-bold shadow-xs'
+                                    : 'text-white/70 hover:bg-white/10 hover:text-white'
+                                }`}
+                              >
+                                <div className="flex items-center gap-2 truncate">
+                                  <SubIcon className={`w-3.5 h-3.5 shrink-0 ${isSubActive ? 'text-white' : 'text-slate-400'}`} />
+                                  <span className="truncate">{sub.name}</span>
+                                </div>
+                                {sub.badge && (
+                                  <span className={`text-[9px] px-1 rounded font-bold shrink-0 ${
+                                    isSubActive ? 'bg-white/20 text-white' : 'bg-emerald-500/20 text-emerald-300'
+                                  }`}>
+                                    {sub.badge}
+                                  </span>
+                                )}
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          ) : (
+            navLinks.map((item) => {
+              const isActive = location.pathname === item.path;
+              const Icon = item.icon;
+
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
+                    isActive
+                      ? 'bg-[#FF795C] text-white shadow-md shadow-[#FF795C]/25'
+                      : 'text-white/80 hover:bg-white/10 hover:text-white'
+                  }`}
+                >
+                  <div className="flex items-center gap-2.5">
+                    <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-[#55C9BD]'}`} />
+                    <span>{item.name}</span>
+                  </div>
+                  {item.badge && (
+                    <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
+                      isActive ? 'bg-white/20 text-white' : 'bg-[#55C9BD]/20 text-[#55C9BD]'
+                    }`}>
+                      {item.badge}
+                    </span>
+                  )}
+                </Link>
+              );
+            })
+          )}
         </nav>
 
         {/* Footer: User profile & quick sign out */}
@@ -346,10 +560,11 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               )}
             </div>
 
-            {/* Quick Demo Switcher Pill (1-click test of all 4 roles) */}
+            {/* Quick Demo Switcher Pill (1-click test of all 5 roles) */}
             <div className="hidden xl:flex items-center gap-1 bg-[#F8F1E7] p-1 rounded-xl border border-[#EFE7DA] text-xs">
-              <span className="text-[10px] font-bold text-[#17648A] px-1.5 uppercase">Switch Role:</span>
+              <span className="text-[10px] font-bold text-[#17648A] px-1.5 uppercase tracking-wider">Switch Role:</span>
               <button
+                type="button"
                 onClick={() => demoLogin('admin')}
                 className={`px-2 py-0.5 rounded-lg font-bold transition-colors cursor-pointer ${
                   role === 'admin' ? 'bg-[#082C43] text-white shadow-xs' : 'text-[#082C43] hover:bg-white'
@@ -358,25 +573,37 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 Admin
               </button>
               <button
+                type="button"
+                onClick={() => demoLogin('manager')}
+                className={`px-2 py-0.5 rounded-lg font-bold transition-colors cursor-pointer ${
+                  role === 'manager' ? 'bg-purple-700 text-white shadow-xs' : 'text-[#082C43] hover:bg-white'
+                }`}
+              >
+                Manager
+              </button>
+              <button
+                type="button"
                 onClick={() => demoLogin('staff')}
                 className={`px-2 py-0.5 rounded-lg font-bold transition-colors cursor-pointer ${
-                  role === 'staff' ? 'bg-[#082C43] text-white shadow-xs' : 'text-[#082C43] hover:bg-white'
+                  role === 'staff' ? 'bg-teal-700 text-white shadow-xs' : 'text-[#082C43] hover:bg-white'
                 }`}
               >
                 Staff
               </button>
               <button
+                type="button"
                 onClick={() => demoLogin('agent')}
                 className={`px-2 py-0.5 rounded-lg font-bold transition-colors cursor-pointer ${
-                  role === 'agent' ? 'bg-[#082C43] text-white shadow-xs' : 'text-[#082C43] hover:bg-white'
+                  role === 'agent' ? 'bg-amber-600 text-white shadow-xs' : 'text-[#082C43] hover:bg-white'
                 }`}
               >
                 Agent
               </button>
               <button
+                type="button"
                 onClick={() => demoLogin('customer')}
                 className={`px-2 py-0.5 rounded-lg font-bold transition-colors cursor-pointer ${
-                  role === 'customer' ? 'bg-[#082C43] text-white shadow-xs' : 'text-[#082C43] hover:bg-white'
+                  role === 'customer' ? 'bg-emerald-700 text-white shadow-xs' : 'text-[#082C43] hover:bg-white'
                 }`}
               >
                 Customer
@@ -518,7 +745,39 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               <span className="text-[10px] font-bold uppercase tracking-wider text-[#55C9BD] block mb-1.5">
                 Switch Portal Role:
               </span>
-              <div className="grid grid-cols-2 gap-1.5 text-xs">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 text-xs">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsMobileSidebarOpen(false);
+                    demoLogin('admin');
+                  }}
+                  className={`p-2 rounded-lg font-bold text-left flex items-center gap-1.5 transition-all cursor-pointer ${
+                    role === 'admin'
+                      ? 'bg-[#FF795C] text-white shadow-xs'
+                      : 'bg-white/5 hover:bg-white/10 text-white/90'
+                  }`}
+                >
+                  <Shield className="w-3.5 h-3.5 shrink-0" />
+                  <span className="truncate">Admin</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsMobileSidebarOpen(false);
+                    demoLogin('manager');
+                  }}
+                  className={`p-2 rounded-lg font-bold text-left flex items-center gap-1.5 transition-all cursor-pointer ${
+                    role === 'manager'
+                      ? 'bg-purple-600 text-white shadow-xs'
+                      : 'bg-white/5 hover:bg-white/10 text-white/90'
+                  }`}
+                >
+                  <ShieldCheck className="w-3.5 h-3.5 shrink-0" />
+                  <span className="truncate">Manager</span>
+                </button>
+
                 <button
                   type="button"
                   onClick={() => {
@@ -555,25 +814,9 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                   type="button"
                   onClick={() => {
                     setIsMobileSidebarOpen(false);
-                    demoLogin('admin');
-                  }}
-                  className={`p-2 rounded-lg font-bold text-left flex items-center gap-1.5 transition-all cursor-pointer ${
-                    role === 'admin'
-                      ? 'bg-[#FF795C] text-white shadow-xs'
-                      : 'bg-white/5 hover:bg-white/10 text-white/90'
-                  }`}
-                >
-                  <Shield className="w-3.5 h-3.5 shrink-0" />
-                  <span className="truncate">Admin CRM</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    setIsMobileSidebarOpen(false);
                     demoLogin('customer');
                   }}
-                  className={`p-2 rounded-lg font-bold text-left flex items-center gap-1.5 transition-all cursor-pointer ${
+                  className={`p-2 rounded-lg font-bold text-left flex items-center gap-1.5 transition-all cursor-pointer col-span-2 sm:col-span-1 ${
                     role === 'customer'
                       ? 'bg-emerald-400 text-emerald-950 shadow-xs'
                       : 'bg-white/5 hover:bg-white/10 text-white/90'

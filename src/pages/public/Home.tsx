@@ -413,7 +413,7 @@ export const Home: React.FC = () => {
                 variant="white"
                 size="sm"
                 onClick={handleOpenTripModal}
-                className="text-xs font-bold shadow-xs px-4 py-2 h-9 sm:h-9.5 rounded-xl text-[#082C43] hover:bg-white/95 cursor-pointer"
+                className="text-xs font-bold shadow-xs px-4 py-2 h-9 sm:h-9.5 rounded-xl text-[#082C43] hover:bg-white/95 cursor-pointer whitespace-nowrap shrink-0"
               >
                 Plan Your Trip
               </Button>

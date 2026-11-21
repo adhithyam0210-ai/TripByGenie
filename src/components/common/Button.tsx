@@ -21,7 +21,7 @@ export const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const baseClasses =
-    'inline-flex items-center justify-center font-semibold rounded-xl transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed select-none active:scale-[0.98]';
+    'inline-flex items-center justify-center font-semibold rounded-xl transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed select-none active:scale-[0.98] whitespace-nowrap flex-nowrap';
 
   const sizeClasses = {
     sm: 'text-xs px-3 py-1.5 gap-1.5',
@@ -53,10 +53,10 @@ export const Button: React.FC<ButtonProps> = ({
       {isLoading ? (
         <Loader2 className="w-4 h-4 animate-spin shrink-0" />
       ) : (
-        leftIcon && <span className="shrink-0">{leftIcon}</span>
+        leftIcon && <span className="inline-flex items-center shrink-0">{leftIcon}</span>
       )}
-      <span>{children}</span>
-      {!isLoading && rightIcon && <span className="shrink-0">{rightIcon}</span>}
+      <span className="inline-flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0">{children}</span>
+      {!isLoading && rightIcon && <span className="inline-flex items-center shrink-0">{rightIcon}</span>}
     </button>
   );
 };

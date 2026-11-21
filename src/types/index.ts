@@ -1,4 +1,4 @@
-export type UserRole = 'customer' | 'admin' | 'staff' | 'agent';
+export type UserRole = 'customer' | 'admin' | 'manager' | 'staff' | 'agent';
 
 export interface Agency {
   id: string;
@@ -28,6 +28,7 @@ export interface AgencySettings {
 
 export interface User {
   id: string;
+  display_id?: string;
   agency_id: string;
   role: UserRole;
   name: string;

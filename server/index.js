@@ -127,6 +127,10 @@ const authorize = (allowedRoles = []) => {
     if (!req.user) {
       return res.status(401).json({ error: 'Authentication required.' });
     }
+    // Super Admin has universal access to all management and operational resources
+    if (req.user.role === 'admin') {
+      return next();
+    }
     if (!allowedRoles.includes(req.user.role)) {
       return res.status(403).json({
         error: `Forbidden. Role '${req.user.role}' is not authorized to access this resource.`
@@ -173,7 +177,7 @@ app.post('/api/auth/login', (req, res) => {
   });
 });
 
-// Demo Login (Instant switch between roles for testing)
+// Demo Login (Instant switch between roles for testing: admin, manager, staff, agent, customer)
 app.post('/api/auth/demo-login', (req, res) => {
   const { role, agency_slug } = req.body;
   let targetAgency = db.findOne('agencies', (a) => a.slug === (agency_slug || 'travel-genie'));
@@ -181,7 +185,10 @@ app.post('/api/auth/demo-login', (req, res) => {
     targetAgency = db.findAll('agencies')[0];
   }
 
-  const user = db.findOne('users', (u) => u.agency_id === targetAgency.id && u.role === (role || 'admin'));
+  let user = db.findOne('users', (u) => (u.agency_id === targetAgency.id || u.role === 'admin' || u.role === 'manager') && u.role === (role || 'admin'));
+  if (!user) {
+    user = db.findOne('users', (u) => u.role === (role || 'admin'));
+  }
   if (!user) {
     return res.status(404).json({ error: `Demo user for role '${role}' not found.` });
   }
@@ -728,11 +735,155 @@ app.put('/api/customer/profile', authenticate, authorize(['customer']), (req, re
 });
 
 // ==========================================
-// 4. ADMIN PORTAL ENDPOINTS
+// 4. SUPER ADMIN USER & ID MANAGEMENT ENDPOINTS
+// ==========================================
+
+// Get all users with optional role & search filter
+app.get('/api/admin/users', authenticate, authorize(['admin']), (req, res) => {
+  const { role, search } = req.query;
+  let users = db.findAll('users');
+  if (role && role !== 'all') {
+    users = users.filter((u) => u.role === role);
+  }
+  if (search) {
+    const s = search.toLowerCase();
+    users = users.filter((u) =>
+      u.name?.toLowerCase().includes(s) ||
+      u.email?.toLowerCase().includes(s) ||
+      u.display_id?.toLowerCase().includes(s) ||
+      u.id?.toLowerCase().includes(s)
+    );
+  }
+  const safeUsers = users.map(({ password_hash, ...rest }) => rest);
+  res.json(safeUsers);
+});
+
+// Create new ID / User (Manager, Staff, Agent, Customer)
+app.post('/api/admin/users', authenticate, authorize(['admin']), (req, res) => {
+  const {
+    role,
+    name,
+    email,
+    phone,
+    password,
+    agency_id,
+    department,
+    designation,
+    company_name,
+    discount_pct,
+    address
+  } = req.body;
+
+  if (!role || !name || !email || !password) {
+    return res.status(400).json({ error: 'Role, Name, Email, and Password are required.' });
+  }
+
+  const existing = db.findOne('users', (u) => u.email.toLowerCase() === email.toLowerCase());
+  if (existing) {
+    return res.status(400).json({ error: 'A user with this email already exists.' });
+  }
+
+  const prefixMap = {
+    manager: 'MGR',
+    staff: 'STF',
+    agent: 'AGT',
+    customer: 'CUS'
+  };
+  const prefix = prefixMap[role] || 'USR';
+  const displayId = `${prefix}-${Math.floor(1000 + Math.random() * 9000)}`;
+  const customId = `usr_${role}_${Date.now().toString(36)}`;
+
+  const newUser = db.insert('users', {
+    id: customId,
+    display_id: displayId,
+    agency_id: agency_id || 'agency_travel_genie',
+    role,
+    name,
+    email: email.toLowerCase(),
+    phone: phone || '',
+    password_hash: bcrypt.hashSync(password, 10),
+    status: 'active',
+    avatar: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(name)}`
+  });
+
+  // Create role-specific profiles if needed
+  if (role === 'staff') {
+    db.insert('staff_profiles', {
+      user_id: newUser.id,
+      agency_id: newUser.agency_id,
+      employee_id: displayId,
+      department: department || 'Sales & Customer Operations',
+      designation: designation || 'Travel Specialist',
+      assigned_leads_count: 0,
+      converted_leads_count: 0,
+      rating: 5.0
+    });
+  } else if (role === 'agent') {
+    db.insert('agent_profiles', {
+      user_id: newUser.id,
+      agency_id: newUser.agency_id,
+      agency_name: company_name || `${name} Travels`,
+      commercial_id: displayId,
+      tier: 'standard',
+      wholesale_discount_pct: Number(discount_pct) || 12,
+      credit_limit: 500000,
+      available_credit: 500000,
+      kyc_status: 'verified'
+    });
+  } else if (role === 'customer') {
+    db.insert('customer_profiles', {
+      user_id: newUser.id,
+      agency_id: newUser.agency_id,
+      passport_number: '',
+      emergency_contact: phone || '',
+      preferred_currency: 'INR',
+      loyalty_points: 100,
+      notes: address || ''
+    });
+  }
+
+  const { password_hash, ...safeUser } = newUser;
+  res.status(201).json(safeUser);
+});
+
+// Update User details / role / status
+app.put('/api/admin/users/:id', authenticate, authorize(['admin']), (req, res) => {
+  const { id } = req.params;
+  const user = db.findById('users', id);
+  if (!user) return res.status(404).json({ error: 'User not found.' });
+
+  const { name, phone, status, role, agency_id, password } = req.body;
+  const updates = {};
+  if (name) updates.name = name;
+  if (phone !== undefined) updates.phone = phone;
+  if (status) updates.status = status;
+  if (role) updates.role = role;
+  if (agency_id) updates.agency_id = agency_id;
+  if (password) updates.password_hash = bcrypt.hashSync(password, 10);
+
+  const updated = db.update('users', id, updates);
+  const { password_hash, ...safeUser } = updated;
+  res.json(safeUser);
+});
+
+// Delete User
+app.delete('/api/admin/users/:id', authenticate, authorize(['admin']), (req, res) => {
+  const { id } = req.params;
+  const user = db.findById('users', id);
+  if (!user) return res.status(404).json({ error: 'User not found.' });
+  if (user.role === 'admin' && user.email === 'admin@travelgenie.com') {
+    return res.status(400).json({ error: 'Cannot delete primary Super Administrator.' });
+  }
+  db.delete('users', id);
+  res.json({ success: true, message: 'User deleted successfully.' });
+});
+
+// ==========================================
+// 4. ADMIN & MANAGER PORTAL ENDPOINTS
 // ==========================================
 
 // Admin Dashboard KPI Stats & Charts
-app.get('/api/admin/dashboard', authenticate, authorize(['admin']), (req, res) => {
+app.get('/api/admin/dashboard', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const agencyId = req.user.agency_id;
 
   const customers = db.findAll('users', (u) => u.agency_id === agencyId && u.role === 'customer');
@@ -817,7 +968,7 @@ app.get('/api/admin/dashboard', authenticate, authorize(['admin']), (req, res) =
 });
 
 // Admin Lead Management (CRUD, Search, Filter, Assignment)
-app.get('/api/admin/leads', authenticate, authorize(['admin']), (req, res) => {
+app.get('/api/admin/leads', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const agencyId = req.user.agency_id;
   const { status, staff_id, source, search, page = 1, limit = 20 } = req.query;
 
@@ -841,7 +992,7 @@ app.get('/api/admin/leads', authenticate, authorize(['admin']), (req, res) => {
 });
 
 // Admin Create Direct Lead
-app.post('/api/admin/leads', authenticate, authorize(['admin']), (req, res) => {
+app.post('/api/admin/leads', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const agencyId = req.user.agency_id;
   const {
     customer_name,
@@ -909,7 +1060,7 @@ app.post('/api/admin/leads', authenticate, authorize(['admin']), (req, res) => {
 });
 
 // Admin Lead Details & Activity Timeline
-app.get('/api/admin/leads/:id', authenticate, authorize(['admin']), (req, res) => {
+app.get('/api/admin/leads/:id', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const lead = db.findById('leads', req.params.id);
   if (!lead || lead.agency_id !== req.user.agency_id) {
     return res.status(404).json({ error: 'Lead not found.' });
@@ -930,7 +1081,7 @@ app.get('/api/admin/leads/:id', authenticate, authorize(['admin']), (req, res) =
 });
 
 // Admin Update Lead (Status, Notes, Follow-up date)
-app.put('/api/admin/leads/:id', authenticate, authorize(['admin']), (req, res) => {
+app.put('/api/admin/leads/:id', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const lead = db.findById('leads', req.params.id);
   if (!lead || lead.agency_id !== req.user.agency_id) {
     return res.status(404).json({ error: 'Lead not found.' });
@@ -955,7 +1106,7 @@ app.put('/api/admin/leads/:id', authenticate, authorize(['admin']), (req, res) =
 });
 
 // Admin Assign / Reassign Leads to Staff (Single or Bulk)
-app.post('/api/admin/leads/assign', authenticate, authorize(['admin']), (req, res) => {
+app.post('/api/admin/leads/assign', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const agencyId = req.user.agency_id;
   const { lead_ids, staff_id, notes } = req.body;
 
@@ -1002,7 +1153,7 @@ app.post('/api/admin/leads/assign', authenticate, authorize(['admin']), (req, re
 });
 
 // Admin Delete Lead
-app.delete('/api/admin/leads/:id', authenticate, authorize(['admin']), (req, res) => {
+app.delete('/api/admin/leads/:id', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const lead = db.findById('leads', req.params.id);
   if (!lead || lead.agency_id !== req.user.agency_id) {
     return res.status(404).json({ error: 'Lead not found.' });
@@ -1012,7 +1163,7 @@ app.delete('/api/admin/leads/:id', authenticate, authorize(['admin']), (req, res
 });
 
 // Admin Staff Management (CRUD)
-app.get('/api/admin/staff', authenticate, authorize(['admin']), (req, res) => {
+app.get('/api/admin/staff', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const agencyId = req.user.agency_id;
   const staffUsers = db.findAll('users', (u) => u.agency_id === agencyId && u.role === 'staff');
 
@@ -1033,7 +1184,7 @@ app.get('/api/admin/staff', authenticate, authorize(['admin']), (req, res) => {
 });
 
 // Admin Create Staff Account
-app.post('/api/admin/staff', authenticate, authorize(['admin']), (req, res) => {
+app.post('/api/admin/staff', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const agencyId = req.user.agency_id;
   const { name, email, phone, department, designation, password, employee_id } = req.body;
 
@@ -1073,7 +1224,7 @@ app.post('/api/admin/staff', authenticate, authorize(['admin']), (req, res) => {
 });
 
 // Admin Toggle Staff Status
-app.put('/api/admin/staff/:id', authenticate, authorize(['admin']), (req, res) => {
+app.put('/api/admin/staff/:id', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const staff = db.findById('users', req.params.id);
   if (!staff || staff.agency_id !== req.user.agency_id || staff.role !== 'staff') {
     return res.status(404).json({ error: 'Staff member not found.' });
@@ -1101,7 +1252,7 @@ app.put('/api/admin/staff/:id', authenticate, authorize(['admin']), (req, res) =
 });
 
 // Admin Agent Management (B2B Partners)
-app.get('/api/admin/agents', authenticate, authorize(['admin']), (req, res) => {
+app.get('/api/admin/agents', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const agencyId = req.user.agency_id;
   const agentUsers = db.findAll('users', (u) => u.agency_id === agencyId && u.role === 'agent');
 
@@ -1122,7 +1273,7 @@ app.get('/api/admin/agents', authenticate, authorize(['admin']), (req, res) => {
 });
 
 // Admin Create Agent Account
-app.post('/api/admin/agents', authenticate, authorize(['admin']), (req, res) => {
+app.post('/api/admin/agents', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const agencyId = req.user.agency_id;
   const { name, email, phone, company_name, wholesale_discount_pct, credit_limit, password } = req.body;
 
@@ -1164,7 +1315,7 @@ app.post('/api/admin/agents', authenticate, authorize(['admin']), (req, res) => 
 });
 
 // Admin Update Agent (Pricing rules, status)
-app.put('/api/admin/agents/:id', authenticate, authorize(['admin']), (req, res) => {
+app.put('/api/admin/agents/:id', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const agent = db.findById('users', req.params.id);
   if (!agent || agent.agency_id !== req.user.agency_id || agent.role !== 'agent') {
     return res.status(404).json({ error: 'Agent not found.' });
@@ -1194,7 +1345,7 @@ app.put('/api/admin/agents/:id', authenticate, authorize(['admin']), (req, res) 
 });
 
 // Admin Customer Management
-app.get('/api/admin/customers', authenticate, authorize(['admin']), (req, res) => {
+app.get('/api/admin/customers', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const agencyId = req.user.agency_id;
   const customers = db.findAll('users', (u) => u.agency_id === agencyId && u.role === 'customer');
 
@@ -1217,13 +1368,13 @@ app.get('/api/admin/customers', authenticate, authorize(['admin']), (req, res) =
 });
 
 // Admin Package Management (Full CRUD + Itineraries)
-app.get('/api/admin/packages', authenticate, authorize(['admin']), (req, res) => {
+app.get('/api/admin/packages', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const agencyId = req.user.agency_id;
   const packages = db.findAll('packages', (p) => p.agency_id === agencyId);
   res.json(packages);
 });
 
-app.post('/api/admin/packages', authenticate, authorize(['admin']), (req, res) => {
+app.post('/api/admin/packages', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const agencyId = req.user.agency_id;
   const {
     title,
@@ -1300,7 +1451,7 @@ app.post('/api/admin/packages', authenticate, authorize(['admin']), (req, res) =
   res.status(201).json(newPackage);
 });
 
-app.get('/api/admin/packages/:id/itineraries', authenticate, authorize(['admin']), (req, res) => {
+app.get('/api/admin/packages/:id/itineraries', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const itins = db.findAll('package_itineraries', (it) => it.package_id === req.params.id);
   const dayMap = new Map();
   for (const it of itins) {
@@ -1318,7 +1469,7 @@ app.get('/api/admin/packages/:id/itineraries', authenticate, authorize(['admin']
   res.json(sorted);
 });
 
-app.put('/api/admin/packages/:id', authenticate, authorize(['admin']), (req, res) => {
+app.put('/api/admin/packages/:id', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const pkg = db.findById('packages', req.params.id);
   if (!pkg) {
     const dest = db.findOne('destinations', (d) => {
@@ -1360,7 +1511,7 @@ app.put('/api/admin/packages/:id', authenticate, authorize(['admin']), (req, res
   res.json(updated);
 });
 
-app.delete('/api/admin/packages/:id', authenticate, authorize(['admin']), (req, res) => {
+app.delete('/api/admin/packages/:id', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const pkg = db.findById('packages', req.params.id);
   if (!pkg || pkg.agency_id !== req.user.agency_id) {
     return res.status(404).json({ error: 'Package not found.' });
@@ -1371,13 +1522,13 @@ app.delete('/api/admin/packages/:id', authenticate, authorize(['admin']), (req, 
 });
 
 // Admin Destination Management (CRUD)
-app.get('/api/admin/destinations', authenticate, authorize(['admin']), (req, res) => {
+app.get('/api/admin/destinations', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const agencyId = req.user.agency_id;
   const destinations = db.findAll('destinations', (d) => d.agency_id === agencyId);
   res.json(destinations);
 });
 
-app.post('/api/admin/destinations', authenticate, authorize(['admin']), (req, res) => {
+app.post('/api/admin/destinations', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const agencyId = req.user.agency_id;
   const { name, country, region, description, image, is_featured, is_published } = req.body;
 
@@ -1403,7 +1554,7 @@ app.post('/api/admin/destinations', authenticate, authorize(['admin']), (req, re
   res.status(201).json(newDest);
 });
 
-app.put('/api/admin/destinations/:id', authenticate, authorize(['admin']), (req, res) => {
+app.put('/api/admin/destinations/:id', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const dest = db.findById('destinations', req.params.id);
   if (!dest || dest.agency_id !== req.user.agency_id) {
     return res.status(404).json({ error: 'Destination not found.' });
@@ -1413,7 +1564,7 @@ app.put('/api/admin/destinations/:id', authenticate, authorize(['admin']), (req,
   res.json(updated);
 });
 
-app.delete('/api/admin/destinations/:id', authenticate, authorize(['admin']), (req, res) => {
+app.delete('/api/admin/destinations/:id', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const dest = db.findById('destinations', req.params.id);
   if (!dest || dest.agency_id !== req.user.agency_id) {
     return res.status(404).json({ error: 'Destination not found.' });
@@ -1424,14 +1575,14 @@ app.delete('/api/admin/destinations/:id', authenticate, authorize(['admin']), (r
 });
 
 // Admin Hero Banner Management
-app.get('/api/admin/banners', authenticate, authorize(['admin']), (req, res) => {
+app.get('/api/admin/banners', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const agencyId = req.user.agency_id;
   const banners = db.findAll('hero_banners', (b) => b.agency_id === agencyId);
   banners.sort((a, b) => a.display_order - b.display_order);
   res.json(banners);
 });
 
-app.post('/api/admin/banners', authenticate, authorize(['admin']), (req, res) => {
+app.post('/api/admin/banners', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const agencyId = req.user.agency_id;
   const { title, subtitle, image_desktop, image_mobile, video_url, cta_text, cta_link, display_order, is_active } = req.body;
 
@@ -1455,7 +1606,7 @@ app.post('/api/admin/banners', authenticate, authorize(['admin']), (req, res) =>
   res.status(201).json(newBanner);
 });
 
-app.put('/api/admin/banners/:id', authenticate, authorize(['admin']), (req, res) => {
+app.put('/api/admin/banners/:id', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const banner = db.findById('hero_banners', req.params.id);
   if (!banner || banner.agency_id !== req.user.agency_id) {
     return res.status(404).json({ error: 'Banner not found.' });
@@ -1465,7 +1616,7 @@ app.put('/api/admin/banners/:id', authenticate, authorize(['admin']), (req, res)
   res.json(updated);
 });
 
-app.delete('/api/admin/banners/:id', authenticate, authorize(['admin']), (req, res) => {
+app.delete('/api/admin/banners/:id', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const banner = db.findById('hero_banners', req.params.id);
   if (!banner || banner.agency_id !== req.user.agency_id) {
     return res.status(404).json({ error: 'Banner not found.' });
@@ -1476,14 +1627,14 @@ app.delete('/api/admin/banners/:id', authenticate, authorize(['admin']), (req, r
 });
 
 // Admin Bookings & Booking Status Workflow
-app.get('/api/admin/bookings', authenticate, authorize(['admin']), (req, res) => {
+app.get('/api/admin/bookings', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const agencyId = req.user.agency_id;
   const bookings = db.findAll('bookings', (b) => b.agency_id === agencyId);
   bookings.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
   res.json(bookings);
 });
 
-app.put('/api/admin/bookings/:id', authenticate, authorize(['admin']), (req, res) => {
+app.put('/api/admin/bookings/:id', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const booking = db.findById('bookings', req.params.id);
   if (!booking || booking.agency_id !== req.user.agency_id) {
     return res.status(404).json({ error: 'Booking not found.' });
@@ -1513,14 +1664,14 @@ app.put('/api/admin/bookings/:id', authenticate, authorize(['admin']), (req, res
 });
 
 // Admin Payments (Financial Ledger & Manual Payment Entry)
-app.get('/api/admin/payments', authenticate, authorize(['admin']), (req, res) => {
+app.get('/api/admin/payments', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const agencyId = req.user.agency_id;
   const payments = db.findAll('payments', (p) => p.agency_id === agencyId);
   payments.sort((a, b) => new Date(b.payment_date) - new Date(a.payment_date));
   res.json(payments);
 });
 
-app.post('/api/admin/payments', authenticate, authorize(['admin']), (req, res) => {
+app.post('/api/admin/payments', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const agencyId = req.user.agency_id;
   const { booking_id, amount, payment_type, payment_method, transaction_reference, notes } = req.body;
 
@@ -1561,7 +1712,7 @@ app.post('/api/admin/payments', authenticate, authorize(['admin']), (req, res) =
 });
 
 // Admin Reports & CSV Export
-app.get('/api/admin/reports', authenticate, authorize(['admin']), (req, res) => {
+app.get('/api/admin/reports', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const agencyId = req.user.agency_id;
   const { date_from, date_to } = req.query;
 
@@ -1605,7 +1756,7 @@ app.get('/api/admin/reports', authenticate, authorize(['admin']), (req, res) => 
 });
 
 // CSV Export Endpoint
-app.get('/api/admin/reports/export-csv', authenticate, authorize(['admin']), (req, res) => {
+app.get('/api/admin/reports/export-csv', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const agencyId = req.user.agency_id;
   const { type = 'leads' } = req.query;
 
@@ -1632,13 +1783,13 @@ app.get('/api/admin/reports/export-csv', authenticate, authorize(['admin']), (re
 });
 
 // Admin Agency Settings
-app.get('/api/admin/settings', authenticate, authorize(['admin']), (req, res) => {
+app.get('/api/admin/settings', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const agency = db.findById('agencies', req.user.agency_id);
   const settings = db.findOne('agency_settings', (s) => s.agency_id === req.user.agency_id);
   res.json({ agency, settings });
 });
 
-app.put('/api/admin/settings', authenticate, authorize(['admin']), (req, res) => {
+app.put('/api/admin/settings', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const agencyId = req.user.agency_id;
   const { name, tagline, email, phone, address, currency, default_wholesale_discount_pct, terms_conditions } = req.body;
 

@@ -68,9 +68,10 @@ export const fallbackData: any = {
   "users": [
     {
       "id": "usr_admin_genie",
-      "agency_id": "agency_voyage_bliss",
+      "display_id": "ADM-0001",
+      "agency_id": "agency_travel_genie",
       "role": "admin",
-      "name": "Aditya Sharma",
+      "name": "Aditya Sharma (Super Admin)",
       "email": "admin@travelgenie.com",
       "phone": "+91 98765 00001",
       "password_hash": "$2b$10$r8kcNz760iwwx.OwfE4f0emcHJd1yHRDtqEboXVUTWPKLC0FAUu5u",
@@ -78,6 +79,19 @@ export const fallbackData: any = {
       "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
       "created_at": "2026-01-01T10:00:00.000Z",
       "updated_at": "2026-11-20T07:50:37.389Z"
+    },
+    {
+      "id": "usr_manager_genie",
+      "display_id": "MGR-1001",
+      "agency_id": "agency_travel_genie",
+      "role": "manager",
+      "name": "Rajesh Kumar (Operations Manager)",
+      "email": "manager@travelgenie.com",
+      "phone": "+91 98765 00005",
+      "password_hash": "$2b$10$r8kcNz760iwwx.OwfE4f0emcHJd1yHRDtqEboXVUTWPKLC0FAUu5u",
+      "status": "active",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
+      "created_at": "2026-01-02T10:00:00.000Z"
     },
     {
       "id": "usr_staff_priya",
@@ -90,7 +104,8 @@ export const fallbackData: any = {
       "status": "active",
       "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80",
       "created_at": "2026-01-05T10:00:00.000Z",
-      "updated_at": "2026-11-20T07:50:54.091Z"
+      "updated_at": "2026-11-20T07:50:54.091Z",
+      "display_id": "STF-2002"
     },
     {
       "id": "usr_staff_rahul",
@@ -102,7 +117,8 @@ export const fallbackData: any = {
       "password_hash": "$2b$10$1P5i63KMVWF2xftabcPGS.yKIQQfMtU07Oh9LrccTkm9AGe20E0ry",
       "status": "active",
       "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
-      "created_at": "2026-01-06T10:00:00.000Z"
+      "created_at": "2026-01-06T10:00:00.000Z",
+      "display_id": "STF-2003"
     },
     {
       "id": "usr_agent_vikram",
@@ -114,7 +130,8 @@ export const fallbackData: any = {
       "password_hash": "$2b$10$GJVpGj8U8SvripmViE9Dbe1vNX5ABH78jz52lRSGd2W584SqgIzGe",
       "status": "active",
       "avatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80",
-      "created_at": "2026-01-10T10:00:00.000Z"
+      "created_at": "2026-01-10T10:00:00.000Z",
+      "display_id": "AGT-3004"
     },
     {
       "id": "usr_agent_sunita",
@@ -126,7 +143,8 @@ export const fallbackData: any = {
       "password_hash": "$2b$10$GJVpGj8U8SvripmViE9Dbe1vNX5ABH78jz52lRSGd2W584SqgIzGe",
       "status": "active",
       "avatar": "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=200&q=80",
-      "created_at": "2026-01-12T10:00:00.000Z"
+      "created_at": "2026-01-12T10:00:00.000Z",
+      "display_id": "AGT-3005"
     },
     {
       "id": "usr_cust_ananya",
@@ -138,7 +156,8 @@ export const fallbackData: any = {
       "password_hash": "$2b$10$eojl3GptAm89gIk1cAhfseocAEL9OAvlvsRQMqXw4TZPNeEgT72LK",
       "status": "active",
       "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80",
-      "created_at": "2026-01-15T10:00:00.000Z"
+      "created_at": "2026-01-15T10:00:00.000Z",
+      "display_id": "CUS-4006"
     },
     {
       "id": "usr_cust_rohit",
@@ -150,7 +169,8 @@ export const fallbackData: any = {
       "password_hash": "$2b$10$eojl3GptAm89gIk1cAhfseocAEL9OAvlvsRQMqXw4TZPNeEgT72LK",
       "status": "active",
       "avatar": "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=200&q=80",
-      "created_at": "2026-01-18T10:00:00.000Z"
+      "created_at": "2026-01-18T10:00:00.000Z",
+      "display_id": "CUS-4007"
     },
     {
       "id": "usr_admin_voyage",
@@ -162,7 +182,8 @@ export const fallbackData: any = {
       "password_hash": "$2b$10$RyXMEM55JuRHiF/YbIH.m.gGb8pdN1wnYxGyWqTLNQDY0J2oh0rA6",
       "status": "active",
       "avatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80",
-      "created_at": "2026-01-10T10:00:00.000Z"
+      "created_at": "2026-01-10T10:00:00.000Z",
+      "display_id": "ADM-1008"
     },
     {
       "id": "d21d6159-463c-48a0-919e-3adb555820b3",

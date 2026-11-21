@@ -126,9 +126,14 @@ export const PackageCard: React.FC<PackageCardProps> = ({
           </div>
 
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-            <Link to={`/packages/${pkgSlug}`}>
-              <Button variant="secondary" size="sm" className="px-2.5 sm:px-3 text-xs whitespace-nowrap">
-                View <ArrowRight className="w-3 h-3 ml-1" />
+            <Link to={`/packages/${pkgSlug}`} className="inline-flex shrink-0">
+              <Button
+                variant="secondary"
+                size="sm"
+                className="h-8.5 px-3 sm:px-3.5 text-xs font-bold whitespace-nowrap min-w-[76px] sm:min-w-[80px] inline-flex items-center justify-center gap-1 shrink-0"
+              >
+                <span>View</span>
+                <ArrowRight className="w-3 h-3 shrink-0" />
               </Button>
             </Link>
 
@@ -137,7 +142,7 @@ export const PackageCard: React.FC<PackageCardProps> = ({
                 variant="primary"
                 size="sm"
                 onClick={() => onEnquire(data)}
-                className="px-2.5 sm:px-3 text-xs whitespace-nowrap"
+                className="h-8.5 px-3 sm:px-3.5 text-xs font-bold whitespace-nowrap min-w-[76px] sm:min-w-[80px] inline-flex items-center justify-center shrink-0"
               >
                 Enquire
               </Button>
