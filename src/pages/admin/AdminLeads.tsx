@@ -246,16 +246,19 @@ export const AdminLeads: React.FC = () => {
               }}
               className="p-2 rounded-xl bg-[#F8F1E7]/50 border border-[#EFE7DA] font-semibold text-[#082C43] focus:outline-none"
             >
-              <option value="all">All Statuses</option>
-              <option value="New">New</option>
-              <option value="Unassigned">Unassigned</option>
-              <option value="Assigned">Assigned</option>
-              <option value="Contacted">Contacted</option>
-              <option value="Follow-up Required">Follow-up Required</option>
+              <option value="all">All Pipeline Stages</option>
+              <option value="New">New Enquiries</option>
+              <option value="Unassigned">Unassigned Leads</option>
+              <option value="Assigned">Assigned Leads</option>
+              <option value="Contacted">Contacted Leads</option>
+              <option value="Qualified">Qualified Leads</option>
               <option value="Quotation Sent">Quotation Sent</option>
               <option value="Negotiation">Negotiation</option>
-              <option value="Converted">Converted</option>
-              <option value="Lost">Lost</option>
+              <option value="Customer Confirmed">Customer Confirmed</option>
+              <option value="Payment Pending">Payment Pending</option>
+              <option value="Partially Paid">Partially Paid</option>
+              <option value="Converted">Converted Leads</option>
+              <option value="Lost">Lost Leads</option>
             </select>
 
             <select
@@ -366,6 +369,11 @@ export const AdminLeads: React.FC = () => {
                               className="py-3 px-3 cursor-pointer"
                               onClick={() => handleSelectLeadDetail(l)}
                             >
+                              {(l as any).enquiry_id && (
+                                <span className="text-[10px] text-[#FF795C] font-mono font-bold block">
+                                  {(l as any).enquiry_id}
+                                </span>
+                              )}
                               <strong className="text-[#082C43] block">{l.customer_name}</strong>
                               <span className="text-[11px] text-slate-500">{l.customer_phone || l.customer_email}</span>
                             </td>
@@ -440,7 +448,7 @@ export const AdminLeads: React.FC = () => {
                       <StatusBadge status={selectedLead.status} />
                     </div>
                     <p className="text-xs text-slate-500 mt-0.5">
-                      Lead #{selectedLead.id} • Source: {selectedLead.lead_source}
+                      {(selectedLead as any).enquiry_id ? `Enquiry #${(selectedLead as any).enquiry_id} • ` : ''}Lead #{selectedLead.id} • Source: {selectedLead.lead_source}
                     </p>
                   </div>
                   <button
@@ -538,9 +546,9 @@ export const AdminLeads: React.FC = () => {
                 className="w-full p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:outline-none"
               >
                 <option value="">-- Select Staff Member --</option>
-                {staffList.map((s) => (
+                {staffList.map((s: any) => (
                   <option key={s.id} value={s.id}>
-                    {s.name} • {s.department || 'Travel Desk'}
+                    {s.name} • {s.department || 'Travel Desk'} {s.assignedLeadsCount !== undefined ? `(${s.assignedLeadsCount} leads active)` : ''}
                   </option>
                 ))}
               </select>

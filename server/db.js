@@ -197,6 +197,94 @@ class DatabaseEngine {
     });
   }
 
+  recordAuditLog(agency_id, user_id, action, entity_type, entity_id, details = {}) {
+    return this.insert('audit_logs', {
+      agency_id: agency_id || 'agency_travel_genie',
+      user_id: user_id || 'system',
+      action,
+      entity_type,
+      entity_id,
+      details,
+      timestamp: new Date().toISOString()
+    });
+  }
+
+  recordLeadStatusHistory(agency_id, lead_id, from_status, to_status, changed_by, notes = '') {
+    return this.insert('lead_status_history', {
+      agency_id: agency_id || 'agency_travel_genie',
+      lead_id,
+      from_status,
+      to_status,
+      changed_by,
+      notes,
+      created_at: new Date().toISOString()
+    });
+  }
+
+  recordBookingStatusHistory(agency_id, booking_id, from_status, to_status, changed_by, notes = '') {
+    return this.insert('booking_status_history', {
+      agency_id: agency_id || 'agency_travel_genie',
+      booking_id,
+      from_status,
+      to_status,
+      changed_by,
+      notes,
+      created_at: new Date().toISOString()
+    });
+  }
+
+  logEmail(agency_id, to_email, subject, template_name, status = 'DELIVERED', metadata = {}) {
+    return this.insert('email_logs', {
+      agency_id: agency_id || 'agency_travel_genie',
+      to_email,
+      subject,
+      template_name,
+      status, // DELIVERED, PENDING, FAILED
+      metadata: {
+        ...metadata,
+        // Ensure sensitive credentials are never stored in email logs
+        password: metadata.password ? '[REDACTED]' : undefined
+      },
+      sent_at: new Date().toISOString()
+    });
+  }
+
+  generateUniqueCode(table, prefix, year = true) {
+    const yr = year ? `${new Date().getFullYear()}-` : '';
+    const records = this.getTable(table);
+    // Count existing records with this prefix
+    const count = records.length + 1;
+    let code = `${prefix}-${yr}${String(count).padStart(4, '0')}`;
+    // Check if code exists, if so increment
+    let tries = 0;
+    while (records.some(r => r.code === code || r.enquiry_id === code || r.customer_code === code || r.customer_id === code || r.agent_id === code || r.booking_number === code || r.quotation_number === code) && tries < 100) {
+      tries++;
+      code = `${prefix}-${yr}${String(count + tries).padStart(4, '0')}`;
+    }
+    return code;
+  }
+
+  recordAgentStatusHistory(agent_id, old_status, new_status, changed_by, reason = '') {
+    return this.insert('agent_status_history', {
+      agent_id,
+      old_status,
+      new_status,
+      changed_by,
+      reason,
+      created_at: new Date().toISOString()
+    });
+  }
+
+  recordAgentInvitationHistory(agent_id, action, performed_by, details = {}) {
+    return this.insert('agent_invitation_history', {
+      agent_id,
+      action,
+      performed_by,
+      details,
+      created_at: new Date().toISOString()
+    });
+  }
+
   createNotification(agency_id, user_id, title, message, type = 'info', link = '') {
     return this.insert('notifications', {
       agency_id,

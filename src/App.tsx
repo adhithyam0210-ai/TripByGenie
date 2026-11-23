@@ -21,6 +21,7 @@ import { Contact } from './pages/public/Contact';
 // Auth Pages
 import { Login } from './pages/auth/Login';
 import { Signup } from './pages/auth/Signup';
+import { ActivateAccount } from './pages/auth/ActivateAccount';
 
 // Customer Pages
 import { CustomerDashboard } from './pages/customer/CustomerDashboard';
@@ -175,6 +176,14 @@ export const App: React.FC = () => {
       <Route 
         path="/signup" 
         element={authRedirect ? <Navigate to={authRedirect} replace /> : <Signup />} 
+      />
+      <Route 
+        path="/activate-account" 
+        element={<ActivateAccount />} 
+      />
+      <Route 
+        path="/activate" 
+        element={<Navigate to="/activate-account" replace />} 
       />
 
       {/* Customer Routes */}

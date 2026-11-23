@@ -32,6 +32,10 @@ export const Login: React.FC = () => {
     if (r === 'staff' || r === 'sales' || r === 'operations' || r === 'agent' || r === 'admin' || r === 'customer' || r === 'manager') {
       setActiveTab((r === 'sales' ? 'staff' : r) as any);
     }
+    const prefill = searchParams.get('email') || searchParams.get('identifier');
+    if (prefill) {
+      setEmail(prefill);
+    }
   }, [searchParams]);
 
   const from = (location.state as any)?.from?.pathname;
@@ -225,7 +229,7 @@ export const Login: React.FC = () => {
           <form onSubmit={handleSubmit} className="space-y-3.5">
             <div>
               <label className="text-xs font-bold text-[#082C43] block mb-1">
-                Email Address or Username
+                {activeTab === 'agent' ? 'Agent ID or Registered Email' : 'Email Address or Username'}
               </label>
               <div className="relative">
                 <Mail className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />

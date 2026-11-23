@@ -230,3 +230,162 @@ CREATE TRIGGER trg_agent_orders_updated_at
 BEFORE UPDATE ON agent_orders
 FOR EACH ROW
 EXECUTE FUNCTION set_updated_at_timestamp();
+
+-- ==============================================================================
+-- 9. TABLE: enquiries
+-- Universal Landing Page Customer Inquiries
+-- ==============================================================================
+CREATE TABLE IF NOT EXISTS enquiries (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    enquiry_id VARCHAR(32) NOT NULL UNIQUE, -- e.g. 'ENQ-2026-0001'
+    customer_name VARCHAR(150) NOT NULL,
+    customer_email VARCHAR(255) NOT NULL,
+    customer_phone VARCHAR(30) NOT NULL,
+    country VARCHAR(100) DEFAULT 'India',
+    departure_city VARCHAR(100),
+    destination VARCHAR(150) NOT NULL,
+    package_id VARCHAR(64),
+    departure_date DATE,
+    return_date DATE,
+    adults INT DEFAULT 2,
+    children INT DEFAULT 0,
+    infants INT DEFAULT 0,
+    budget VARCHAR(100),
+    travel_type VARCHAR(100),
+    special_requirements TEXT,
+    additional_message TEXT,
+    source VARCHAR(100) DEFAULT 'Universal Landing Page',
+    campaign_source VARCHAR(255),
+    status VARCHAR(50) DEFAULT 'NEW',
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_enquiries_enquiry_id ON enquiries(enquiry_id);
+CREATE INDEX IF NOT EXISTS idx_enquiries_customer_email ON enquiries(customer_email);
+CREATE INDEX IF NOT EXISTS idx_enquiries_status ON enquiries(status);
+
+-- ==============================================================================
+-- 10. TABLE: customer_account_invitations
+-- Single-use Secure Tokens for Customer Onboarding & Password Creation
+-- ==============================================================================
+CREATE TABLE IF NOT EXISTS customer_account_invitations (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    customer_id VARCHAR(64) NOT NULL, -- e.g. 'CUS-2026-0001'
+    booking_id VARCHAR(64) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    token VARCHAR(255) NOT NULL UNIQUE,
+    expires_at TIMESTAMPTZ NOT NULL,
+    is_used BOOLEAN NOT NULL DEFAULT FALSE,
+    used_at TIMESTAMPTZ,
+    created_by VARCHAR(64) NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_invitations_token ON customer_account_invitations(token);
+CREATE INDEX IF NOT EXISTS idx_invitations_email ON customer_account_invitations(email);
+
+-- ==============================================================================
+-- 11. TABLE: email_logs
+-- Audit Log of All Outbound Transactional Communications
+-- ==============================================================================
+CREATE TABLE IF NOT EXISTS email_logs (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    agency_id VARCHAR(64) DEFAULT 'agency_travel_genie',
+    to_email VARCHAR(255) NOT NULL,
+    subject VARCHAR(255) NOT NULL,
+    template_name VARCHAR(100) NOT NULL,
+    status VARCHAR(50) NOT NULL DEFAULT 'DELIVERED',
+    metadata JSONB DEFAULT '{}'::jsonb,
+    sent_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_email_logs_to ON email_logs(to_email);
+CREATE INDEX IF NOT EXISTS idx_email_logs_template ON email_logs(template_name);
+
+-- ==============================================================================
+-- 12. TABLE: b2b_agents
+-- Wholesale Travel Partner Agency Master Record
+-- ==============================================================================
+CREATE TABLE IF NOT EXISTS b2b_agents (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    agent_id VARCHAR(32) NOT NULL UNIQUE, -- e.g. 'B2B-2026-0001'
+    user_id VARCHAR(64) NOT NULL,
+    agency_id VARCHAR(64) NOT NULL DEFAULT 'agency_travel_genie',
+    agent_name VARCHAR(150) NOT NULL,
+    company_name VARCHAR(150) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    phone VARCHAR(30) NOT NULL,
+    business_address TEXT,
+    gst_number VARCHAR(50),
+    business_reg_number VARCHAR(50),
+    contact_person VARCHAR(150),
+    account_type VARCHAR(50) NOT NULL DEFAULT 'WHOLESALE',
+    account_status VARCHAR(50) NOT NULL DEFAULT 'INVITATION_PENDING',
+    invitation_status VARCHAR(50) NOT NULL DEFAULT 'INVITATION_SENT',
+    wholesale_discount_pct NUMERIC(5, 2) NOT NULL DEFAULT 12.00,
+    credit_limit NUMERIC(12, 2) NOT NULL DEFAULT 500000.00,
+    invitation_sent_at TIMESTAMPTZ,
+    activated_at TIMESTAMPTZ,
+    last_login_at TIMESTAMPTZ,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_b2b_agents_agent_id ON b2b_agents(agent_id);
+CREATE INDEX IF NOT EXISTS idx_b2b_agents_email ON b2b_agents(email);
+CREATE INDEX IF NOT EXISTS idx_b2b_agents_status ON b2b_agents(account_status);
+
+-- ==============================================================================
+-- 13. TABLE: agent_account_invitations
+-- Single-use Secure Tokens for B2B Agent Onboarding & Password Creation
+-- ==============================================================================
+CREATE TABLE IF NOT EXISTS agent_account_invitations (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    agent_id VARCHAR(32) NOT NULL, -- e.g. 'B2B-2026-0001'
+    b2b_agent_id VARCHAR(64),
+    user_id VARCHAR(64) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    token VARCHAR(255) NOT NULL UNIQUE,
+    token_hash VARCHAR(255) NOT NULL,
+    expires_at TIMESTAMPTZ NOT NULL,
+    is_used BOOLEAN NOT NULL DEFAULT FALSE,
+    used_at TIMESTAMPTZ,
+    created_by VARCHAR(64) NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_agent_invitations_token ON agent_account_invitations(token);
+CREATE INDEX IF NOT EXISTS idx_agent_invitations_agent_id ON agent_account_invitations(agent_id);
+CREATE INDEX IF NOT EXISTS idx_agent_invitations_email ON agent_account_invitations(email);
+
+-- ==============================================================================
+-- 14. TABLE: agent_invitation_history
+-- Audit Log of B2B Agent Invitations & Lifecycle Events
+-- ==============================================================================
+CREATE TABLE IF NOT EXISTS agent_invitation_history (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    agent_id VARCHAR(32) NOT NULL,
+    action VARCHAR(50) NOT NULL, -- INVITATION_CREATED, INVITATION_SENT, INVITATION_RESENT, ACCOUNT_ACTIVATED
+    performed_by VARCHAR(64) NOT NULL,
+    details JSONB DEFAULT '{}'::jsonb,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_agent_invitation_history_agent ON agent_invitation_history(agent_id);
+
+-- ==============================================================================
+-- 15. TABLE: agent_status_history
+-- Audit Log of Agent Account Status Changes (Active, Suspended, Inactive)
+-- ==============================================================================
+CREATE TABLE IF NOT EXISTS agent_status_history (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    agent_id VARCHAR(32) NOT NULL,
+    old_status VARCHAR(50) NOT NULL,
+    new_status VARCHAR(50) NOT NULL,
+    changed_by VARCHAR(64) NOT NULL,
+    reason TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_agent_status_history_agent ON agent_status_history(agent_id);
+

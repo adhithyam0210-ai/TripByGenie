@@ -85,9 +85,16 @@ export const CustomerProfile: React.FC = () => {
             <div>
               <h3 className="text-lg font-bold text-[#082C43]">{formData.name || 'Traveler'}</h3>
               <p className="text-xs text-slate-500">{formData.email}</p>
-              <span className="inline-block mt-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
-                Verified Customer Account
-              </span>
+              <div className="flex items-center gap-2 mt-1">
+                {((user as any)?.customer_code || (user as any)?.id) && (
+                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-slate-100 text-[#082C43] border border-[#EFE7DA]">
+                    Customer ID: {(user as any)?.customer_code || (user as any)?.id}
+                  </span>
+                )}
+                <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                  Verified Customer Account
+                </span>
+              </div>
             </div>
           </div>
 

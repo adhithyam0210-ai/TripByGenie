@@ -45,86 +45,97 @@ interface DashboardLayoutProps {
   actions?: React.ReactNode;
 }
 
-// Admin Portal Dropdown Sections configured for Super Admin
-const ADMIN_SECTIONS = [
-  {
-    id: 'manager',
-    name: 'Manager Operations',
-    icon: ShieldCheck,
-    color: 'text-purple-400',
-    badge: 'Core',
-    badgeColor: 'bg-purple-500/20 text-purple-300',
-    items: [
-      { name: 'Operations Overview', path: '/manager/dashboard', icon: LayoutDashboard },
-      { name: 'Holiday Packages', path: '/admin/packages', icon: Layers },
-      { name: 'Leads & Enquiries', path: '/admin/leads', icon: Users, badge: 'Assign' },
-      { name: 'Bookings & Trips', path: '/admin/bookings', icon: CalendarCheck },
-      { name: 'Destinations Catalog', path: '/admin/destinations', icon: MapPin },
-      { name: 'Hero Banners', path: '/admin/banners', icon: Image },
-      { name: 'Payments & Invoices', path: '/admin/payments', icon: CreditCard },
-      { name: 'Reports & Analytics', path: '/admin/reports', icon: BarChart3 },
-      { name: 'Agency Settings', path: '/admin/settings', icon: Settings }
-    ]
-  },
+interface NavGroup {
+  id: string;
+  name: string;
+  icon: any;
+  color: string;
+  badge?: string;
+  badgeColor?: string;
+  items: {
+    name: string;
+    path: string;
+    icon: any;
+    badge?: string;
+  }[];
+}
+
+const getManagementGroups = (prefix: string): NavGroup[] => [
   {
     id: 'staff',
-    name: 'Sales CRM Operations',
+    name: 'Staff Management',
     icon: UserCheck,
     color: 'text-[#55C9BD]',
-    badge: 'Sales',
+    badge: 'Staff',
     badgeColor: 'bg-[#55C9BD]/20 text-[#55C9BD]',
     items: [
-      { name: 'Staff Roster & Allocation', path: '/admin/staff', icon: UserCheck },
-      { name: 'Assigned Leads', path: '/staff/leads', icon: Users },
-      { name: 'Follow-ups Agenda', path: '/staff/follow-ups', icon: Clock },
-      { name: 'Staff Conversions', path: '/staff/bookings', icon: CalendarCheck }
-    ]
-  },
-  {
-    id: 'operations',
-    name: 'Operations & Logistics',
-    icon: Building2,
-    color: 'text-blue-400',
-    badge: 'Logistics',
-    badgeColor: 'bg-blue-500/20 text-blue-300',
-    items: [
-      { name: 'Operations Overview', path: '/operations/dashboard', icon: LayoutDashboard },
-      { name: 'Booking Execution Desk', path: '/operations/bookings', icon: CalendarCheck },
-      { name: 'Travel Document Vault', path: '/customer/documents', icon: FileText }
+      { name: 'Staff Roster & Allocation', path: `${prefix}/staff`, icon: UserCheck },
+      { name: 'Assigned Leads & Queue', path: `${prefix}/leads`, icon: Users, badge: 'Assign' },
+      { name: 'Follow-ups Agenda', path: '/staff/follow-ups', icon: Clock }
     ]
   },
   {
     id: 'agent',
-    name: 'B2B Agent Portal',
+    name: 'Agent Management',
     icon: Briefcase,
     color: 'text-amber-400',
     badge: 'B2B',
     badgeColor: 'bg-amber-500/20 text-amber-300',
     items: [
-      { name: 'Registered Agents', path: '/admin/agents', icon: Briefcase },
-      { name: 'Wholesale Marketplace', path: '/agent/marketplace', icon: ShoppingBag },
-      { name: 'Passenger Directory', path: '/agent/customers', icon: Users },
-      { name: 'Purchase Orders', path: '/agent/purchases', icon: FileText },
-      { name: 'B2B Invoices & Vouchers', path: '/agent/documents', icon: FileText },
+      { name: 'B2B Travel Agents', path: `${prefix}/agents`, icon: Briefcase },
+      { name: 'Wholesale Packages', path: '/agent/marketplace', icon: ShoppingBag, badge: 'Trade' },
+      { name: 'Agent Purchase Orders', path: '/agent/purchases', icon: FileText },
       { name: 'Wholesale Ledger', path: '/agent/transactions', icon: CreditCard }
     ]
   },
   {
     id: 'customer',
-    name: 'Customer Hub',
+    name: 'Customer Management',
     icon: Users,
     color: 'text-emerald-400',
-    badge: 'Client',
+    badge: 'Clients',
     badgeColor: 'bg-emerald-500/20 text-emerald-300',
     items: [
-      { name: 'Customer Directory', path: '/admin/customers', icon: Users },
-      { name: 'Digital Document Wallet', path: '/customer/documents', icon: FileText },
-      { name: 'Customer Enquiries', path: '/customer/enquiries', icon: FileText },
-      { name: 'Customer Bookings', path: '/customer/bookings', icon: CalendarCheck },
-      { name: 'Support Inquiries', path: '/customer/support', icon: FileText },
-      { name: 'Payment Receipts', path: '/customer/payments', icon: CreditCard }
+      { name: 'Customer Directory', path: `${prefix}/customers`, icon: Users },
+      { name: 'Create Paid Customer ID', path: `${prefix}/customers?action=create-paid`, icon: KeyRound, badge: 'New ID' },
+      { name: 'Client Bookings & Trips', path: `${prefix}/bookings`, icon: CalendarCheck },
+      { name: 'Payment Receipts', path: `${prefix}/payments`, icon: CreditCard }
+    ]
+  },
+  {
+    id: 'settings',
+    name: 'Website & Settings',
+    icon: Settings,
+    color: 'text-sky-400',
+    badge: 'CMS',
+    badgeColor: 'bg-sky-500/20 text-sky-300',
+    items: [
+      { name: 'Hero Banners', path: `${prefix}/banners`, icon: Image },
+      { name: 'Holiday Packages', path: `${prefix}/packages`, icon: Layers },
+      { name: 'Destinations Catalog', path: `${prefix}/destinations`, icon: MapPin },
+      { name: 'Agency Settings', path: `${prefix}/settings`, icon: Settings },
+      { name: 'View Live Website', path: '/', icon: ExternalLink }
     ]
   }
+];
+
+const getTopManagementLinks = (prefix: string, isSuperAdmin: boolean) => {
+  const links = [
+    { name: isSuperAdmin ? 'Super Admin Dashboard' : 'Manager Overview', path: `${prefix}/dashboard`, icon: LayoutDashboard }
+  ];
+  if (isSuperAdmin) {
+    links.push({ name: 'ID & Role Management', path: '/admin/users', icon: KeyRound, badge: 'Super' });
+  }
+  links.push(
+    { name: 'Leads & Enquiries', path: `${prefix}/leads`, icon: Users, badge: 'Assign' },
+    { name: 'Bookings & Execution', path: `${prefix}/bookings`, icon: CalendarCheck },
+    { name: 'Payments & Ledger', path: `${prefix}/payments`, icon: CreditCard }
+  );
+  return links;
+};
+
+const getBottomManagementLinks = (prefix: string) => [
+  { name: 'Reports & CSV', path: `${prefix}/reports`, icon: BarChart3 }
 ];
 
 export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
@@ -174,64 +185,39 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const [notifications, setNotifications] = useState<AppNotification[]>([]);
   const [agenciesList, setAgenciesList] = useState<any[]>([]);
 
-  // Super Admin left sidebar tabs with dropdowns (collapsed by default to keep sidebar clean & scrollable)
-  const [adminDropdowns, setAdminDropdowns] = useState<Record<string, boolean>>({
-    manager: false,
+  // Grouped management dropdowns for Manager and Admin
+  const [managementDropdowns, setManagementDropdowns] = useState<Record<string, boolean>>({
     staff: false,
-    operations: false,
     agent: false,
-    customer: false
+    customer: false,
+    settings: false
   });
 
-  // Accordion toggle: toggles clicked section and closes others
-  const toggleAdminDropdown = (section: string) => {
-    setAdminDropdowns((prev) => {
-      const willBeOpen = !prev[section];
-      return {
-        manager: false,
-        staff: false,
-        operations: false,
-        agent: false,
-        customer: false,
-        [section]: willBeOpen
-      };
-    });
+  const toggleManagementDropdown = (section: string) => {
+    setManagementDropdowns((prev) => ({
+      ...prev,
+      [section]: !prev[section]
+    }));
   };
 
-  const adminSections = ADMIN_SECTIONS;
-
-  // Auto-expand only the section containing the active route; collapse all if on main admin pages
+  // Auto-expand group containing the active route
   useEffect(() => {
-    if (role === 'admin') {
+    if (role === 'manager' || role === 'admin') {
       const p = location.pathname;
-      if (p === '/admin/dashboard' || p === '/admin/users' || p === '/admin' || p === '/admin/') {
-        setAdminDropdowns({
-          manager: false,
-          staff: false,
-          operations: false,
-          agent: false,
-          customer: false
-        });
-        return;
-      }
+      const full = location.pathname + location.search;
+      const prefix = role === 'admin' ? '/admin' : '/manager';
+      const groups = getManagementGroups(prefix);
 
-      let activeSectionId: string | null = null;
-      for (const sec of ADMIN_SECTIONS) {
-        if (sec.items.some((i) => p === i.path || (i.path !== '/admin' && p.startsWith(i.path + '/')))) {
-          activeSectionId = sec.id;
-          break;
+      for (const group of groups) {
+        if (group.items.some((i) => i.path === full || i.path === p || (i.path !== '/' && p.startsWith(i.path)))) {
+          setManagementDropdowns((prev) => ({
+            ...prev,
+            [group.id]: true
+          }));
         }
       }
-
-      setAdminDropdowns({
-        manager: activeSectionId === 'manager',
-        staff: activeSectionId === 'staff',
-        operations: activeSectionId === 'operations',
-        agent: activeSectionId === 'agent',
-        customer: activeSectionId === 'customer'
-      });
     }
-  }, [location.pathname, role]);
+  }, [location.pathname, location.search, role]);
 
   useEffect(() => {
     setIsMobileSidebarOpen(false);
@@ -360,6 +346,11 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     }
   };
 
+  const isManagerOrAdmin = role === 'manager' || role === 'admin';
+  const managementPrefix = role === 'admin' ? '/admin' : '/manager';
+  const managementTopLinks = getTopManagementLinks(managementPrefix, role === 'admin');
+  const managementGroups = getManagementGroups(managementPrefix);
+  const managementBottomLinks = getBottomManagementLinks(managementPrefix);
   const navLinks = getNavLinks();
   const unreadCount = notifications.filter((n) => !n.is_read).length;
 
@@ -433,11 +424,11 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
         {/* Sidebar Navigation */}
         <nav className="p-3 flex-1 min-h-0 overflow-y-auto space-y-1 overscroll-contain" style={{ scrollbarWidth: 'thin' }}>
-          {role === 'admin' ? (
+          {isManagerOrAdmin ? (
             <div className="space-y-3">
-              {/* Top Executive Links */}
+              {/* Top Management Core Links */}
               <div className="space-y-1">
-                {navLinks.map((item) => {
+                {managementTopLinks.map((item) => {
                   const isActive = location.pathname === item.path;
                   const Icon = item.icon;
 
@@ -487,18 +478,18 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 })}
               </div>
 
-              {/* Collapsible Dropdown Tabs for Roles */}
+              {/* Collapsible Dropdown Sections: Staff, Agents, Customers, Settings */}
               <div className="pt-2 border-t border-white/10 space-y-2">
                 {!isSidebarCollapsed && (
                   <span className="text-[10px] font-bold uppercase tracking-wider text-white/40 px-2 block">
-                    All Portals & Role Tabs
+                    Management Sections
                   </span>
                 )}
 
-                {adminSections.map((sec) => {
-                  const isOpen = adminDropdowns[sec.id];
+                {managementGroups.map((sec) => {
+                  const isOpen = managementDropdowns[sec.id];
                   const SectionIcon = sec.icon;
-                  const isAnyChildActive = sec.items.some((i) => location.pathname === i.path);
+                  const isAnyChildActive = sec.items.some((i) => location.pathname === i.path || (i.path.includes('?') && location.pathname + location.search === i.path));
 
                   if (isSidebarCollapsed) {
                     return (
@@ -507,7 +498,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                         type="button"
                         onClick={() => {
                           setIsSidebarCollapsed(false);
-                          toggleAdminDropdown(sec.id);
+                          toggleManagementDropdown(sec.id);
                         }}
                         title={`${sec.name} (${sec.badge})`}
                         className={`w-full flex items-center justify-center p-2.5 rounded-xl transition-all cursor-pointer relative group ${
@@ -526,7 +517,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                       {/* Section Header Button with Dropdown arrow */}
                       <button
                         type="button"
-                        onClick={() => toggleAdminDropdown(sec.id)}
+                        onClick={() => toggleManagementDropdown(sec.id)}
                         className={`w-full flex items-center justify-between p-2.5 text-xs font-bold transition-colors cursor-pointer text-left ${
                           isAnyChildActive
                             ? 'bg-white/15 text-white'
@@ -553,7 +544,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                       {isOpen && (
                         <div className="p-1 space-y-0.5 bg-[#343B49]/80 border-t border-white/10">
                           {sec.items.map((sub) => {
-                            const isSubActive = location.pathname === sub.path;
+                            const isSubActive = location.pathname === sub.path || (sub.path.includes('?') && location.pathname + location.search === sub.path);
                             const SubIcon = sub.icon;
                             return (
                               <Link
@@ -582,6 +573,48 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                         </div>
                       )}
                     </div>
+                  );
+                })}
+              </div>
+
+              {/* Bottom Reports Link */}
+              <div className="pt-2 border-t border-white/10 space-y-1">
+                {managementBottomLinks.map((item) => {
+                  const isActive = location.pathname === item.path;
+                  const Icon = item.icon;
+
+                  if (isSidebarCollapsed) {
+                    return (
+                      <Link
+                        key={item.path}
+                        to={item.path}
+                        title={item.name}
+                        className={`flex items-center justify-center w-full py-2.5 rounded-xl transition-all relative group ${
+                          isActive
+                            ? 'bg-[#2563EB] text-white shadow-md shadow-blue-600/30'
+                            : 'text-slate-300 hover:bg-white/10 hover:text-white'
+                        }`}
+                      >
+                        <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-slate-300 group-hover:text-white'}`} />
+                      </Link>
+                    );
+                  }
+
+                  return (
+                    <Link
+                      key={item.path}
+                      to={item.path}
+                      className={`flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-semibold transition-all ${
+                        isActive
+                          ? 'bg-[#2563EB] text-white shadow-md shadow-blue-600/25'
+                          : 'text-white/90 hover:bg-white/10 hover:text-white'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-[#55C9BD]'}`} />
+                        <span>{item.name}</span>
+                      </div>
+                    </Link>
                   );
                 })}
               </div>
@@ -1069,33 +1102,157 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             </div>
 
             {/* Mobile Navigation Links */}
-            <nav className="py-2 space-y-1 flex-1 min-h-0 overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
-              {navLinks.map((item) => {
-                const isActive = location.pathname === item.path;
-                const Icon = item.icon;
-                return (
-                  <Link
-                    key={item.path}
-                    to={item.path}
-                    onClick={() => setIsMobileSidebarOpen(false)}
-                    className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-semibold transition-all ${
-                      isActive
-                        ? 'bg-[#2563EB] text-white shadow-md shadow-blue-600/30'
-                        : 'text-white/80 hover:bg-white/10'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <Icon className="w-4 h-4" />
-                      <span>{item.name}</span>
-                    </div>
-                    {item.badge && (
-                      <span className="text-[10px] px-1.5 py-0.2 rounded-full font-bold bg-white/20 text-white">
-                        {item.badge}
-                      </span>
-                    )}
-                  </Link>
-                );
-              })}
+            <nav className="py-2 space-y-2 flex-1 min-h-0 overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
+              {isManagerOrAdmin ? (
+                <div className="space-y-2">
+                  {/* Top Core Links */}
+                  <div className="space-y-1">
+                    {managementTopLinks.map((item) => {
+                      const isActive = location.pathname === item.path;
+                      const Icon = item.icon;
+                      return (
+                        <Link
+                          key={item.path}
+                          to={item.path}
+                          onClick={() => setIsMobileSidebarOpen(false)}
+                          className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+                            isActive
+                              ? 'bg-[#2563EB] text-white shadow-md shadow-blue-600/30'
+                              : 'text-white/80 hover:bg-white/10'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2.5">
+                            <Icon className="w-4 h-4" />
+                            <span>{item.name}</span>
+                          </div>
+                          {item.badge && (
+                            <span className="text-[10px] px-1.5 py-0.2 rounded-full font-bold bg-white/20 text-white">
+                              {item.badge}
+                            </span>
+                          )}
+                        </Link>
+                      );
+                    })}
+                  </div>
+
+                  {/* Grouped Management Accordions */}
+                  <div className="pt-2 border-t border-white/10 space-y-1.5">
+                    {managementGroups.map((sec) => {
+                      const isOpen = managementDropdowns[sec.id];
+                      const SectionIcon = sec.icon;
+                      const isAnyChildActive = sec.items.some((i) => location.pathname === i.path || (i.path.includes('?') && location.pathname + location.search === i.path));
+
+                      return (
+                        <div key={sec.id} className="rounded-xl overflow-hidden bg-[#3B4353]/60 border border-white/10">
+                          <button
+                            type="button"
+                            onClick={() => toggleManagementDropdown(sec.id)}
+                            className={`w-full flex items-center justify-between p-2.5 text-xs font-bold transition-colors cursor-pointer text-left ${
+                              isAnyChildActive ? 'bg-white/15 text-white' : 'hover:bg-white/10 text-white/90'
+                            }`}
+                          >
+                            <div className="flex items-center gap-2">
+                              <SectionIcon className={`w-4 h-4 ${sec.color}`} />
+                              <span>{sec.name}</span>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                              <span className={`text-[9px] px-1.5 py-0.2 rounded font-bold ${sec.badgeColor}`}>
+                                {sec.badge}
+                              </span>
+                              <ChevronDown className={`w-3.5 h-3.5 text-white/60 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+                            </div>
+                          </button>
+
+                          {isOpen && (
+                            <div className="p-1 space-y-0.5 bg-[#343B49]/80 border-t border-white/10">
+                              {sec.items.map((sub) => {
+                                const isSubActive = location.pathname === sub.path || (sub.path.includes('?') && location.pathname + location.search === sub.path);
+                                const SubIcon = sub.icon;
+                                return (
+                                  <Link
+                                    key={sub.path}
+                                    to={sub.path}
+                                    onClick={() => setIsMobileSidebarOpen(false)}
+                                    className={`flex items-center justify-between pl-4 pr-3 py-1.5 rounded-lg text-[11px] font-medium transition-all ${
+                                      isSubActive
+                                        ? 'bg-[#2563EB] text-white font-bold shadow-xs'
+                                        : 'text-white/70 hover:bg-white/10 hover:text-white'
+                                    }`}
+                                  >
+                                    <div className="flex items-center gap-2 truncate">
+                                      <SubIcon className={`w-3.5 h-3.5 shrink-0 ${isSubActive ? 'text-white' : 'text-slate-400'}`} />
+                                      <span className="truncate">{sub.name}</span>
+                                    </div>
+                                    {sub.badge && (
+                                      <span className={`text-[9px] px-1 rounded font-bold shrink-0 ${
+                                        isSubActive ? 'bg-white/20 text-white' : 'bg-emerald-500/20 text-emerald-300'
+                                      }`}>
+                                        {sub.badge}
+                                      </span>
+                                    )}
+                                  </Link>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Bottom Reports Link */}
+                  <div className="pt-2 border-t border-white/10">
+                    {managementBottomLinks.map((item) => {
+                      const isActive = location.pathname === item.path;
+                      const Icon = item.icon;
+                      return (
+                        <Link
+                          key={item.path}
+                          to={item.path}
+                          onClick={() => setIsMobileSidebarOpen(false)}
+                          className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+                            isActive
+                              ? 'bg-[#2563EB] text-white shadow-md shadow-blue-600/30'
+                              : 'text-white/80 hover:bg-white/10'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2.5">
+                            <Icon className="w-4 h-4" />
+                            <span>{item.name}</span>
+                          </div>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              ) : (
+                navLinks.map((item) => {
+                  const isActive = location.pathname === item.path;
+                  const Icon = item.icon;
+                  return (
+                    <Link
+                      key={item.path}
+                      to={item.path}
+                      onClick={() => setIsMobileSidebarOpen(false)}
+                      className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-semibold transition-all ${
+                        isActive
+                          ? 'bg-[#2563EB] text-white shadow-md shadow-blue-600/30'
+                          : 'text-white/80 hover:bg-white/10'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <Icon className="w-4 h-4" />
+                        <span>{item.name}</span>
+                      </div>
+                      {item.badge && (
+                        <span className="text-[10px] px-1.5 py-0.2 rounded-full font-bold bg-white/20 text-white">
+                          {item.badge}
+                        </span>
+                      )}
+                    </Link>
+                  );
+                })
+              )}
             </nav>
 
             {/* Bottom Actions */}

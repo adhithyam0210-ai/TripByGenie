@@ -585,6 +585,19 @@ export const api = {
       method: 'PUT',
       body: JSON.stringify(data)
     }),
+  resendAgentInvitation: (id: string) =>
+    request<any>(`/admin/agents/${id}/resend-invitation`, {
+      method: 'POST'
+    }),
+  updateAgentStatus: (id: string, status: string, reason?: string) =>
+    request<any>(`/admin/agents/${id}/status`, {
+      method: 'PUT',
+      body: JSON.stringify({ status, reason })
+    }),
+  resetAgentAccess: (id: string) =>
+    request<any>(`/admin/agents/${id}/reset-access`, {
+      method: 'POST'
+    }),
 
   getAdminCustomers: async () => {
     try {
@@ -593,6 +606,57 @@ export const api = {
       return fallbackData.users.filter((u: any) => u.role === 'customer');
     }
   },
+
+  createCustomerAccount: (data: { booking_id: string }) =>
+    request<any>('/admin/customers/create-login', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    }),
+
+  createPaidCustomerAccount: (data: any) =>
+    request<any>('/admin/customers/create-paid', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    }),
+
+  resendCustomerInvitation: (data: { customer_id?: string; booking_id?: string; email?: string }) =>
+    request<any>('/admin/customers/resend-invitation', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    }),
+
+  updateCustomerAccountStatus: (id: string, data: { status: string; reason?: string }) =>
+    request<any>(`/admin/customers/${id}/status`, {
+      method: 'PUT',
+      body: JSON.stringify(data)
+    }),
+
+  verifyActivationToken: (token: string) =>
+    request<any>(`/auth/verify-activation-token?token=${encodeURIComponent(token)}`),
+
+  activateCustomerAccount: (data: { token: string; password: string }) =>
+    request<any>('/auth/activate-account', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    }),
+
+  confirmTrip: (id: string, data: any) =>
+    request<any>(`/staff/leads/${id}/confirm-trip`, {
+      method: 'POST',
+      body: JSON.stringify(data)
+    }),
+
+  verifyAdvancePayment: (data: any) =>
+    request<any>('/payments/verify-advance', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    }),
+
+  logCustomerInteraction: (id: string, data: any) =>
+    request<any>(`/staff/leads/${id}/interactions`, {
+      method: 'POST',
+      body: JSON.stringify(data)
+    }),
 
   getAdminPackages: async () => {
     try {
