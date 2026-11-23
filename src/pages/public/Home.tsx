@@ -54,6 +54,7 @@ export const Home: React.FC = () => {
   );
   const [services, setServices] = useState<TravelService[]>((fallbackData.travel_services || []) as any);
   const [testimonials, setTestimonials] = useState<Testimonial[]>((fallbackData.testimonials || []) as any);
+  const [selectedStory, setSelectedStory] = useState<Testimonial | null>(null);
   const [loading, setLoading] = useState(false);
 
   const [videoLoaded, setVideoLoaded] = useState(false);
@@ -166,6 +167,21 @@ export const Home: React.FC = () => {
       setLoading(false);
     }
   };
+
+  // Lock body scroll and handle Escape key for Customer Story popup
+  useEffect(() => {
+    if (selectedStory) {
+      document.body.style.overflow = 'hidden';
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') setSelectedStory(null);
+      };
+      window.addEventListener('keydown', handleKeyDown);
+      return () => {
+        document.body.style.overflow = '';
+        window.removeEventListener('keydown', handleKeyDown);
+      };
+    }
+  }, [selectedStory]);
 
   // Auto rotate hero banner every 6.5 seconds, resetting on manual slide change
   useEffect(() => {
@@ -753,18 +769,18 @@ export const Home: React.FC = () => {
                 ))}
               </div>
 
-              <div className="pt-4 flex items-center gap-4">
+              <div className="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full">
                 <Button
                   variant="primary"
                   size="lg"
                   onClick={handleOpenTripModal}
-                  className="shadow-md font-bold text-xs"
+                  className="shadow-md font-bold text-xs w-full sm:w-auto justify-center"
                 >
                   <Send className="w-4 h-4 mr-1.5" />
                   Get Free Trip Quotation
                 </Button>
-                <a href="tel:+914446071374">
-                  <Button variant="outline" size="lg" className="border-[#082C43] text-[#082C43] font-bold text-xs">
+                <a href="tel:+914446071374" className="w-full sm:w-auto block sm:inline-block">
+                  <Button variant="outline" size="lg" className="border-[#082C43] text-[#082C43] font-bold text-xs w-full sm:w-auto justify-center">
                     <PhoneCall className="w-4 h-4 mr-1.5 text-[#55C9BD]" />
                     Call +91 (44) 46071374
                   </Button>
@@ -824,40 +840,97 @@ export const Home: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {testimonials.map((test) => (
-              <div
-                key={test.id}
-                className="bg-white p-6 rounded-3xl border border-[#EFE7DA] shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow"
-              >
-                <div className="space-y-3">
-                  <div className="flex items-center gap-1">
-                    {[...Array(test.rating || 5)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                    ))}
-                  </div>
-                  <p className="text-xs text-[#173247]/85 leading-relaxed">
-                    {test.review_text}
-                  </p>
-                </div>
+            {testimonials.map((test) => {
+              const reviewContent = test.review_text || test.comment || '';
+              const isLong = reviewContent.length > 130;
 
-                <div className="flex items-center gap-3 pt-6 mt-6 border-t border-[#EFE7DA]">
-                  <img
-                    src={test.customer_image || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80'}
-                    alt={test.customer_name}
-                    className="w-10 h-10 rounded-full object-cover border border-[#EFE7DA]"
-                  />
-                  <div>
-                    <h4 className="text-xs font-bold text-[#082C43]">{test.customer_name}</h4>
-                    <span className="text-[11px] text-[#55C9BD] font-medium block">
-                      {test.destination}
-                    </span>
+              return (
+                <div
+                  key={test.id}
+                  className="bg-white p-6 rounded-3xl border border-[#EFE7DA] shadow-xs flex flex-col justify-between hover:shadow-md transition-shadow h-[220px]"
+                >
+                  <div className="space-y-2.5 overflow-hidden">
+                    <div className="flex items-center gap-1">
+                      {[...Array(test.rating || 5)].map((_, i) => (
+                        <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                      ))}
+                    </div>
+                    <p className="text-xs text-[#173247]/85 leading-relaxed line-clamp-3">
+                      {reviewContent}
+                    </p>
+                  </div>
+
+                  <div className="pt-3.5 border-t border-[#EFE7DA] flex items-end justify-between gap-2">
+                    <div className="min-w-0 pr-1">
+                      <h4 className="text-base sm:text-lg font-bold text-[#082C43] truncate leading-tight">
+                        {test.customer_name}
+                      </h4>
+                      <span className="text-xs text-[#55C9BD] font-medium block mt-0.5 truncate">
+                        {test.destination}
+                      </span>
+                    </div>
+                    {isLong && (
+                      <button
+                        type="button"
+                        onClick={() => setSelectedStory(test)}
+                        className="shrink-0 text-xs font-bold text-[#FF795C] hover:text-white bg-[#FF795C]/10 hover:bg-[#FF795C] px-3 py-1.5 rounded-full transition-all cursor-pointer flex items-center gap-1 shadow-2xs"
+                      >
+                        View
+                      </button>
+                    )}
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
+
+      {/* Customer Story Popup Modal */}
+      {selectedStory && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-150"
+          onClick={() => setSelectedStory(null)}
+        >
+          <div
+            className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-[#EFE7DA] relative animate-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close "x" Symbol Button */}
+            <button
+              onClick={() => setSelectedStory(null)}
+              className="absolute top-5 right-5 p-2 rounded-full hover:bg-gray-100 text-gray-400 hover:text-[#082C43] transition-colors cursor-pointer"
+              aria-label="Close"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {/* Rating Stars */}
+            <div className="flex items-center gap-1 mb-3">
+              {[...Array(selectedStory.rating || 5)].map((_, i) => (
+                <Star key={i} className="w-5 h-5 fill-amber-400 text-amber-400" />
+              ))}
+            </div>
+
+            {/* Customer Details */}
+            <h3 className="text-xl sm:text-2xl font-extrabold text-[#082C43] font-display pr-8">
+              {selectedStory.customer_name}
+            </h3>
+            <span className="text-xs sm:text-sm text-[#55C9BD] font-semibold block mt-1">
+              {selectedStory.destination}
+            </span>
+
+            <div className="my-5 border-t border-[#EFE7DA]" />
+
+            {/* Full Review Text */}
+            <div className="max-h-[55vh] overflow-y-auto pr-2">
+              <p className="text-sm text-[#173247]/90 leading-relaxed whitespace-pre-line font-normal">
+                "{selectedStory.review_text || selectedStory.comment}"
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Video Customization Modal */}
       {isVideoModalOpen && (

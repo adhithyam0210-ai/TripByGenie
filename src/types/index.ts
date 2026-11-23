@@ -449,6 +449,7 @@ export interface Testimonial {
   destination: string;
   rating: number;
   comment: string;
+  review_text?: string;
   is_published: boolean;
   created_at: string;
 }
