@@ -38,7 +38,7 @@ export const DestinationCard: React.FC<DestinationCardProps> = ({ destination })
 
       {/* Package Count Pill */}
       <div className="absolute top-4 right-4">
-        <span className="text-xs font-bold text-[#041D30] bg-[#55C9BD] px-2.5 py-1 rounded-full shadow-md">
+        <span className="text-xs font-bold text-[#041D30] bg-[#55C9BD] px-2.5 py-1 rounded-full shadow-md whitespace-nowrap shrink-0 inline-flex items-center">
           {destination.package_count || 4} Packages
         </span>
       </div>

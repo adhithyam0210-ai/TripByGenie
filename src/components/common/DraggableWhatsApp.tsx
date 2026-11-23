@@ -1,11 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 
 interface Position {
   x: number;
   y: number;
 }
 
-export const DraggableWhatsApp: React.FC = () => {
+interface DraggableWhatsAppProps {
+  isModalOpen?: boolean;
+}
+
+export const DraggableWhatsApp: React.FC<DraggableWhatsAppProps> = ({ isModalOpen = false }) => {
+  const location = useLocation();
   const [position, setPosition] = useState<Position | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const dragStartRef = useRef<{ startX: number; startY: number; posX: number; posY: number; hasMoved: boolean }>({
@@ -138,6 +144,12 @@ export const DraggableWhatsApp: React.FC = () => {
     }
   };
 
+  // 1. Only show on the landing page (home)
+  if (location.pathname !== '/') return null;
+
+  // 2. Hide completely when trip modal or popup is open
+  if (isModalOpen) return null;
+
   if (!position) return null;
 
   return (
@@ -152,7 +164,7 @@ export const DraggableWhatsApp: React.FC = () => {
         top: `${position.y}px`,
         touchAction: 'none'
       }}
-      className={`fixed z-50 select-none cursor-grab active:cursor-grabbing ${
+      className={`fixed z-20 select-none cursor-grab active:cursor-grabbing ${
         isDragging ? 'scale-105 transition-none' : 'transition-transform duration-150'
       }`}
       aria-label="Chat with us on WhatsApp (Drag to reposition)"

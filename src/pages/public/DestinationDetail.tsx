@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Users, TrendingUp, MapPin, Compass, ShieldCheck } from 'lucide-react';
+import { ArrowLeft, Users, TrendingUp, MapPin, Compass, ShieldCheck, ChevronDown } from 'lucide-react';
 import { api } from '../../services/api';
 import { Destination, Package } from '../../types';
 import { PackageCard } from '../../components/travel/PackageCard';
@@ -211,11 +211,11 @@ export const DestinationDetail: React.FC = () => {
         <section id="packages-grid" className="pt-8 scroll-mt-24">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-[#EFE7DA] gap-4 mb-8">
             <div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center flex-wrap sm:flex-nowrap gap-2">
                 <h2 className="text-2xl sm:text-3xl font-extrabold text-[#082C43] font-display">
                   All Packages in {destination.name}
                 </h2>
-                <span className="text-xs font-bold bg-[#FF795C]/15 text-[#FF795C] px-2.5 py-0.5 rounded-full">
+                <span className="text-xs font-bold bg-[#FF795C]/15 text-[#FF795C] px-2.5 py-0.5 rounded-full whitespace-nowrap shrink-0 inline-flex items-center">
                   {packages.length} Tours
                 </span>
               </div>
@@ -224,22 +224,20 @@ export const DestinationDetail: React.FC = () => {
               </p>
             </div>
 
-            <div className="flex items-center gap-2">
-              {/* Filter pills */}
-              <div className="flex items-center gap-1 bg-[#F8F1E7] p-1 rounded-full border border-[#EFE7DA]">
-                {['all', 'family', 'honeymoon', 'group'].map((filter) => (
-                  <button
-                    key={filter}
-                    onClick={() => setSelectedCategoryFilter(filter)}
-                    className={`px-3 py-1 rounded-full text-xs font-semibold capitalize transition-all cursor-pointer ${
-                      selectedCategoryFilter === filter
-                        ? 'bg-[#004c8f] text-white shadow-xs'
-                        : 'text-slate-600 hover:text-[#082C43]'
-                    }`}
-                  >
-                    {filter === 'all' ? 'All Tours' : filter}
-                  </button>
-                ))}
+            <div className="flex items-center gap-2.5 w-full sm:w-auto justify-between sm:justify-end mt-2 sm:mt-0">
+              {/* Category Dropdown: All Tours, Family, Honeymoon, Group */}
+              <div className="relative flex-1 sm:flex-initial min-w-[130px]">
+                <select
+                  value={selectedCategoryFilter}
+                  onChange={(e) => setSelectedCategoryFilter(e.target.value)}
+                  className="w-full appearance-none bg-[#F8F1E7] border border-[#EFE7DA] text-[#082C43] text-xs font-bold py-2 pl-3.5 pr-8 rounded-xl focus:outline-none focus:border-[#FF795C] cursor-pointer shadow-xs"
+                >
+                  <option value="all">All Tours</option>
+                  <option value="family">Family Tours</option>
+                  <option value="honeymoon">Honeymoon</option>
+                  <option value="group">Group Tours</option>
+                </select>
+                <ChevronDown className="w-3.5 h-3.5 text-[#082C43] absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               </div>
 
               <Button
@@ -249,7 +247,7 @@ export const DestinationDetail: React.FC = () => {
                   setSelectedPackage(null);
                   setIsTripModalOpen(true);
                 }}
-                className="text-xs font-bold shadow-md shadow-[#FF795C]/20"
+                className="text-xs font-bold shadow-md shadow-[#FF795C]/20 whitespace-nowrap shrink-0 px-3.5 py-2"
               >
                 Custom Quote
               </Button>

@@ -27,8 +27,8 @@ export const PublicLayout: React.FC = () => {
       {/* Full Travel Genie / Trip by Genie Footer */}
       <PublicFooter />
 
-      {/* Draggable Floating WhatsApp Button with NO arrow or leaking text */}
-      <DraggableWhatsApp />
+      {/* Draggable Floating WhatsApp Button only on landing page and when no modal is open */}
+      <DraggableWhatsApp isModalOpen={isTripModalOpen} />
     </div>
   );
 };

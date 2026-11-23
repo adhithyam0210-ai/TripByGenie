@@ -402,7 +402,7 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
                       <div key={col.continent} className="space-y-2">
                         <h4 className="text-xs font-bold uppercase tracking-wider text-[#17648A] border-b border-gray-100 pb-1 flex items-center justify-between">
                           <span>{col.continent}</span>
-                          <span className="text-[10px] text-gray-400 font-normal">{col.countries.length} Tours</span>
+                          <span className="text-[10px] text-gray-400 font-normal whitespace-nowrap shrink-0">{col.countries.length} Tours</span>
                         </h4>
                         <ul className="space-y-1">
                           {col.countries.map((c) => (
@@ -812,7 +812,10 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
               Plan Trip
             </button>
             <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              onClick={() => {
+                setActiveDropdown(null);
+                setIsMobileMenuOpen(!isMobileMenuOpen);
+              }}
               className="p-1.5 sm:p-2 rounded-xl text-[#082C43] hover:bg-gray-100 focus:outline-none"
               aria-label="Toggle Menu"
             >
@@ -846,10 +849,16 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
         <div
           className="xl:hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex justify-end animate-in fade-in overscroll-contain"
           style={{ overscrollBehavior: 'contain' }}
+          onClick={() => setIsMobileMenuOpen(false)}
         >
           <div
-            className="w-full max-w-sm bg-[#082C43] text-white h-full overflow-y-auto p-6 flex flex-col justify-between shadow-2xl overscroll-contain"
-            style={{ overscrollBehavior: 'contain' }}
+            className="dropdown-scroll-box w-full max-w-sm bg-[#082C43] text-white h-full overflow-y-auto overscroll-contain p-6 flex flex-col justify-between shadow-2xl"
+            style={{
+              overscrollBehavior: 'contain',
+              WebkitOverflowScrolling: 'touch',
+              touchAction: 'pan-y'
+            }}
+            onClick={(e) => e.stopPropagation()}
           >
             <div className="space-y-6">
               {/* Header */}

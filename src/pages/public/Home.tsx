@@ -16,6 +16,7 @@ import {
   Heart,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
   Send,
   MapPin,
   Tag,
@@ -300,64 +301,41 @@ export const Home: React.FC = () => {
       {/* SECTION 1: HERO BANNER SLIDER (Wanderly & tripbygenie.in) */}
       {/* ======================================================== */}
       <section className="relative min-h-[520px] sm:min-h-[75vh] lg:min-h-[82vh] flex flex-col justify-center py-10 sm:py-16 text-white overflow-hidden bg-[#041D30]">
-        {/* Background Media: Dual Layer - ALWAYS renders crisp photo backdrop, overlays video when playing */}
+        {/* Background Media: Direct Video when video_url is present, otherwise crisp 4K Photo */}
         <div className="absolute inset-0 z-0 overflow-hidden bg-[#082C43]">
-          {/* 1. Underlying Ultra-HD 4K Photo Backdrop (Instant load, crisp sharpness, zero degradation) */}
-          <img
-            key={`hero-img-${currentBanner.id || currentBannerIndex}`}
-            src={resolveMediaUrl(currentBanner.image_desktop || currentBanner.image_mobile || 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2560&q=90')}
-            srcSet={`${resolveMediaUrl(currentBanner.image_mobile || currentBanner.image_desktop)} 1080w, ${resolveMediaUrl(currentBanner.image_desktop || currentBanner.image_mobile)} 2560w`}
-            sizes="100vw"
-            alt={currentBanner.title}
-            className="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-700"
-            loading="eager"
-            onError={(e) => {
-              const target = e.currentTarget;
-              target.onerror = null;
-              if (currentBanner.image_desktop && target.src !== currentBanner.image_desktop) {
-                target.src = currentBanner.image_desktop;
-              } else if (!target.src.includes('1507525428034')) {
-                target.src = 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2560&q=90';
-              } else {
-                target.src = 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=2560&q=90';
-              }
-            }}
-          />
-
-          {/* 2. Optional Video Stream (Plays above image on supported devices/connections) */}
-          {currentBanner.video_url && !videoError && (
+          {currentBanner.video_url ? (
             <video
               key={`hero-vid-${currentBanner.video_url}`}
-              ref={(el) => {
-                if (el) {
-                  el.muted = true;
-                  el.defaultMuted = true;
-                  const playPromise = el.play();
-                  if (playPromise !== undefined) {
-                    playPromise.catch(() => {
-                      // Autoplay blocked by mobile browser - show crisp photo backdrop
-                      setVideoError(true);
-                    });
-                  }
-                }
-              }}
               autoPlay
               loop
               muted
               playsInline
               preload="auto"
-              poster={resolveMediaUrl(currentBanner.image_desktop || currentBanner.image_mobile)}
-              onLoadedData={() => setVideoLoaded(true)}
-              onError={() => {
-                console.warn('Video failed or blocked on mobile, revealing photo backdrop');
-                setVideoError(true);
-              }}
-              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 pointer-events-none ${
-                videoLoaded ? 'opacity-100' : 'opacity-0'
-              }`}
+              className="absolute inset-0 w-full h-full object-cover pointer-events-none"
             >
               <source src={resolveMediaUrl(currentBanner.video_url)} type="video/mp4" />
             </video>
+          ) : (
+            <img
+              key={`hero-img-${currentBanner.id || currentBannerIndex}`}
+              src={resolveMediaUrl(currentBanner.image_desktop || currentBanner.image_mobile || 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2560&q=90')}
+              srcSet={`${resolveMediaUrl(currentBanner.image_mobile || currentBanner.image_desktop)} 1080w, ${resolveMediaUrl(currentBanner.image_desktop || currentBanner.image_mobile)} 2560w`}
+              sizes="100vw"
+              alt={currentBanner.title}
+              className="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-700"
+              loading="eager"
+              onError={(e) => {
+                const target = e.currentTarget;
+                target.onerror = null;
+                if (currentBanner.image_desktop && target.src !== currentBanner.image_desktop) {
+                  target.src = currentBanner.image_desktop;
+                } else if (!target.src.includes('1507525428034')) {
+                  target.src = 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2560&q=90';
+                } else {
+                  target.src = 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=2560&q=90';
+                }
+              }}
+            />
           )}
 
           {/* Clean legibility scrim: subtle left vignette for white text, 100% natural photo/video clarity */}
@@ -579,8 +557,24 @@ export const Home: React.FC = () => {
               </p>
             </div>
 
-            {/* Category pills */}
-            <div className="flex items-center gap-1.5 overflow-x-auto pb-2 md:pb-0 scrollbar-none">
+            {/* Mobile: Category Dropdown */}
+            <div className="md:hidden relative w-full">
+              <select
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+                className="w-full appearance-none bg-[#F8F1E7] border border-[#EFE7DA] text-[#082C43] text-xs font-bold py-2.5 pl-4 pr-9 rounded-xl focus:outline-none focus:border-[#FF795C] cursor-pointer shadow-xs"
+              >
+                {categoriesList.map((cat) => (
+                  <option key={cat} value={cat}>
+                    {cat}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="w-4 h-4 text-[#082C43] absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+            </div>
+
+            {/* Desktop: Category pills */}
+            <div className="hidden md:flex items-center gap-1.5 flex-wrap">
               {categoriesList.map((cat) => (
                 <button
                   key={cat}

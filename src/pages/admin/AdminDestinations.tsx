@@ -163,7 +163,7 @@ export const AdminDestinations: React.FC = () => {
                     <td className="py-3 px-4 font-semibold text-[#17648A]">
                       {d.region}
                     </td>
-                    <td className="py-3 px-4 font-bold text-[#082C43]">
+                    <td className="py-3 px-4 font-bold text-[#082C43] whitespace-nowrap">
                       {d.package_count || 4} Tours
                     </td>
                     <td className="py-3 px-4">
