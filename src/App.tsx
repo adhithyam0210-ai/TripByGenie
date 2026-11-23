@@ -14,6 +14,7 @@ import { PackageDetail } from './pages/public/PackageDetail';
 import { Honeymoon } from './pages/public/Honeymoon';
 import { GroupTours } from './pages/public/GroupTours';
 import { Services } from './pages/public/Services';
+import { MICE } from './pages/public/MICE';
 import { About } from './pages/public/About';
 import { Contact } from './pages/public/Contact';
 
@@ -148,6 +149,7 @@ export const App: React.FC = () => {
         <Route path="/honeymoon" element={<Honeymoon />} />
         <Route path="/group-tours" element={<GroupTours />} />
         <Route path="/services" element={<Services />} />
+        <Route path="/mice" element={<MICE />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
 

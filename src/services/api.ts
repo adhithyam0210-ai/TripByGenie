@@ -268,6 +268,14 @@ export const api = {
       return fallbackData.packages;
     } catch {
       let list = fallbackData.packages;
+      try {
+        const stored = localStorage.getItem('tg_packages_store');
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed) && parsed.length > 0) list = parsed;
+        }
+      } catch {}
+
       if (params?.category && params.category !== 'all' && params.category !== 'All Packages') {
         list = list.filter((p: any) => p.category?.toLowerCase() === params.category?.toLowerCase());
       }
@@ -277,6 +285,9 @@ export const api = {
       }
       if (params?.destination_id) {
         list = list.filter((p: any) => p.destination_id === params.destination_id);
+      }
+      if (params?.featured) {
+        list = list.filter((p: any) => p.is_featured);
       }
       if (params?.limit) {
         list = list.slice(0, Number(params.limit));
@@ -587,6 +598,13 @@ export const api = {
     try {
       return await request<any[]>('/admin/packages');
     } catch {
+      try {
+        const stored = localStorage.getItem('tg_packages_store');
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        }
+      } catch {}
       return fallbackData.packages;
     }
   },
@@ -606,14 +624,29 @@ export const api = {
         body: JSON.stringify(data)
       });
     } catch (e) {
+      let currentPackages = fallbackData.packages || [];
+      try {
+        const stored = localStorage.getItem('tg_packages_store');
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed) && parsed.length > 0) currentPackages = parsed;
+        }
+      } catch {}
+
       const newPkg = {
         id: `pkg_${Date.now()}`,
         agency_id: 'agency_travel_genie',
         ...data,
         is_published: data.is_published !== undefined ? data.is_published : true,
+        is_featured: !!data.is_featured,
         created_at: new Date().toISOString()
       };
-      (fallbackData.packages = fallbackData.packages || []).unshift(newPkg);
+      currentPackages = [newPkg, ...currentPackages];
+      fallbackData.packages = currentPackages;
+      try {
+        localStorage.setItem('tg_packages_store', JSON.stringify(currentPackages));
+      } catch {}
+
       if (Array.isArray(data.itineraries)) {
         data.itineraries.forEach((it: any, idx: number) => {
           (fallbackData.package_itineraries = fallbackData.package_itineraries || []).push({
@@ -638,10 +671,24 @@ export const api = {
       });
     } catch (e) {
       // Local fallback sync
-      const pIdx = fallbackData.packages?.findIndex((p: any) => p.id === id);
+      let currentPackages = fallbackData.packages || [];
+      try {
+        const stored = localStorage.getItem('tg_packages_store');
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed) && parsed.length > 0) currentPackages = parsed;
+        }
+      } catch {}
+
+      const pIdx = currentPackages.findIndex((p: any) => p.id === id);
       if (pIdx !== -1) {
-        fallbackData.packages[pIdx] = { ...fallbackData.packages[pIdx], ...data };
+        currentPackages[pIdx] = { ...currentPackages[pIdx], ...data };
       }
+      fallbackData.packages = currentPackages;
+      try {
+        localStorage.setItem('tg_packages_store', JSON.stringify(currentPackages));
+      } catch {}
+
       if (Array.isArray(data.itineraries)) {
         fallbackData.package_itineraries = (fallbackData.package_itineraries || []).filter(
           (it: any) => it.package_id !== id
@@ -658,14 +705,26 @@ export const api = {
           });
         });
       }
-      return fallbackData.packages[pIdx];
+      return currentPackages[pIdx];
     }
   },
   deleteAdminPackage: async (id: string) => {
     try {
       return await request<any>(`/admin/packages/${id}`, { method: 'DELETE' });
     } catch {
-      fallbackData.packages = (fallbackData.packages || []).filter((p: any) => p.id !== id);
+      let currentPackages = fallbackData.packages || [];
+      try {
+        const stored = localStorage.getItem('tg_packages_store');
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed) && parsed.length > 0) currentPackages = parsed;
+        }
+      } catch {}
+      currentPackages = currentPackages.filter((p: any) => p.id !== id);
+      fallbackData.packages = currentPackages;
+      try {
+        localStorage.setItem('tg_packages_store', JSON.stringify(currentPackages));
+      } catch {}
       return { success: true };
     }
   },

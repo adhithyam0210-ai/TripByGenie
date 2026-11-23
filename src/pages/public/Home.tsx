@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Link, useOutletContext } from 'react-router-dom';
 import {
   Compass,
@@ -150,7 +150,7 @@ export const Home: React.FC = () => {
       const [bannersData, destsData, pkgsData, toursData, srvsData, testsData] = await Promise.all([
         api.getBanners().catch(() => fallbackData.hero_banners),
         api.getDestinations().catch(() => fallbackData.destinations),
-        api.getPackages({ limit: 12 }).catch(() => fallbackData.packages),
+        api.getPackages({ limit: 100 }).catch(() => fallbackData.packages),
         api.getGroupTours().catch(() => (fallbackData.packages || []).filter((p: any) => p.category === 'Group Tours')),
         api.getServices().catch(() => fallbackData.travel_services),
         api.getTestimonials().catch(() => fallbackData.testimonials)
@@ -206,6 +206,46 @@ export const Home: React.FC = () => {
     setIsVideoModalOpen(false);
   };
 
+  // Sliding stories slider state & controls
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+  const [isStoryHovered, setIsStoryHovered] = useState(false);
+  const storyContainerRef = useRef<HTMLDivElement>(null);
+
+  const checkScrollState = () => {
+    if (storyContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = storyContainerRef.current;
+      setCanScrollLeft(scrollLeft > 15);
+      setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 15);
+    }
+  };
+
+  useEffect(() => {
+    checkScrollState();
+    window.addEventListener('resize', checkScrollState);
+    return () => window.removeEventListener('resize', checkScrollState);
+  }, [testimonials]);
+
+  const handlePrevStory = () => {
+    if (storyContainerRef.current) {
+      const container = storyContainerRef.current;
+      const card = container.firstElementChild as HTMLElement;
+      const scrollAmount = card ? card.offsetWidth + 24 : container.clientWidth * 0.8;
+      container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+      setTimeout(checkScrollState, 350);
+    }
+  };
+
+  const handleNextStory = () => {
+    if (storyContainerRef.current) {
+      const container = storyContainerRef.current;
+      const card = container.firstElementChild as HTMLElement;
+      const scrollAmount = card ? card.offsetWidth + 24 : container.clientWidth * 0.8;
+      container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      setTimeout(checkScrollState, 350);
+    }
+  };
+
   const activeBanners = banners.length > 0 ? banners : defaultBanners;
   const currentBanner = activeBanners[currentBannerIndex] || defaultBanners[0];
 
@@ -240,14 +280,34 @@ export const Home: React.FC = () => {
     'Adventure Tours'
   ];
 
-  const filteredPackages = packages.filter((p) => {
-    if (selectedCategory === 'all' || selectedCategory === 'All Packages') return true;
-    if (selectedCategory === 'South India Tours') {
-      const southKeys = ['kerala', 'ooty', 'kodaikanal', 'coorg', 'munnar', 'mysore', 'south'];
-      return southKeys.some(k => (p.title + ' ' + p.destination).toLowerCase().includes(k));
+  // Exactly 9 package cards prioritizing manager featured packages
+  const displayedPackages = useMemo(() => {
+    let list = [...packages];
+
+    if (selectedCategory !== 'all' && selectedCategory !== 'All Packages') {
+      if (selectedCategory === 'South India Tours') {
+        const southKeys = ['kerala', 'ooty', 'kodaikanal', 'coorg', 'munnar', 'mysore', 'south'];
+        list = list.filter((p) =>
+          southKeys.some((k) => (p.title + ' ' + p.destination).toLowerCase().includes(k))
+        );
+      } else {
+        list = list.filter((p) => p.category?.toLowerCase() === selectedCategory.toLowerCase());
+      }
+      // Prioritize featured ones within category
+      list.sort((a, b) => (b.is_featured ? 1 : 0) - (a.is_featured ? 1 : 0));
+    } else {
+      // Prioritize packages featured by the manager
+      const featured = list.filter((p) => p.is_featured);
+      if (featured.length >= 9) {
+        list = featured;
+      } else {
+        list.sort((a, b) => (b.is_featured ? 1 : 0) - (a.is_featured ? 1 : 0));
+      }
     }
-    return p.category.toLowerCase() === selectedCategory.toLowerCase();
-  });
+
+    // Now strictly show 9 package cards
+    return list.slice(0, 9);
+  }, [packages, selectedCategory]);
 
   // Tour Package Category cards directly from tripbygenie.in
   const quickTourismCategories = [
@@ -591,15 +651,28 @@ export const Home: React.FC = () => {
             </div>
           </div>
 
-          {/* Packages Grid */}
+          {/* Packages Grid - Exactly 9 Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredPackages.map((pkg) => (
+            {displayedPackages.map((pkg) => (
               <PackageCard
                 key={pkg.id}
                 packageData={pkg}
                 onEnquire={() => handleOpenTripModal()}
               />
             ))}
+          </div>
+
+          {/* Explore All Packages CTA Button */}
+          <div className="mt-8 sm:mt-10 text-center">
+            <Link to="/packages">
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-[#082C43] text-[#082C43] hover:bg-[#082C43] hover:text-white font-bold text-xs"
+              >
+                View All Holiday Packages ({packages.length}) →
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
@@ -688,9 +761,197 @@ export const Home: React.FC = () => {
       )}
 
       {/* ======================================================== */}
+      {/* SECTION 5.8: MICE & CORPORATE TRAVEL (tripbygenie.in)     */}
+      {/* Meetings, Incentives, Conferences & Exhibitions          */}
+      {/* ======================================================== */}
+      <section className="py-10 sm:py-16 bg-[#F8F1E7]/70 relative border-t border-[#EFE7DA]">
+        <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
+          
+          {/* Section Header matching tripbygenie.in */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-8 sm:mb-10">
+            <div className="max-w-3xl space-y-2">
+              <span className="text-xs font-bold uppercase tracking-widest text-[#FF795C] block">
+                MICE • MEETINGS • INCENTIVES • CONFERENCES • EXHIBITIONS
+              </span>
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#082C43] font-display">
+                Corporate Travel & MICE Solutions
+              </h2>
+              <p className="text-xs sm:text-sm text-[#173247]/80 leading-relaxed">
+                Discover expert MICE travel solutions with the Best Travel Agency in South India for seamless meetings, incentives, conferences, and corporate events tailored to your business needs.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-3 shrink-0 w-full sm:w-auto">
+              <Link
+                to="/mice"
+                className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#082C43] hover:bg-[#17648A] text-white text-xs font-bold shadow-sm transition-all w-full sm:w-auto"
+              >
+                <span>View Full MICE Page</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+          </div>
+
+          {/* 4 Rich Photographic MICE Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            {[
+              {
+                letter: 'M',
+                title: 'Meetings',
+                subtitle: 'Boardrooms & Strategic Offsites',
+                desc: 'Executive board meetings, leadership retreats, high-speed Wi-Fi, audio-visual projection, and confidential business dining.',
+                highlights: ['Executive Boardroom Suites', 'AV & Digital Whiteboards', 'Private Business Dining'],
+                tag: 'Leadership & Strategy',
+                themeColor: 'text-[#17648A]',
+                badgeBg: 'bg-[#17648A]',
+                img: 'https://images.unsplash.com/photo-1517502884422-41eaead166d4?auto=format&fit=crop&w=800&q=80'
+              },
+              {
+                letter: 'I',
+                title: 'Incentives',
+                subtitle: 'Employee & Dealer Reward Tours',
+                desc: 'Reward top performers and dealers with memorable luxury getaways to Dubai, Bali, Thailand, Sri Lanka, Goa, and luxury cruises.',
+                highlights: ['5-Star Luxury Stays', 'Private Yacht & Catamaran Parties', 'Curated Gala Evenings'],
+                tag: 'Rewards & Recognition',
+                themeColor: 'text-[#FF795C]',
+                badgeBg: 'bg-[#FF795C]',
+                img: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80'
+              },
+              {
+                letter: 'C',
+                title: 'Conferences',
+                subtitle: 'National & Global Summits',
+                desc: 'End-to-end coordination for 50 to 1,500+ delegates. Room blocks, bulk airfare discounts, delegate registration, and stage production.',
+                highlights: ['Bulk Group Airfares', 'Large 5-Star Hotel Blocks', 'Acoustics & LED Video Walls'],
+                tag: 'Summits & Conventions',
+                themeColor: 'text-[#55C9BD]',
+                badgeBg: 'bg-[#008080]',
+                img: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80'
+              },
+              {
+                letter: 'E',
+                title: 'Exhibitions & Events',
+                subtitle: 'Product Launches & Gala Galas',
+                desc: 'Flawless execution for brand showcases, dealer expos, and themed gala nights with custom stall fabrication and celebrity artists.',
+                highlights: ['Custom Stall Fabrication', 'Intelligent Lighting & Sound', 'Celebrity Emcees & Artists'],
+                tag: 'Trade Expos & Galas',
+                themeColor: 'text-[#082C43]',
+                badgeBg: 'bg-[#082C43]',
+                img: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80'
+              }
+            ].map((pillar) => (
+              <div
+                key={pillar.title}
+                className="rounded-2xl sm:rounded-3xl overflow-hidden bg-white border border-[#EFE7DA] shadow-xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between group cursor-pointer"
+                onClick={handleOpenTripModal}
+              >
+                <div>
+                  {/* Visual Photographic Header with Badges */}
+                  <div className="relative h-44 sm:h-52 overflow-hidden bg-slate-900">
+                    <img
+                      src={pillar.img}
+                      alt={pillar.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                    
+                    {/* Top Left Pillar Code Badge */}
+                    <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-white text-[#082C43] shadow-xs text-xs font-bold tracking-wider flex items-center gap-1.5 border border-[#EFE7DA]">
+                      <span className={`w-2 h-2 rounded-full ${pillar.badgeBg}`} />
+                      <span>{pillar.letter} • {pillar.title}</span>
+                    </div>
+
+                    {/* Top Right Tag Badge */}
+                    <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-white text-[#082C43] shadow-xs text-[10px] font-bold tracking-wider border border-[#EFE7DA]">
+                      {pillar.tag}
+                    </div>
+
+                    {/* Bottom Image Subtitle */}
+                    <div className="absolute bottom-3 left-3 right-3 text-white">
+                      <p className="text-sm font-bold font-display drop-shadow-sm leading-tight text-white group-hover:text-amber-200 transition-colors">
+                        {pillar.subtitle}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Card Content */}
+                  <div className="p-4 sm:p-5 space-y-2.5 sm:space-y-3">
+                    <p className="text-xs text-[#173247]/75 leading-relaxed">
+                      {pillar.desc}
+                    </p>
+
+                    <div className="pt-2 border-t border-[#EFE7DA] space-y-1.5">
+                      {pillar.highlights.map((h) => (
+                        <div key={h} className="flex items-center gap-1.5 text-[11px] font-medium text-[#082C43]">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-[#55C9BD] shrink-0" />
+                          <span>{h}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Card Action Link */}
+                <div className="p-4 sm:p-5 pt-0">
+                  <div className="pt-3 border-t border-[#EFE7DA] flex items-center justify-between">
+                    <span className="text-[11px] font-bold text-[#55C9BD]">
+                      Custom Corporate SLA
+                    </span>
+                    <Link
+                      to="/mice"
+                      onClick={(e) => e.stopPropagation()}
+                      className="text-xs font-bold text-[#FF795C] hover:text-[#082C43] flex items-center gap-1 transition-colors"
+                    >
+                      <span>Inquire Now</span>
+                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Corporate Support Bar */}
+          <div className="mt-8 p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-[#082C43] text-white flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 sm:gap-6 shadow-xl">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-white/10 flex items-center justify-center shrink-0 text-[#55C9BD]">
+                <Globe2 className="w-5 h-5 sm:w-6 sm:h-6" />
+              </div>
+              <div>
+                <h4 className="text-sm sm:text-base font-bold font-display text-white">
+                  Corporate GST Invoicing • Group Flight Desks • 24/7 On-Site Coordinator
+                </h4>
+                <p className="text-xs text-white/75 mt-0.5">
+                  Popular offsite destinations: Goa, Kerala, Bali, Dubai, Thailand, Singapore, and Rajasthan.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 w-full lg:w-auto">
+              <Link to="/mice" className="w-full sm:w-auto">
+                <Button variant="primary" size="sm" className="w-full sm:w-auto font-bold text-xs shadow-md justify-center">
+                  Request MICE Proposal
+                </Button>
+              </Link>
+              <a
+                href="https://wa.me/919940463566?text=Hi%20TripbyGenie,%20I%20would%20like%20to%20inquire%20about%20Corporate%20MICE%20and%20Offsite%20packages%20for%20our%20company"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-bold shadow-xs transition-colors w-full sm:w-auto"
+              >
+                <PhoneCall className="w-3.5 h-3.5" />
+                <span>Corporate WhatsApp</span>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ======================================================== */}
       {/* SECTION 6: TRAVEL SERVICES (10 Services from Reference)  */}
       {/* ======================================================== */}
-      <section className="py-10 sm:py-12 bg-[#FFFDF8] relative">
+      <section className="py-10 sm:py-12 bg-[#FFFDF8] relative border-t border-[#EFE7DA]">
         <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
           <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
             <span className="text-xs font-bold uppercase tracking-widest text-[#FF795C] block mb-2">
@@ -729,6 +990,154 @@ export const Home: React.FC = () => {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ======================================================== */}
+      {/* SECTION 6.5: EASY TRAVEL LOANS (tripbygenie.in)           */}
+      {/* 5 Cards with 0 Down Payment, 0% Interest, 0 Fee, 6M EMI  */}
+      {/* ======================================================== */}
+      <section className="py-10 sm:py-14 bg-[#FFFDF8] relative border-t border-[#EFE7DA]">
+        <div className="max-w-[1450px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
+          
+          {/* Section Header */}
+          <div className="text-center max-w-3xl mx-auto space-y-2 mb-7 sm:mb-9">
+            <span className="text-xs font-bold uppercase tracking-widest text-[#FF795C] block">
+              FLEXIBLE VACATION FINANCING • NO-COST EMI
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#082C43] font-display leading-tight">
+              Say Goodbye to Stress, Hello to Blissful Holidays with Easy Travel Loans
+            </h2>
+            <p className="text-xs sm:text-sm text-[#173247]/75 max-w-xl mx-auto">
+              Don’t postpone your dream holiday. Travel with zero upfront burden and pay in simple, transparent monthly installments with Trip by Genie financing partners.
+            </p>
+          </div>
+
+          {/* The 5 Cards from tripbygenie.in Screenshot - Compact & Sleek */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4">
+            {[
+              {
+                id: 'loan-zero-down',
+                title: 'Zero Rupees Down Payment With Genie',
+                subtitle: 'Hassle-Free Holidays Begin with Here',
+                badge: '₹0 Down Payment',
+                img: 'https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=600&q=80'
+              },
+              {
+                id: 'loan-zero-interest',
+                title: 'Zero Rupees Intrest With Genie',
+                subtitle: 'Hassle-Free Holidays Begin with Here',
+                badge: '0% Interest Rate',
+                img: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=600&q=80'
+              },
+              {
+                id: 'loan-zero-fee',
+                title: 'Zero Processing FEE With Genie',
+                subtitle: 'Hassle-Free Holidays Begin with Here',
+                badge: 'Zero Hidden Fees',
+                img: 'https://images.unsplash.com/photo-1539635278303-d4002c07eae3?auto=format&fit=crop&w=600&q=80'
+              },
+              {
+                id: 'loan-6-months',
+                title: '6 Months Easy Vacations With Genie',
+                subtitle: 'Hassle-Free Holidays Begin with Here',
+                badge: '6 Months Tenor',
+                img: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=600&q=80'
+              },
+              {
+                id: 'loan-no-cost-emi',
+                title: 'No Cost EMI Vacations With Genie',
+                subtitle: 'Hassle-Free Holidays Begin with Here',
+                badge: 'Instant Approval',
+                img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80'
+              }
+            ].map((loanCard) => (
+              <div
+                key={loanCard.id}
+                onClick={handleOpenTripModal}
+                className="group relative rounded-2xl overflow-hidden bg-[#082C43] text-white shadow-xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col cursor-pointer border border-[#EFE7DA]"
+              >
+                {/* Image Section with Dotted Flight Path Accent - Compact Height */}
+                <div className="relative h-36 sm:h-40 md:h-44 overflow-hidden bg-[#082C43]/40">
+                  <img
+                    src={loanCard.img}
+                    alt={loanCard.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  {/* Seamless blended dark gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#082C43] via-[#082C43]/20 to-transparent" />
+                  
+                  {/* Flight Trail Decorative Vector */}
+                  <svg
+                    className="absolute inset-0 w-full h-full pointer-events-none opacity-30 group-hover:opacity-50 transition-opacity"
+                    viewBox="0 0 200 200"
+                    fill="none"
+                  >
+                    <path
+                      d="M20 180 C 60 120, 140 160, 180 40"
+                      stroke="white"
+                      strokeWidth="1.5"
+                      strokeDasharray="4 4"
+                    />
+                  </svg>
+
+                  {/* Top Right Pill Badge - Solid White Background */}
+                  <div className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full bg-white text-[#082C43] font-bold text-[9px] tracking-wider shadow-xs border border-[#EFE7DA]">
+                    {loanCard.badge}
+                  </div>
+                </div>
+
+                {/* Card Text Content with Brand Theme Color - Compact & Centered */}
+                <div className="p-3.5 sm:p-4 flex-1 flex flex-col justify-center text-center relative z-10 space-y-1 bg-[#082C43]">
+                  <h3 className="text-sm sm:text-[15px] font-bold font-display leading-tight tracking-tight text-white group-hover:text-[#55C9BD] transition-colors">
+                    {loanCard.title}
+                  </h3>
+                  
+                  <p className="text-[11px] font-normal text-white/75 leading-tight">
+                    {loanCard.subtitle}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Quick Eligibility Bar */}
+          <div className="mt-8 p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-[#F8F1E7] border border-[#EFE7DA] flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-2xl bg-[#55C9BD]/20 text-[#17648A] flex items-center justify-center shrink-0">
+                <CheckCircle2 className="w-5 h-5 text-[#55C9BD]" />
+              </div>
+              <div>
+                <h4 className="text-xs sm:text-sm font-bold text-[#082C43]">
+                  Instant Digital Verification • Zero Physical Paperwork
+                </h4>
+                <p className="text-[11px] text-[#173247]/75">
+                  Available on all domestic and international holiday tour packages above ₹15,000 per person.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 w-full sm:w-auto">
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={handleOpenTripModal}
+                className="w-full sm:w-auto font-bold text-xs shadow-xs justify-center"
+              >
+                Apply for 0% EMI Trip
+              </Button>
+              <a
+                href="https://wa.me/919940463566?text=Hi%20TripbyGenie,%20I%20would%20like%20to%20know%20more%20about%20Zero%20Rupees%20Down%20Payment%20and%20No%20Cost%20EMI%20holiday%20plans"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-bold shadow-xs transition-colors shrink-0"
+              >
+                <PhoneCall className="w-3.5 h-3.5" />
+                <span>WhatsApp EMI Desk</span>
+              </a>
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -818,10 +1227,12 @@ export const Home: React.FC = () => {
 
       {/* ======================================================== */}
       {/* SECTION 8: REAL CUSTOMER TESTIMONIALS (tripbygenie.in)   */}
+      {/* Sliding stories from left to right with navigation arrows */}
       {/* ======================================================== */}
-      <section className="py-10 sm:py-12 bg-[#FFFDF8]">
+      <section className="py-10 sm:py-12 bg-[#FFFDF8] relative overflow-hidden">
         <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
-          <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
+          {/* Header with Title */}
+          <div className="mb-8 sm:mb-10">
             <span className="text-xs font-bold uppercase tracking-widest text-[#FF795C] block mb-2">
               Stories From Our Travelers
             </span>
@@ -833,49 +1244,91 @@ export const Home: React.FC = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {testimonials.map((test) => {
-              const reviewContent = test.review_text || test.comment || '';
-              const isLong = reviewContent.length > 130;
+          {/* Sliding Stories Carousel with Left & Right Side Arrows */}
+          <div className="relative group/carousel">
+            {/* Left Side Arrow - Only appears when there are reviews on the left */}
+            {canScrollLeft && (
+              <button
+                type="button"
+                onClick={handlePrevStory}
+                className="absolute left-1 sm:-left-3 lg:-left-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-[#EFE7DA] bg-white hover:bg-[#082C43] hover:text-white text-[#082C43] shadow-xl flex items-center justify-center transition-all cursor-pointer hover:scale-110 active:scale-95"
+                title="Slide left to previous story"
+                aria-label="Previous story"
+              >
+                <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
+              </button>
+            )}
 
-              return (
-                <div
-                  key={test.id}
-                  className="bg-white p-6 rounded-3xl border border-[#EFE7DA] shadow-xs flex flex-col justify-between hover:shadow-md transition-shadow h-[220px]"
-                >
-                  <div className="space-y-2.5 overflow-hidden">
-                    <div className="flex items-center gap-1">
-                      {[...Array(test.rating || 5)].map((_, i) => (
-                        <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                      ))}
-                    </div>
-                    <p className="text-xs text-[#173247]/85 leading-relaxed line-clamp-3">
-                      {reviewContent}
-                    </p>
-                  </div>
+            {/* Sliding Stories Carousel Track */}
+            <div
+              ref={storyContainerRef}
+              onScroll={checkScrollState}
+              onMouseEnter={() => setIsStoryHovered(true)}
+              onMouseLeave={() => setIsStoryHovered(false)}
+              className="flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-4 pt-1 px-1 scrollbar-none"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              {testimonials.map((test, index) => {
+                const reviewContent = test.review_text || test.comment || '';
+                const isLong = reviewContent.length > 130;
 
-                  <div className="pt-3.5 border-t border-[#EFE7DA] flex items-end justify-between gap-2">
-                    <div className="min-w-0 pr-1">
-                      <h4 className="text-base sm:text-lg font-bold text-[#082C43] truncate leading-tight">
-                        {test.customer_name}
-                      </h4>
-                      <span className="text-xs text-[#55C9BD] font-medium block mt-0.5 truncate">
-                        {test.destination}
-                      </span>
+                return (
+                  <div
+                    key={test.id || index}
+                    className="w-[85vw] sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] snap-start shrink-0 bg-white p-6 rounded-3xl border border-[#EFE7DA] shadow-xs hover:shadow-lg transition-all duration-300 flex flex-col justify-between h-[230px]"
+                  >
+                    <div className="space-y-2.5 overflow-hidden">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1">
+                          {[...Array(test.rating || 5)].map((_, i) => (
+                            <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                          ))}
+                        </div>
+                        <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                          Verified Trip
+                        </span>
+                      </div>
+                      <p className="text-xs text-[#173247]/85 leading-relaxed line-clamp-3 italic">
+                        "{reviewContent}"
+                      </p>
                     </div>
-                    {isLong && (
-                      <button
-                        type="button"
-                        onClick={() => setSelectedStory(test)}
-                        className="shrink-0 text-xs font-bold text-[#FF795C] hover:text-white bg-[#FF795C]/10 hover:bg-[#FF795C] px-3 py-1.5 rounded-full transition-all cursor-pointer flex items-center gap-1 shadow-2xs"
-                      >
-                        View
-                      </button>
-                    )}
+
+                    <div className="pt-3.5 border-t border-[#EFE7DA] flex items-end justify-between gap-2">
+                      <div className="min-w-0 pr-1">
+                        <h4 className="text-base sm:text-lg font-bold text-[#082C43] truncate leading-tight">
+                          {test.customer_name}
+                        </h4>
+                        <span className="text-xs text-[#55C9BD] font-medium block mt-0.5 truncate">
+                          {test.destination}
+                        </span>
+                      </div>
+                      {isLong && (
+                        <button
+                          type="button"
+                          onClick={() => setSelectedStory(test)}
+                          className="shrink-0 text-xs font-bold text-[#FF795C] hover:text-white bg-[#FF795C]/10 hover:bg-[#FF795C] px-3 py-1.5 rounded-full transition-all cursor-pointer flex items-center gap-1 shadow-2xs"
+                        >
+                          Read Story
+                        </button>
+                      )}
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
+
+            {/* Right Side Arrow - Only appears when there are reviews on the right */}
+            {canScrollRight && (
+              <button
+                type="button"
+                onClick={handleNextStory}
+                className="absolute right-1 sm:-right-3 lg:-right-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-[#EFE7DA] bg-white hover:bg-[#082C43] hover:text-white text-[#082C43] shadow-xl flex items-center justify-center transition-all cursor-pointer hover:scale-110 active:scale-95"
+                title="Slide right to next story"
+                aria-label="Next story"
+              >
+                <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
+              </button>
+            )}
           </div>
         </div>
       </section>

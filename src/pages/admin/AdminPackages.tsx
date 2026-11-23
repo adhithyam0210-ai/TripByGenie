@@ -18,7 +18,8 @@ import {
   MapPin,
   Compass,
   FileText,
-  Users
+  Users,
+  Star
 } from 'lucide-react';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { Button } from '../../components/common/Button';
@@ -46,7 +47,7 @@ export const AdminPackages: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedStatus, setSelectedStatus] = useState('all');
-  const [viewMode, setViewMode] = useState<'all' | 'group'>('all');
+  const [viewMode, setViewMode] = useState<'all' | 'featured' | 'group'>('all');
 
   // Create / Edit Modal
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -359,11 +360,33 @@ export const AdminPackages: React.FC = () => {
     return packages.filter((p) => p.is_group_tour || p.category === 'Group Tours').length;
   }, [packages]);
 
+  const featuredCount = useMemo(() => {
+    return packages.filter((p) => p.is_featured).length;
+  }, [packages]);
+
+  const toggleFeatured = async (pkg: Package) => {
+    try {
+      const nextFeatured = !pkg.is_featured;
+      await api.updateAdminPackage(pkg.id, { is_featured: nextFeatured });
+      setPackages((prev) =>
+        prev.map((p) => (p.id === pkg.id ? { ...p, is_featured: nextFeatured } : p))
+      );
+      success(
+        nextFeatured
+          ? `"${pkg.title}" is now featured on the homepage!`
+          : `"${pkg.title}" removed from homepage featured.`
+      );
+    } catch (err: any) {
+      error(err.message || 'Failed to update featured status.');
+    }
+  };
+
   // Filter packages based on viewMode, search query, category, and publication status
   const filteredPackages = useMemo(() => {
     return packages.filter((pkg) => {
       const isGroup = pkg.is_group_tour || pkg.category === 'Group Tours';
       if (viewMode === 'group' && !isGroup) return false;
+      if (viewMode === 'featured' && !pkg.is_featured) return false;
 
       const q = searchQuery.toLowerCase().trim();
       const dest = destinations.find((d) => d.id === pkg.destination_id);
@@ -413,8 +436,8 @@ export const AdminPackages: React.FC = () => {
       }
     >
       <div className="space-y-6">
-        {/* Navigation Tabs: All Packages vs Guaranteed Group Tours */}
-        <div className="flex items-center gap-2 border-b border-[#EFE7DA] pb-3">
+        {/* Navigation Tabs: All Packages vs Featured vs Guaranteed Group Tours */}
+        <div className="flex flex-wrap items-center gap-2 border-b border-[#EFE7DA] pb-3">
           <button
             type="button"
             onClick={() => { setViewMode('all'); setSelectedCategory('all'); }}
@@ -426,6 +449,18 @@ export const AdminPackages: React.FC = () => {
           >
             <Layers className="w-4 h-4" />
             All Packages ({packages.length})
+          </button>
+          <button
+            type="button"
+            onClick={() => { setViewMode('featured'); setSelectedCategory('all'); }}
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              viewMode === 'featured'
+                ? 'bg-amber-500 text-white shadow-xs'
+                : 'bg-white text-slate-600 hover:bg-[#F8F1E7] border border-[#EFE7DA]'
+            }`}
+          >
+            <Star className={`w-4 h-4 ${viewMode === 'featured' ? 'fill-white text-white' : 'text-amber-500 fill-amber-500'}`} />
+            Homepage Featured ({featuredCount})
           </button>
           <button
             type="button"
@@ -514,6 +549,7 @@ export const AdminPackages: React.FC = () => {
                   <th className="py-3 px-4">Duration</th>
                   <th className="py-3 px-4">Public Retail</th>
                   <th className="py-3 px-4">Wholesale</th>
+                  <th className="py-3 px-4 text-center">Featured on Home</th>
                   <th className="py-3 px-4">Status</th>
                   <th className="py-3 px-4 text-right">Actions</th>
                 </tr>
@@ -566,6 +602,21 @@ export const AdminPackages: React.FC = () => {
                       </td>
                       <td className="py-3.5 px-4 font-extrabold text-[#FF795C]">
                         ₹{wholesale.toLocaleString('en-IN')}
+                      </td>
+                      <td className="py-3.5 px-4 text-center">
+                        <button
+                          type="button"
+                          onClick={() => toggleFeatured(pkg)}
+                          title={pkg.is_featured ? "Click to unfeature from homepage" : "Click to feature on homepage"}
+                          className={`inline-flex items-center gap-1.5 font-bold text-[11px] px-3 py-1 rounded-full cursor-pointer transition-all shadow-2xs ${
+                            pkg.is_featured
+                              ? 'bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200'
+                              : 'bg-slate-100 text-slate-500 border border-slate-200 hover:bg-slate-200 hover:text-slate-800'
+                          }`}
+                        >
+                          <Star className={`w-3.5 h-3.5 ${pkg.is_featured ? 'fill-amber-500 text-amber-500' : 'text-slate-400'}`} />
+                          <span>{pkg.is_featured ? 'Featured' : 'Standard'}</span>
+                        </button>
                       </td>
                       <td className="py-3.5 px-4">
                         <button
@@ -901,17 +952,36 @@ export const AdminPackages: React.FC = () => {
                   />
                 </div>
 
-                <div className="flex items-center gap-6 pt-2">
-                  <label className="flex items-center gap-2 cursor-pointer font-bold text-xs text-[#082C43]">
-                    <input
-                      type="checkbox"
-                      checked={formData.is_featured}
-                      onChange={(e) => setFormData({ ...formData, is_featured: e.target.checked })}
-                      className="rounded text-[#FF795C]"
-                    />
-                    Featured Package
-                  </label>
+                {/* Homepage Featuring & Publishing Controls */}
+                <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-300 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2.5">
+                      <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
+                      <div>
+                        <span className="font-bold text-[#082C43] text-xs block">
+                          Feature on Homepage (Public Website)
+                        </span>
+                        <span className="text-[10px] text-slate-500">
+                          Displays this package prominently in the 9 'Featured Holiday Packages' cards on the homepage
+                        </span>
+                      </div>
+                    </div>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={formData.is_featured}
+                        onChange={(e) => setFormData({ ...formData, is_featured: e.target.checked })}
+                        className="sr-only peer"
+                      />
+                      <div className="w-9 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-amber-500"></div>
+                      <span className="ml-2 text-xs font-bold text-amber-900">
+                        {formData.is_featured ? 'Featured' : 'Standard'}
+                      </span>
+                    </label>
+                  </div>
+                </div>
 
+                <div className="flex items-center gap-6 pt-1">
                   <label className="flex items-center gap-2 cursor-pointer font-bold text-xs text-[#082C43]">
                     <input
                       type="checkbox"
@@ -919,7 +989,7 @@ export const AdminPackages: React.FC = () => {
                       onChange={(e) => setFormData({ ...formData, is_published: e.target.checked })}
                       className="rounded text-[#082C43]"
                     />
-                    Publish Immediately
+                    Publish Immediately (Visible to Customers)
                   </label>
                 </div>
               </div>

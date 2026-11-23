@@ -369,14 +369,14 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       <aside
         className={`hidden lg:flex ${
           isSidebarCollapsed ? 'w-20' : 'w-64'
-        } h-screen sticky top-0 bg-[#181B26] text-white flex-col shrink-0 border-r border-[#262B3D] z-20 transition-all duration-300 ease-in-out relative`}
+        } h-screen sticky top-0 bg-[#485264] text-white flex-col shrink-0 border-r border-[#5F6B82] z-40 transition-all duration-300 ease-in-out relative`}
       >
-        {/* Protruding Sidebar Collapse / Expand Toggle Button (Compact & Sleek) */}
+        {/* Protruding Sidebar Collapse / Expand Toggle Button (Compact & Sleek, positioned clearly below the header) */}
         <button
           type="button"
           onClick={toggleSidebarCollapse}
           title={isSidebarCollapsed ? "Expand Sidebar (Ctrl + B)" : "Collapse Sidebar (Ctrl + B)"}
-          className="absolute -right-2.5 top-16 z-30 w-5 h-7.5 bg-[#2563EB] hover:bg-blue-600 active:scale-95 text-white flex items-center justify-center rounded-r-xl shadow-md shadow-blue-900/30 cursor-pointer transition-all duration-200 border border-l-0 border-white/20 group hover:w-5.5 hover:shadow-blue-500/40"
+          className="absolute -right-2.5 top-24 z-50 w-5 h-7.5 bg-[#2563EB] hover:bg-blue-600 active:scale-95 text-white flex items-center justify-center rounded-r-xl shadow-md shadow-blue-900/30 cursor-pointer transition-all duration-200 border border-l-0 border-white/20 group hover:w-5.5 hover:shadow-blue-500/40"
           aria-label={isSidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
           <Menu className="w-3 h-3 text-white group-hover:scale-110 transition-transform" />
@@ -386,7 +386,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         <div className={`p-4 border-b border-white/10 flex flex-col gap-2 shrink-0 ${isSidebarCollapsed ? 'px-2 items-center' : ''}`}>
           <div className={`bg-white rounded-2xl shadow-xs flex items-center justify-center ${isSidebarCollapsed ? 'w-11 h-11 p-1' : 'px-3 py-2'}`}>
             {isSidebarCollapsed ? (
-              <Link to="/" title="TripByGenie Home" className="font-extrabold text-[#181B26] text-base tracking-tighter font-display">
+              <Link to="/" title="TripByGenie Home" className="font-extrabold text-[#485264] text-base tracking-tighter font-display">
                 TG<span className="text-[#2563EB]">.</span>
               </Link>
             ) : (
@@ -411,7 +411,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         </div>
 
         {/* Current Agency Capsule */}
-        <div className={`py-3 bg-[#12141D]/70 border-b border-white/5 flex items-center text-xs shrink-0 ${isSidebarCollapsed ? 'justify-center px-2' : 'justify-between px-4'}`}>
+        <div className={`py-3 bg-[#3B4353]/70 border-b border-white/10 flex items-center text-xs shrink-0 ${isSidebarCollapsed ? 'justify-center px-2' : 'justify-between px-4'}`}>
           {isSidebarCollapsed ? (
             <div title={`${agency?.name || 'Travel Genie'} (${agency?.currency || 'INR'})`} className="flex items-center justify-center">
               <Building2 className="w-4 h-4 text-[#55C9BD]" />
@@ -455,7 +455,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                       >
                         <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-slate-300 group-hover:text-white'}`} />
                         {item.badge && (
-                          <span className="absolute top-1.5 right-2 w-2 h-2 rounded-full bg-[#55C9BD] ring-2 ring-[#181B26]" />
+                          <span className="absolute top-1.5 right-2 w-2 h-2 rounded-full bg-[#55C9BD] ring-2 ring-[#485264]" />
                         )}
                       </Link>
                     );
@@ -522,15 +522,15 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                   }
 
                   return (
-                    <div key={sec.id} className="rounded-xl overflow-hidden bg-[#12141D]/60 border border-white/5">
+                    <div key={sec.id} className="rounded-xl overflow-hidden bg-[#3B4353]/60 border border-white/10">
                       {/* Section Header Button with Dropdown arrow */}
                       <button
                         type="button"
                         onClick={() => toggleAdminDropdown(sec.id)}
                         className={`w-full flex items-center justify-between p-2.5 text-xs font-bold transition-colors cursor-pointer text-left ${
                           isAnyChildActive
-                            ? 'bg-white/10 text-white'
-                            : 'hover:bg-white/5 text-white/90'
+                            ? 'bg-white/15 text-white'
+                            : 'hover:bg-white/10 text-white/90'
                         }`}
                       >
                         <div className="flex items-center gap-2">
@@ -551,7 +551,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
                       {/* Dropdown Items */}
                       {isOpen && (
-                        <div className="p-1 space-y-0.5 bg-[#10121A]/80 border-t border-white/5">
+                        <div className="p-1 space-y-0.5 bg-[#343B49]/80 border-t border-white/10">
                           {sec.items.map((sub) => {
                             const isSubActive = location.pathname === sub.path;
                             const SubIcon = sub.icon;
@@ -605,7 +605,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                   >
                     <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-slate-300 group-hover:text-white'}`} />
                     {item.badge && (
-                      <span className="absolute top-1.5 right-2 w-2 h-2 rounded-full bg-[#55C9BD] ring-2 ring-[#181B26]" />
+                      <span className="absolute top-1.5 right-2 w-2 h-2 rounded-full bg-[#55C9BD] ring-2 ring-[#485264]" />
                     )}
                   </Link>
                 );
@@ -639,7 +639,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         </nav>
 
         {/* Footer: User profile & quick sign out */}
-        <div className={`p-4 border-t border-white/10 bg-[#12141D] shrink-0 ${isSidebarCollapsed ? 'flex flex-col items-center gap-2 px-2' : ''}`}>
+        <div className={`p-4 border-t border-white/10 bg-[#3B4353] shrink-0 ${isSidebarCollapsed ? 'flex flex-col items-center gap-2 px-2' : ''}`}>
           {isSidebarCollapsed ? (
             <div className="flex flex-col items-center gap-2.5 w-full">
               <img
@@ -727,7 +727,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             {/* View Live Public Website */}
             <Link
               to="/"
-              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#17648A] to-[#181B26] text-white hover:opacity-90 text-xs font-bold transition-all shadow-sm"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#17648A] to-[#485264] text-white hover:opacity-90 text-xs font-bold transition-all shadow-sm"
             >
               <Globe2 className="w-3.5 h-3.5 text-[#55C9BD]" />
               <span>Public Website</span>
@@ -738,7 +738,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             <div className="relative">
               <button
                 onClick={() => setIsAgencyDropdownOpen(!isAgencyDropdownOpen)}
-                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-[#EFE7DA] bg-[#F8F1E7]/50 hover:bg-[#F8F1E7] text-xs font-semibold text-[#181B26] transition-colors cursor-pointer"
+                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-[#EFE7DA] bg-[#F8F1E7]/50 hover:bg-[#F8F1E7] text-xs font-semibold text-[#485264] transition-colors cursor-pointer"
               >
                 <Building2 className="w-3.5 h-3.5 text-[#17648A]" />
                 <span className="hidden md:inline truncate max-w-[130px]">
@@ -759,7 +759,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                       className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg hover:bg-[#F8F1E7] text-left cursor-pointer transition-colors"
                     >
                       <div>
-                        <div className="font-bold text-[#181B26]">{a.name}</div>
+                        <div className="font-bold text-[#485264]">{a.name}</div>
                         <div className="text-[10px] text-slate-400">{a.slug}</div>
                       </div>
                       {agency?.id === a.id && (
@@ -778,7 +778,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 type="button"
                 onClick={() => demoLogin('admin')}
                 className={`px-2 py-0.5 rounded-lg font-bold transition-colors cursor-pointer ${
-                  role === 'admin' ? 'bg-[#181B26] text-white shadow-xs' : 'text-[#181B26] hover:bg-white'
+                  role === 'admin' ? 'bg-[#485264] text-white shadow-xs' : 'text-[#485264] hover:bg-white'
                 }`}
               >
                 Admin
@@ -916,7 +916,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             onClick={() => setIsMobileSidebarOpen(false)}
           />
           <div
-            className="relative w-80 max-w-[85vw] h-full bg-[#181B26] text-white flex flex-col z-50 p-4 shadow-2xl overscroll-contain overflow-hidden"
+            className="relative w-80 max-w-[85vw] h-full bg-[#485264] text-white flex flex-col z-50 p-4 shadow-2xl overscroll-contain overflow-hidden"
             style={{ overscrollBehavior: 'contain' }}
           >
             <div className="flex items-center justify-between pb-3 border-b border-white/10 shrink-0">
@@ -965,7 +965,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             </div>
 
             {/* Quick Role Switcher (Mobile testing helper) */}
-            <div className="mb-2 p-2 rounded-xl bg-[#12141D]/70 border border-white/5 shrink-0">
+            <div className="mb-2 p-2 rounded-xl bg-[#3B4353]/70 border border-white/10 shrink-0">
               <span className="text-[10px] font-bold uppercase tracking-wider text-[#55C9BD] block mb-1.5">
                 Switch Portal Role:
               </span>
