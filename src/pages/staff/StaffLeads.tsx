@@ -202,16 +202,16 @@ export const StaffLeads: React.FC = () => {
               </span>
             </div>
 
-            <div className="overflow-x-auto max-h-[650px] overflow-y-auto">
-              <table className="w-full text-xs text-left">
-                <thead className="bg-[#F8F1E7]/60 text-[#173247] uppercase font-bold border-b border-[#EFE7DA] sticky top-0 z-10">
-                  <tr>
-                    <th className="py-3 px-4">Customer</th>
-                    <th className="py-3 px-4">Destination</th>
-                    <th className="py-3 px-4">Pax / Budget</th>
-                    <th className="py-3 px-4">Status</th>
-                    <th className="py-3 px-4">Follow-up</th>
-                    <th className="py-3 px-4 text-right">Action</th>
+            <div className="overflow-x-auto max-h-[650px] overflow-y-auto relative">
+              <table className="w-full text-xs text-left border-collapse">
+                <thead className="bg-[#F8F1E7] text-[#173247] uppercase font-bold sticky top-0 z-10 shadow-xs">
+                  <tr className="bg-[#F8F1E7]">
+                    <th className="py-3.5 px-4 bg-[#F8F1E7] whitespace-nowrap border-b border-[#EFE7DA]">Customer</th>
+                    <th className="py-3.5 px-4 bg-[#F8F1E7] whitespace-nowrap border-b border-[#EFE7DA]">Destination</th>
+                    <th className="py-3.5 px-4 bg-[#F8F1E7] whitespace-nowrap border-b border-[#EFE7DA]">Pax / Budget</th>
+                    <th className="py-3.5 px-4 bg-[#F8F1E7] whitespace-nowrap border-b border-[#EFE7DA]">Status</th>
+                    <th className="py-3.5 px-4 bg-[#F8F1E7] whitespace-nowrap border-b border-[#EFE7DA]">Follow-up</th>
+                    <th className="py-3.5 px-4 bg-[#F8F1E7] text-right whitespace-nowrap border-b border-[#EFE7DA]">Action</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#EFE7DA]">

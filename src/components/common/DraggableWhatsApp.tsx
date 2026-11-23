@@ -13,7 +13,9 @@ interface DraggableWhatsAppProps {
 export const DraggableWhatsApp: React.FC<DraggableWhatsAppProps> = ({ isModalOpen = false }) => {
   const location = useLocation();
   const [position, setPosition] = useState<Position | null>(null);
+  const [hasDragged, setHasDragged] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+
   const dragStartRef = useRef<{ startX: number; startY: number; posX: number; posY: number; hasMoved: boolean }>({
     startX: 0,
     startY: 0,
@@ -23,46 +25,30 @@ export const DraggableWhatsApp: React.FC<DraggableWhatsAppProps> = ({ isModalOpe
   });
   const buttonRef = useRef<HTMLDivElement>(null);
 
-  // Initialize position to bottom-right corner on mount
+  // Clear any previously persisted positions on mount so refresh always resets to the default bottom-right position
   useEffect(() => {
     try {
-      const saved = localStorage.getItem('tg_whatsapp_pos');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (typeof parsed.x === 'number' && typeof parsed.y === 'number') {
-          // Verify saved coordinates are still within screen bounds
-          const btnWidth = 60;
-          const btnHeight = 60;
-          const maxX = window.innerWidth - btnWidth - 10;
-          const maxY = window.innerHeight - btnHeight - 10;
-          const clampedX = Math.max(10, Math.min(maxX, parsed.x));
-          const clampedY = Math.max(10, Math.min(maxY, parsed.y));
-          setPosition({ x: clampedX, y: clampedY });
-          return;
-        }
-      }
+      localStorage.removeItem('tg_whatsapp_pos');
     } catch {
-      // ignore JSON parse error
+      // ignore
     }
-
-    // Default: bottom-right corner (24px from bottom & right)
-    const btnWidth = 60;
-    const btnHeight = 60;
-    setPosition({
-      x: window.innerWidth - btnWidth - 24,
-      y: window.innerHeight - btnHeight - 24
-    });
   }, []);
 
-  // Update position if window is resized to prevent getting stuck off-screen
+  // When opening a new page or navigating, reset back to default bottom-right position
+  useEffect(() => {
+    setHasDragged(false);
+    setPosition(null);
+  }, [location.pathname]);
+
+  // Keep button within screen bounds on window resize if currently dragged
   useEffect(() => {
     const handleResize = () => {
+      if (!hasDragged) return;
       setPosition((prev) => {
         if (!prev) return null;
-        const btnWidth = 60;
-        const btnHeight = 60;
-        const maxX = window.innerWidth - btnWidth - 10;
-        const maxY = window.innerHeight - btnHeight - 10;
+        const btnSize = 60;
+        const maxX = window.innerWidth - btnSize - 10;
+        const maxY = window.innerHeight - btnSize - 10;
         return {
           x: Math.max(10, Math.min(maxX, prev.x)),
           y: Math.max(10, Math.min(maxY, prev.y))
@@ -71,23 +57,22 @@ export const DraggableWhatsApp: React.FC<DraggableWhatsAppProps> = ({ isModalOpe
     };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, [hasDragged]);
 
   const handlePointerDown = (e: React.PointerEvent) => {
-    // Only respond to main button
+    // Only respond to primary click / touch
     if (e.button !== 0) return;
 
-    const currentX = position ? position.x : window.innerWidth - 84;
-    const currentY = position ? position.y : window.innerHeight - 84;
-
+    const rect = e.currentTarget.getBoundingClientRect();
     dragStartRef.current = {
       startX: e.clientX,
       startY: e.clientY,
-      posX: currentX,
-      posY: currentY,
+      posX: rect.left,
+      posY: rect.top,
       hasMoved: false
     };
 
+    setPosition({ x: rect.left, y: rect.top });
     setIsDragging(true);
 
     const target = e.currentTarget as HTMLElement;
@@ -102,12 +87,12 @@ export const DraggableWhatsApp: React.FC<DraggableWhatsAppProps> = ({ isModalOpe
 
     if (Math.abs(deltaX) > 4 || Math.abs(deltaY) > 4) {
       dragStartRef.current.hasMoved = true;
+      setHasDragged(true);
     }
 
-    const btnWidth = 60;
-    const btnHeight = 60;
-    const maxX = window.innerWidth - btnWidth - 10;
-    const maxY = window.innerHeight - btnHeight - 10;
+    const btnSize = 60;
+    const maxX = window.innerWidth - btnSize - 10;
+    const maxY = window.innerHeight - btnSize - 10;
 
     const newX = Math.max(10, Math.min(maxX, dragStartRef.current.posX + deltaX));
     const newY = Math.max(10, Math.min(maxY, dragStartRef.current.posY + deltaY));
@@ -126,15 +111,7 @@ export const DraggableWhatsApp: React.FC<DraggableWhatsAppProps> = ({ isModalOpe
       // ignore
     }
 
-    if (position) {
-      try {
-        localStorage.setItem('tg_whatsapp_pos', JSON.stringify(position));
-      } catch {
-        // ignore
-      }
-    }
-
-    // If user tapped without dragging, open WhatsApp
+    // If user tapped/clicked without dragging, open WhatsApp
     if (!dragStartRef.current.hasMoved) {
       window.open(
         'https://wa.me/919940463566?text=Hi%20TripByGenie%2C%20I%20would%20like%20to%20enquire%20about%20a%20travel%20package.',
@@ -150,8 +127,6 @@ export const DraggableWhatsApp: React.FC<DraggableWhatsAppProps> = ({ isModalOpe
   // 2. Hide completely when trip modal or popup is open
   if (isModalOpen) return null;
 
-  if (!position) return null;
-
   return (
     <div
       ref={buttonRef}
@@ -159,19 +134,25 @@ export const DraggableWhatsApp: React.FC<DraggableWhatsAppProps> = ({ isModalOpe
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerCancel={() => setIsDragging(false)}
-      style={{
-        left: `${position.x}px`,
-        top: `${position.y}px`,
-        touchAction: 'none'
-      }}
+      style={
+        hasDragged && position
+          ? {
+              left: `${position.x}px`,
+              top: `${position.y}px`,
+              touchAction: 'none'
+            }
+          : {
+              touchAction: 'none'
+            }
+      }
       className={`fixed z-20 select-none cursor-grab active:cursor-grabbing ${
-        isDragging ? 'scale-105 transition-none' : 'transition-transform duration-150'
-      }`}
-      aria-label="Chat with us on WhatsApp (Drag to reposition)"
+        !hasDragged ? 'bottom-6 right-6' : ''
+      } ${isDragging ? 'scale-105 transition-none' : 'transition-transform duration-150'}`}
+      aria-label="Chat with us on WhatsApp (Drag to move)"
       title="Chat with us on WhatsApp (Drag to move)"
     >
       <div className="relative w-14 h-14 sm:w-15 sm:h-15 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white shadow-2xl flex items-center justify-center ring-4 ring-[#25D366]/30 hover:scale-105 active:scale-95 transition-all">
-        {/* Crisp clean official WhatsApp phone icon with NO arrow or text */}
+        {/* Crisp clean official WhatsApp phone icon */}
         <svg
           className="w-7 h-7 sm:w-8 sm:h-8 fill-white pointer-events-none"
           viewBox="0 0 24 24"

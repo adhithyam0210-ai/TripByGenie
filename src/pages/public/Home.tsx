@@ -419,9 +419,9 @@ export const Home: React.FC = () => {
       {/* ======================================================== */}
       {/* SECTION 2: TOURISM PACKAGE CATEGORIES (from tripbygenie) */}
       {/* ======================================================== */}
-      <section className="py-20 bg-[#FFFDF8] relative">
+      <section className="py-10 sm:py-12 bg-[#FFFDF8] relative">
         <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
-          <div className="text-center max-w-3xl mx-auto mb-12">
+          <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10">
             <span className="text-xs font-bold uppercase tracking-widest text-[#FF795C] block mb-2">
               Select The Best Packages For Your Tourism
             </span>
@@ -479,11 +479,11 @@ export const Home: React.FC = () => {
       {/* ======================================================== */}
       {/* SECTION 3: POPULAR DESTINATIONS                          */}
       {/* ======================================================== */}
-      <section className="py-20 relative bg-[#F8F1E7]/40 border-y border-[#EFE7DA]">
+      <section className="py-10 sm:py-12 relative bg-[#F8F1E7]/40 border-y border-[#EFE7DA]">
         <TravelPatternBg variant="cream" opacity={0.04} />
 
         <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 relative z-10">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 sm:mb-8 gap-4">
             <div>
               <span className="text-xs font-bold uppercase tracking-widest text-[#FF795C] block mb-1">
                 Curated Travel Escapes
@@ -529,7 +529,7 @@ export const Home: React.FC = () => {
             ))}
           </div>
 
-          <div className="mt-10 text-center">
+          <div className="mt-6 sm:mt-7 text-center">
             <Link to="/destinations">
               <Button variant="outline" size="lg" className="border-[#082C43] text-[#082C43] hover:bg-[#082C43] hover:text-white font-bold text-xs">
                 Explore All Destinations →
@@ -542,9 +542,9 @@ export const Home: React.FC = () => {
       {/* ======================================================== */}
       {/* SECTION 4: HOLIDAY PACKAGES & PRICING                    */}
       {/* ======================================================== */}
-      <section className="py-20 relative bg-[#FFFDF8]">
+      <section className="py-10 sm:py-12 relative bg-[#FFFDF8]">
         <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 sm:mb-8 gap-4">
             <div>
               <span className="text-xs font-bold uppercase tracking-widest text-[#55C9BD] block mb-1">
                 Transparent Pricing • 4-Star Stays
@@ -608,11 +608,11 @@ export const Home: React.FC = () => {
       {/* SECTION 5: GUARANTEED GROUP TOURS                        */}
       {/* ======================================================== */}
       {groupTours.length > 0 && (
-        <section className="py-20 relative bg-[#082C43] text-white overflow-hidden">
+        <section className="py-10 sm:py-12 relative bg-[#082C43] text-white overflow-hidden">
           <TravelPatternBg variant="navy" opacity={0.06} />
 
           <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 relative z-10">
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 sm:mb-8 gap-4">
               <div>
                 <span className="text-xs font-bold uppercase tracking-widest text-[#FF795C] block mb-1">
                   Fixed Departure Departures
@@ -641,11 +641,11 @@ export const Home: React.FC = () => {
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-[#FF795C] text-white">
-                        Upcoming Departure
+                        {tour.upcoming_date ? `Departure: ${tour.upcoming_date}` : 'Upcoming Departure'}
                       </span>
                       <span className="text-xs font-bold text-[#55C9BD] flex items-center gap-1">
                         <Users className="w-3.5 h-3.5" />
-                        {tour.seats_left || 8} Seats Left
+                        {tour.available_seats !== undefined ? tour.available_seats : (tour.seats_left || 8)} Seats Left
                       </span>
                     </div>
 
@@ -674,7 +674,7 @@ export const Home: React.FC = () => {
                         ₹{Number(tour.starting_price || tour.public_price || tour.b2c_price || tour.price || 0).toLocaleString('en-IN')}
                       </span>
                     </div>
-                    <Link to={`/packages/${tour.id}`}>
+                    <Link to={`/packages/${tour.slug || tour.id}`}>
                       <Button variant="primary" size="sm" className="text-xs font-bold">
                         Book Seat
                       </Button>
@@ -690,9 +690,9 @@ export const Home: React.FC = () => {
       {/* ======================================================== */}
       {/* SECTION 6: TRAVEL SERVICES (10 Services from Reference)  */}
       {/* ======================================================== */}
-      <section className="py-20 bg-[#FFFDF8] relative">
+      <section className="py-10 sm:py-12 bg-[#FFFDF8] relative">
         <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
-          <div className="text-center max-w-2xl mx-auto mb-14">
+          <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
             <span className="text-xs font-bold uppercase tracking-widest text-[#FF795C] block mb-2">
               Comprehensive Travel Solutions
             </span>
@@ -735,7 +735,7 @@ export const Home: React.FC = () => {
       {/* ======================================================== */}
       {/* SECTION 7: WHY TRAVEL WITH TRIP BY GENIE                 */}
       {/* ======================================================== */}
-      <section className="py-20 bg-[#F8F1E7]/50 relative border-t border-[#EFE7DA]">
+      <section className="py-10 sm:py-12 bg-[#F8F1E7]/50 relative border-t border-[#EFE7DA]">
         <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
@@ -819,9 +819,9 @@ export const Home: React.FC = () => {
       {/* ======================================================== */}
       {/* SECTION 8: REAL CUSTOMER TESTIMONIALS (tripbygenie.in)   */}
       {/* ======================================================== */}
-      <section className="py-20 bg-[#FFFDF8]">
+      <section className="py-10 sm:py-12 bg-[#FFFDF8]">
         <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
-          <div className="text-center max-w-2xl mx-auto mb-14">
+          <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
             <span className="text-xs font-bold uppercase tracking-widest text-[#FF795C] block mb-2">
               Stories From Our Travelers
             </span>

@@ -139,6 +139,35 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const { success, error } = useToast();
 
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem('tg_sidebar_collapsed') === 'true';
+    } catch {
+      return false;
+    }
+  });
+
+  const toggleSidebarCollapse = () => {
+    setIsSidebarCollapsed((prev) => {
+      const next = !prev;
+      try {
+        localStorage.setItem('tg_sidebar_collapsed', String(next));
+      } catch {}
+      return next;
+    });
+  };
+
+  // Keyboard shortcut Ctrl+B / Cmd+B to toggle sidebar collapse
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'b') {
+        e.preventDefault();
+        toggleSidebarCollapse();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
   const [isAgencyDropdownOpen, setIsAgencyDropdownOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [isSignOutConfirmOpen, setIsSignOutConfirmOpen] = useState(false);
@@ -336,37 +365,70 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
   return (
     <div className="min-h-screen bg-[#F8F1E7]/40 flex">
-      {/* Desktop Sidebar */}
-      <aside className="hidden lg:flex w-64 h-screen sticky top-0 bg-[#082C43] text-white flex-col shrink-0 border-r border-[#041D30] z-20 overflow-hidden">
+      {/* Desktop Sidebar with Protruding Toggle Button */}
+      <aside
+        className={`hidden lg:flex ${
+          isSidebarCollapsed ? 'w-20' : 'w-64'
+        } h-screen sticky top-0 bg-[#181B26] text-white flex-col shrink-0 border-r border-[#262B3D] z-20 transition-all duration-300 ease-in-out relative`}
+      >
+        {/* Protruding Sidebar Collapse / Expand Toggle Button (Compact & Sleek) */}
+        <button
+          type="button"
+          onClick={toggleSidebarCollapse}
+          title={isSidebarCollapsed ? "Expand Sidebar (Ctrl + B)" : "Collapse Sidebar (Ctrl + B)"}
+          className="absolute -right-2.5 top-16 z-30 w-5 h-7.5 bg-[#2563EB] hover:bg-blue-600 active:scale-95 text-white flex items-center justify-center rounded-r-xl shadow-md shadow-blue-900/30 cursor-pointer transition-all duration-200 border border-l-0 border-white/20 group hover:w-5.5 hover:shadow-blue-500/40"
+          aria-label={isSidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+        >
+          <Menu className="w-3 h-3 text-white group-hover:scale-110 transition-transform" />
+        </button>
+
         {/* Brand header */}
-        <div className="p-4 border-b border-white/10 flex flex-col gap-2 shrink-0">
-          <div className="bg-white px-3 py-2 rounded-2xl shadow-xs flex items-center justify-center">
-            <BrandLogo size="md" to="/" />
+        <div className={`p-4 border-b border-white/10 flex flex-col gap-2 shrink-0 ${isSidebarCollapsed ? 'px-2 items-center' : ''}`}>
+          <div className={`bg-white rounded-2xl shadow-xs flex items-center justify-center ${isSidebarCollapsed ? 'w-11 h-11 p-1' : 'px-3 py-2'}`}>
+            {isSidebarCollapsed ? (
+              <Link to="/" title="TripByGenie Home" className="font-extrabold text-[#181B26] text-base tracking-tighter font-display">
+                TG<span className="text-[#2563EB]">.</span>
+              </Link>
+            ) : (
+              <BrandLogo size="md" to="/" />
+            )}
           </div>
-          <span className="text-[10px] uppercase font-bold text-[#55C9BD] tracking-wider block text-center">
-            {role === 'admin'
-              ? 'Super Administrator'
-              : role === 'manager'
-              ? 'Operations Manager'
-              : role === 'staff'
-              ? 'Staff Operations'
-              : role === 'agent'
-              ? 'B2B Wholesale Portal'
-              : 'Customer Account'}
-          </span>
+          {!isSidebarCollapsed && (
+            <span className="text-[10px] uppercase font-bold text-[#55C9BD] tracking-wider block text-center truncate">
+              {role === 'admin'
+                ? 'Super Administrator'
+                : role === 'manager'
+                ? 'Operations Manager'
+                : role === 'staff' || role === 'sales'
+                ? 'Staff Operations'
+                : role === 'operations'
+                ? 'Operations & Logistics'
+                : role === 'agent'
+                ? 'B2B Wholesale Portal'
+                : 'Customer Account'}
+            </span>
+          )}
         </div>
 
         {/* Current Agency Capsule */}
-        <div className="px-4 py-3 bg-[#041D30]/60 border-b border-white/5 flex items-center justify-between text-xs shrink-0">
-          <div className="flex items-center gap-2 truncate">
-            <Building2 className="w-3.5 h-3.5 text-[#55C9BD] shrink-0" />
-            <span className="font-semibold text-white/90 truncate">
-              {agency?.name || 'Travel Genie Holidays'}
-            </span>
-          </div>
-          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#17648A] text-white shrink-0">
-            {agency?.currency || 'INR'}
-          </span>
+        <div className={`py-3 bg-[#12141D]/70 border-b border-white/5 flex items-center text-xs shrink-0 ${isSidebarCollapsed ? 'justify-center px-2' : 'justify-between px-4'}`}>
+          {isSidebarCollapsed ? (
+            <div title={`${agency?.name || 'Travel Genie'} (${agency?.currency || 'INR'})`} className="flex items-center justify-center">
+              <Building2 className="w-4 h-4 text-[#55C9BD]" />
+            </div>
+          ) : (
+            <>
+              <div className="flex items-center gap-2 truncate">
+                <Building2 className="w-3.5 h-3.5 text-[#55C9BD] shrink-0" />
+                <span className="font-semibold text-white/90 truncate">
+                  {agency?.name || 'Travel Genie Holidays'}
+                </span>
+              </div>
+              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#2563EB]/30 text-blue-300 border border-blue-500/30 shrink-0">
+                {agency?.currency || 'INR'}
+              </span>
+            </>
+          )}
         </div>
 
         {/* Sidebar Navigation */}
@@ -378,23 +440,44 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 {navLinks.map((item) => {
                   const isActive = location.pathname === item.path;
                   const Icon = item.icon;
+
+                  if (isSidebarCollapsed) {
+                    return (
+                      <Link
+                        key={item.path}
+                        to={item.path}
+                        title={item.name}
+                        className={`flex items-center justify-center w-full py-2.5 rounded-xl transition-all relative group ${
+                          isActive
+                            ? 'bg-[#2563EB] text-white shadow-md shadow-blue-600/30'
+                            : 'text-slate-300 hover:bg-white/10 hover:text-white'
+                        }`}
+                      >
+                        <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-slate-300 group-hover:text-white'}`} />
+                        {item.badge && (
+                          <span className="absolute top-1.5 right-2 w-2 h-2 rounded-full bg-[#55C9BD] ring-2 ring-[#181B26]" />
+                        )}
+                      </Link>
+                    );
+                  }
+
                   return (
                     <Link
                       key={item.path}
                       to={item.path}
                       className={`flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-semibold transition-all ${
                         isActive
-                          ? 'bg-[#FF795C] text-white shadow-md shadow-[#FF795C]/25'
+                          ? 'bg-[#2563EB] text-white shadow-md shadow-blue-600/25'
                           : 'text-white/90 hover:bg-white/10 hover:text-white'
                       }`}
                     >
                       <div className="flex items-center gap-2.5">
-                        <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-[#FF795C]'}`} />
+                        <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-[#55C9BD]'}`} />
                         <span>{item.name}</span>
                       </div>
                       {item.badge && (
                         <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
-                          isActive ? 'bg-white/20 text-white' : 'bg-[#FF795C]/20 text-[#FF795C]'
+                          isActive ? 'bg-white/20 text-white' : 'bg-[#2563EB]/20 text-blue-300'
                         }`}>
                           {item.badge}
                         </span>
@@ -406,17 +489,40 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
               {/* Collapsible Dropdown Tabs for Roles */}
               <div className="pt-2 border-t border-white/10 space-y-2">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-white/40 px-2 block">
-                  All Portals & Role Tabs
-                </span>
+                {!isSidebarCollapsed && (
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-white/40 px-2 block">
+                    All Portals & Role Tabs
+                  </span>
+                )}
 
                 {adminSections.map((sec) => {
                   const isOpen = adminDropdowns[sec.id];
                   const SectionIcon = sec.icon;
                   const isAnyChildActive = sec.items.some((i) => location.pathname === i.path);
 
+                  if (isSidebarCollapsed) {
+                    return (
+                      <button
+                        key={sec.id}
+                        type="button"
+                        onClick={() => {
+                          setIsSidebarCollapsed(false);
+                          toggleAdminDropdown(sec.id);
+                        }}
+                        title={`${sec.name} (${sec.badge})`}
+                        className={`w-full flex items-center justify-center p-2.5 rounded-xl transition-all cursor-pointer relative group ${
+                          isAnyChildActive
+                            ? 'bg-[#2563EB] text-white shadow-md shadow-blue-600/30'
+                            : 'hover:bg-white/10 text-slate-300'
+                        }`}
+                      >
+                        <SectionIcon className={`w-5 h-5 ${isAnyChildActive ? 'text-white' : sec.color}`} />
+                      </button>
+                    );
+                  }
+
                   return (
-                    <div key={sec.id} className="rounded-xl overflow-hidden bg-black/15 border border-white/5">
+                    <div key={sec.id} className="rounded-xl overflow-hidden bg-[#12141D]/60 border border-white/5">
                       {/* Section Header Button with Dropdown arrow */}
                       <button
                         type="button"
@@ -445,7 +551,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
                       {/* Dropdown Items */}
                       {isOpen && (
-                        <div className="p-1 space-y-0.5 bg-[#041D30]/80 border-t border-white/5">
+                        <div className="p-1 space-y-0.5 bg-[#10121A]/80 border-t border-white/5">
                           {sec.items.map((sub) => {
                             const isSubActive = location.pathname === sub.path;
                             const SubIcon = sub.icon;
@@ -455,7 +561,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                                 to={sub.path}
                                 className={`flex items-center justify-between pl-4 pr-3 py-1.5 rounded-lg text-[11px] font-medium transition-all ${
                                   isSubActive
-                                    ? 'bg-[#FF795C] text-white font-bold shadow-xs'
+                                    ? 'bg-[#2563EB] text-white font-bold shadow-xs'
                                     : 'text-white/70 hover:bg-white/10 hover:text-white'
                                 }`}
                               >
@@ -485,13 +591,33 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               const isActive = location.pathname === item.path;
               const Icon = item.icon;
 
+              if (isSidebarCollapsed) {
+                return (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    title={item.name}
+                    className={`flex items-center justify-center w-full py-2.5 rounded-xl transition-all relative group ${
+                      isActive
+                        ? 'bg-[#2563EB] text-white shadow-md shadow-blue-600/30'
+                        : 'text-slate-300 hover:bg-white/10 hover:text-white'
+                    }`}
+                  >
+                    <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-slate-300 group-hover:text-white'}`} />
+                    {item.badge && (
+                      <span className="absolute top-1.5 right-2 w-2 h-2 rounded-full bg-[#55C9BD] ring-2 ring-[#181B26]" />
+                    )}
+                  </Link>
+                );
+              }
+
               return (
                 <Link
                   key={item.path}
                   to={item.path}
                   className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
                     isActive
-                      ? 'bg-[#FF795C] text-white shadow-md shadow-[#FF795C]/25'
+                      ? 'bg-[#2563EB] text-white shadow-md shadow-blue-600/25'
                       : 'text-white/80 hover:bg-white/10 hover:text-white'
                   }`}
                 >
@@ -501,7 +627,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                   </div>
                   {item.badge && (
                     <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
-                      isActive ? 'bg-white/20 text-white' : 'bg-[#55C9BD]/20 text-[#55C9BD]'
+                      isActive ? 'bg-white/20 text-white' : 'bg-[#2563EB]/20 text-blue-300'
                     }`}>
                       {item.badge}
                     </span>
@@ -513,40 +639,60 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         </nav>
 
         {/* Footer: User profile & quick sign out */}
-        <div className="p-4 border-t border-white/10 bg-[#041D30] shrink-0">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2.5 truncate">
+        <div className={`p-4 border-t border-white/10 bg-[#12141D] shrink-0 ${isSidebarCollapsed ? 'flex flex-col items-center gap-2 px-2' : ''}`}>
+          {isSidebarCollapsed ? (
+            <div className="flex flex-col items-center gap-2.5 w-full">
               <img
                 src={user?.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80'}
                 alt={user?.name}
-                className="w-8 h-8 rounded-full object-cover border border-white/20 shrink-0"
+                title={`${user?.name} (${user?.role})`}
+                className="w-8 h-8 rounded-full object-cover border border-white/20"
               />
-              <div className="truncate">
-                <span className="text-xs font-bold text-white block truncate leading-tight">
-                  {user?.name}
-                </span>
-                <span className="text-[10px] text-[#55C9BD] uppercase font-semibold block truncate">
-                  {user?.role}
-                </span>
-              </div>
+              <button
+                onClick={() => setIsSignOutConfirmOpen(true)}
+                title="Sign Out"
+                className="p-1.5 rounded-lg text-white/60 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+              >
+                <LogOut className="w-4 h-4" />
+              </button>
             </div>
+          ) : (
+            <>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2.5 truncate">
+                  <img
+                    src={user?.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80'}
+                    alt={user?.name}
+                    className="w-8 h-8 rounded-full object-cover border border-white/20 shrink-0"
+                  />
+                  <div className="truncate">
+                    <span className="text-xs font-bold text-white block truncate leading-tight">
+                      {user?.name}
+                    </span>
+                    <span className="text-[10px] text-[#55C9BD] uppercase font-semibold block truncate">
+                      {user?.role}
+                    </span>
+                  </div>
+                </div>
 
-            <button
-              onClick={() => setIsSignOutConfirmOpen(true)}
-              title="Sign Out"
-              className="p-1.5 rounded-lg text-white/60 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
-            >
-              <LogOut className="w-4 h-4" />
-            </button>
-          </div>
+                <button
+                  onClick={() => setIsSignOutConfirmOpen(true)}
+                  title="Sign Out"
+                  className="p-1.5 rounded-lg text-white/60 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
 
-          <Link
-            to="/"
-            className="mt-3 flex items-center justify-center gap-1.5 text-[11px] font-semibold text-[#55C9BD] hover:text-white pt-2 border-t border-white/5 transition-colors"
-          >
-            <span>Visit Public Travel Site</span>
-            <ExternalLink className="w-3 h-3" />
-          </Link>
+              <Link
+                to="/"
+                className="mt-3 flex items-center justify-center gap-1.5 text-[11px] font-semibold text-[#55C9BD] hover:text-white pt-2 border-t border-white/5 transition-colors"
+              >
+                <span>Visit Public Travel Site</span>
+                <ExternalLink className="w-3 h-3" />
+              </Link>
+            </>
+          )}
         </div>
       </aside>
 
@@ -581,7 +727,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             {/* View Live Public Website */}
             <Link
               to="/"
-              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#17648A] to-[#082C43] text-white hover:opacity-90 text-xs font-bold transition-all shadow-sm"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#17648A] to-[#181B26] text-white hover:opacity-90 text-xs font-bold transition-all shadow-sm"
             >
               <Globe2 className="w-3.5 h-3.5 text-[#55C9BD]" />
               <span>Public Website</span>
@@ -592,7 +738,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             <div className="relative">
               <button
                 onClick={() => setIsAgencyDropdownOpen(!isAgencyDropdownOpen)}
-                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-[#EFE7DA] bg-[#F8F1E7]/50 hover:bg-[#F8F1E7] text-xs font-semibold text-[#082C43] transition-colors cursor-pointer"
+                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-[#EFE7DA] bg-[#F8F1E7]/50 hover:bg-[#F8F1E7] text-xs font-semibold text-[#181B26] transition-colors cursor-pointer"
               >
                 <Building2 className="w-3.5 h-3.5 text-[#17648A]" />
                 <span className="hidden md:inline truncate max-w-[130px]">
@@ -613,7 +759,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                       className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg hover:bg-[#F8F1E7] text-left cursor-pointer transition-colors"
                     >
                       <div>
-                        <div className="font-bold text-[#082C43]">{a.name}</div>
+                        <div className="font-bold text-[#181B26]">{a.name}</div>
                         <div className="text-[10px] text-slate-400">{a.slug}</div>
                       </div>
                       {agency?.id === a.id && (
@@ -632,7 +778,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 type="button"
                 onClick={() => demoLogin('admin')}
                 className={`px-2 py-0.5 rounded-lg font-bold transition-colors cursor-pointer ${
-                  role === 'admin' ? 'bg-[#082C43] text-white shadow-xs' : 'text-[#082C43] hover:bg-white'
+                  role === 'admin' ? 'bg-[#181B26] text-white shadow-xs' : 'text-[#181B26] hover:bg-white'
                 }`}
               >
                 Admin
@@ -692,7 +838,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               >
                 <Bell className="w-5 h-5" />
                 {unreadCount > 0 && (
-                  <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-[#FF795C] rounded-full ring-2 ring-white" />
+                  <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-[#2563EB] rounded-full ring-2 ring-white" />
                 )}
               </button>
 
@@ -703,14 +849,14 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                     <div className="flex items-center gap-2">
                       <span className="text-sm font-bold text-[#082C43]">Notifications</span>
                       {unreadCount > 0 && (
-                        <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-[#FF795C] text-white">
+                        <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-[#2563EB] text-white">
                           {unreadCount} new
                         </span>
                       )}
                     </div>
                     <button
                       onClick={markAllNotifications}
-                      className="text-xs text-[#17648A] hover:underline cursor-pointer"
+                      className="text-xs text-[#2563EB] hover:underline cursor-pointer"
                     >
                       Mark all as read
                     </button>
@@ -766,11 +912,11 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           style={{ overscrollBehavior: 'contain' }}
         >
           <div
-            className="fixed inset-0 bg-[#041D30]/60 backdrop-blur-xs"
+            className="fixed inset-0 bg-black/70 backdrop-blur-xs"
             onClick={() => setIsMobileSidebarOpen(false)}
           />
           <div
-            className="relative w-80 max-w-[85vw] h-full bg-[#082C43] text-white flex flex-col z-50 p-4 shadow-2xl overscroll-contain overflow-hidden"
+            className="relative w-80 max-w-[85vw] h-full bg-[#181B26] text-white flex flex-col z-50 p-4 shadow-2xl overscroll-contain overflow-hidden"
             style={{ overscrollBehavior: 'contain' }}
           >
             <div className="flex items-center justify-between pb-3 border-b border-white/10 shrink-0">
@@ -801,21 +947,25 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                   <span className="text-[10px] text-[#55C9BD] uppercase font-bold tracking-wider">
                     {role === 'admin'
                       ? 'Administrator'
-                      : role === 'staff'
+                      : role === 'manager'
+                      ? 'Operations Manager'
+                      : role === 'staff' || role === 'sales'
                       ? 'Staff Operations'
+                      : role === 'operations'
+                      ? 'Operations & Logistics'
                       : role === 'agent'
                       ? 'B2B Partner'
                       : 'Traveler'}
                   </span>
                 </div>
               </div>
-              <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#17648A] text-white shrink-0 uppercase">
+              <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#2563EB]/40 text-blue-200 border border-blue-500/30 shrink-0 uppercase">
                 {role}
               </span>
             </div>
 
             {/* Quick Role Switcher (Mobile testing helper) */}
-            <div className="mb-2 p-2 rounded-xl bg-black/20 border border-white/5 shrink-0">
+            <div className="mb-2 p-2 rounded-xl bg-[#12141D]/70 border border-white/5 shrink-0">
               <span className="text-[10px] font-bold uppercase tracking-wider text-[#55C9BD] block mb-1.5">
                 Switch Portal Role:
               </span>
@@ -828,7 +978,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                   }}
                   className={`p-2 rounded-lg font-bold text-left flex items-center gap-1.5 transition-all cursor-pointer ${
                     role === 'admin'
-                      ? 'bg-[#FF795C] text-white shadow-xs'
+                      ? 'bg-[#2563EB] text-white shadow-xs'
                       : 'bg-white/5 hover:bg-white/10 text-white/90'
                   }`}
                 >
@@ -859,8 +1009,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                     demoLogin('staff');
                   }}
                   className={`p-2 rounded-lg font-bold text-left flex items-center gap-1.5 transition-all cursor-pointer ${
-                    role === 'staff'
-                      ? 'bg-[#55C9BD] text-[#082C43] shadow-xs'
+                    role === 'staff' || role === 'sales'
+                      ? 'bg-teal-600 text-white shadow-xs'
                       : 'bg-white/5 hover:bg-white/10 text-white/90'
                   }`}
                 >
@@ -872,11 +1022,27 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                   type="button"
                   onClick={() => {
                     setIsMobileSidebarOpen(false);
+                    demoLogin('operations');
+                  }}
+                  className={`p-2 rounded-lg font-bold text-left flex items-center gap-1.5 transition-all cursor-pointer ${
+                    role === 'operations'
+                      ? 'bg-blue-600 text-white shadow-xs'
+                      : 'bg-white/5 hover:bg-white/10 text-white/90'
+                  }`}
+                >
+                  <Building2 className="w-3.5 h-3.5 shrink-0" />
+                  <span className="truncate">Logistics</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsMobileSidebarOpen(false);
                     demoLogin('agent');
                   }}
                   className={`p-2 rounded-lg font-bold text-left flex items-center gap-1.5 transition-all cursor-pointer ${
                     role === 'agent'
-                      ? 'bg-amber-400 text-amber-950 shadow-xs'
+                      ? 'bg-amber-500 text-white shadow-xs'
                       : 'bg-white/5 hover:bg-white/10 text-white/90'
                   }`}
                 >
@@ -890,9 +1056,9 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                     setIsMobileSidebarOpen(false);
                     demoLogin('customer');
                   }}
-                  className={`p-2 rounded-lg font-bold text-left flex items-center gap-1.5 transition-all cursor-pointer col-span-2 sm:col-span-1 ${
+                  className={`p-2 rounded-lg font-bold text-left flex items-center gap-1.5 transition-all cursor-pointer ${
                     role === 'customer'
-                      ? 'bg-emerald-400 text-emerald-950 shadow-xs'
+                      ? 'bg-emerald-600 text-white shadow-xs'
                       : 'bg-white/5 hover:bg-white/10 text-white/90'
                   }`}
                 >
@@ -914,7 +1080,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                     onClick={() => setIsMobileSidebarOpen(false)}
                     className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-semibold transition-all ${
                       isActive
-                        ? 'bg-[#FF795C] text-white shadow-md'
+                        ? 'bg-[#2563EB] text-white shadow-md shadow-blue-600/30'
                         : 'text-white/80 hover:bg-white/10'
                     }`}
                   >

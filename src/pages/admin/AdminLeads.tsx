@@ -324,7 +324,7 @@ export const AdminLeads: React.FC = () => {
 
               <div className="overflow-x-auto">
                 <table className="w-full text-xs text-left">
-                  <thead className="bg-[#F8F1E7]/60 text-[#173247] uppercase font-bold border-b border-[#EFE7DA]">
+                  <thead className="bg-[#F8F1E7] text-[#173247] uppercase font-bold border-b border-[#EFE7DA]">
                     <tr>
                       <th className="py-3 px-3 w-8"></th>
                       <th className="py-3 px-3">Lead / Client</th>

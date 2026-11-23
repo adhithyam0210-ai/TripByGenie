@@ -17,7 +17,8 @@ import {
   Calendar,
   MapPin,
   Compass,
-  FileText
+  FileText,
+  Users
 } from 'lucide-react';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { Button } from '../../components/common/Button';
@@ -45,6 +46,7 @@ export const AdminPackages: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedStatus, setSelectedStatus] = useState('all');
+  const [viewMode, setViewMode] = useState<'all' | 'group'>('all');
 
   // Create / Edit Modal
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -74,7 +76,8 @@ export const AdminPackages: React.FC = () => {
     is_featured: false,
     is_published: true,
     is_group_tour: false,
-    available_seats: 20,
+    available_seats: 8,
+    total_seats: 24,
     upcoming_date: ''
   };
 
@@ -119,6 +122,37 @@ export const AdminPackages: React.FC = () => {
     setIsModalOpen(true);
   };
 
+  const handleOpenCreateGroupTour = () => {
+    setEditingId(null);
+    setActiveTab('details');
+    const futureDate = new Date();
+    futureDate.setDate(futureDate.getDate() + 20);
+    const dateStr = futureDate.toISOString().split('T')[0];
+
+    setFormData({
+      ...initialForm,
+      destination_id: destinations[0]?.id || '',
+      category: 'Group Tours',
+      is_group_tour: true,
+      total_seats: 24,
+      available_seats: 8,
+      upcoming_date: dateStr,
+      highlights: '100% Guaranteed Group Departure, Dedicated Professional Tour Manager, Pure Veg & Jain Meals Available, Luxury AC Coach Transfers',
+      inclusions: 'Handpicked 4-star Hotel Stays, Daily Buffet Breakfast & Dinner, Sightseeing & Entry Tickets, AC Coach Transfers, Experienced Tour Escort',
+      exclusions: 'Flight tickets, Personal shopping, Travel insurance',
+      transportation: 'Deluxe AC Coach / Mini-Bus with Chauffeur',
+      accommodation: 'Premium 4-Star Hotels with Buffet Dining'
+    });
+    setItineraries([
+      { day_number: 1, title: 'Day 1: Arrival & Group Orientation', description: 'Arrive at destination airport. Warm meet-and-greet with our Tour Manager and co-travelers. Transfer to hotel for check-in and welcome dinner.', meals: 'Dinner Included', activities: 'Group Welcome & Orientation' },
+      { day_number: 2, title: 'Day 2: Guided Landmark Sightseeing Tour', description: 'Full day sightseeing excursion with our experienced tour manager. Explore major cultural landmarks and photography spots.', meals: 'Breakfast & Dinner Included', activities: 'Full Day Sightseeing' },
+      { day_number: 3, title: 'Day 3: Scenic Excursions & Nature Experience', description: 'Exciting group day trip to picturesque nearby attractions and scenic viewpoints with arranged group lunch.', meals: 'Breakfast & Dinner Included', activities: 'Group Excursion' },
+      { day_number: 4, title: 'Day 4: Leisure, Shopping & Farewell Gala', description: 'Leisure morning for shopping local handicrafts and souvenirs. Special celebration farewell gala dinner in the evening.', meals: 'Breakfast & Farewell Dinner', activities: 'Shopping & Farewell Gala' },
+      { day_number: 5, title: 'Day 5: Check-out & Airport Transfer', description: 'Enjoy breakfast at the hotel. Group transfer to the airport for onward departure with lifelong memories.', meals: 'Breakfast Included', activities: 'Airport Departure Transfer' }
+    ]);
+    setIsModalOpen(true);
+  };
+
   const handleOpenEdit = async (pkg: Package) => {
     setEditingId(pkg.id);
     setActiveTab('details');
@@ -143,8 +177,9 @@ export const AdminPackages: React.FC = () => {
       transportation: pkg.transportation,
       is_featured: pkg.is_featured,
       is_published: pkg.is_published,
-      is_group_tour: pkg.is_group_tour,
-      available_seats: pkg.available_seats || 20,
+      is_group_tour: !!pkg.is_group_tour || pkg.category === 'Group Tours',
+      available_seats: pkg.available_seats !== undefined ? pkg.available_seats : ((pkg as any).seats_left ?? 8),
+      total_seats: (pkg as any).total_seats ?? 24,
       upcoming_date: pkg.upcoming_date || ''
     });
 
@@ -263,6 +298,10 @@ export const AdminPackages: React.FC = () => {
 
       const payload = {
         ...formData,
+        is_group_tour: !!formData.is_group_tour || formData.category === 'Group Tours',
+        available_seats: Number(formData.available_seats) || 0,
+        total_seats: Number(formData.total_seats) || 24,
+        upcoming_date: formData.upcoming_date || '',
         duration_days: itineraries.length || formData.duration_days,
         duration_nights: formData.duration_nights || Math.max(1, (itineraries.length || formData.duration_days) - 1),
         destinations_covered: destinationsList,
@@ -280,10 +319,10 @@ export const AdminPackages: React.FC = () => {
 
       if (editingId) {
         await api.updateAdminPackage(editingId, payload);
-        success('Package and authentic day-by-day itineraries updated successfully!');
+        success(formData.is_group_tour ? 'Guaranteed Group Tour updated successfully!' : 'Package and authentic day-by-day itineraries updated successfully!');
       } else {
         await api.createAdminPackage(payload);
-        success('New package and itineraries published to website and agent marketplace!');
+        success(formData.is_group_tour ? 'New Guaranteed Group Tour published to website!' : 'New package and itineraries published to website and agent marketplace!');
       }
 
       setIsModalOpen(false);
@@ -296,10 +335,10 @@ export const AdminPackages: React.FC = () => {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this package?')) return;
+    if (!confirm('Are you sure you want to delete this package? It will be removed immediately from the website.')) return;
     try {
       await api.deleteAdminPackage(id);
-      success('Package deleted.');
+      success('Package deleted successfully.');
       loadData();
     } catch (err: any) {
       error(err.message || 'Failed to delete package.');
@@ -316,9 +355,16 @@ export const AdminPackages: React.FC = () => {
     }
   };
 
-  // Filter packages based on search query, category, and publication status
+  const groupToursCount = useMemo(() => {
+    return packages.filter((p) => p.is_group_tour || p.category === 'Group Tours').length;
+  }, [packages]);
+
+  // Filter packages based on viewMode, search query, category, and publication status
   const filteredPackages = useMemo(() => {
     return packages.filter((pkg) => {
+      const isGroup = pkg.is_group_tour || pkg.category === 'Group Tours';
+      if (viewMode === 'group' && !isGroup) return false;
+
       const q = searchQuery.toLowerCase().trim();
       const dest = destinations.find((d) => d.id === pkg.destination_id);
       const matchesSearch =
@@ -338,24 +384,63 @@ export const AdminPackages: React.FC = () => {
 
       return matchesSearch && matchesCategory && matchesStatus;
     });
-  }, [packages, destinations, searchQuery, selectedCategory, selectedStatus]);
+  }, [packages, destinations, searchQuery, selectedCategory, selectedStatus, viewMode]);
 
   return (
     <DashboardLayout
       title="Tour Package & Itinerary Management"
-      subtitle="Complete catalog management, authentic day-by-day itineraries, B2B wholesale margins, and instant preview."
+      subtitle="Complete catalog management, guaranteed group tours, authentic day-by-day itineraries, and B2B wholesale margins."
       actions={
-        <Button
-          variant="primary"
-          size="sm"
-          onClick={handleOpenCreate}
-          leftIcon={<Plus className="w-4 h-4" />}
-        >
-          Create New Package
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleOpenCreateGroupTour}
+            className="border-[#55C9BD] text-[#082C43] hover:bg-[#55C9BD]/15 font-bold"
+            leftIcon={<Users className="w-4 h-4 text-[#00A854]" />}
+          >
+            + Create Group Tour
+          </Button>
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={handleOpenCreate}
+            leftIcon={<Plus className="w-4 h-4" />}
+          >
+            Create New Package
+          </Button>
+        </div>
       }
     >
       <div className="space-y-6">
+        {/* Navigation Tabs: All Packages vs Guaranteed Group Tours */}
+        <div className="flex items-center gap-2 border-b border-[#EFE7DA] pb-3">
+          <button
+            type="button"
+            onClick={() => { setViewMode('all'); setSelectedCategory('all'); }}
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              viewMode === 'all'
+                ? 'bg-[#082C43] text-white shadow-xs'
+                : 'bg-white text-slate-600 hover:bg-[#F8F1E7] border border-[#EFE7DA]'
+            }`}
+          >
+            <Layers className="w-4 h-4" />
+            All Packages ({packages.length})
+          </button>
+          <button
+            type="button"
+            onClick={() => setViewMode('group')}
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              viewMode === 'group'
+                ? 'bg-[#00A854] text-white shadow-xs'
+                : 'bg-white text-slate-600 hover:bg-[#F8F1E7] border border-[#EFE7DA]'
+            }`}
+          >
+            <Users className="w-4 h-4 text-[#55C9BD]" />
+            Guaranteed Group Tours ({groupToursCount})
+          </button>
+        </div>
+
         {/* Search & Filter Controls */}
         <div className="bg-white rounded-2xl border border-[#EFE7DA] p-4 shadow-xs">
           <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
@@ -405,11 +490,18 @@ export const AdminPackages: React.FC = () => {
         {/* Catalog Table */}
         <div className="bg-white rounded-2xl border border-[#EFE7DA] shadow-xs overflow-hidden">
           <div className="p-4 border-b border-[#EFE7DA] flex items-center justify-between">
-            <h3 className="text-xs font-bold text-[#082C43] uppercase tracking-wider">
-              Tour Packages ({filteredPackages.length} of {packages.length})
-            </h3>
+            <div className="flex items-center gap-2">
+              <h3 className="text-xs font-bold text-[#082C43] uppercase tracking-wider">
+                {viewMode === 'group' ? 'Guaranteed Group Tours' : 'Tour Packages'} ({filteredPackages.length} of {packages.length})
+              </h3>
+              {viewMode === 'group' && (
+                <span className="text-[10px] bg-[#55C9BD]/20 text-[#041D30] font-bold px-2 py-0.5 rounded-full border border-[#55C9BD]/40">
+                  Fixed Departures
+                </span>
+              )}
+            </div>
             <span className="text-xs text-slate-500 font-medium">
-              3,973 Authentic Itinerary Days Synced
+              Synced with Homepage & Group Tours Catalog
             </span>
           </div>
 
@@ -443,6 +535,23 @@ export const AdminPackages: React.FC = () => {
                           <div className="max-w-md">
                             <strong className="text-[#082C43] block truncate font-bold text-[13px]">{pkg.title}</strong>
                             <span className="text-[11px] text-[#17648A] block truncate">{pkg.slug}</span>
+                            {(pkg.is_group_tour || pkg.category === 'Group Tours') && (
+                              <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#55C9BD]/20 text-[#041D30] border border-[#55C9BD]/30">
+                                  <Users className="w-3 h-3 text-[#082C43]" />
+                                  Guaranteed Group Tour
+                                </span>
+                                {pkg.upcoming_date && (
+                                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#FF795C]/15 text-[#C84B31]">
+                                    <Calendar className="w-3 h-3" />
+                                    {pkg.upcoming_date}
+                                  </span>
+                                )}
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700">
+                                  {pkg.available_seats !== undefined ? pkg.available_seats : ((pkg as any).seats_left ?? 8)} / {(pkg as any).total_seats ?? 24} seats left
+                                </span>
+                              </div>
+                            )}
                           </div>
                         </div>
                       </td>
@@ -624,6 +733,88 @@ export const AdminPackages: React.FC = () => {
                     />
                     <span className="text-[10px] text-slate-500 mt-0.5 block">Strictly hidden from customers</span>
                   </div>
+                </div>
+
+                {/* Guaranteed Group Tour Settings */}
+                <div className="p-4 rounded-2xl bg-[#55C9BD]/10 border border-[#55C9BD]/30 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Users className="w-4 h-4 text-[#082C43]" />
+                      <div>
+                        <span className="font-bold text-[#082C43] text-xs block">
+                          Guaranteed Group Tour (Fixed Departure)
+                        </span>
+                        <span className="text-[10px] text-slate-500">
+                          Highlights on homepage and /group-tours with live seat status
+                        </span>
+                      </div>
+                    </div>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={formData.is_group_tour}
+                        onChange={(e) => {
+                          const checked = e.target.checked;
+                          setFormData({
+                            ...formData,
+                            is_group_tour: checked,
+                            category: checked ? 'Group Tours' : formData.category
+                          });
+                        }}
+                        className="sr-only peer"
+                      />
+                      <div className="w-9 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#00A854]"></div>
+                      <span className="ml-2 text-xs font-semibold text-slate-700">
+                        {formData.is_group_tour ? 'Enabled' : 'Disabled'}
+                      </span>
+                    </label>
+                  </div>
+
+                  {(formData.is_group_tour || formData.category === 'Group Tours') && (
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-[#55C9BD]/20">
+                      <div>
+                        <label className="font-bold text-[#082C43] block mb-1 text-[11px]">
+                          Upcoming Departure Date *
+                        </label>
+                        <input
+                          type="date"
+                          value={formData.upcoming_date}
+                          onChange={(e) => setFormData({ ...formData, upcoming_date: e.target.value })}
+                          className="w-full p-2 rounded-xl border border-[#EFE7DA] bg-white font-medium text-xs text-[#082C43]"
+                        />
+                        <span className="text-[10px] text-slate-500 mt-0.5 block">Scheduled fixed departure</span>
+                      </div>
+
+                      <div>
+                        <label className="font-bold text-[#082C43] block mb-1 text-[11px]">
+                          Available Seats Left *
+                        </label>
+                        <input
+                          type="number"
+                          min="0"
+                          max={formData.total_seats || 50}
+                          value={formData.available_seats}
+                          onChange={(e) => setFormData({ ...formData, available_seats: Number(e.target.value) })}
+                          className="w-full p-2 rounded-xl border border-[#EFE7DA] bg-white font-bold text-xs text-[#00A854]"
+                        />
+                        <span className="text-[10px] text-slate-500 mt-0.5 block">e.g. 8 seats remaining</span>
+                      </div>
+
+                      <div>
+                        <label className="font-bold text-[#082C43] block mb-1 text-[11px]">
+                          Total Group Capacity *
+                        </label>
+                        <input
+                          type="number"
+                          min="1"
+                          value={formData.total_seats}
+                          onChange={(e) => setFormData({ ...formData, total_seats: Number(e.target.value) })}
+                          className="w-full p-2 rounded-xl border border-[#EFE7DA] bg-white font-bold text-xs text-[#082C43]"
+                        />
+                        <span className="text-[10px] text-slate-500 mt-0.5 block">Total max group size (e.g. 24)</span>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {/* Duration & Locations */}

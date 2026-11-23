@@ -93,11 +93,12 @@
       "status": "active",
       "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
       "created_at": "2026-01-02T10:00:00.000Z",
-      "branch_id": "br_chennai_hq"
+      "branch_id": "br_chennai_hq",
+      "updated_at": "2026-11-23T11:49:46.256Z"
     },
     {
       "id": "usr_staff_priya",
-      "agency_id": "agency_voyage_bliss",
+      "agency_id": "agency_travel_genie",
       "role": "staff",
       "name": "Priya Nair",
       "email": "priya.staff@travelgenie.com",
@@ -561,7 +562,7 @@
       "region": "India",
       "description": "Goa is a vibrant seaside haven that allures tourists from every corner of the world. Its charm lies in its variety—golden beaches, thrilling water sports, ancient forts, easy-going vibe, and mouth-watering cuisine. Whether you’re after a serene escape, daring adventures, or rich cultural vibes, Goa greets you with open arms. It’s more than a coastal retreat; it’s an experience of life itself. The rhythm of its waves, aroma of spices, tunes of local music, and smiles of its people will steal your heart. To discover this enchanting coastal land, check our Goa tour packages.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/10/istockphoto-503953532-612x612-1.webp",
-      "package_count": 2,
+      "package_count": 3,
       "is_featured": true,
       "is_published": true,
       "language": "Konkani, English, Hindi, Marathi",
@@ -620,7 +621,7 @@
       "region": "Asia",
       "description": "Hailed as The Island of the Gods, Bali is one of more than 17,000 islands in Indonesia. What truly sets it apart from the rest is the affection and admiration it receives from visitors across the globe. With a population of around 4.37 million, Bali offers an endless list of experiences that make it a dream holiday destination — all waiting to be explored when you book one of our Bali tour packages.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/08/istockphoto-1219877233-612x612-1.webp",
-      "package_count": 8,
+      "package_count": 18,
       "is_featured": true,
       "is_published": true,
       "capital": "Denpasar",
@@ -684,7 +685,7 @@
       "region": "Middle East",
       "description": "Dubai, the crown jewel of the United Arab Emirates, is a city that blends futuristic innovation with deep-rooted traditions. Famous for its record-breaking skyscrapers, man-made islands, luxury shopping malls, and world-class attractions, Dubai has become one of the most visited cities in the world. What makes Dubai extraordinary is its ability to offer everything—golden deserts, pristine beaches, cultural heritage, extravagant nightlife, and family-friendly entertainment—all in one destination. Whether you’re traveling for leisure, business, or a mix of both, Dubai promises an experience like no other.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/09/istockphoto-653900372-612x612-1.webp",
-      "package_count": 10,
+      "package_count": 9,
       "is_featured": true,
       "is_published": true,
       "currency": "UAE Dirham",
@@ -752,7 +753,7 @@
       "region": "Island Destinations",
       "description": "Discover breathtaking sightseeing, world-class stays, and seamless guided itineraries across Maldives.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/09/istockphoto-941686968-612x612-2.webp",
-      "package_count": 11,
+      "package_count": 13,
       "is_featured": true,
       "is_published": true,
       "capital": "Male",
@@ -845,7 +846,7 @@
       "region": "India",
       "description": "Kerala, lovingly called “God’s Own Country,” is a paradise tucked in India’s southwest. Rolling green hills, pristine backwaters, calm hill stations, and sun-kissed beaches make it perfect for travellers seeking peace and adventure alike. For Indian visitors, Kerala combines rich culture, timeless tradition, and awe-inspiring landscapes, making it a must-visit destination. Whether you love nature, history, culinary delights, or relaxation, Kerala promises to enchant every traveller. For more details on exploring Kerala, check our Kerala tour packages. If you prefer a tailored plan, reach out via call or Instagram – we’re ready to assist.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/10/istockphoto-1412808015-612x612-1.webp",
-      "package_count": 11,
+      "package_count": 9,
       "is_featured": true,
       "is_published": true,
       "capital": "Thiruvananthapuram (Trivandrum)",
@@ -909,7 +910,7 @@
       "region": "Europe",
       "description": "The City of Light, shimmering Eiffel Tower, romantic Seine river dining, Louvre masterpieces, and quaint Parisian sidewalk bistros.",
       "image": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80",
-      "package_count": 3,
+      "package_count": 1,
       "is_featured": false,
       "is_published": true,
       "currency": "USD / Local Currency",
@@ -935,7 +936,7 @@
       "region": "Europe",
       "description": "Switzerland is often called the “Land of the Alps,” but there’s more to it than just mountains. It is one of the few countries with four official languages—German, French, Italian, and Romansh. Despite its small size, Switzerland is home to over 1,500 lakes, including Lake Geneva and Lake Lucerne. The country is famous for its neutrality, having avoided direct involvement in wars for centuries. Switzerland also produces some of the world’s finest chocolates and luxury watches, and the Swiss consume more chocolate per person than any other nation. Interestingly, the country does not have a president in the traditional sense—its government is run by a Federal Council of seven members who share leadership equally.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/08/istockphoto-1167011619-612x612-1.webp",
-      "package_count": 12,
+      "package_count": 15,
       "is_featured": true,
       "is_published": true,
       "capital": "Bern",
@@ -1011,7 +1012,7 @@
       "region": "Asia",
       "description": "Singapore is a vibrant city-state in Southeast Asia known for its cleanliness, safety, and multicultural population. Despite its small size, it boasts a variety of attractions ranging from modern skyscrapers and luxury shopping hubs to serene parks and historical neighborhoods. With its strategic location and excellent connectivity, Singapore is often called the gateway to Asia.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/08/istockphoto-458630455-612x612-1.webp",
-      "package_count": 10,
+      "package_count": 14,
       "is_featured": true,
       "is_published": true,
       "capital": "Singapore",
@@ -1087,7 +1088,7 @@
       "region": "Asia",
       "description": "Vietnam, known as the land of the ascending dragon, is a country that beautifully blends ancient traditions with modern dynamism. Stretching along the eastern edge of the Indochina Peninsula, it offers breathtaking landscapes—from the emerald waters of Ha Long Bay and the terraced rice fields of Sapa to the bustling streets of Hanoi and Ho Chi Minh City. With a rich history influenced by Chinese, French, and Southeast Asian cultures, Vietnam today stands as a destination where heritage, culture, and natural beauty coexist in harmony.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/08/istockphoto-173631415-612x612-1.webp",
-      "package_count": 10,
+      "package_count": 17,
       "is_featured": true,
       "is_published": true,
       "capital": "Hanoi",
@@ -1520,7 +1521,7 @@
       "region": "Africa",
       "description": "Kenya is a land of breathtaking landscapes, iconic wildlife, and rich heritage. From the Great Rift Valley to the white-sand beaches of the Indian Ocean, this East African nation offers unmatched diversity. Famous for the Big Five and the Great Migration, Kenya is where nature and culture coexist in harmony.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/07/istockphoto-639495906-612x612-1.webp",
-      "package_count": 7,
+      "package_count": 8,
       "is_featured": false,
       "is_published": true,
       "capital": "Nairobi",
@@ -1595,7 +1596,7 @@
       "region": "Africa",
       "description": "The origin of the name Africa has intrigued historians for centuries. While there is no single agreed-upon explanation, many scholars trace its earliest use back to the Romans, who referred to the lands around present-day Tunisia and Northern Algeria as “Africa.” Others suggest the term could have come from the Greek word a-phrike, which means “without cold,” reflecting the continent’s generally warm climate. An alternative theory connects the name to the ancient Egyptian phrase afru-ika, translating to “motherland.” These varying theories only deepen the rich historical tapestry of Africa.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/07/flock-pink-flamingos-walvis-bay-namibia-768x432.jpg",
-      "package_count": 23,
+      "package_count": 10,
       "is_featured": false,
       "is_published": true,
       "climate": "Many people hold the misconception that Africa is a culturally homogenous continent. However, one of the most fascinating truths about Africa is its remarkable ethnic and linguistic diversity. The continent is home to over 3,000 tribes, such as the Zulu, Bantu, Berber, and Maasai. These communities collectively speak more than 2,000 languages, including Arabic in the north, Zulu in the south, and French across many West African nations like Mali, Senegal, and Benin. This cultural richness is what makes exploring Africa an unforgettable experience through our carefully crafted Africa tour packages.",
@@ -1670,7 +1671,7 @@
       "region": "America",
       "description": "Experience South America with luxury handpicked accommodations, private chauffeured transfers, and comprehensive guided sightseeing curated by TripbyGenie specialists.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/07/istockphoto-1203441583-612x612-1.webp",
-      "package_count": 7,
+      "package_count": 6,
       "is_featured": false,
       "is_published": true,
       "tips": [
@@ -1809,7 +1810,7 @@
       "region": "America",
       "description": "Costa Rica leads as the most visited country in Central America, attracting millions with its eco-tourism, wildlife reserves, and adventure activities. National parks like Manuel Antonio and Arenal Volcano remain top draws.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/07/istockphoto-1172199301-612x612-1.webp",
-      "package_count": 2,
+      "package_count": 1,
       "is_featured": false,
       "is_published": true,
       "climate": "Dress modestly when visiting rural communities or religious sites.",
@@ -1876,7 +1877,7 @@
       "region": "Australia & Pacific",
       "description": "Fiji is a dream destination in the heart of the South Pacific, renowned for its crystal-clear waters and soft, golden sands. Whether you're an adventurer looking for action-packed days, a honeymooner seeking romance, or a solo traveler searching for tranquility, the Fiji Islands welcome all with open arms. Comprising 333 islands, this tropical paradise is celebrated for its scenic beaches, vibrant marine life, lush rainforests, and warm-hearted locals. From world-class diving spots and luxurious resorts to unique cultural traditions and stunning landscapes, a Fiji Islands tour package promises an unforgettable escape.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/07/istockphoto-1192295845-612x612-1.webp",
-      "package_count": 12,
+      "package_count": 14,
       "is_featured": false,
       "is_published": true,
       "capital": "Suva",
@@ -1955,7 +1956,7 @@
       "region": "America",
       "description": "Discover breathtaking sightseeing, world-class stays, and seamless guided itineraries across America.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/07/istockphoto-826610396-612x612-1.webp",
-      "package_count": 31,
+      "package_count": 17,
       "is_featured": false,
       "is_published": true,
       "climate": "Overview of North and South American Continents",
@@ -2019,7 +2020,7 @@
       "region": "Australia & Pacific",
       "description": "Australia is a land of contrasts, home to over 12,000 sun-kissed beaches, exotic wildlife found nowhere else on Earth, and one of the world’s oldest continuous cultures—the Aboriginal heritage dating back over 50,000 years. From the tropical rainforests of Queensland to the red deserts of the Outback, the country is a visual feast of natural wonders and diverse ecosystems. Whether it’s iconic landmarks like the Sydney Opera House and Great Barrier Reef or lesser-known gems like the Daintree Rainforest and remote Kimberley region, Australia promises experiences as vast and varied as its 2.9 million square miles.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/07/istockphoto-1402298911-612x612-1.webp",
-      "package_count": 14,
+      "package_count": 15,
       "is_featured": true,
       "is_published": true,
       "capital": "Canberra",
@@ -2079,7 +2080,7 @@
       "region": "Australia & Pacific",
       "description": "Nestled in the southwestern Pacific Ocean, New Zealand is an island nation made up of two main landmasses—the North Island and the South Island—along with numerous smaller islands. Known for its dramatic scenery, geothermal wonders, and Maori culture, New Zealand is a land of breathtaking contrasts. It combines modern cities with wide open spaces, snow-capped peaks with subtropical beaches, and age-old traditions with cutting-edge innovation. Whether you're an adventure enthusiast, a nature lover, or someone seeking tranquility, New Zealand offers something special for everyone.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/07/istockphoto-907861900-612x612-1.webp",
-      "package_count": 14,
+      "package_count": 15,
       "is_featured": true,
       "is_published": true,
       "capital": "Wellington",
@@ -2147,7 +2148,7 @@
       "region": "Australia & Pacific",
       "description": "The Pacific Ocean stands as the largest and deepest ocean on Earth, spanning 60 million square miles from California all the way to China and plunging thousands of feet beneath the surface. It encompasses more than 25,000 islands, which are commonly classified into three main regions: Micronesia, Melanesia, and Polynesia. This vast ocean is known for producing some of the most intense hurricanes and is famously referred to as the Ring of Fire due to its frequent volcanic eruptions and seismic activity. The inhabitants of these islands, known as Pacific Islanders, are deeply connected to the sea and are often seen as its protectors. Notable Pacific Island nations include New Zealand, Fiji, Samoa, and the Cook Islands. While Australia is a continent and not technically a Pacific Island, it is often grouped with Pacific countries for simplicity. Explore our Pacific Tour Packages to discover some of the most stunning islands in the world. Or, connect with us on Instagram for a personalized itinerary to one of these captivating Pacific Island destinations.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/07/istockphoto-482726689-612x612-1.webp",
-      "package_count": 40,
+      "package_count": 3,
       "is_featured": false,
       "is_published": true,
       "tips": [
@@ -2202,7 +2203,7 @@
       "region": "Asia",
       "description": "Japan is an island nation in East Asia known for its fascinating mix of timeless traditions, advanced technology, and scenic beauty. From cherry blossoms in spring to snow-capped mountains in winter, Japan offers experiences for every season.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/08/istockphoto-604373918-612x612-1.webp",
-      "package_count": 7,
+      "package_count": 8,
       "is_featured": true,
       "is_published": true,
       "capital": "Tokyo",
@@ -2281,7 +2282,7 @@
       "region": "Asia",
       "description": "Hong Kong is a vibrant city where East meets West, blending modern skyscrapers with centuries-old traditions. Known for its glittering skyline, bustling harbours, lush green hills, and rich heritage, the city offers an experience like no other. Whether you’re exploring ancient temples, sampling dim sum, or admiring panoramic views from Victoria Peak, Hong Kong offers a fascinating mix of culture, cuisine, and contemporary charm. Its world-class transport system, energetic markets, and scenic islands make it a traveller’s paradise.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/08/istockphoto-1256942823-612x612-1.webp",
-      "package_count": 14,
+      "package_count": 20,
       "is_featured": false,
       "is_published": true,
       "currency": "Hong Kong dollar",
@@ -2345,7 +2346,7 @@
       "region": "Asia",
       "description": "China’s growth in both economy and politics is astounding. Once ranked 11th among global economies, it surged to the second-largest, surpassing powers like Japan and Germany by a wide margin. Yet, China’s global role began centuries ago. Known as the Red Dragon, it reigned as a dominant empire in East Asia and was one of history’s most influential kingdoms. Ancient Chinese contributions remain vital today, from paper, noodles, tea, and silk to the compass and gunpowder. To experience its rich heritage and witness its modern marvels, explore our affordable China tour package.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/08/istockphoto-170039011-612x612-1.webp",
-      "package_count": 12,
+      "package_count": 15,
       "is_featured": false,
       "is_published": true,
       "capital": "Beijing",
@@ -2420,7 +2421,7 @@
       "region": "Asia",
       "description": "Cambodia is a land of contrasts, where time-honoured traditions stand alongside bustling urban developments. Bordered by Thailand, Laos, and Vietnam, and blessed with a coastline along the Gulf of Thailand, the country offers a remarkable mix of lush landscapes, tropical beaches, and archaeological wonders. At its heart lies Angkor Wat, a UNESCO World Heritage Site and the world’s largest religious monument, symbolising Cambodia’s pride and resilience. Beyond the temples, travellers will find floating villages, dense jungles, lively markets, and a thriving arts scene that reflect the soul of this fascinating nation.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/08/istockphoto-173631415-612x612-1.webp",
-      "package_count": 11,
+      "package_count": 15,
       "is_featured": false,
       "is_published": true,
       "capital": "Phnom Penh",
@@ -2717,7 +2718,7 @@
       "region": "Asia",
       "description": "South Korea stands apart with its fascinating traditions, mouthwatering cuisine, and endless budget-friendly shopping experiences. From slipping into a graceful Hanbok outfit to joining a fun kimchi-making class, there is always something exciting to try in this beautiful destination. You can enjoy all of this with our exclusive South Korea tour packages.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/08/istockphoto-1054717742-612x612-1.webp",
-      "package_count": 7,
+      "package_count": 6,
       "is_featured": false,
       "is_published": true,
       "capital": "Seoul",
@@ -2785,7 +2786,7 @@
       "region": "Asia",
       "description": "Whether you want a calm getaway with your loved ones or wish to embark on a solo adventure filled with discovery, the Philippines has it all with its diverse destinations and activities. With our Philippines tour packages, you can enjoy these unforgettable experiences up close.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/08/istockphoto-1015218282-612x612-1.webp",
-      "package_count": 5,
+      "package_count": 7,
       "is_featured": false,
       "is_published": true,
       "capital": "Manila",
@@ -2924,7 +2925,7 @@
       "region": "Asia",
       "description": "Thailand is an incredible destination with countless treasures for all. From the electric buzz of Bangkok to serene southern shores, it’s a land of contrasts that continuously surprises. Discover sacred temples, savour delicious cuisine, or unwind on crystal-clear beaches.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/08/istockphoto-1290818170-612x612-1.webp",
-      "package_count": 26,
+      "package_count": 110,
       "is_featured": true,
       "is_published": true,
       "capital": "Bangkok",
@@ -3138,7 +3139,7 @@
       "region": "Europe",
       "description": "Austria is a landlocked country in Central Europe, famous for its alpine landscapes, historic cities, and vibrant cultural heritage. Nestled in the heart of the Eastern Alps, it is a destination where old-world charm meets modern sophistication. From the imperial grandeur of Vienna to the musical legacy of Salzburg and the picturesque lakeside villages, Austria offers travelers an unforgettable mix of scenic beauty and cultural depth.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/08/istockphoto-1479817683-612x612-1.webp",
-      "package_count": 4,
+      "package_count": 5,
       "is_featured": false,
       "is_published": true,
       "capital": "Vienna",
@@ -3213,7 +3214,7 @@
       "region": "Asia",
       "description": "Uzbekistan, in the heart of Central Asia, is a country steeped in history, culture, and architecture. Known as the cradle of the Silk Road, it was once home to flourishing trade routes that connected the East and West. Today, the nation entices travelers with its turquoise-domed mosques, majestic madrasas, and ancient cities like Samarkand, Bukhara, and Khiva—each echoing stories from centuries past.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/08/istockphoto-1544541360-612x612-1.webp",
-      "package_count": 2,
+      "package_count": 3,
       "is_featured": false,
       "is_published": true,
       "capital": "Tashkent",
@@ -3447,7 +3448,7 @@
       "region": "Europe",
       "description": "Nestled in the heart of Central Europe, the Czech Republic is a captivating blend of medieval charm and modern vibrance. Once known as Bohemia, this landlocked nation is bordered by Austria, Germany, Poland, and Slovakia. Its capital, Prague, often referred to as the “City of a Hundred Spires,” showcases a stunning mix of Gothic, Renaissance, and Baroque architecture. Beyond Prague, travelers will discover enchanting castles, picturesque countryside, thermal spa towns, and vibrant cultural hubs that make the Czech Republic a top destination for explorers of history, art, and scenic beauty.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/09/istockphoto-1196879645-612x612-1.webp",
-      "package_count": 1,
+      "package_count": 0,
       "is_featured": false,
       "is_published": true,
       "capital": "Prague",
@@ -3526,7 +3527,7 @@
       "region": "Europe",
       "description": "Croatia is a stunning country in southeastern Europe, nestled along the sparkling Adriatic Sea. Famous for its pristine beaches, historic cities, and lush national parks, Croatia offers a diverse travel experience that blends natural beauty with rich cultural heritage. The country is a mosaic of landscapes, from rolling hills and vineyards to ancient fortified towns and idyllic islands. Croatia’s architecture tells stories of its complex past, influenced by Roman, Venetian, and Ottoman empires, while its vibrant cities reflect modern European lifestyles. Whether you’re seeking adventure, relaxation, or cultural immersion, Croatia has something for every traveler.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/09/istockphoto-910159890-612x612-1.webp",
-      "package_count": 6,
+      "package_count": 7,
       "is_featured": false,
       "is_published": true,
       "capital": "Zagreb",
@@ -3986,7 +3987,7 @@
       "region": "Europe",
       "description": "Greece has got to be in your plans if you are imagining a postcard-perfect destination. This magical Mediterranean nation charms visitors globally with its majestic mountains, beautiful islands, golden sand beaches, and delicous food. Uncover the beauty of the Hellenic Republic with our cheap Greece tour packages.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/09/istockphoto-1432473824-612x612-1.webp",
-      "package_count": 14,
+      "package_count": 15,
       "is_featured": true,
       "is_published": true,
       "capital": "Athens",
@@ -4286,7 +4287,7 @@
       "region": "Europe",
       "description": "Norway, often called the “Land of the Midnight Sun,” is a Scandinavian gem blessed with breathtaking landscapes, vibrant cities, and rich cultural traditions. The country is known for its dramatic fjords, towering mountains, and pristine glaciers that attract travelers from all over the world. With modern cities like Oslo, Bergen, and Tromsø, Norway perfectly balances cosmopolitan living with natural beauty. For Indian travelers, Norway offers a once-in-a-lifetime chance to witness the Northern Lights, experience the midnight sun during summer, and explore a culture that values sustainability, equality, and outdoor living.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/09/istockphoto-479688588-612x612-1.webp",
-      "package_count": 3,
+      "package_count": 6,
       "is_featured": false,
       "is_published": true,
       "capital": "Oslo",
@@ -4365,7 +4366,7 @@
       "region": "Europe",
       "description": "London is one of the most celebrated capitals in the world, known for its seamless blend of history and modernity. It is a city where iconic landmarks like the Tower Bridge, Big Ben, and Buckingham Palace coexist alongside cutting-edge skyscrapers and dynamic cultural hubs. With a history that dates back more than two millennia, London has been the stage for kings, queens, revolutions, and innovations that shaped the world. Today, the city attracts millions of travelers annually, drawn by its historic sites, thriving art scene, and diverse culinary offerings. A true global metropolis, London represents a melting pot of cultures, languages, and lifestyles, making it a must-visit destination.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/09/istockphoto-1335066549-612x612-1.webp",
-      "package_count": 6,
+      "package_count": 5,
       "is_featured": true,
       "is_published": true,
       "currency": "Pound Sterling",
@@ -4651,7 +4652,7 @@
       "region": "Europe",
       "description": "Sweden, the largest country in Northern Europe, is a land of scenic beauty, innovation, and cultural richness. Nestled on the Scandinavian Peninsula, it boasts unspoiled forests, pristine lakes, and dramatic coastlines. Beyond its natural landscapes, Sweden is also known for modern design, progressive lifestyle, and historical treasures that date back to the Vikings. Whether it’s the buzzing city life of Stockholm, the Arctic wonders of Lapland, or the tranquil countryside villages, Sweden offers something for every type of traveler. With our Sweden tour packages, you can experience the true essence of this Scandinavian gem.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/09/istockphoto-1366009414-612x612-1.webp",
-      "package_count": 4,
+      "package_count": 5,
       "is_featured": false,
       "is_published": true,
       "capital": "Stockholm",
@@ -4869,7 +4870,7 @@
       "region": "Europe",
       "description": "Few destinations give travelers both worlds, a balanced mix of modern charm and tradition. Turkey is where travelers enjoy fascinating history, delightful food, and breathtaking scenery. If you wish to witness Turkey in its true essence, explore affordable Turkey tour packages.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/09/istockphoto-521623763-612x612-1.webp",
-      "package_count": 8,
+      "package_count": 10,
       "is_featured": false,
       "is_published": true,
       "capital": "Ankara",
@@ -5024,7 +5025,7 @@
       "region": "Island Destinations",
       "description": "Croatia is a stunning country in southeastern Europe, nestled along the sparkling Adriatic Sea. Famous for its pristine beaches, historic cities, and lush national parks, Croatia offers a diverse travel experience that blends natural beauty with rich cultural heritage. The country is a mosaic of landscapes, from rolling hills and vineyards to ancient fortified towns and idyllic islands. Croatia’s architecture tells stories of its complex past, influenced by Roman, Venetian, and Ottoman empires, while its vibrant cities reflect modern European lifestyles. Whether you’re seeking adventure, relaxation, or cultural immersion, Croatia has something for every traveler.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/09/istockphoto-171578752-612x612-1.webp",
-      "package_count": 10,
+      "package_count": 12,
       "is_featured": false,
       "is_published": true,
       "capital": "Colombo and Sri Jayawardenepura Kotte",
@@ -5096,7 +5097,7 @@
       "region": "Middle East",
       "description": "Though Jordan embraces the essence of modern life, its landmarks remain timeless. Walk to the very spot where Jesus was baptized, marvel at architecture dating back to the 4th century BCE, and ascend the mountain where God revealed the Promised Land to Moses. Named after the River Jordan, this land holds deep significance in all three Abrahamic faiths. Every pathway and every stone here echoes the tales of prophets, pilgrims, and ancient battles. To discover this remarkable land, explore our affordable Jordan tour packages.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/09/istockphoto-177254878-612x612-1.webp",
-      "package_count": 8,
+      "package_count": 9,
       "is_featured": false,
       "is_published": true,
       "capital": "Amman",
@@ -5469,7 +5470,7 @@
       "region": "Middle East",
       "description": "The Sultanate of Oman is a captivating blend of natural beauty, ancient traditions, and modern development. Nestled on the southeastern coast of the Arabian Peninsula, it boasts a diverse landscape featuring golden deserts, rugged mountains, and pristine beaches along the Arabian Sea. Known for its warm hospitality and peaceful environment, Oman welcomes travelers with a unique charm that reflects both its rich heritage and forward-thinking progress. From historic forts and castles to bustling souqs and luxurious resorts, Oman effortlessly bridges the past with the present.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/09/istockphoto-2152623655-612x612-1.webp",
-      "package_count": 4,
+      "package_count": 43,
       "is_featured": false,
       "is_published": true,
       "capital": "Muscat",
@@ -5628,7 +5629,7 @@
       "region": "Middle East",
       "description": "Ancient Heritage: Egypt is one of the oldest civilisations in the world, often called the “Land of the Pharaohs,” with monuments that date back thousands of years.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/09/istockphoto-1224178152-612x612-1.webp",
-      "package_count": 7,
+      "package_count": 8,
       "is_featured": false,
       "is_published": true,
       "capital": "Cairo",
@@ -5767,7 +5768,7 @@
       "region": "India",
       "description": "Located in northern India, Delhi attracts countless tourists annually. It serves as the nation’s capital and also its cultural, trade, and travel core. The city is admired for its glorious heritage, showcased in ancient landmarks – all of which you can explore by booking our Delhi tour packages. Let us now uncover Delhi’s heritage, traditions, food, sights, and vibrant bazaars.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/10/istockphoto-1224392638-612x612-1.webp",
-      "package_count": 12,
+      "package_count": 1,
       "is_featured": true,
       "is_published": true,
       "language": "Hindi, English, Punjabi",
@@ -5868,7 +5869,7 @@
       "region": "India",
       "description": "When you hear of Agra, what’s the very first image that comes to your mind? Most likely the Taj Mahal, right? The iconic monument globally recognized as one of the stunning Seven Wonders of the World? But did you know that Agra’s charm spreads far beyond this legendary masterpiece of love? Absolutely. Resting in Uttar Pradesh along the flowing Yamuna River lies the remarkable city of Agra, overflowing with majestic forts, historic treasures, and timeless architectural brilliance. With the Agra tour package, you get the chance to explore it all and even more. Take a closer journey into the history, culture, cuisine, sightseeing gems, and vibrant shopping arenas of Agra to understand why this destination is truly a must-see for every traveler.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/10/istockphoto-1224392638-612x612-1.webp",
-      "package_count": 4,
+      "package_count": 5,
       "is_featured": false,
       "is_published": true,
       "language": "Hindi, Urdu, English",
@@ -6089,7 +6090,7 @@
       "region": "India",
       "description": "Jaipur is a city of grandeur, heritage, and timeless artistry. Lovingly called ‘The Pink City’, it serves as the capital of Rajasthan and its largest urban hub. Welcoming countless travellers each year, it forms a vital part of India’s Golden Triangle, along with Delhi and Agra. From admiring the majestic forts and palaces to indulging in authentic Rajasthani delicacies, the city offers endless experiences, all of which you can enjoy with the Jaipur tour packages. Let’s explore Jaipur’s rich history, delightful food, vibrant traditions, lively markets, and stunning attractions to see why visiting this royal city is an unforgettable.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/10/istockphoto-1193750698-612x612-1.webp",
-      "package_count": 5,
+      "package_count": 8,
       "is_featured": false,
       "is_published": true,
       "climate": "20°C to 34°C",
@@ -6164,7 +6165,7 @@
       "region": "America",
       "description": "The United States of America is a land of contrasts and diversity. Stretching from the Atlantic to the Pacific, the country encompasses 50 states, each offering a distinct flavor of culture, climate, and experience. Whether it's the skyscrapers of New York, the beaches of California, or the natural wonders of Alaska, the USA remains a dream destination for globetrotters. Explore its rich history, dynamic cities, and iconic landmarks through our specially curated USA tour packages.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/07/istockphoto-1706291610-612x612-1.webp",
-      "package_count": 14,
+      "package_count": 0,
       "is_featured": false,
       "is_published": true,
       "capital": "Washington, D.C.",
@@ -6326,7 +6327,7 @@
       "region": "India",
       "description": "Gangtok, the scenic capital of Sikkim, harmoniously blends diverse cultures and traditions. Its natural beauty and wildlife flourish amidst a setting that unites old-world charm with modern lifestyle. The stunning landscapes and attractions of Gangtok promise to captivate every traveler. From lively bazaars and delectable cuisine to snow-draped peaks and tranquil monasteries, there’s plenty to explore with Gangtok tour packages. Dive into its art, culture, history, food, tourist spots, and shopping delights to see why Gangtok truly shines as a jewel of the Eastern Himalayas.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/10/istockphoto-1044402406-612x612-1.webp",
-      "package_count": 9,
+      "package_count": 3,
       "is_featured": false,
       "is_published": true,
       "language": "Nepali, Sikkimese, Hindi, English",
@@ -6484,7 +6485,7 @@
       "region": "India",
       "description": "Located in the northern stretch of West Bengal, Darjeeling is fondly known as the Queen of the Hills. Encircled by sprawling tea gardens, it sits 2,050 meters above sea level, offering a cool and inviting climate year-round. Adventure seekers can indulge in trekking and paragliding, while nature admirers can visit Tiger Hill to witness the magical sunrise. Tea enthusiasts have their own reason to visit Darjeeling—to savour countless cups of its world-famous brew. You can experience all this and more with the Darjeeling tour packages. Let’s explore Darjeeling’s heritage, local culture, food, markets, and popular attractions to understand why it remains a top travel choice.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/10/istockphoto-1044402406-612x612-1.webp",
-      "package_count": 9,
+      "package_count": 5,
       "is_featured": false,
       "is_published": true,
       "climate": "8°C to 18°C",
@@ -6559,7 +6560,7 @@
       "region": "India",
       "description": "Bangalore has evolved remarkably from a peaceful town of gardens and lakes into India’s third-largest metropolitan hub. It rose as the favored center for India’s thriving IT sector due to top R&D facilities and a comfortable climate. Even with its rapid modernization, Bangalore continues to preserve its timeless charm. Discover what makes this city stand out. And if you wish to explore India’s Silicon Valley, check out our Bangalore tour packages.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/10/istockphoto-1248641506-612x612-1.webp",
-      "package_count": 4,
+      "package_count": 0,
       "is_featured": false,
       "is_published": true,
       "climate": "19°C to 28°C",
@@ -6630,7 +6631,7 @@
       "region": "India",
       "description": "India stands as a magnificent blend of cultures, rich traditions, and diverse communities. For those seeking a destination that embodies multiple faiths, artistic brilliance, and literary charm, West Bengal is the ideal choice. Nestled in eastern India, this state boasts scenic beaches, serene hill stations, iconic temples, and historical landmarks. Its culinary delights alone captivate travelers—whether it’s delectable sweets or savory fish curries, every dish is a celebration of flavor. Let’s explore the legacy, art, lifestyle, cuisine, shopping arenas, and tourist marvels of this state to help you plan your journey with the incredible West Bengal tour packages.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/10/istockphoto-1044402406-612x612-1.webp",
-      "package_count": 10,
+      "package_count": 6,
       "is_featured": false,
       "is_published": true,
       "capital": "Kolkata | 4th Most Populous State in India",
@@ -6705,7 +6706,7 @@
       "region": "India",
       "description": "Famously known as the ‘Oxford of the East,’ Pune carries a reputation that extends beyond its world-class educational institutions. This thriving city seamlessly blends tradition with modern charm. From its lively nightlife and authentic Maharashtrian dishes to scenic hill stations close by, there’s plenty to uncover with Pune tour packages.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/10/istockphoto-2223025637-612x612-1.webp",
-      "package_count": 1,
+      "package_count": 2,
       "is_featured": false,
       "is_published": true,
       "climate": "Pune is a paradise for shoppers, offering everything from street bargains to upscale malls.",
@@ -6780,7 +6781,7 @@
       "region": "India",
       "description": "Tucked away in the northeastern corner of India lies a serene paradise whose charm still remains largely unexplored — the enchanting state of Arunachal Pradesh. Fondly called ‘the land of the rising sun,’ it is the first place in India to greet daylight. Bordered by China, Bhutan, and Myanmar, this destination is a vibrant blend of diverse cultures. With its dense green forests, exotic wildlife, lively festivals, and distinctive cuisine, Arunachal Pradesh offers endless wonders for travelers. You can experience all this and more through the Arunachal Pradesh tour packages. Let’s uncover the heritage, gastronomy, shopping delights, traditions, and top attractions of this stunning state to understand why Arunachal Pradesh deserves a spot on your travel list.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/10/istockphoto-172699850-612x612-1.webp",
-      "package_count": 1,
+      "package_count": 0,
       "is_featured": false,
       "is_published": true,
       "capital": "Itanagar",
@@ -6855,7 +6856,7 @@
       "region": "India",
       "description": "Mysore, officially known as Mysuru, is a historic city in the southern Indian state of Karnataka. It served as the capital of the Kingdom of Mysore for nearly six centuries, leaving behind a legacy of grand palaces, royal traditions, and cultural sophistication. Often called the “City of Palaces,” Mysore is renowned for its architectural marvels, vibrant festivals, and serene surroundings. Nestled at the foothills of Chamundi Hills, the city combines old-world charm with modern infrastructure. Its well-planned streets, beautiful gardens, and lively markets create a delightful atmosphere for visitors. Whether you’re drawn by its regal heritage, local artistry, or spiritual vibe, Mysore offers a perfect blend of history and harmony.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/10/istockphoto-1248641506-612x612-1.webp",
-      "package_count": 3,
+      "package_count": 1,
       "is_featured": false,
       "is_published": true,
       "language": "Kannada, Hindi, English, Tamil",
@@ -6918,7 +6919,7 @@
       "region": "India",
       "description": "Agra, nestled on the banks of the Yamuna River in Uttar Pradesh, is one of India’s most iconic cities. Best known as the home of the Taj Mahal, Agra is steeped in Mughal history, architectural brilliance, and cultural richness. Once the capital of the Mughal Empire, the city preserves numerous UNESCO World Heritage Sites and historic monuments, drawing millions of travelers from around the world. Beyond its grand architecture, Agra offers a vibrant local culture, bustling bazaars, delicious Mughlai cuisine, and a warm blend of tradition and modernity.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/10/istockphoto-1412808015-612x612-1.webp",
-      "package_count": 8,
+      "package_count": 9,
       "is_featured": false,
       "is_published": true,
       "language": "Malayalam, English, Tamil, Hindi",
@@ -6989,7 +6990,7 @@
       "region": "India",
       "description": "Famously known as the “City of Dreams,” Mumbai is a dynamic urban haven that thrives day and night, where tradition intertwines with ambition and calm moments arise amid its lively rhythm. Enchanting every visitor, Mumbai fascinates with its color, culture, and unmatched charm.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/10/istockphoto-1334792855-612x612-1.webp",
-      "package_count": 1,
+      "package_count": 2,
       "is_featured": false,
       "is_published": true,
       "language": "Marathi, Hindi, English",
@@ -7064,7 +7065,7 @@
       "region": "India",
       "description": "Maharashtra, which translates to The Great Land, truly lives up to its title. It’s a region of wealth and endless potential. For ages, Maharashtra has been a center of commerce and progress. Even now, it thrives as a financial and industrial leader, producing pharmaceuticals, textiles, electrical goods, and automobiles. Its scenic and hilly terrain draws honeymooners, while the sacred Shiva temples attract the devout. To experience the charm of the region, explore our Maharashtra tour packages.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/10/istockphoto-2223025637-612x612-1.webp",
-      "package_count": 2,
+      "package_count": 1,
       "is_featured": false,
       "is_published": true,
       "capital": "Mumbai | Richest State in India",
@@ -7311,7 +7312,7 @@
       "region": "India",
       "description": "Discover breathtaking sightseeing, world-class stays, and seamless guided itineraries across Kerala’s Scenic Beauty with the Munnar Tour Package for Nature Lovers.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/10/istockphoto-1412808015-612x612-1.webp",
-      "package_count": 11,
+      "package_count": 7,
       "is_featured": false,
       "is_published": true,
       "currency": "Indian Rupee (INR)",
@@ -7337,7 +7338,7 @@
       "region": "India",
       "description": "Tamil Nadu, located in the southernmost part of India, is a captivating land where history, spirituality, and natural beauty blend seamlessly. It is home to some of the country’s most revered temples, classical art forms, and magnificent Dravidian architecture. Known as the cradle of South Indian culture, Tamil Nadu offers a journey through centuries of tradition, from ancient stone temples to modern cosmopolitan cities. The state’s coastal charm, hill stations, wildlife sanctuaries, and cultural festivals make it one of India’s most diverse and fascinating destinations.",
       "image": "https://tripbygenie.in/wp-content/uploads/2025/10/istockphoto-92666765-612x612-1.webp",
-      "package_count": 4,
+      "package_count": 3,
       "is_featured": false,
       "is_published": true,
       "capital": "Chennai",
@@ -7412,7 +7413,7 @@
       "region": "Europe",
       "description": "Immerse yourself in Spain’s vibrant culture, historic architecture, flamenco, and Mediterranean tapas.",
       "image": "https://images.unsplash.com/photo-1543783207-ec64e4d95325?auto=format&fit=crop&w=1200&q=80",
-      "package_count": 5,
+      "package_count": 0,
       "is_featured": true,
       "is_published": true,
       "capital": "Madrid",
@@ -7438,7 +7439,7 @@
       "region": "North India",
       "description": "Experience the profound spiritual sanctity of Ram Janmabhoomi, Kanak Bhawan, and ancient Sarayu ghats.",
       "image": "https://images.unsplash.com/photo-1609766857041-ed402ea8069a?auto=format&fit=crop&w=1200&q=80",
-      "package_count": 4,
+      "package_count": 2,
       "is_featured": true,
       "is_published": true,
       "capital": "Lucknow (Uttar Pradesh)",
@@ -7464,7 +7465,7 @@
       "region": "South India",
       "description": "Sacred pilgrimage to the divine hills of Tirumala Venkateswara Temple, Kanipakam, and Chandragiri.",
       "image": "https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=1200&q=80",
-      "package_count": 3,
+      "package_count": 0,
       "is_featured": true,
       "is_published": true,
       "capital": "Amaravati (Andhra Pradesh)",
@@ -7490,7 +7491,7 @@
       "region": "South India",
       "description": "Queen of Hill Stations featuring lush tea gardens, Nilgiri Mountain Railway, and tranquil lakes.",
       "image": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80",
-      "package_count": 5,
+      "package_count": 0,
       "is_featured": true,
       "is_published": true,
       "capital": "Chennai (Tamil Nadu)",
@@ -7516,7 +7517,7 @@
       "region": "South India",
       "description": "Princess of Hill Stations set around a star-shaped lake, mist-covered cliffs, and pine forests.",
       "image": "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1200&q=80",
-      "package_count": 4,
+      "package_count": 2,
       "is_featured": true,
       "is_published": true,
       "capital": "Chennai (Tamil Nadu)",
@@ -7542,7 +7543,7 @@
       "region": "South India",
       "description": "Scotland of India renowned for aromatic coffee plantations, Abbey Falls, and Tibetan golden temples.",
       "image": "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1200&q=80",
-      "package_count": 4,
+      "package_count": 2,
       "is_featured": true,
       "is_published": true,
       "capital": "Bengaluru (Karnataka)",
@@ -7618,7 +7619,8 @@
         }
       ],
       "is_featured": false,
-      "created_at": "2026-11-20T17:09:30.110Z"
+      "created_at": "2026-11-20T17:09:30.110Z",
+      "package_count": 0
     },
     {
       "id": "dest_uttarakhand",
@@ -7679,7 +7681,8 @@
         }
       ],
       "is_featured": false,
-      "created_at": "2026-11-20T17:09:30.112Z"
+      "created_at": "2026-11-20T17:09:30.112Z",
+      "package_count": 0
     },
     {
       "id": "dest_south_india",
@@ -7736,7 +7739,8 @@
         }
       ],
       "is_featured": false,
-      "created_at": "2026-11-20T17:09:30.114Z"
+      "created_at": "2026-11-20T17:09:30.114Z",
+      "package_count": 1
     },
     {
       "id": "dest_west_india",
@@ -7773,7 +7777,8 @@
         }
       ],
       "is_featured": false,
-      "created_at": "2026-11-20T17:09:30.118Z"
+      "created_at": "2026-11-20T17:09:30.118Z",
+      "package_count": 0
     },
     {
       "id": "dest_east_india",
@@ -7814,7 +7819,8 @@
         }
       ],
       "is_featured": false,
-      "created_at": "2026-11-20T17:09:30.121Z"
+      "created_at": "2026-11-20T17:09:30.121Z",
+      "package_count": 3
     },
     {
       "id": "dest_north_east",
@@ -7859,7 +7865,8 @@
         }
       ],
       "is_featured": false,
-      "created_at": "2026-11-20T17:09:30.122Z"
+      "created_at": "2026-11-20T17:09:30.122Z",
+      "package_count": 0
     },
     {
       "id": "dest_north_india",
@@ -7900,7 +7907,8 @@
         }
       ],
       "is_featured": false,
-      "created_at": "2026-11-20T17:09:30.125Z"
+      "created_at": "2026-11-20T17:09:30.125Z",
+      "package_count": 1
     },
     {
       "id": "dest_honeymoon",
@@ -7925,7 +7933,8 @@
         }
       ],
       "is_featured": false,
-      "created_at": "2026-11-20T17:09:30.126Z"
+      "created_at": "2026-11-20T17:09:30.126Z",
+      "package_count": 31
     },
     {
       "id": "dest_middle_east",
@@ -7982,7 +7991,8 @@
         }
       ],
       "is_featured": false,
-      "created_at": "2026-11-20T17:09:30.127Z"
+      "created_at": "2026-11-20T17:09:30.127Z",
+      "package_count": 0
     },
     {
       "id": "dest_island",
@@ -8011,7 +8021,8 @@
         }
       ],
       "is_featured": false,
-      "created_at": "2026-11-20T17:09:30.127Z"
+      "created_at": "2026-11-20T17:09:30.127Z",
+      "package_count": 40
     },
     {
       "id": "dest_europe",
@@ -8068,7 +8079,8 @@
         }
       ],
       "is_featured": false,
-      "created_at": "2026-11-20T17:09:30.131Z"
+      "created_at": "2026-11-20T17:09:30.131Z",
+      "package_count": 9
     },
     {
       "id": "dest_asia",
@@ -8113,7 +8125,8 @@
         }
       ],
       "is_featured": false,
-      "created_at": "2026-11-20T17:09:30.134Z"
+      "created_at": "2026-11-20T17:09:30.134Z",
+      "package_count": 1
     }
   ],
   "packages": [
@@ -9019,7 +9032,8 @@
         "Mahe",
         "Praslin"
       ],
-      "original_source_url": "https://tripbygenie.in/a-tropical-family-getaway-in-the-heart-of-seychelles/"
+      "original_source_url": "https://tripbygenie.in/a-tropical-family-getaway-in-the-heart-of-seychelles/",
+      "upcoming_date": "2027-02-04"
     },
     {
       "id": "pkg_a_signature_journey_through_south_africas_spl_0",
@@ -12187,7 +12201,8 @@
         "Melbourne",
         "Sydney"
       ],
-      "original_source_url": "https://tripbygenie.in/melbourne-tour-package-7-day-australia-duo-exploration/"
+      "original_source_url": "https://tripbygenie.in/melbourne-tour-package-7-day-australia-duo-exploration/",
+      "upcoming_date": "2027-08-03"
     },
     {
       "id": "pkg_embark_on_an_epic_13_day_australia_travel_pac_10",
@@ -12667,7 +12682,8 @@
         "Bali",
         "Ubud"
       ],
-      "original_source_url": "https://tripbygenie.in/bali-family-fun-tour-package-with-wildlife-and-water-parks/"
+      "original_source_url": "https://tripbygenie.in/bali-family-fun-tour-package-with-wildlife-and-water-parks/",
+      "upcoming_date": "2027-08-30"
     },
     {
       "id": "pkg_adventure_activities_in_the_bali_with_lombok__5",
@@ -13842,7 +13858,8 @@
         "Auckland",
         "Queenstown"
       ],
-      "original_source_url": "https://tripbygenie.in/discover-together-auckland-to-wellington-road-tour-with-new-zealand-group-tour-packages/"
+      "original_source_url": "https://tripbygenie.in/discover-together-auckland-to-wellington-road-tour-with-new-zealand-group-tour-packages/",
+      "upcoming_date": "2027-11-04"
     },
     {
       "id": "pkg_dive_into_natural_beauty_with_15_day_new_zeal_7",
@@ -15839,7 +15856,8 @@
       "created_at": "2026-11-20T00:00:00.000Z",
       "starting_location": "Origin City",
       "ending_location": "Origin City",
-      "original_source_url": "https://tripbygenie.in/complete-hong-kong-family-tour-package-itinerary-with-disney-magic/"
+      "original_source_url": "https://tripbygenie.in/complete-hong-kong-family-tour-package-itinerary-with-disney-magic/",
+      "upcoming_date": "2028-02-26"
     },
     {
       "id": "pkg_magical_macau_disneyland_tour_package_with_ho_1",
@@ -16242,7 +16260,8 @@
       "created_at": "2026-11-20T00:00:00.000Z",
       "starting_location": "Origin City",
       "ending_location": "Origin City",
-      "original_source_url": "https://tripbygenie.in/exciting-hong-kong-disneyland-family-tour-package-with-adventure/"
+      "original_source_url": "https://tripbygenie.in/exciting-hong-kong-disneyland-family-tour-package-with-adventure/",
+      "upcoming_date": "2028-03-21"
     },
     {
       "id": "pkg_6_day_hong_kong_holiday_package_with_jeju_nat_13",
@@ -18045,7 +18064,8 @@
       "destinations_covered": [
         "Singapore"
       ],
-      "original_source_url": "https://tripbygenie.in/experience-thrill-with-skyline-luge-and-skyride-in-singapore-group-tour-package/"
+      "original_source_url": "https://tripbygenie.in/experience-thrill-with-skyline-luge-and-skyride-in-singapore-group-tour-package/",
+      "upcoming_date": "2028-07-04"
     },
     {
       "id": "pkg_experience_sentosa_island_adventures_and_dolp_7",
@@ -18154,7 +18174,8 @@
         "Penang",
         "Phuket"
       ],
-      "original_source_url": "https://tripbygenie.in/experience-a-luxury-star-virgo-cruise-penang-sightseeing-and-kek-lok-si-temple-on-singapore-family-tour-package/"
+      "original_source_url": "https://tripbygenie.in/experience-a-luxury-star-virgo-cruise-penang-sightseeing-and-kek-lok-si-temple-on-singapore-family-tour-package/",
+      "upcoming_date": "2028-07-10"
     },
     {
       "id": "pkg_enjoy_beaches_or_swim_with_dolphins_at_sentos_9",
@@ -18208,7 +18229,8 @@
       "destinations_covered": [
         "Singapore"
       ],
-      "original_source_url": "https://tripbygenie.in/enjoy-beaches-or-swim-with-dolphins-at-sentosa-island-in-singapore-family-fun-package/"
+      "original_source_url": "https://tripbygenie.in/enjoy-beaches-or-swim-with-dolphins-at-sentosa-island-in-singapore-family-fun-package/",
+      "upcoming_date": "2028-07-13"
     },
     {
       "id": "pkg_romantic_adventurous_escapade_in_sarawak_with_0",
@@ -18777,7 +18799,8 @@
         "Phi Phi",
         "Bangkok"
       ],
-      "original_source_url": "https://tripbygenie.in/adventure-awaits-with-this-7-day-thailand-group-tour-package/"
+      "original_source_url": "https://tripbygenie.in/adventure-awaits-with-this-7-day-thailand-group-tour-package/",
+      "upcoming_date": "2028-08-15"
     },
     {
       "id": "pkg_ultimate_coral_island_fun_with_pattaya_bangko_3",
@@ -19376,7 +19399,8 @@
         "Chiang Mai",
         "Bangkok"
       ],
-      "original_source_url": "https://tripbygenie.in/discover-wonders-in-thailand-group-tour-package/"
+      "original_source_url": "https://tripbygenie.in/discover-wonders-in-thailand-group-tour-package/",
+      "upcoming_date": "2028-09-17"
     },
     {
       "id": "pkg_a_quick_glimpse_of_wonders_5_day_thailand_tri_14",
@@ -20226,7 +20250,8 @@
       "is_group_tour": true,
       "available_seats": 15,
       "total_seats": 20,
-      "created_at": "2026-11-20T00:00:00.000Z"
+      "created_at": "2026-11-20T00:00:00.000Z",
+      "upcoming_date": "2028-11-04"
     },
     {
       "id": "pkg_9_day_dynamic_vietnam_tour_package_for_herita_8",
@@ -22934,7 +22959,8 @@
       "created_at": "2026-11-20T00:00:00.000Z",
       "starting_location": "Origin City",
       "ending_location": "Origin City",
-      "original_source_url": "https://tripbygenie.in/discover-dublin-group-tour-package-with-belfast-city-excursions/"
+      "original_source_url": "https://tripbygenie.in/discover-dublin-group-tour-package-with-belfast-city-excursions/",
+      "upcoming_date": "2029-04-09"
     },
     {
       "id": "pkg_experience_the_ireland_tour_packages_with_gal_1",
@@ -26518,7 +26544,8 @@
       "created_at": "2026-11-20T00:00:00.000Z",
       "starting_location": "Origin City",
       "ending_location": "Origin City",
-      "original_source_url": "https://tripbygenie.in/fun-for-all-ages-in-maldives-family-tour-package/"
+      "original_source_url": "https://tripbygenie.in/fun-for-all-ages-in-maldives-family-tour-package/",
+      "upcoming_date": "2029-11-05"
     },
     {
       "id": "pkg_experience_bratislavas_art_and_architecture_w_0",
@@ -27317,7 +27344,8 @@
       "created_at": "2026-11-20T00:00:00.000Z",
       "starting_location": "Origin City",
       "ending_location": "Origin City",
-      "original_source_url": "https://tripbygenie.in/jordan-group-tour-packages-perfect-for-large-groups-and-families/"
+      "original_source_url": "https://tripbygenie.in/jordan-group-tour-packages-perfect-for-large-groups-and-families/",
+      "upcoming_date": "2029-12-23"
     },
     {
       "id": "pkg_explore_jordan_petra_and_amman_shine_in_an_am_5",
@@ -28913,7 +28941,8 @@
         "Dubai",
         "Abu Dhabi"
       ],
-      "original_source_url": "https://tripbygenie.in/exploring-burj-khalifa-with-a-dubai-group-tour-package/"
+      "original_source_url": "https://tripbygenie.in/exploring-burj-khalifa-with-a-dubai-group-tour-package/",
+      "upcoming_date": "2030-03-26"
     },
     {
       "id": "pkg_romantic_dubai_honeymoon_packages_with_miracl_7",
@@ -29572,7 +29601,8 @@
         "Chandigarh",
         "Chennai"
       ],
-      "original_source_url": "https://tripbygenie.in/delhi-educational-trip-package-for-students-and-schools/"
+      "original_source_url": "https://tripbygenie.in/delhi-educational-trip-package-for-students-and-schools/",
+      "upcoming_date": "2030-05-01"
     },
     {
       "id": "pkg_scenic_himachal_trip_package_with_shimla_and__3",
@@ -30007,7 +30037,8 @@
       "is_group_tour": true,
       "available_seats": 15,
       "total_seats": 20,
-      "created_at": "2026-11-20T00:00:00.000Z"
+      "created_at": "2026-11-20T00:00:00.000Z",
+      "upcoming_date": "2030-05-25"
     },
     {
       "id": "pkg_jaipur_honeymoon_tour_package_with_romantic_s_11",
@@ -30119,7 +30150,8 @@
         "Manali",
         "Kullu"
       ],
-      "original_source_url": "https://tripbygenie.in/discover-the-history-of-himalayas-with-manali-educational-tour-package/"
+      "original_source_url": "https://tripbygenie.in/discover-the-history-of-himalayas-with-manali-educational-tour-package/",
+      "upcoming_date": "2030-05-31"
     },
     {
       "id": "pkg_romantic_heaven_on_earth_with_ladakh_honeymoo_0",
@@ -34525,7 +34557,8 @@
         "Saigon",
         "Mekong Delta"
       ],
-      "original_source_url": "https://tripbygenie.in/vietnam-group-tour-package/"
+      "original_source_url": "https://tripbygenie.in/vietnam-group-tour-package/",
+      "total_seats": 24
     },
     {
       "id": "pkg_dynamic_vietnam_tour_package_17009",
@@ -36732,6 +36765,136 @@
       "starting_location": "Origin City",
       "ending_location": "Origin City",
       "original_source_url": "https://tripbygenie.in/maldives/"
+    },
+    {
+      "id": "pkg_andaman_coral_escape",
+      "agency_id": "agency_travel_genie",
+      "title": "Exotic Andaman: Havelock & Radhanagar Beach Coral Escape",
+      "slug": "exotic-andaman-havelock-radhanagar-beach-coral-escape",
+      "destination_id": "dest_andaman",
+      "destination": "Andaman & Nicobar",
+      "category": "Domestic Holiday Packages",
+      "duration_days": 5,
+      "duration_nights": 4,
+      "public_price": 28500,
+      "wholesale_price": 22800,
+      "cover_image": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1000&q=80",
+      "description": "White sand shores of Radhanagar Beach, crystal-clear waters at Elephant Beach, and historic Cellular Jail in Port Blair.",
+      "highlights": [
+        "Radhanagar Beach Sunset Walk",
+        "Makruzz Catamaran Cruise to Havelock",
+        "Snorkelling at Elephant Beach",
+        "Cellular Jail Sound & Light Show"
+      ],
+      "inclusions": [
+        "4 Nights premium hotel stay",
+        "Daily breakfast & dinner",
+        "Private AC transfers",
+        "Ferry cruise tickets"
+      ],
+      "exclusions": [
+        "Airfare to Port Blair",
+        "Personal expenses",
+        "Scuba diving photography"
+      ],
+      "accommodation": "4-Star Symphony Palms Havelock / SeaShell Port Blair",
+      "transportation": "Private AC vehicle throughout",
+      "is_featured": false,
+      "is_published": true,
+      "is_group_tour": false,
+      "available_seats": 16,
+      "upcoming_date": "2026-12-18",
+      "starting_location": "",
+      "ending_location": "",
+      "destinations_covered": [],
+      "updated_at": "2026-11-23T11:10:26.589Z"
+    },
+    {
+      "id": "pkg_andaman_honeymoon_paradise",
+      "agency_id": "agency_travel_genie",
+      "title": "Romantic Andaman: Private Pool Villa & Island Hopping Getaway",
+      "slug": "romantic-andaman-private-pool-villa-island-hopping",
+      "destination_id": "dest_andaman",
+      "destination": "Andaman & Nicobar",
+      "category": "Honeymoon Packages",
+      "duration_days": 6,
+      "duration_nights": 5,
+      "public_price": 42000,
+      "wholesale_price": 33600,
+      "cover_image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=80",
+      "description": "Candlelight beach dining, private luxury beachfront cabanas on Neil & Havelock Islands, and romantic photography.",
+      "highlights": [
+        "Private Candlelight Beach Dinner",
+        "Neil Island Coral Bridge & Sunset",
+        "Honeymoon Cake & Floral Bed Decor",
+        "Private Speedboat Excursion"
+      ],
+      "inclusions": [
+        "5 Nights luxury resort accommodation",
+        "Daily breakfast & candlelight dinner",
+        "Private AC luxury car",
+        "Complimentary watersports"
+      ],
+      "exclusions": [
+        "Flights",
+        "Personal shopping"
+      ],
+      "accommodation": "Barefoot at Havelock / TSG Blue Resort Neil",
+      "transportation": "Private AC chauffeur vehicle",
+      "is_featured": false,
+      "is_published": true,
+      "is_group_tour": false,
+      "available_seats": 10,
+      "upcoming_date": "2026-12-20",
+      "starting_location": "",
+      "ending_location": "",
+      "destinations_covered": [],
+      "updated_at": "2026-11-23T11:10:16.853Z"
+    },
+    {
+      "id": "pkg_andaman_group_explorer",
+      "agency_id": "agency_travel_genie",
+      "title": "Andaman Island Explorer (Guaranteed Group Departure)",
+      "slug": "andaman-island-explorer-guaranteed-group-departure",
+      "destination_id": "dest_andaman",
+      "destination": "Andaman & Nicobar",
+      "category": "Group Tours",
+      "duration_days": 5,
+      "duration_nights": 4,
+      "public_price": 26000,
+      "wholesale_price": 20800,
+      "cover_image": "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1000&q=80",
+      "description": "Fixed departure group tour with dedicated South Indian tour escort, comfortable AC buses, all meals, and Havelock cruise.",
+      "highlights": [
+        "100% Guaranteed Group Departure",
+        "Pure South Indian & Jain Meals",
+        "Havelock Island AC Ferry",
+        "Dedicated Tour Manager"
+      ],
+      "inclusions": [
+        "4 Nights 4-star stays",
+        "All meals (Breakfast",
+        "Lunch",
+        "Dinner)",
+        "Sightseeing & Ferry tickets",
+        "Tour escort"
+      ],
+      "exclusions": [
+        "Airfare",
+        "Personal watersports"
+      ],
+      "accommodation": "Handpicked 4-star group hotels",
+      "transportation": "Luxury AC Coach / Tempo Traveller",
+      "is_featured": false,
+      "is_published": true,
+      "is_group_tour": true,
+      "available_seats": 12,
+      "total_seats": 24,
+      "upcoming_date": "2026-12-28",
+      "starting_location": "",
+      "ending_location": "",
+      "destinations_covered": [],
+      "updated_at": "2026-11-23T11:10:09.365Z"
     }
   ],
   "package_itineraries": [
@@ -66965,6 +67128,182 @@
       "description": "India and Maldives share a long-standing relationship built on cultural, historical, and geographical ties. Due to its proximity, India has always been one of the Maldives’ strongest partners in trade, tourism, and defense cooperation. Indian travelers form a large part of the Maldives’ tourist population, making it one of the top source markets. Both countries engage in joint security exercises, medical collaborations, and educational exchanges, strengthening their bilateral ties. For Indian tourists, easy flight connectivity and visa-on-arrival facilities make traveling to the Maldives seamless and convenient. The bond between the two nations continues to grow, enhancing tourism opportunities and mutual development.",
       "meals": "Breakfast Included",
       "activities": "Curated Guided Sightseeing"
+    },
+    {
+      "package_id": "pkg_andaman_group_explorer",
+      "day_number": 1,
+      "title": "Day 1: Itinerary Day",
+      "description": "Activities and itinerary details for Day 1.",
+      "meals": "Breakfast Included",
+      "activities": "Sightseeing",
+      "id": "pac_8475a42e97",
+      "created_at": "2026-11-23T11:10:09.589Z",
+      "updated_at": "2026-11-23T11:10:09.589Z"
+    },
+    {
+      "package_id": "pkg_andaman_group_explorer",
+      "day_number": 2,
+      "title": "Day 2: Itinerary Day",
+      "description": "Activities and itinerary details for Day 2.",
+      "meals": "Breakfast Included",
+      "activities": "Sightseeing",
+      "id": "pac_efb6204cea",
+      "created_at": "2026-11-23T11:10:09.764Z",
+      "updated_at": "2026-11-23T11:10:09.764Z"
+    },
+    {
+      "package_id": "pkg_andaman_group_explorer",
+      "day_number": 3,
+      "title": "Day 3: Itinerary Day",
+      "description": "Activities and itinerary details for Day 3.",
+      "meals": "Breakfast Included",
+      "activities": "Sightseeing",
+      "id": "pac_e61b7ef179",
+      "created_at": "2026-11-23T11:10:10.046Z",
+      "updated_at": "2026-11-23T11:10:10.046Z"
+    },
+    {
+      "package_id": "pkg_andaman_group_explorer",
+      "day_number": 4,
+      "title": "Day 4: Itinerary Day",
+      "description": "Activities and itinerary details for Day 4.",
+      "meals": "Breakfast Included",
+      "activities": "Sightseeing",
+      "id": "pac_c6439b434a",
+      "created_at": "2026-11-23T11:10:10.221Z",
+      "updated_at": "2026-11-23T11:10:10.221Z"
+    },
+    {
+      "package_id": "pkg_andaman_group_explorer",
+      "day_number": 5,
+      "title": "Day 5: Itinerary Day",
+      "description": "Activities and itinerary details for Day 5.",
+      "meals": "Breakfast Included",
+      "activities": "Sightseeing",
+      "id": "pac_2dd10e48bb",
+      "created_at": "2026-11-23T11:10:10.428Z",
+      "updated_at": "2026-11-23T11:10:10.428Z"
+    },
+    {
+      "package_id": "pkg_andaman_honeymoon_paradise",
+      "day_number": 1,
+      "title": "Day 1: Itinerary Day",
+      "description": "Activities and itinerary details for Day 1.",
+      "meals": "Breakfast Included",
+      "activities": "Sightseeing",
+      "id": "pac_05ca258933",
+      "created_at": "2026-11-23T11:10:17.096Z",
+      "updated_at": "2026-11-23T11:10:17.096Z"
+    },
+    {
+      "package_id": "pkg_andaman_honeymoon_paradise",
+      "day_number": 2,
+      "title": "Day 2: Itinerary Day",
+      "description": "Activities and itinerary details for Day 2.",
+      "meals": "Breakfast Included",
+      "activities": "Sightseeing",
+      "id": "pac_ccc9589d4d",
+      "created_at": "2026-11-23T11:10:17.287Z",
+      "updated_at": "2026-11-23T11:10:17.287Z"
+    },
+    {
+      "package_id": "pkg_andaman_honeymoon_paradise",
+      "day_number": 3,
+      "title": "Day 3: Itinerary Day",
+      "description": "Activities and itinerary details for Day 3.",
+      "meals": "Breakfast Included",
+      "activities": "Sightseeing",
+      "id": "pac_7eac04e0b3",
+      "created_at": "2026-11-23T11:10:17.464Z",
+      "updated_at": "2026-11-23T11:10:17.464Z"
+    },
+    {
+      "package_id": "pkg_andaman_honeymoon_paradise",
+      "day_number": 4,
+      "title": "Day 4: Itinerary Day",
+      "description": "Activities and itinerary details for Day 4.",
+      "meals": "Breakfast Included",
+      "activities": "Sightseeing",
+      "id": "pac_12d64e97f6",
+      "created_at": "2026-11-23T11:10:17.653Z",
+      "updated_at": "2026-11-23T11:10:17.653Z"
+    },
+    {
+      "package_id": "pkg_andaman_honeymoon_paradise",
+      "day_number": 5,
+      "title": "Day 5: Itinerary Day",
+      "description": "Activities and itinerary details for Day 5.",
+      "meals": "Breakfast Included",
+      "activities": "Sightseeing",
+      "id": "pac_25553062c8",
+      "created_at": "2026-11-23T11:10:17.814Z",
+      "updated_at": "2026-11-23T11:10:17.814Z"
+    },
+    {
+      "package_id": "pkg_andaman_honeymoon_paradise",
+      "day_number": 6,
+      "title": "Day 6: Itinerary Day",
+      "description": "Activities and itinerary details for Day 6.",
+      "meals": "Breakfast Included",
+      "activities": "Sightseeing",
+      "id": "pac_f046f83383",
+      "created_at": "2026-11-23T11:10:18.007Z",
+      "updated_at": "2026-11-23T11:10:18.007Z"
+    },
+    {
+      "package_id": "pkg_andaman_coral_escape",
+      "day_number": 1,
+      "title": "Day 1: Itinerary Day",
+      "description": "Activities and itinerary details for Day 1.",
+      "meals": "Breakfast Included",
+      "activities": "Sightseeing",
+      "id": "pac_b797d2157b",
+      "created_at": "2026-11-23T11:10:26.837Z",
+      "updated_at": "2026-11-23T11:10:26.837Z"
+    },
+    {
+      "package_id": "pkg_andaman_coral_escape",
+      "day_number": 2,
+      "title": "Day 2: Itinerary Day",
+      "description": "Activities and itinerary details for Day 2.",
+      "meals": "Breakfast Included",
+      "activities": "Sightseeing",
+      "id": "pac_1960d89611",
+      "created_at": "2026-11-23T11:10:27.018Z",
+      "updated_at": "2026-11-23T11:10:27.018Z"
+    },
+    {
+      "package_id": "pkg_andaman_coral_escape",
+      "day_number": 3,
+      "title": "Day 3: Itinerary Day",
+      "description": "Activities and itinerary details for Day 3.",
+      "meals": "Breakfast Included",
+      "activities": "Sightseeing",
+      "id": "pac_104c4db83b",
+      "created_at": "2026-11-23T11:10:27.256Z",
+      "updated_at": "2026-11-23T11:10:27.256Z"
+    },
+    {
+      "package_id": "pkg_andaman_coral_escape",
+      "day_number": 4,
+      "title": "Day 4: Itinerary Day",
+      "description": "Activities and itinerary details for Day 4.",
+      "meals": "Breakfast Included",
+      "activities": "Sightseeing",
+      "id": "pac_3fcfd7c178",
+      "created_at": "2026-11-23T11:10:27.465Z",
+      "updated_at": "2026-11-23T11:10:27.465Z"
+    },
+    {
+      "package_id": "pkg_andaman_coral_escape",
+      "day_number": 5,
+      "title": "Day 5: Itinerary Day",
+      "description": "Activities and itinerary details for Day 5.",
+      "meals": "Breakfast Included",
+      "activities": "Sightseeing",
+      "id": "pac_75b586c75a",
+      "created_at": "2026-11-23T11:10:27.702Z",
+      "updated_at": "2026-11-23T11:10:27.702Z"
     }
   ],
   "leads": [
@@ -67284,6 +67623,195 @@
       "created_at": "2026-11-19T08:54:41.590Z",
       "id": "lea_51f18fd43d",
       "updated_at": "2026-11-19T08:54:41.591Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "customer_id": null,
+      "customer_name": "Deepak_Sharma",
+      "customer_email": "deepak.custom_1795421975227@gmail.com",
+      "customer_phone": "+91 9876543210",
+      "interested_destination": "Switzerland & Paris Honeymoon",
+      "interested_package_id": null,
+      "travel_date": "2026-12-20",
+      "travelers_count": 2,
+      "budget": "₹1,00,000 - ₹2,00,000",
+      "lead_source": "Customized Trip Form",
+      "status": "Assigned",
+      "assigned_staff_id": "usr_staff_priya",
+      "assigned_staff_name": "Priya Nair",
+      "follow_up_date": null,
+      "notes": "Departure City: Chennai | Hotel: 4-Star Premium Hotel | Preference: Couples / Romantic | Notes: Require candlelight dinner and scenic train passes in Lucerne.",
+      "created_at": "2026-11-23T08:19:35.257Z",
+      "id": "lea_11bf250646",
+      "updated_at": "2026-11-23T08:19:35.533Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "customer_id": null,
+      "customer_name": "Deepak_Sharma",
+      "customer_email": "deepak.custom_1795422070963@gmail.com",
+      "customer_phone": "+91 9876543210",
+      "interested_destination": "Switzerland & Paris Honeymoon",
+      "interested_package_id": null,
+      "travel_date": "2026-12-20",
+      "travelers_count": 2,
+      "budget": "₹1,00,000 - ₹2,00,000",
+      "lead_source": "Customized Trip Form",
+      "status": "Assigned",
+      "assigned_staff_id": "usr_staff_priya",
+      "assigned_staff_name": "Priya Nair",
+      "follow_up_date": null,
+      "notes": "Departure City: Chennai | Hotel: 4-Star Premium Hotel | Preference: Couples / Romantic | Notes: Require candlelight dinner and scenic train passes in Lucerne.",
+      "created_at": "2026-11-23T08:21:10.986Z",
+      "id": "lea_b66e398752",
+      "updated_at": "2026-11-23T08:21:11.256Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "customer_id": null,
+      "customer_name": "Deepak_Sharma",
+      "customer_email": "deepak.custom_1795422102368@gmail.com",
+      "customer_phone": "+91 9876543210",
+      "interested_destination": "Switzerland & Paris Honeymoon",
+      "interested_package_id": null,
+      "travel_date": "2026-12-20",
+      "travelers_count": 2,
+      "budget": "₹1,00,000 - ₹2,00,000",
+      "lead_source": "Customized Trip Form",
+      "status": "Assigned",
+      "assigned_staff_id": "usr_staff_priya",
+      "assigned_staff_name": "Priya Nair",
+      "follow_up_date": null,
+      "notes": "Departure City: Chennai | Hotel: 4-Star Premium Hotel | Preference: Couples / Romantic | Notes: Require candlelight dinner and scenic train passes in Lucerne.",
+      "created_at": "2026-11-23T08:21:42.401Z",
+      "id": "lea_4a655331bd",
+      "updated_at": "2026-11-23T08:21:42.692Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "customer_id": null,
+      "customer_name": "Deepak_Sharma",
+      "customer_email": "deepak.custom_1795422167589@gmail.com",
+      "customer_phone": "+91 9876543210",
+      "interested_destination": "Switzerland & Paris Honeymoon",
+      "interested_package_id": null,
+      "travel_date": "2026-12-20",
+      "travelers_count": 2,
+      "budget": "₹1,00,000 - ₹2,00,000",
+      "lead_source": "Customized Trip Form",
+      "status": "Assigned",
+      "assigned_staff_id": "usr_staff_priya",
+      "assigned_staff_name": "Priya Nair",
+      "follow_up_date": null,
+      "notes": "Departure City: Chennai | Hotel: 4-Star Premium Hotel | Preference: Couples / Romantic | Notes: Require candlelight dinner and scenic train passes in Lucerne.",
+      "created_at": "2026-11-23T08:22:47.619Z",
+      "id": "lea_6cfe269b5d",
+      "updated_at": "2026-11-23T08:22:47.971Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "customer_id": null,
+      "customer_name": "Deepak_Sharma",
+      "customer_email": "deepak.custom_1795422209172@gmail.com",
+      "customer_phone": "+91 9876543210",
+      "interested_destination": "Switzerland & Paris Honeymoon",
+      "interested_package_id": null,
+      "travel_date": "2026-12-20",
+      "travelers_count": 2,
+      "budget": "₹1,00,000 - ₹2,00,000",
+      "lead_source": "Customized Trip Form",
+      "status": "Assigned",
+      "assigned_staff_id": "usr_staff_priya",
+      "assigned_staff_name": "Priya Nair",
+      "follow_up_date": null,
+      "notes": "Departure City: Chennai | Hotel: 4-Star Premium Hotel | Preference: Couples / Romantic | Notes: Require candlelight dinner and scenic train passes in Lucerne.",
+      "created_at": "2026-11-23T08:23:29.207Z",
+      "id": "lea_0eb2094e3a",
+      "updated_at": "2026-11-23T08:23:29.502Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "customer_id": null,
+      "customer_name": "test1",
+      "customer_email": "test1@gmail.com",
+      "customer_phone": "+91 9361814601",
+      "interested_destination": "US",
+      "interested_package_id": null,
+      "travel_date": "2026-11-26",
+      "travelers_count": 1,
+      "budget": "₹50,000 - ₹1,00,000",
+      "lead_source": "Customized Trip Form",
+      "status": "Negotiation",
+      "assigned_staff_id": "usr_staff_priya",
+      "assigned_staff_name": "Priya Nair",
+      "follow_up_date": "2026-11-24",
+      "notes": "",
+      "created_at": "2026-11-23T08:26:33.274Z",
+      "id": "lea_76c65ae713",
+      "updated_at": "2026-11-23T08:33:46.761Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "customer_id": null,
+      "customer_name": "Deepak_Sharma",
+      "customer_email": "deepak.custom_1795426402053@gmail.com",
+      "customer_phone": "+91 9876543210",
+      "interested_destination": "Switzerland & Paris Honeymoon",
+      "interested_package_id": null,
+      "travel_date": "2026-12-20",
+      "travelers_count": 2,
+      "budget": "₹1,00,000 - ₹2,00,000",
+      "lead_source": "Customized Trip Form",
+      "status": "Assigned",
+      "assigned_staff_id": "usr_staff_priya",
+      "assigned_staff_name": "Priya Nair",
+      "follow_up_date": null,
+      "notes": "Departure City: Chennai | Hotel: 4-Star Premium Hotel | Preference: Couples / Romantic | Notes: Require candlelight dinner and scenic train passes in Lucerne.",
+      "created_at": "2026-11-23T09:33:22.082Z",
+      "id": "lea_cb4b2d87db",
+      "updated_at": "2026-11-23T09:33:22.415Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "customer_id": null,
+      "customer_name": "adhitest2",
+      "customer_email": "adhithyam0210@gmail.com",
+      "customer_phone": "+91 9876500006",
+      "interested_destination": "uk",
+      "interested_package_id": null,
+      "travel_date": "",
+      "travelers_count": 2,
+      "budget": "₹50,000 - ₹1,00,000",
+      "lead_source": "Customized Trip Form",
+      "status": "New",
+      "assigned_staff_id": null,
+      "assigned_staff_name": "Unassigned",
+      "follow_up_date": null,
+      "notes": "Departure City: ch | Hotel: 4-Star Premium Hotel | Preference: Couples / Romantic",
+      "created_at": "2026-11-23T10:30:35.959Z",
+      "id": "lea_c6e08fd059",
+      "updated_at": "2026-11-23T10:30:35.962Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "customer_id": null,
+      "customer_name": "Adhithya",
+      "customer_email": "adhithyam0210@gmail.com",
+      "customer_phone": "+91 9876500006",
+      "interested_destination": "uk",
+      "interested_package_id": null,
+      "travel_date": "",
+      "travelers_count": 2,
+      "budget": "₹50,000 - ₹1,00,000",
+      "lead_source": "Customized Trip Form",
+      "status": "Assigned",
+      "assigned_staff_id": "usr_staff_rahul",
+      "assigned_staff_name": "Rahul Verma",
+      "follow_up_date": null,
+      "notes": "Departure City: chennai | Hotel: 4-Star Premium Hotel | Preference: Couples / Romantic",
+      "created_at": "2026-11-23T10:31:13.411Z",
+      "id": "lea_c535869020",
+      "updated_at": "2026-11-23T10:32:20.523Z"
     }
   ],
   "lead_activities": [
@@ -67444,6 +67972,204 @@
       "id": "lea_10f0c7c6aa",
       "created_at": "2026-11-19T08:54:41.600Z",
       "updated_at": "2026-11-19T08:54:41.600Z"
+    },
+    {
+      "lead_id": "lea_11bf250646",
+      "user_id": "system",
+      "activity_type": "status_change",
+      "description": "Lead created via Public Website enquiry form.",
+      "id": "lea_45bd3f4554",
+      "created_at": "2026-11-23T08:19:35.313Z",
+      "updated_at": "2026-11-23T08:19:35.313Z"
+    },
+    {
+      "lead_id": "lea_11bf250646",
+      "user_id": "usr_admin_genie",
+      "activity_type": "assignment",
+      "description": "Assigned to Priya Nair by Admin. High priority European honeymoon enquiry. Please prepare customized quote with 4-star hotels.",
+      "id": "lea_61829506bb",
+      "created_at": "2026-11-23T08:19:35.587Z",
+      "updated_at": "2026-11-23T08:19:35.587Z"
+    },
+    {
+      "lead_id": "lea_b66e398752",
+      "user_id": "system",
+      "activity_type": "status_change",
+      "description": "Lead created via Public Website enquiry form.",
+      "id": "lea_06a0a36662",
+      "created_at": "2026-11-23T08:21:11.035Z",
+      "updated_at": "2026-11-23T08:21:11.035Z"
+    },
+    {
+      "lead_id": "lea_b66e398752",
+      "user_id": "usr_admin_genie",
+      "activity_type": "assignment",
+      "description": "Assigned to Priya Nair by Admin. High priority European honeymoon enquiry. Please prepare customized quote with 4-star hotels.",
+      "id": "lea_bd5bae39ee",
+      "created_at": "2026-11-23T08:21:11.317Z",
+      "updated_at": "2026-11-23T08:21:11.317Z"
+    },
+    {
+      "lead_id": "lea_4a655331bd",
+      "user_id": "system",
+      "activity_type": "status_change",
+      "description": "Lead created via Public Website enquiry form.",
+      "id": "lea_55dff3ddfc",
+      "created_at": "2026-11-23T08:21:42.456Z",
+      "updated_at": "2026-11-23T08:21:42.456Z"
+    },
+    {
+      "lead_id": "lea_4a655331bd",
+      "user_id": "usr_admin_genie",
+      "activity_type": "assignment",
+      "description": "Assigned to Priya Nair by Admin. High priority European honeymoon enquiry. Please prepare customized quote with 4-star hotels.",
+      "id": "lea_82b75d77be",
+      "created_at": "2026-11-23T08:21:42.734Z",
+      "updated_at": "2026-11-23T08:21:42.734Z"
+    },
+    {
+      "lead_id": "lea_6cfe269b5d",
+      "user_id": "system",
+      "activity_type": "status_change",
+      "description": "Lead created via Public Website enquiry form.",
+      "id": "lea_e3779204eb",
+      "created_at": "2026-11-23T08:22:47.678Z",
+      "updated_at": "2026-11-23T08:22:47.678Z"
+    },
+    {
+      "lead_id": "lea_6cfe269b5d",
+      "user_id": "usr_admin_genie",
+      "activity_type": "assignment",
+      "description": "Assigned to Priya Nair by Admin. High priority European honeymoon enquiry. Please prepare customized quote with 4-star hotels.",
+      "id": "lea_3d364de4ec",
+      "created_at": "2026-11-23T08:22:48.039Z",
+      "updated_at": "2026-11-23T08:22:48.039Z"
+    },
+    {
+      "lead_id": "lea_0eb2094e3a",
+      "user_id": "system",
+      "activity_type": "status_change",
+      "description": "Lead created via Public Website enquiry form.",
+      "id": "lea_e5f17df9e8",
+      "created_at": "2026-11-23T08:23:29.269Z",
+      "updated_at": "2026-11-23T08:23:29.269Z"
+    },
+    {
+      "lead_id": "lea_0eb2094e3a",
+      "user_id": "usr_admin_genie",
+      "activity_type": "assignment",
+      "description": "Assigned to Priya Nair by Admin. High priority European honeymoon enquiry. Please prepare customized quote with 4-star hotels.",
+      "id": "lea_6740b9fd49",
+      "created_at": "2026-11-23T08:23:29.555Z",
+      "updated_at": "2026-11-23T08:23:29.555Z"
+    },
+    {
+      "lead_id": "lea_76c65ae713",
+      "user_id": "system",
+      "activity_type": "status_change",
+      "description": "Lead created via Public Website enquiry form.",
+      "id": "lea_d030d0e376",
+      "created_at": "2026-11-23T08:26:33.430Z",
+      "updated_at": "2026-11-23T08:26:33.430Z"
+    },
+    {
+      "lead_id": "lea_76c65ae713",
+      "user_id": "usr_admin_genie",
+      "activity_type": "assignment",
+      "description": "Assigned to Priya Nair by Admin. Reassigned via lead drawer.",
+      "id": "lea_a8106dd19f",
+      "created_at": "2026-11-23T08:27:01.436Z",
+      "updated_at": "2026-11-23T08:27:01.436Z"
+    },
+    {
+      "lead_id": "lea_76c65ae713",
+      "user_id": "usr_staff_priya",
+      "activity_type": "quotation",
+      "description": "Dispatched Quotation #QT-2026-7398 for ₹1,15,001",
+      "id": "lea_f146710fd8",
+      "created_at": "2026-11-23T08:28:08.631Z",
+      "updated_at": "2026-11-23T08:28:08.631Z"
+    },
+    {
+      "lead_id": "lea_76c65ae713",
+      "user_id": "usr_staff_priya",
+      "activity_type": "status_change",
+      "description": "Staff Priya Nair changed status to 'Negotiation'. Note: None",
+      "id": "lea_183cb3afb2",
+      "created_at": "2026-11-23T08:33:46.934Z",
+      "updated_at": "2026-11-23T08:33:46.934Z"
+    },
+    {
+      "lead_id": "lea_cb4b2d87db",
+      "user_id": "system",
+      "activity_type": "status_change",
+      "description": "Lead created via Public Website enquiry form.",
+      "id": "lea_98279d7638",
+      "created_at": "2026-11-23T09:33:22.146Z",
+      "updated_at": "2026-11-23T09:33:22.146Z"
+    },
+    {
+      "lead_id": "lea_cb4b2d87db",
+      "user_id": "usr_admin_genie",
+      "activity_type": "assignment",
+      "description": "Assigned to Priya Nair by Admin. High priority European honeymoon enquiry. Please prepare customized quote with 4-star hotels.",
+      "id": "lea_ba75811ba2",
+      "created_at": "2026-11-23T09:33:22.499Z",
+      "updated_at": "2026-11-23T09:33:22.499Z"
+    },
+    {
+      "lead_id": "lea_c6e08fd059",
+      "user_id": "system",
+      "activity_type": "status_change",
+      "description": "Lead created via Public Website enquiry form.",
+      "id": "lea_de454d54fe",
+      "created_at": "2026-11-23T10:30:36.190Z",
+      "updated_at": "2026-11-23T10:30:36.190Z"
+    },
+    {
+      "lead_id": "lea_c535869020",
+      "user_id": "system",
+      "activity_type": "status_change",
+      "description": "Lead created via Public Website enquiry form.",
+      "id": "lea_4edcf813f6",
+      "created_at": "2026-11-23T10:31:13.603Z",
+      "updated_at": "2026-11-23T10:31:13.603Z"
+    },
+    {
+      "lead_id": "lea_c535869020",
+      "user_id": "usr_manager_genie",
+      "activity_type": "assignment",
+      "description": "Assigned to Priya Nair by Admin. Reassigned via lead drawer.",
+      "id": "lea_2dd09f6600",
+      "created_at": "2026-11-23T10:31:35.518Z",
+      "updated_at": "2026-11-23T10:31:35.518Z"
+    },
+    {
+      "lead_id": "lea_c535869020",
+      "user_id": "usr_manager_genie",
+      "activity_type": "assignment",
+      "description": "Assigned to Unassigned by Admin. Reassigned via lead drawer.",
+      "id": "lea_18a09b91ff",
+      "created_at": "2026-11-23T10:32:09.178Z",
+      "updated_at": "2026-11-23T10:32:09.178Z"
+    },
+    {
+      "lead_id": "lea_c535869020",
+      "user_id": "usr_manager_genie",
+      "activity_type": "assignment",
+      "description": "Assigned to Priya Nair by Admin. Reassigned via lead drawer.",
+      "id": "lea_b3a0e7a2af",
+      "created_at": "2026-11-23T10:32:13.222Z",
+      "updated_at": "2026-11-23T10:32:13.222Z"
+    },
+    {
+      "lead_id": "lea_c535869020",
+      "user_id": "usr_manager_genie",
+      "activity_type": "assignment",
+      "description": "Assigned to Rahul Verma by Admin. Reassigned via lead drawer.",
+      "id": "lea_8a0a1b73bc",
+      "created_at": "2026-11-23T10:32:20.649Z",
+      "updated_at": "2026-11-23T10:32:20.649Z"
     }
   ],
   "quotations": [
@@ -67556,6 +68282,37 @@
       "created_at": "2026-11-19T06:48:53.807Z",
       "id": "quo_13752370ca",
       "updated_at": "2026-11-19T06:48:53.807Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_76c65ae713",
+      "package_id": null,
+      "staff_id": "usr_staff_priya",
+      "quotation_number": "QT-2026-7398",
+      "customer_name": "test1",
+      "total_amount": 120000,
+      "discount": 4999,
+      "final_amount": 115001,
+      "status": "Sent",
+      "valid_until": "2026-11-30",
+      "items": [
+        {
+          "description": "Hotel Accommodation & Meals",
+          "amount": 80000
+        },
+        {
+          "description": "Private AC Sightseeing Transfers",
+          "amount": 25000
+        },
+        {
+          "description": "Entry Tickets & Excursions",
+          "amount": 15000
+        }
+      ],
+      "notes": "Includes 5% GST and complimentary airport meet & greet.",
+      "created_at": "2026-11-23T08:28:08.327Z",
+      "id": "quo_a231374e16",
+      "updated_at": "2026-11-23T08:28:08.327Z"
     }
   ],
   "bookings": [
@@ -68339,6 +69096,234 @@
       "id": "not_61c335cbb4",
       "created_at": "2026-11-19T08:54:41.636Z",
       "updated_at": "2026-11-19T08:54:41.636Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "title": "New Lead Received",
+      "message": "Lead #lea_11bf250646 from Deepak_Sharma for Switzerland & Paris Honeymoon.",
+      "type": "info",
+      "link": "/admin/leads",
+      "is_read": false,
+      "id": "not_b563308dc0",
+      "created_at": "2026-11-23T08:19:35.358Z",
+      "updated_at": "2026-11-23T08:19:35.358Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_staff_priya",
+      "title": "Leads Assigned",
+      "message": "You have been assigned 1 lead(s) by Administrator.",
+      "type": "info",
+      "link": "/staff/leads",
+      "is_read": false,
+      "id": "not_f51e894195",
+      "created_at": "2026-11-23T08:19:35.638Z",
+      "updated_at": "2026-11-23T08:19:35.638Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "title": "New Lead Received",
+      "message": "Lead #lea_b66e398752 from Deepak_Sharma for Switzerland & Paris Honeymoon.",
+      "type": "info",
+      "link": "/admin/leads",
+      "is_read": false,
+      "id": "not_19f72b929f",
+      "created_at": "2026-11-23T08:21:11.088Z",
+      "updated_at": "2026-11-23T08:21:11.088Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_staff_priya",
+      "title": "Leads Assigned",
+      "message": "You have been assigned 1 lead(s) by Administrator.",
+      "type": "info",
+      "link": "/staff/leads",
+      "is_read": false,
+      "id": "not_50d2b30738",
+      "created_at": "2026-11-23T08:21:11.380Z",
+      "updated_at": "2026-11-23T08:21:11.380Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "title": "New Lead Received",
+      "message": "Lead #lea_4a655331bd from Deepak_Sharma for Switzerland & Paris Honeymoon.",
+      "type": "info",
+      "link": "/admin/leads",
+      "is_read": false,
+      "id": "not_69397d8a9f",
+      "created_at": "2026-11-23T08:21:42.510Z",
+      "updated_at": "2026-11-23T08:21:42.510Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_staff_priya",
+      "title": "Leads Assigned",
+      "message": "You have been assigned 1 lead(s) by Administrator.",
+      "type": "info",
+      "link": "/staff/leads",
+      "is_read": false,
+      "id": "not_38de16f1c0",
+      "created_at": "2026-11-23T08:21:42.785Z",
+      "updated_at": "2026-11-23T08:21:42.785Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "title": "New Lead Received",
+      "message": "Lead #lea_6cfe269b5d from Deepak_Sharma for Switzerland & Paris Honeymoon.",
+      "type": "info",
+      "link": "/admin/leads",
+      "is_read": false,
+      "id": "not_3afd62ba04",
+      "created_at": "2026-11-23T08:22:47.736Z",
+      "updated_at": "2026-11-23T08:22:47.736Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_staff_priya",
+      "title": "Leads Assigned",
+      "message": "You have been assigned 1 lead(s) by Administrator.",
+      "type": "info",
+      "link": "/staff/leads",
+      "is_read": false,
+      "id": "not_1947f07c82",
+      "created_at": "2026-11-23T08:22:48.093Z",
+      "updated_at": "2026-11-23T08:22:48.093Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "title": "New Lead Received",
+      "message": "Lead #lea_0eb2094e3a from Deepak_Sharma for Switzerland & Paris Honeymoon.",
+      "type": "info",
+      "link": "/admin/leads",
+      "is_read": false,
+      "id": "not_afdf06f9f0",
+      "created_at": "2026-11-23T08:23:29.322Z",
+      "updated_at": "2026-11-23T08:23:29.322Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_staff_priya",
+      "title": "Leads Assigned",
+      "message": "You have been assigned 1 lead(s) by Administrator.",
+      "type": "info",
+      "link": "/staff/leads",
+      "is_read": false,
+      "id": "not_006980ef88",
+      "created_at": "2026-11-23T08:23:29.602Z",
+      "updated_at": "2026-11-23T08:23:29.602Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "title": "New Lead Received",
+      "message": "Lead #lea_76c65ae713 from test1 for US.",
+      "type": "info",
+      "link": "/admin/leads",
+      "is_read": false,
+      "id": "not_69f9b9cb17",
+      "created_at": "2026-11-23T08:26:33.614Z",
+      "updated_at": "2026-11-23T08:26:33.614Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_staff_priya",
+      "title": "Leads Assigned",
+      "message": "You have been assigned 1 lead(s) by Administrator.",
+      "type": "info",
+      "link": "/staff/leads",
+      "is_read": false,
+      "id": "not_879436661b",
+      "created_at": "2026-11-23T08:27:01.562Z",
+      "updated_at": "2026-11-23T08:27:01.562Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "title": "New Lead Received",
+      "message": "Lead #lea_cb4b2d87db from Deepak_Sharma for Switzerland & Paris Honeymoon.",
+      "type": "info",
+      "link": "/admin/leads",
+      "is_read": false,
+      "id": "not_a24bae0773",
+      "created_at": "2026-11-23T09:33:22.208Z",
+      "updated_at": "2026-11-23T09:33:22.208Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_staff_priya",
+      "title": "Leads Assigned",
+      "message": "You have been assigned 1 lead(s) by Administrator.",
+      "type": "info",
+      "link": "/staff/leads",
+      "is_read": false,
+      "id": "not_b8cbd3aa09",
+      "created_at": "2026-11-23T09:33:22.564Z",
+      "updated_at": "2026-11-23T09:33:22.564Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "title": "New Lead Received",
+      "message": "Lead #lea_c6e08fd059 from adhitest2 for uk.",
+      "type": "info",
+      "link": "/admin/leads",
+      "is_read": false,
+      "id": "not_a583094d91",
+      "created_at": "2026-11-23T10:30:36.357Z",
+      "updated_at": "2026-11-23T10:30:36.357Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "title": "New Lead Received",
+      "message": "Lead #lea_c535869020 from Adhithya for uk.",
+      "type": "info",
+      "link": "/admin/leads",
+      "is_read": false,
+      "id": "not_ca91879d1a",
+      "created_at": "2026-11-23T10:31:13.756Z",
+      "updated_at": "2026-11-23T10:31:13.756Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_staff_priya",
+      "title": "Leads Assigned",
+      "message": "You have been assigned 1 lead(s) by Administrator.",
+      "type": "info",
+      "link": "/staff/leads",
+      "is_read": false,
+      "id": "not_b647a40713",
+      "created_at": "2026-11-23T10:31:35.625Z",
+      "updated_at": "2026-11-23T10:31:35.625Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_staff_priya",
+      "title": "Leads Assigned",
+      "message": "You have been assigned 1 lead(s) by Administrator.",
+      "type": "info",
+      "link": "/staff/leads",
+      "is_read": false,
+      "id": "not_80ae722835",
+      "created_at": "2026-11-23T10:32:13.331Z",
+      "updated_at": "2026-11-23T10:32:13.331Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_staff_rahul",
+      "title": "Leads Assigned",
+      "message": "You have been assigned 1 lead(s) by Administrator.",
+      "type": "info",
+      "link": "/staff/leads",
+      "is_read": false,
+      "id": "not_f2619b834c",
+      "created_at": "2026-11-23T10:32:20.761Z",
+      "updated_at": "2026-11-23T10:32:20.761Z"
     }
   ],
   "travel_services": [

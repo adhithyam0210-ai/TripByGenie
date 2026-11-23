@@ -341,9 +341,9 @@ export const api = {
     try {
       const data = await request<any[]>('/public/group-tours');
       if (Array.isArray(data) && data.length > 0) return data;
-      return fallbackData.packages.filter((p: any) => p.category === 'Group Tours');
+      return fallbackData.packages.filter((p: any) => p.category === 'Group Tours' || p.is_group_tour);
     } catch {
-      return fallbackData.packages.filter((p: any) => p.category === 'Group Tours');
+      return fallbackData.packages.filter((p: any) => p.category === 'Group Tours' || p.is_group_tour);
     }
   },
 
@@ -599,11 +599,37 @@ export const api = {
         .sort((a: any, b: any) => a.day_number - b.day_number);
     }
   },
-  createAdminPackage: (data: any) =>
-    request<any>('/admin/packages', {
-      method: 'POST',
-      body: JSON.stringify(data)
-    }),
+  createAdminPackage: async (data: any) => {
+    try {
+      return await request<any>('/admin/packages', {
+        method: 'POST',
+        body: JSON.stringify(data)
+      });
+    } catch (e) {
+      const newPkg = {
+        id: `pkg_${Date.now()}`,
+        agency_id: 'agency_travel_genie',
+        ...data,
+        is_published: data.is_published !== undefined ? data.is_published : true,
+        created_at: new Date().toISOString()
+      };
+      (fallbackData.packages = fallbackData.packages || []).unshift(newPkg);
+      if (Array.isArray(data.itineraries)) {
+        data.itineraries.forEach((it: any, idx: number) => {
+          (fallbackData.package_itineraries = fallbackData.package_itineraries || []).push({
+            id: `itin_${newPkg.id}_day_${it.day_number || idx + 1}`,
+            package_id: newPkg.id,
+            day_number: it.day_number || idx + 1,
+            title: it.title,
+            description: it.description,
+            meals: it.meals || 'Breakfast Included',
+            activities: it.activities || 'Sightseeing & Transfers'
+          });
+        });
+      }
+      return newPkg;
+    }
+  },
   updateAdminPackage: async (id: string, data: any) => {
     try {
       return await request<any>(`/admin/packages/${id}`, {
@@ -635,8 +661,14 @@ export const api = {
       return fallbackData.packages[pIdx];
     }
   },
-  deleteAdminPackage: (id: string) =>
-    request<any>(`/admin/packages/${id}`, { method: 'DELETE' }),
+  deleteAdminPackage: async (id: string) => {
+    try {
+      return await request<any>(`/admin/packages/${id}`, { method: 'DELETE' });
+    } catch {
+      fallbackData.packages = (fallbackData.packages || []).filter((p: any) => p.id !== id);
+      return { success: true };
+    }
+  },
 
   getAdminDestinations: async () => {
     try {

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Send, MapPin, Calendar, Users, Phone, Mail, User, Building, Heart } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Send, MapPin, Calendar, Phone, Mail, User, ChevronDown, AlertCircle } from 'lucide-react';
 import { Modal } from '../common/Modal';
 import { Button } from '../common/Button';
 import { api } from '../../services/api';
@@ -22,11 +22,13 @@ export const CustomTripModal: React.FC<CustomTripModalProps> = ({
   const { user, agency } = useAuth();
   const { success, error } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [countryCode, setCountryCode] = useState('+91');
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const [formData, setFormData] = useState({
     name: user?.name || '',
     email: user?.email || '',
-    phone: user?.phone || '',
+    phone: '',
     destination: initialDestination || '',
     departure_city: '',
     travel_date: '',
@@ -38,28 +40,135 @@ export const CustomTripModal: React.FC<CustomTripModalProps> = ({
     additional_requirements: ''
   });
 
+  useEffect(() => {
+    if (isOpen) {
+      setErrors({});
+      setFormData((prev) => ({
+        ...prev,
+        destination: initialDestination || prev.destination,
+        name: user?.name || prev.name,
+        email: user?.email || prev.email,
+        phone: user?.phone ? user.phone.replace(/^\+\d+\s*/, '') : prev.phone
+      }));
+    }
+  }, [isOpen, initialDestination, user]);
+
+  const validateField = (field: string, value: string): string => {
+    let err = '';
+    const trimmed = (value || '').trim();
+
+    if (field === 'name') {
+      if (!trimmed) {
+        err = 'Full Name is required';
+      } else if (trimmed.length < 2) {
+        err = 'Name must be at least 2 characters';
+      } else if (/^\d+$/.test(trimmed)) {
+        err = 'Name cannot be only numbers';
+      } else if (!/[a-zA-Z]/.test(trimmed)) {
+        err = 'Name must contain at least one letter';
+      } else if (/[^a-zA-Z0-9_\s]/.test(trimmed)) {
+        err = 'Name cannot contain special characters (only letters, numbers, spaces, and _ allowed)';
+      }
+    } else if (field === 'email') {
+      if (!trimmed) {
+        err = 'Email Address is required';
+      } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(trimmed)) {
+        err = 'Please enter a valid email address with a domain (e.g. name@domain.com)';
+      }
+    } else if (field === 'phone') {
+      if (!trimmed) {
+        err = 'Mobile number is required';
+      } else if (!/^\d{10}$/.test(trimmed)) {
+        err = 'Mobile number must be exactly 10 digits';
+      }
+    } else if (field === 'destination') {
+      if (!trimmed) {
+        err = 'Destination is required';
+      } else if (trimmed.length < 2) {
+        err = 'Destination must be at least 2 characters';
+      } else if (/^\d+$/.test(trimmed)) {
+        err = 'Destination cannot be only numbers';
+      }
+    } else if (field === 'departure_city') {
+      if (trimmed) {
+        if (trimmed.length < 2) {
+          err = 'Departure city must be at least 2 characters';
+        } else if (/^\d+$/.test(trimmed)) {
+          err = 'Departure city cannot be only numbers';
+        }
+      }
+    } else if (field === 'travel_date') {
+      if (trimmed) {
+        const selectedDate = new Date(trimmed);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        if (selectedDate < today) {
+          err = 'Travel date cannot be in the past';
+        }
+      }
+    }
+
+    setErrors((prev) => {
+      const next = { ...prev };
+      if (err) {
+        next[field] = err;
+      } else {
+        delete next[field];
+      }
+      return next;
+    });
+
+    return err;
+  };
+
+  const validateAll = (): boolean => {
+    const newErrors: { [key: string]: string } = {};
+
+    const nameErr = validateField('name', formData.name);
+    if (nameErr) newErrors.name = nameErr;
+
+    const emailErr = validateField('email', formData.email);
+    if (emailErr) newErrors.email = emailErr;
+
+    const phoneErr = validateField('phone', formData.phone);
+    if (phoneErr) newErrors.phone = phoneErr;
+
+    const destErr = validateField('destination', formData.destination);
+    if (destErr) newErrors.destination = destErr;
+
+    const depErr = validateField('departure_city', formData.departure_city);
+    if (depErr) newErrors.departure_city = depErr;
+
+    const dateErr = validateField('travel_date', formData.travel_date);
+    if (dateErr) newErrors.travel_date = dateErr;
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || (!formData.email && !formData.phone)) {
-      error('Please provide your name and contact details.');
+    if (!validateAll()) {
+      error('Please fix the highlighted errors before submitting.');
       return;
     }
 
     setIsSubmitting(true);
     try {
+      const fullPhone = `${countryCode} ${formData.phone}`.trim();
       await api.submitEnquiry({
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        destination: formData.destination || 'Custom Tour',
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        phone: fullPhone,
+        destination: formData.destination.trim() || 'Custom Tour',
         package_id: initialPackageId || null,
-        departure_city: formData.departure_city,
+        departure_city: formData.departure_city.trim(),
         travel_date: formData.travel_date,
         travelers_count: Number(formData.adults) + Number(formData.children),
         budget: formData.budget,
         hotel_preference: formData.hotel_preference,
         travel_preference: formData.travel_preference,
-        additional_requirements: formData.additional_requirements,
+        additional_requirements: formData.additional_requirements.trim(),
         source: initialPackageId ? 'Package Booking' : 'Customized Trip Form',
         agency_id: agency?.id || 'agency_travel_genie'
       });
@@ -73,6 +182,8 @@ export const CustomTripModal: React.FC<CustomTripModalProps> = ({
     }
   };
 
+  const todayStr = new Date().toISOString().split('T')[0];
+
   return (
     <Modal
       isOpen={isOpen}
@@ -81,47 +192,121 @@ export const CustomTripModal: React.FC<CustomTripModalProps> = ({
       subtitle="Tell us your preferences and our travel designers will tailor an unforgettable itinerary."
       maxWidth="3xl"
     >
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4" noValidate>
         {/* Personal Details */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          {/* Full Name */}
           <div>
             <label className="text-xs font-bold text-[#082C43] mb-1 flex items-center gap-1">
               <User className="w-3.5 h-3.5 text-[#17648A]" /> Full Name *
             </label>
             <input
               type="text"
-              required
-              placeholder="e.g. Rahul Sharma"
               value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"
+              onChange={(e) => {
+                const val = e.target.value;
+                setFormData({ ...formData, name: val });
+                if (errors.name) validateField('name', val);
+              }}
+              onBlur={() => validateField('name', formData.name)}
+              className={`w-full text-xs p-2.5 rounded-xl border bg-[#FFFDF8] focus:outline-none transition-colors ${errors.name
+                ? 'border-red-400 focus:border-red-500 bg-red-50/15'
+                : 'border-[#EFE7DA] focus:border-[#FF795C]'
+                }`}
             />
+            {errors.name && (
+              <p className="text-[11px] text-red-500 font-medium mt-1 flex items-center gap-1 animate-in fade-in">
+                <AlertCircle className="w-3 h-3 shrink-0" />
+                <span>{errors.name}</span>
+              </p>
+            )}
           </div>
+
+          {/* Email Address */}
           <div>
             <label className="text-xs font-bold text-[#082C43] mb-1 flex items-center gap-1">
               <Mail className="w-3.5 h-3.5 text-[#17648A]" /> Email Address *
             </label>
             <input
               type="email"
-              required
-              placeholder="rahul@example.com"
               value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"
+              onChange={(e) => {
+                const val = e.target.value;
+                setFormData({ ...formData, email: val });
+                if (errors.email) validateField('email', val);
+              }}
+              onBlur={() => validateField('email', formData.email)}
+              className={`w-full text-xs p-2.5 rounded-xl border bg-[#FFFDF8] focus:outline-none transition-colors ${errors.email
+                ? 'border-red-400 focus:border-red-500 bg-red-50/15'
+                : 'border-[#EFE7DA] focus:border-[#FF795C]'
+                }`}
             />
+            {errors.email && (
+              <p className="text-[11px] text-red-500 font-medium mt-1 flex items-center gap-1 animate-in fade-in">
+                <AlertCircle className="w-3 h-3 shrink-0" />
+                <span>{errors.email}</span>
+              </p>
+            )}
           </div>
+
+          {/* Phone / WhatsApp with Country Extension Dropdown */}
           <div>
             <label className="text-xs font-bold text-[#082C43] mb-1 flex items-center gap-1">
               <Phone className="w-3.5 h-3.5 text-[#17648A]" /> Phone / WhatsApp *
             </label>
-            <input
-              type="tel"
-              required
-              placeholder="+91 98765 43210"
-              value={formData.phone}
-              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"
-            />
+            <div className="flex gap-1.5">
+              <div className="relative w-[68px] shrink-0">
+                <select
+                  value={countryCode}
+                  onChange={(e) => {
+                    const newCode = e.target.value;
+                    setCountryCode(newCode);
+                    if (errors.phone) validateField('phone', formData.phone);
+                  }}
+                  className="w-full h-[38px] text-[11px] pl-2 pr-4 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] text-[#082C43] font-semibold focus:border-[#FF795C] focus:outline-none appearance-none cursor-pointer"
+                >
+                  <option value="+91">IN +91</option>
+                  <option value="+971">AE +971</option>
+                  <option value="+65">SG +65</option>
+                  <option value="+60">MY +60</option>
+                  <option value="+62">ID +62</option>
+                  <option value="+66">TH +66</option>
+                  <option value="+84">VN +84</option>
+                  <option value="+960">MV +960</option>
+                  <option value="+94">LK +94</option>
+                  <option value="+44">UK +44</option>
+                  <option value="+1">US +1</option>
+                  <option value="+61">AU +61</option>
+                  <option value="+33">FR +33</option>
+                  <option value="+49">DE +49</option>
+                  <option value="+41">CH +41</option>
+                </select>
+                <ChevronDown className="w-3 h-3 text-[#082C43]/70 absolute right-1.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              </div>
+
+              <input
+                type="tel"
+                maxLength={10}
+                value={formData.phone}
+                onChange={(e) => {
+                  const cleanPhone = e.target.value.replace(/\D/g, '').slice(0, 10);
+                  setFormData({ ...formData, phone: cleanPhone });
+                  if (errors.phone) validateField('phone', cleanPhone);
+                }}
+                onBlur={() => validateField('phone', formData.phone)}
+                className={`w-full h-[38px] text-xs px-2.5 rounded-xl border bg-[#FFFDF8] focus:outline-none transition-colors font-medium ${
+                  errors.phone
+                    ? 'border-red-400 focus:border-red-500 bg-red-50/15'
+                    : 'border-[#EFE7DA] focus:border-[#FF795C]'
+                }`}
+              />
+            </div>
+            {errors.phone && (
+              <p className="text-[11px] text-red-500 font-medium mt-1 flex items-center gap-1 animate-in fade-in">
+                <AlertCircle className="w-3 h-3 shrink-0" />
+                <span>{errors.phone}</span>
+              </p>
+            )}
           </div>
         </div>
 
@@ -133,13 +318,27 @@ export const CustomTripModal: React.FC<CustomTripModalProps> = ({
             </label>
             <input
               type="text"
-              required
               placeholder="e.g. Kashmir, Maldives, Bali"
               value={formData.destination}
-              onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
-              className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"
+              onChange={(e) => {
+                const val = e.target.value;
+                setFormData({ ...formData, destination: val });
+                if (errors.destination) validateField('destination', val);
+              }}
+              onBlur={() => validateField('destination', formData.destination)}
+              className={`w-full text-xs p-2.5 rounded-xl border bg-[#FFFDF8] focus:outline-none transition-colors ${errors.destination
+                ? 'border-red-400 focus:border-red-500 bg-red-50/15'
+                : 'border-[#EFE7DA] focus:border-[#FF795C]'
+                }`}
             />
+            {errors.destination && (
+              <p className="text-[11px] text-red-500 font-medium mt-1 flex items-center gap-1 animate-in fade-in">
+                <AlertCircle className="w-3 h-3 shrink-0" />
+                <span>{errors.destination}</span>
+              </p>
+            )}
           </div>
+
           <div>
             <label className="text-xs font-bold text-[#082C43] mb-1 flex items-center gap-1">
               Departure City
@@ -148,20 +347,50 @@ export const CustomTripModal: React.FC<CustomTripModalProps> = ({
               type="text"
               placeholder="e.g. Bangalore, Delhi, Mumbai"
               value={formData.departure_city}
-              onChange={(e) => setFormData({ ...formData, departure_city: e.target.value })}
-              className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"
+              onChange={(e) => {
+                const val = e.target.value;
+                setFormData({ ...formData, departure_city: val });
+                if (errors.departure_city) validateField('departure_city', val);
+              }}
+              onBlur={() => validateField('departure_city', formData.departure_city)}
+              className={`w-full text-xs p-2.5 rounded-xl border bg-[#FFFDF8] focus:outline-none transition-colors ${errors.departure_city
+                ? 'border-red-400 focus:border-red-500 bg-red-50/15'
+                : 'border-[#EFE7DA] focus:border-[#FF795C]'
+                }`}
             />
+            {errors.departure_city && (
+              <p className="text-[11px] text-red-500 font-medium mt-1 flex items-center gap-1 animate-in fade-in">
+                <AlertCircle className="w-3 h-3 shrink-0" />
+                <span>{errors.departure_city}</span>
+              </p>
+            )}
           </div>
+
           <div>
             <label className="text-xs font-bold text-[#082C43] mb-1 flex items-center gap-1">
               <Calendar className="w-3.5 h-3.5 text-[#17648A]" /> Tentative Travel Date
             </label>
             <input
               type="date"
+              min={todayStr}
               value={formData.travel_date}
-              onChange={(e) => setFormData({ ...formData, travel_date: e.target.value })}
-              className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"
+              onChange={(e) => {
+                const val = e.target.value;
+                setFormData({ ...formData, travel_date: val });
+                if (errors.travel_date) validateField('travel_date', val);
+              }}
+              onBlur={() => validateField('travel_date', formData.travel_date)}
+              className={`w-full text-xs p-2.5 rounded-xl border bg-[#FFFDF8] focus:outline-none transition-colors ${errors.travel_date
+                ? 'border-red-400 focus:border-red-500 bg-red-50/15'
+                : 'border-[#EFE7DA] focus:border-[#FF795C]'
+                }`}
             />
+            {errors.travel_date && (
+              <p className="text-[11px] text-red-500 font-medium mt-1 flex items-center gap-1 animate-in fade-in">
+                <AlertCircle className="w-3 h-3 shrink-0" />
+                <span>{errors.travel_date}</span>
+              </p>
+            )}
           </div>
         </div>
 
@@ -224,29 +453,24 @@ export const CustomTripModal: React.FC<CustomTripModalProps> = ({
           </div>
         </div>
 
-        {/* Travel Style */}
+        {/* Travel Style: Converted to Dropdown */}
         <div>
           <label className="text-xs font-bold text-[#082C43] mb-1 block">Travel Preference</label>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-            {[
-              'Couples / Romantic',
-              'Family Vacation',
-              'Friends & Adventure',
-              'Relaxation & Spa'
-            ].map((pref) => (
-              <button
-                key={pref}
-                type="button"
-                onClick={() => setFormData({ ...formData, travel_preference: pref })}
-                className={`text-xs p-2 rounded-xl border font-semibold text-center transition-all cursor-pointer ${
-                  formData.travel_preference === pref
-                    ? 'bg-[#082C43] text-white border-[#082C43] shadow-sm'
-                    : 'bg-[#FFFDF8] text-[#173247] border-[#EFE7DA] hover:bg-[#F8F1E7]'
-                }`}
-              >
-                {pref}
-              </button>
-            ))}
+          <div className="relative">
+            <select
+              value={formData.travel_preference}
+              onChange={(e) => setFormData({ ...formData, travel_preference: e.target.value })}
+              className="w-full text-xs p-2.5 pr-8 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] text-[#082C43] font-medium focus:border-[#FF795C] focus:outline-none appearance-none cursor-pointer"
+            >
+              <option value="Couples / Romantic">Couples / Romantic</option>
+              <option value="Family Vacation">Family Vacation</option>
+              <option value="Friends & Adventure">Friends & Adventure</option>
+              <option value="Relaxation & Spa">Relaxation & Spa</option>
+              <option value="Solo Exploration">Solo Exploration</option>
+              <option value="Senior Citizen Special">Senior Citizen Special</option>
+              <option value="Corporate / Group Retreat">Corporate / Group Retreat</option>
+            </select>
+            <ChevronDown className="w-3.5 h-3.5 text-[#082C43] absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
           </div>
         </div>
 
@@ -282,3 +506,4 @@ export const CustomTripModal: React.FC<CustomTripModalProps> = ({
     </Modal>
   );
 };
+

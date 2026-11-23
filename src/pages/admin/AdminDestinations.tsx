@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MapPin, Plus, Edit2, Trash2, Globe, Eye, EyeOff } from 'lucide-react';
+import { MapPin, Plus, Edit2, Trash2, Globe, Eye, EyeOff, ExternalLink } from 'lucide-react';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { Button } from '../../components/common/Button';
 import { Modal } from '../../components/common/Modal';
@@ -106,6 +106,16 @@ export const AdminDestinations: React.FC = () => {
     }
   };
 
+  const togglePublished = async (dest: Destination) => {
+    try {
+      await api.updateAdminDestination(dest.id, { is_published: !dest.is_published });
+      success(`Destination ${!dest.is_published ? 'published' : 'moved to draft'}.`);
+      loadDestinations();
+    } catch (err: any) {
+      error(err.message || 'Failed to update publication status.');
+    }
+  };
+
   return (
     <DashboardLayout
       title="Destination Management"
@@ -164,30 +174,44 @@ export const AdminDestinations: React.FC = () => {
                       {d.region}
                     </td>
                     <td className="py-3 px-4 font-bold text-[#082C43] whitespace-nowrap">
-                      {d.package_count || 4} Tours
+                      {d.package_count === 1 ? '1 Tour' : `${d.package_count ?? 0} Tours`}
                     </td>
                     <td className="py-3 px-4">
-                      <span
-                        className={`text-[11px] font-bold px-2 py-0.5 rounded-full capitalize ${
+                      <button
+                        onClick={() => togglePublished(d)}
+                        className={`inline-flex items-center gap-1 font-bold text-[11px] px-2.5 py-0.5 rounded-full cursor-pointer transition-colors ${
                           d.is_published
-                            ? 'bg-emerald-100 text-emerald-800'
-                            : 'bg-slate-200 text-slate-700'
+                            ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
+                            : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
                         }`}
+                        title="Click to toggle Published / Draft"
                       >
+                        {d.is_published ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
                         {d.is_published ? 'Published' : 'Draft'}
-                      </span>
+                      </button>
                     </td>
                     <td className="py-3 px-4 text-right">
                       <div className="flex items-center justify-end gap-1.5">
+                        <a
+                          href={`/destinations/${d.slug || d.id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-1.5 text-slate-500 hover:text-[#00A854] rounded-lg hover:bg-emerald-50 cursor-pointer transition-colors"
+                          title="Preview Destination Page"
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                        </a>
                         <button
                           onClick={() => handleOpenEdit(d)}
                           className="p-1.5 text-slate-500 hover:text-[#082C43] rounded-lg hover:bg-slate-100 cursor-pointer"
+                          title="Edit Destination"
                         >
                           <Edit2 className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => handleDelete(d.id)}
                           className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 cursor-pointer"
+                          title="Delete Destination"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>

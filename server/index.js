@@ -349,6 +349,27 @@ app.get('/api/public/banners', (req, res) => {
   res.json(banners);
 });
 
+// Helper to accurately match packages to a destination
+const matchPackageToDestination = (pkg, dest) => {
+  if (pkg.is_published === false) return false;
+  const dId = (dest.id || '').toLowerCase().trim();
+  const dName = (dest.name || '').toLowerCase().trim();
+  const dSlug = (dest.slug || '').toLowerCase().trim();
+  const pDestId = (pkg.destination_id || '').toLowerCase().trim();
+  const pDest = (pkg.destination || '').toLowerCase().trim();
+  const pTitle = (pkg.title || '').toLowerCase().trim();
+
+  if (pDestId && pDestId === dId) return true;
+  if (pDest && (pDest === dName || pDest === dSlug)) return true;
+  if (dName && (pTitle.includes(dName) || pDest.includes(dName))) return true;
+
+  if (dName === 'kashmir' && (pDestId === 'dest_jammu_and_kashmir' || pTitle.includes('kashmir') || pTitle.includes('srinagar') || pTitle.includes('gulmarg'))) return true;
+  if (dName.includes('andaman') && (pDestId === 'dest_andaman' || pTitle.includes('andaman') || pTitle.includes('havelock') || pTitle.includes('port blair'))) return true;
+  if (dName === 'goa' && (pDestId === 'dest_goa' || pTitle.includes('goa'))) return true;
+
+  return false;
+};
+
 // Public Destinations
 app.get('/api/public/destinations', (req, res) => {
   const agencyId = req.query.agency_id || 'agency_travel_genie';
@@ -362,7 +383,13 @@ app.get('/api/public/destinations', (req, res) => {
     destinations = destinations.filter((d) => d.is_featured);
   }
 
-  res.json(destinations);
+  const allPackages = db.findAll('packages', (p) => p.is_published !== false);
+  const accurateDestinations = destinations.map((d) => ({
+    ...d,
+    package_count: allPackages.filter((p) => matchPackageToDestination(p, d)).length
+  }));
+
+  res.json(accurateDestinations);
 });
 
 // Destination Details by Slug or ID
@@ -379,12 +406,8 @@ app.get('/api/public/destinations/:slug', (req, res) => {
     return res.status(404).json({ error: 'Destination not found.' });
   }
 
-  const packages = db.findAll('packages', (p) => 
-    (p.destination_id === destination.id || 
-     (p.title && p.title.toLowerCase().includes(destination.name.toLowerCase()))) && 
-    (p.is_published !== false)
-  );
-  res.json({ destination, packages });
+  const packages = db.findAll('packages', (p) => matchPackageToDestination(p, destination));
+  res.json({ destination: { ...destination, package_count: packages.length }, packages });
 });
 
 // Public Packages with Filters
@@ -486,7 +509,7 @@ app.get('/api/public/packages/:slug', (req, res) => {
 // Public Group Tours
 app.get('/api/public/group-tours', (req, res) => {
   const agencyId = req.query.agency_id || 'agency_travel_genie';
-  const tours = db.findAll('packages', (p) => p.agency_id === agencyId && p.is_group_tour && p.is_published);
+  const tours = db.findAll('packages', (p) => p.agency_id === agencyId && (p.is_group_tour || p.category === 'Group Tours') && p.is_published !== false);
   const publicTours = tours.map(({ wholesale_price, ...rest }) => rest);
   res.json(publicTours);
 });
@@ -522,8 +545,75 @@ app.post('/api/public/enquiry', (req, res) => {
     agency_id
   } = req.body;
 
-  if (!name || (!email && !phone)) {
-    return res.status(400).json({ error: 'Name and email or phone number are required.' });
+  const trimmedName = (name || '').trim();
+  const trimmedEmail = (email || '').trim();
+  const trimmedPhone = (phone || '').trim();
+  const trimmedDest = (destination || '').trim();
+  const trimmedDepCity = (departure_city || '').trim();
+
+  // Full Name validation
+  if (!trimmedName) {
+    return res.status(400).json({ error: 'Full Name is required.' });
+  }
+  if (trimmedName.length < 2) {
+    return res.status(400).json({ error: 'Name must be at least 2 characters.' });
+  }
+  if (/^\d+$/.test(trimmedName)) {
+    return res.status(400).json({ error: 'Name cannot be only numbers.' });
+  }
+  if (!/[a-zA-Z]/.test(trimmedName)) {
+    return res.status(400).json({ error: 'Name must contain at least one letter.' });
+  }
+  if (/[^a-zA-Z0-9_\s]/.test(trimmedName)) {
+    return res.status(400).json({ error: 'Name cannot contain special characters (only letters, numbers, spaces, and _ allowed).' });
+  }
+
+  // Email validation
+  if (!trimmedEmail) {
+    return res.status(400).json({ error: 'Email Address is required.' });
+  }
+  if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(trimmedEmail)) {
+    return res.status(400).json({ error: 'Please enter a valid email address with a domain (e.g. name@domain.com).' });
+  }
+
+  // Phone validation
+  if (!trimmedPhone) {
+    return res.status(400).json({ error: 'Mobile number is required.' });
+  }
+  const digitsOnly = trimmedPhone.replace(/\D/g, '');
+  if (digitsOnly.length < 10) {
+    return res.status(400).json({ error: 'Mobile number must contain at least 10 digits.' });
+  }
+
+  // Destination validation
+  if (!trimmedDest) {
+    return res.status(400).json({ error: 'Destination is required.' });
+  }
+  if (trimmedDest.length < 2) {
+    return res.status(400).json({ error: 'Destination must be at least 2 characters.' });
+  }
+  if (/^\d+$/.test(trimmedDest)) {
+    return res.status(400).json({ error: 'Destination cannot be only numbers.' });
+  }
+
+  // Departure City validation (optional)
+  if (trimmedDepCity) {
+    if (trimmedDepCity.length < 2) {
+      return res.status(400).json({ error: 'Departure city must be at least 2 characters.' });
+    }
+    if (/^\d+$/.test(trimmedDepCity)) {
+      return res.status(400).json({ error: 'Departure city cannot be only numbers.' });
+    }
+  }
+
+  // Travel Date validation (optional)
+  if (travel_date) {
+    const selectedDate = new Date(travel_date);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (selectedDate < today) {
+      return res.status(400).json({ error: 'Travel date cannot be in the past.' });
+    }
   }
 
   const targetAgencyId = agency_id || 'agency_travel_genie';
@@ -1632,7 +1722,12 @@ app.delete('/api/admin/packages/:id', authenticate, authorize(['admin', 'manager
 app.get('/api/admin/destinations', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const agencyId = req.user.agency_id;
   const destinations = db.findAll('destinations', (d) => d.agency_id === agencyId);
-  res.json(destinations);
+  const allPackages = db.findAll('packages', (p) => p.is_published !== false);
+  const accurateDestinations = destinations.map((d) => ({
+    ...d,
+    package_count: allPackages.filter((p) => matchPackageToDestination(p, d)).length
+  }));
+  res.json(accurateDestinations);
 });
 
 app.post('/api/admin/destinations', authenticate, authorize(['admin', 'manager']), (req, res) => {
@@ -3206,9 +3301,14 @@ const { errorHandler } = require('./src/middlewares/error.middleware');
 app.use(errorHandler);
 
 // Start Express Server
-app.listen(PORT, () => {
-  console.log(`=======================================================`);
-  console.log(`[SERVER] TripByGenie Backend Server running on port ${PORT}`);
-  console.log(`[SERVER] API Health: http://localhost:${PORT}/api/health`);
-  console.log(`=======================================================`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`=======================================================`);
+    console.log(`[SERVER] TripByGenie Backend Server running on port ${PORT}`);
+    console.log(`[SERVER] API Health: http://localhost:${PORT}/api/health`);
+    console.log(`=======================================================`);
+  });
+}
+
+module.exports = app;
+
