@@ -31,8 +31,6 @@
 
 html {
   scroll-behavior: smooth;
-  overscroll-behavior-y: none;
-  overscroll-behavior-x: none;
 }
 
 body {
@@ -40,19 +38,22 @@ body {
   color: #173247;
   background-color: #FFFDF8;
   overflow-x: hidden;
-  overscroll-behavior-y: none;
-  overscroll-behavior-x: none;
 }
 
 /* Eliminate Chain Scrolling / Scroll Leaks on all nested scroll areas */
 .overscroll-contain,
 .overflow-y-auto,
-.overflow-x-auto,
-.overflow-auto,
 [data-scrollable],
 aside,
 dialog {
   overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Horizontal scroll containers must allow vertical wheel scrolling to bubble up to page */
+.overflow-x-auto {
+  overscroll-behavior-x: contain;
+  overscroll-behavior-y: auto;
   -webkit-overflow-scrolling: touch;
 }
 

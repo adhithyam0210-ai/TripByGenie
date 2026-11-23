@@ -45,6 +45,88 @@ interface DashboardLayoutProps {
   actions?: React.ReactNode;
 }
 
+// Admin Portal Dropdown Sections configured for Super Admin
+const ADMIN_SECTIONS = [
+  {
+    id: 'manager',
+    name: 'Manager Operations',
+    icon: ShieldCheck,
+    color: 'text-purple-400',
+    badge: 'Core',
+    badgeColor: 'bg-purple-500/20 text-purple-300',
+    items: [
+      { name: 'Operations Overview', path: '/manager/dashboard', icon: LayoutDashboard },
+      { name: 'Holiday Packages', path: '/admin/packages', icon: Layers },
+      { name: 'Leads & Enquiries', path: '/admin/leads', icon: Users, badge: 'Assign' },
+      { name: 'Bookings & Trips', path: '/admin/bookings', icon: CalendarCheck },
+      { name: 'Destinations Catalog', path: '/admin/destinations', icon: MapPin },
+      { name: 'Hero Banners', path: '/admin/banners', icon: Image },
+      { name: 'Payments & Invoices', path: '/admin/payments', icon: CreditCard },
+      { name: 'Reports & Analytics', path: '/admin/reports', icon: BarChart3 },
+      { name: 'Agency Settings', path: '/admin/settings', icon: Settings }
+    ]
+  },
+  {
+    id: 'staff',
+    name: 'Sales CRM Operations',
+    icon: UserCheck,
+    color: 'text-[#55C9BD]',
+    badge: 'Sales',
+    badgeColor: 'bg-[#55C9BD]/20 text-[#55C9BD]',
+    items: [
+      { name: 'Staff Roster & Allocation', path: '/admin/staff', icon: UserCheck },
+      { name: 'Assigned Leads', path: '/staff/leads', icon: Users },
+      { name: 'Follow-ups Agenda', path: '/staff/follow-ups', icon: Clock },
+      { name: 'Staff Conversions', path: '/staff/bookings', icon: CalendarCheck }
+    ]
+  },
+  {
+    id: 'operations',
+    name: 'Operations & Logistics',
+    icon: Building2,
+    color: 'text-blue-400',
+    badge: 'Logistics',
+    badgeColor: 'bg-blue-500/20 text-blue-300',
+    items: [
+      { name: 'Operations Overview', path: '/operations/dashboard', icon: LayoutDashboard },
+      { name: 'Booking Execution Desk', path: '/operations/bookings', icon: CalendarCheck },
+      { name: 'Travel Document Vault', path: '/customer/documents', icon: FileText }
+    ]
+  },
+  {
+    id: 'agent',
+    name: 'B2B Agent Portal',
+    icon: Briefcase,
+    color: 'text-amber-400',
+    badge: 'B2B',
+    badgeColor: 'bg-amber-500/20 text-amber-300',
+    items: [
+      { name: 'Registered Agents', path: '/admin/agents', icon: Briefcase },
+      { name: 'Wholesale Marketplace', path: '/agent/marketplace', icon: ShoppingBag },
+      { name: 'Passenger Directory', path: '/agent/customers', icon: Users },
+      { name: 'Purchase Orders', path: '/agent/purchases', icon: FileText },
+      { name: 'B2B Invoices & Vouchers', path: '/agent/documents', icon: FileText },
+      { name: 'Wholesale Ledger', path: '/agent/transactions', icon: CreditCard }
+    ]
+  },
+  {
+    id: 'customer',
+    name: 'Customer Hub',
+    icon: Users,
+    color: 'text-emerald-400',
+    badge: 'Client',
+    badgeColor: 'bg-emerald-500/20 text-emerald-300',
+    items: [
+      { name: 'Customer Directory', path: '/admin/customers', icon: Users },
+      { name: 'Digital Document Wallet', path: '/customer/documents', icon: FileText },
+      { name: 'Customer Enquiries', path: '/customer/enquiries', icon: FileText },
+      { name: 'Customer Bookings', path: '/customer/bookings', icon: CalendarCheck },
+      { name: 'Support Inquiries', path: '/customer/support', icon: FileText },
+      { name: 'Payment Receipts', path: '/customer/payments', icon: CreditCard }
+    ]
+  }
+];
+
 export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   children,
   title,
@@ -63,31 +145,62 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const [notifications, setNotifications] = useState<AppNotification[]>([]);
   const [agenciesList, setAgenciesList] = useState<any[]>([]);
 
-  // Super Admin left sidebar tabs with dropdowns
+  // Super Admin left sidebar tabs with dropdowns (collapsed by default to keep sidebar clean & scrollable)
   const [adminDropdowns, setAdminDropdowns] = useState<Record<string, boolean>>({
-    manager: true,
+    manager: false,
     staff: false,
+    operations: false,
     agent: false,
     customer: false
   });
 
+  // Accordion toggle: toggles clicked section and closes others
   const toggleAdminDropdown = (section: string) => {
-    setAdminDropdowns((prev) => ({ ...prev, [section]: !prev[section] }));
+    setAdminDropdowns((prev) => {
+      const willBeOpen = !prev[section];
+      return {
+        manager: false,
+        staff: false,
+        operations: false,
+        agent: false,
+        customer: false,
+        [section]: willBeOpen
+      };
+    });
   };
 
-  // Auto-expand the dropdown containing the active route
+  const adminSections = ADMIN_SECTIONS;
+
+  // Auto-expand only the section containing the active route; collapse all if on main admin pages
   useEffect(() => {
     if (role === 'admin') {
       const p = location.pathname;
-      if (p.includes('/manager') || p.includes('/admin/packages') || p.includes('/admin/leads') || p.includes('/admin/bookings') || p.includes('/admin/destinations') || p.includes('/admin/banners') || p.includes('/admin/payments') || p.includes('/admin/reports') || p.includes('/admin/settings')) {
-        setAdminDropdowns((prev) => ({ ...prev, manager: true }));
-      } else if (p.includes('/staff') || p.includes('/admin/staff')) {
-        setAdminDropdowns((prev) => ({ ...prev, staff: true }));
-      } else if (p.includes('/agent') || p.includes('/admin/agents')) {
-        setAdminDropdowns((prev) => ({ ...prev, agent: true }));
-      } else if (p.includes('/customer') || p.includes('/admin/customers')) {
-        setAdminDropdowns((prev) => ({ ...prev, customer: true }));
+      if (p === '/admin/dashboard' || p === '/admin/users' || p === '/admin' || p === '/admin/') {
+        setAdminDropdowns({
+          manager: false,
+          staff: false,
+          operations: false,
+          agent: false,
+          customer: false
+        });
+        return;
       }
+
+      let activeSectionId: string | null = null;
+      for (const sec of ADMIN_SECTIONS) {
+        if (sec.items.some((i) => p === i.path || (i.path !== '/admin' && p.startsWith(i.path + '/')))) {
+          activeSectionId = sec.id;
+          break;
+        }
+      }
+
+      setAdminDropdowns({
+        manager: activeSectionId === 'manager',
+        staff: activeSectionId === 'staff',
+        operations: activeSectionId === 'operations',
+        agent: activeSectionId === 'agent',
+        customer: activeSectionId === 'customer'
+      });
     }
   }, [location.pathname, role]);
 
@@ -95,6 +208,13 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     setIsMobileSidebarOpen(false);
     fetchNotifications();
     fetchAgencies();
+  }, [location.pathname]);
+
+  // Reset any global overflow lock on initial mount and route change
+  useEffect(() => {
+    document.body.style.overflow = '';
+    document.body.style.touchAction = '';
+    document.documentElement.style.overflow = '';
   }, [location.pathname]);
 
   // Prevent background chain scrolling when mobile drawer is open
@@ -150,71 +270,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     }
   };
 
-  // Admin Portal Dropdown Sections
-  const adminSections = [
-    {
-      id: 'manager',
-      name: 'Manager Operations',
-      icon: ShieldCheck,
-      color: 'text-purple-400',
-      badge: 'Core',
-      badgeColor: 'bg-purple-500/20 text-purple-300',
-      items: [
-        { name: 'Operations Overview', path: '/manager/dashboard', icon: LayoutDashboard },
-        { name: 'Holiday Packages', path: '/admin/packages', icon: Layers },
-        { name: 'Leads & Enquiries', path: '/admin/leads', icon: Users, badge: 'Assign' },
-        { name: 'Bookings & Trips', path: '/admin/bookings', icon: CalendarCheck },
-        { name: 'Destinations Catalog', path: '/admin/destinations', icon: MapPin },
-        { name: 'Hero Banners', path: '/admin/banners', icon: Image },
-        { name: 'Payments & Invoices', path: '/admin/payments', icon: CreditCard },
-        { name: 'Reports & Analytics', path: '/admin/reports', icon: BarChart3 },
-        { name: 'Agency Settings', path: '/admin/settings', icon: Settings }
-      ]
-    },
-    {
-      id: 'staff',
-      name: 'Staff Operations',
-      icon: UserCheck,
-      color: 'text-[#55C9BD]',
-      badge: 'Team',
-      badgeColor: 'bg-[#55C9BD]/20 text-[#55C9BD]',
-      items: [
-        { name: 'Staff Roster & Allocation', path: '/admin/staff', icon: UserCheck },
-        { name: 'Assigned Leads', path: '/staff/leads', icon: Users },
-        { name: 'Follow-ups Agenda', path: '/staff/follow-ups', icon: Clock },
-        { name: 'Staff Conversions', path: '/staff/bookings', icon: CalendarCheck }
-      ]
-    },
-    {
-      id: 'agent',
-      name: 'B2B Agent Portal',
-      icon: Briefcase,
-      color: 'text-amber-400',
-      badge: 'B2B',
-      badgeColor: 'bg-amber-500/20 text-amber-300',
-      items: [
-        { name: 'Registered Agents', path: '/admin/agents', icon: Briefcase },
-        { name: 'Wholesale Marketplace', path: '/agent/marketplace', icon: ShoppingBag },
-        { name: 'Purchase Orders', path: '/agent/purchases', icon: FileText },
-        { name: 'Wholesale Ledger', path: '/agent/transactions', icon: CreditCard }
-      ]
-    },
-    {
-      id: 'customer',
-      name: 'Customer Hub',
-      icon: Users,
-      color: 'text-emerald-400',
-      badge: 'Client',
-      badgeColor: 'bg-emerald-500/20 text-emerald-300',
-      items: [
-        { name: 'Customer Directory', path: '/admin/customers', icon: Users },
-        { name: 'Customer Enquiries', path: '/customer/enquiries', icon: FileText },
-        { name: 'Customer Bookings', path: '/customer/bookings', icon: CalendarCheck },
-        { name: 'Payment Receipts', path: '/customer/payments', icon: CreditCard }
-      ]
-    }
-  ];
-
   // Nav menus configured per role
   const getNavLinks = () => {
     if (role === 'admin') {
@@ -230,26 +285,34 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         { name: 'Holiday Packages', path: '/manager/packages', icon: Layers },
         { name: 'Destinations', path: '/manager/destinations', icon: MapPin },
         { name: 'Hero Banners', path: '/manager/banners', icon: Image },
-        { name: 'Bookings & Trips', path: '/manager/bookings', icon: CalendarCheck },
+        { name: 'Bookings & Execution', path: '/manager/bookings', icon: CalendarCheck },
         { name: 'B2B Travel Agents', path: '/manager/agents', icon: Briefcase },
         { name: 'Customer Directory', path: '/manager/customers', icon: Users },
         { name: 'Payments & Ledger', path: '/manager/payments', icon: CreditCard },
         { name: 'Reports & CSV', path: '/manager/reports', icon: BarChart3 },
         { name: 'Agency Settings', path: '/manager/settings', icon: Settings }
       ];
-    } else if (role === 'staff') {
+    } else if (role === 'staff' || role === 'sales') {
       return [
-        { name: 'Staff Overview', path: '/staff/dashboard', icon: LayoutDashboard },
+        { name: 'Sales Overview', path: '/staff/dashboard', icon: LayoutDashboard },
         { name: 'My Assigned Leads', path: '/staff/leads', icon: Users },
         { name: 'Follow-ups Agenda', path: '/staff/follow-ups', icon: Clock },
         { name: 'Bookings & Conversions', path: '/staff/bookings', icon: CalendarCheck },
         { name: 'My Profile', path: '/staff/profile', icon: UserCheck }
+      ];
+    } else if (role === 'operations') {
+      return [
+        { name: 'Operations Overview', path: '/operations/dashboard', icon: LayoutDashboard },
+        { name: 'Booking Execution Desk', path: '/operations/bookings', icon: CalendarCheck },
+        { name: 'Travel Document Vault', path: '/customer/documents', icon: FileText }
       ];
     } else if (role === 'agent') {
       return [
         { name: 'B2B Overview', path: '/agent/dashboard', icon: LayoutDashboard },
         { name: 'Wholesale Packages', path: '/agent/marketplace', icon: ShoppingBag, badge: 'Market' },
         { name: 'Purchase Orders', path: '/agent/purchases', icon: FileText },
+        { name: 'Passenger Directory', path: '/agent/customers', icon: Users },
+        { name: 'B2B Invoices & Vouchers', path: '/agent/documents', icon: FileText },
         { name: 'Client Bookings', path: '/agent/bookings', icon: CalendarCheck },
         { name: 'Agent Ledger', path: '/agent/transactions', icon: CreditCard },
         { name: 'Partner Profile', path: '/agent/profile', icon: Building2 }
@@ -258,8 +321,10 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       // Customer
       return [
         { name: 'My Travel Hub', path: '/customer/dashboard', icon: LayoutDashboard },
+        { name: 'Digital Document Wallet', path: '/customer/documents', icon: FileText, badge: 'Wallet' },
         { name: 'My Enquiries', path: '/customer/enquiries', icon: FileText },
         { name: 'Booked Trips', path: '/customer/bookings', icon: CalendarCheck },
+        { name: 'Support Inquiries', path: '/customer/support', icon: FileText },
         { name: 'Payment Receipts', path: '/customer/payments', icon: CreditCard },
         { name: 'Traveler Profile', path: '/customer/profile', icon: UserCheck }
       ];
@@ -272,9 +337,9 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   return (
     <div className="min-h-screen bg-[#F8F1E7]/40 flex">
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:flex w-64 bg-[#082C43] text-white flex-col shrink-0 border-r border-[#041D30] z-20">
+      <aside className="hidden lg:flex w-64 h-screen sticky top-0 bg-[#082C43] text-white flex-col shrink-0 border-r border-[#041D30] z-20 overflow-hidden">
         {/* Brand header */}
-        <div className="p-4 border-b border-white/10 flex flex-col gap-2">
+        <div className="p-4 border-b border-white/10 flex flex-col gap-2 shrink-0">
           <div className="bg-white px-3 py-2 rounded-2xl shadow-xs flex items-center justify-center">
             <BrandLogo size="md" to="/" />
           </div>
@@ -292,7 +357,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         </div>
 
         {/* Current Agency Capsule */}
-        <div className="px-4 py-3 bg-[#041D30]/60 border-b border-white/5 flex items-center justify-between text-xs">
+        <div className="px-4 py-3 bg-[#041D30]/60 border-b border-white/5 flex items-center justify-between text-xs shrink-0">
           <div className="flex items-center gap-2 truncate">
             <Building2 className="w-3.5 h-3.5 text-[#55C9BD] shrink-0" />
             <span className="font-semibold text-white/90 truncate">
@@ -305,7 +370,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         </div>
 
         {/* Sidebar Navigation */}
-        <nav className="p-3 flex-1 overflow-y-auto space-y-1">
+        <nav className="p-3 flex-1 min-h-0 overflow-y-auto space-y-1 overscroll-contain" style={{ scrollbarWidth: 'thin' }}>
           {role === 'admin' ? (
             <div className="space-y-3">
               {/* Top Executive Links */}
@@ -448,7 +513,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         </nav>
 
         {/* Footer: User profile & quick sign out */}
-        <div className="p-4 border-t border-white/10 bg-[#041D30]">
+        <div className="p-4 border-t border-white/10 bg-[#041D30] shrink-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5 truncate">
               <img
@@ -486,7 +551,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       </aside>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 min-h-screen">
         {/* Top Header */}
         <header className="sticky top-0 z-30 bg-white border-b border-[#EFE7DA] px-4 sm:px-6 py-3 flex items-center justify-between shadow-xs">
           {/* Mobile hamburger & Title */}
@@ -560,7 +625,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               )}
             </div>
 
-            {/* Quick Demo Switcher Pill (1-click test of all 5 roles) */}
+            {/* Quick Demo Switcher Pill (1-click test of all 6 roles) */}
             <div className="hidden xl:flex items-center gap-1 bg-[#F8F1E7] p-1 rounded-xl border border-[#EFE7DA] text-xs">
               <span className="text-[10px] font-bold text-[#17648A] px-1.5 uppercase tracking-wider">Switch Role:</span>
               <button
@@ -585,10 +650,19 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 type="button"
                 onClick={() => demoLogin('staff')}
                 className={`px-2 py-0.5 rounded-lg font-bold transition-colors cursor-pointer ${
-                  role === 'staff' ? 'bg-teal-700 text-white shadow-xs' : 'text-[#082C43] hover:bg-white'
+                  role === 'staff' || role === 'sales' ? 'bg-teal-700 text-white shadow-xs' : 'text-[#082C43] hover:bg-white'
                 }`}
               >
-                Staff
+                Sales
+              </button>
+              <button
+                type="button"
+                onClick={() => demoLogin('operations')}
+                className={`px-2 py-0.5 rounded-lg font-bold transition-colors cursor-pointer ${
+                  role === 'operations' ? 'bg-blue-700 text-white shadow-xs' : 'text-[#082C43] hover:bg-white'
+                }`}
+              >
+                Operations
               </button>
               <button
                 type="button"
@@ -696,10 +770,10 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             onClick={() => setIsMobileSidebarOpen(false)}
           />
           <div
-            className="relative w-80 max-w-[85vw] bg-[#082C43] text-white flex flex-col z-50 p-4 shadow-2xl overscroll-contain"
+            className="relative w-80 max-w-[85vw] h-full bg-[#082C43] text-white flex flex-col z-50 p-4 shadow-2xl overscroll-contain overflow-hidden"
             style={{ overscrollBehavior: 'contain' }}
           >
-            <div className="flex items-center justify-between pb-3 border-b border-white/10">
+            <div className="flex items-center justify-between pb-3 border-b border-white/10 shrink-0">
               <div className="bg-white px-2.5 py-1.5 rounded-xl shadow-xs">
                 <BrandLogo size="sm" to="/" onClick={() => setIsMobileSidebarOpen(false)} />
               </div>
@@ -713,7 +787,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             </div>
 
             {/* User Profile Capsule in Mobile Drawer */}
-            <div className="my-3 p-3 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between">
+            <div className="my-3 p-3 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between shrink-0">
               <div className="flex items-center gap-2.5 truncate">
                 <img
                   src={user?.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80'}
@@ -741,7 +815,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             </div>
 
             {/* Quick Role Switcher (Mobile testing helper) */}
-            <div className="mb-2 p-2 rounded-xl bg-black/20 border border-white/5">
+            <div className="mb-2 p-2 rounded-xl bg-black/20 border border-white/5 shrink-0">
               <span className="text-[10px] font-bold uppercase tracking-wider text-[#55C9BD] block mb-1.5">
                 Switch Portal Role:
               </span>
@@ -829,7 +903,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             </div>
 
             {/* Mobile Navigation Links */}
-            <nav className="py-2 space-y-1 flex-1 overflow-y-auto">
+            <nav className="py-2 space-y-1 flex-1 min-h-0 overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
               {navLinks.map((item) => {
                 const isActive = location.pathname === item.path;
                 const Icon = item.icon;
@@ -859,7 +933,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             </nav>
 
             {/* Bottom Actions */}
-            <div className="pt-3 border-t border-white/10 space-y-2">
+            <div className="pt-3 border-t border-white/10 space-y-2 shrink-0">
               <Link
                 to="/"
                 onClick={() => setIsMobileSidebarOpen(false)}

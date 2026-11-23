@@ -53,20 +53,68 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
     setActiveDropdown(null);
   }, [location.pathname]);
 
-  // Prevent background chain scrolling when mobile menu is open
+  // Lock body scroll & prevent underlying page scrolling when desktop dropdown or mobile menu is open
   useEffect(() => {
-    if (isMobileMenuOpen) {
+    if (activeDropdown || isMobileMenuOpen) {
+      const originalBodyOverflow = document.body.style.overflow;
       document.body.style.overflow = 'hidden';
-      document.body.style.touchAction = 'none';
+
+      // Intercept wheel events so the underlying page is 100% frozen
+      const handleWheel = (e: WheelEvent) => {
+        const target = e.target as HTMLElement | null;
+        const scrollContainer = target?.closest('.dropdown-scroll-box') as HTMLElement | null;
+
+        if (!scrollContainer) {
+          // Outside the scrollable dropdown box: block wheel scrolling completely
+          e.preventDefault();
+          return;
+        }
+
+        // Inside scrollable dropdown box: allow scrolling inside, but block chaining at top/bottom edges
+        const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
+        const isAtTop = scrollTop <= 0;
+        const isAtBottom = scrollTop + clientHeight >= scrollHeight - 1;
+
+        if ((e.deltaY < 0 && isAtTop) || (e.deltaY > 0 && isAtBottom)) {
+          e.preventDefault();
+        }
+      };
+
+      const handleTouchMove = (e: TouchEvent) => {
+        const target = e.target as HTMLElement | null;
+        const scrollContainer = target?.closest('.dropdown-scroll-box');
+        if (!scrollContainer) {
+          e.preventDefault();
+        }
+      };
+
+      window.addEventListener('wheel', handleWheel, { passive: false });
+      window.addEventListener('touchmove', handleTouchMove, { passive: false });
+
+      return () => {
+        document.body.style.overflow = originalBodyOverflow;
+        window.removeEventListener('wheel', handleWheel);
+        window.removeEventListener('touchmove', handleTouchMove);
+      };
     } else {
       document.body.style.overflow = '';
       document.body.style.touchAction = '';
     }
-    return () => {
-      document.body.style.overflow = '';
-      document.body.style.touchAction = '';
+  }, [activeDropdown, isMobileMenuOpen]);
+
+  // Close dropdown or mobile menu on Escape key press
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setActiveDropdown(null);
+        setIsMobileMenuOpen(false);
+      }
     };
-  }, [isMobileMenuOpen]);
+    if (activeDropdown || isMobileMenuOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+      return () => window.removeEventListener('keydown', handleKeyDown);
+    }
+  }, [activeDropdown, isMobileMenuOpen]);
 
   // Close dropdown on click outside
   useEffect(() => {
@@ -328,7 +376,11 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
 
               {/* Mega Dropdown Box */}
               {activeDropdown === 'packages' && (
-                <div className="absolute top-full -left-20 w-[840px] bg-white rounded-3xl shadow-2xl border border-[#EFE7DA] p-6 animate-in fade-in slide-in-from-top-2 duration-200 text-[#082C43] z-50">
+                <div
+                  className="dropdown-scroll-box absolute top-full mt-2 left-0 w-[840px] max-w-[calc(100vw-32px)] max-h-[calc(100vh-100px)] overflow-y-auto overscroll-contain bg-white rounded-3xl shadow-2xl border border-[#EFE7DA] p-6 animate-in fade-in slide-in-from-top-2 duration-200 text-[#082C43] z-50"
+                  style={{ overscrollBehavior: 'contain', scrollbarWidth: 'thin' }}
+                  onWheel={(e) => e.stopPropagation()}
+                >
                   <div className="flex items-center justify-between border-b border-gray-100 pb-3 mb-4">
                     <div className="flex items-center gap-2">
                       <Globe2 className="w-5 h-5 text-[#17648A]" />
@@ -408,7 +460,11 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
 
               {/* India Mega Dropdown Box */}
               {activeDropdown === 'india' && (
-                <div className="absolute top-full -left-28 w-[880px] bg-white rounded-3xl shadow-2xl border border-[#EFE7DA] p-6 animate-in fade-in slide-in-from-top-2 duration-200 text-[#082C43] z-50">
+                <div
+                  className="dropdown-scroll-box absolute top-full mt-2 left-0 w-[880px] max-w-[calc(100vw-32px)] max-h-[calc(100vh-100px)] overflow-y-auto overscroll-contain bg-white rounded-3xl shadow-2xl border border-[#EFE7DA] p-6 animate-in fade-in slide-in-from-top-2 duration-200 text-[#082C43] z-50"
+                  style={{ overscrollBehavior: 'contain', scrollbarWidth: 'thin' }}
+                  onWheel={(e) => e.stopPropagation()}
+                >
                   <div className="flex items-center justify-between border-b border-gray-100 pb-3 mb-4">
                     <div className="flex items-center gap-2">
                       <MapPin className="w-5 h-5 text-[#FF795C]" />
@@ -484,7 +540,11 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
               </button>
 
               {activeDropdown === 'honeymoon' && (
-                <div className="absolute top-full -left-20 w-[620px] bg-white rounded-3xl shadow-2xl border border-[#EFE7DA] p-6 animate-in fade-in slide-in-from-top-2 duration-200 text-[#082C43] z-50">
+                <div
+                  className="dropdown-scroll-box absolute top-full mt-2 left-0 w-[620px] max-w-[calc(100vw-32px)] max-h-[calc(100vh-100px)] overflow-y-auto overscroll-contain bg-white rounded-3xl shadow-2xl border border-[#EFE7DA] p-6 animate-in fade-in slide-in-from-top-2 duration-200 text-[#082C43] z-50"
+                  style={{ overscrollBehavior: 'contain', scrollbarWidth: 'thin' }}
+                  onWheel={(e) => e.stopPropagation()}
+                >
                   <div className="flex items-center justify-between border-b border-gray-100 pb-3 mb-4">
                     <div className="flex items-center gap-2">
                       <Heart className="w-5 h-5 text-rose-500 fill-rose-500" />
@@ -580,7 +640,11 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
 
               {/* Quick Role Switcher Dropdown */}
               {activeDropdown === 'quick-login' && (
-                <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-white border border-[#EFE7DA] shadow-xl p-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150 text-xs">
+                <div
+                  className="dropdown-scroll-box absolute right-0 mt-2 w-56 max-h-[calc(100vh-100px)] overflow-y-auto overscroll-contain rounded-2xl bg-white border border-[#EFE7DA] shadow-xl p-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150 text-xs"
+                  style={{ overscrollBehavior: 'contain', scrollbarWidth: 'thin' }}
+                  onWheel={(e) => e.stopPropagation()}
+                >
                   <div className="px-3 py-2 border-b border-[#EFE7DA] mb-1">
                     <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider block">
                       Easy Login (Quick Switch)
@@ -620,26 +684,9 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
                     >
                       <span className="flex items-center gap-2">
                         <ShieldCheck className="w-3.5 h-3.5 text-purple-600" />
-                        Manager CRM
+                        Manager Portal
                       </span>
                       <span className="text-[10px] bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded font-bold">Manager</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => {
-                        demoLogin('agent').then(() => {
-                          navigate('/agent/packages');
-                          setActiveDropdown(null);
-                        });
-                      }}
-                      className="w-full text-left px-3 py-2 rounded-xl hover:bg-orange-50 text-[#082C43] hover:text-[#FF795C] font-semibold flex items-center justify-between transition-colors cursor-pointer"
-                    >
-                      <span className="flex items-center gap-2">
-                        <Briefcase className="w-3.5 h-3.5 text-[#FF795C]" />
-                        Agent Marketplace
-                      </span>
-                      <span className="text-[10px] bg-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-bold">Agent</span>
                     </button>
 
                     <button
@@ -654,9 +701,43 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
                     >
                       <span className="flex items-center gap-2">
                         <Users className="w-3.5 h-3.5 text-[#004c8f]" />
-                        Staff Operations
+                        Sales Executive CRM
                       </span>
-                      <span className="text-[10px] bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded font-bold">Staff</span>
+                      <span className="text-[10px] bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded font-bold">Sales</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        demoLogin('operations').then(() => {
+                          navigate('/operations/dashboard');
+                          setActiveDropdown(null);
+                        });
+                      }}
+                      className="w-full text-left px-3 py-2 rounded-xl hover:bg-blue-50 text-[#082C43] hover:text-blue-700 font-semibold flex items-center justify-between transition-colors cursor-pointer"
+                    >
+                      <span className="flex items-center gap-2">
+                        <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
+                        Operations Logistics
+                      </span>
+                      <span className="text-[10px] bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded font-bold">Operations</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        demoLogin('agent').then(() => {
+                          navigate('/agent/marketplace');
+                          setActiveDropdown(null);
+                        });
+                      }}
+                      className="w-full text-left px-3 py-2 rounded-xl hover:bg-orange-50 text-[#082C43] hover:text-[#FF795C] font-semibold flex items-center justify-between transition-colors cursor-pointer"
+                    >
+                      <span className="flex items-center gap-2">
+                        <Briefcase className="w-3.5 h-3.5 text-[#FF795C]" />
+                        B2B Agent Portal
+                      </span>
+                      <span className="text-[10px] bg-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-bold">Agent</span>
                     </button>
 
                     <button
@@ -740,6 +821,23 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
           </div>
         </div>
       </header>
+
+      {/* Full-screen Backdrop for Desktop Dropdowns: prevents background chain scrolling & closes on click */}
+      {activeDropdown && (
+        <div
+          className="fixed inset-0 z-30 bg-black/20 backdrop-blur-[0.5px] transition-opacity animate-in fade-in duration-150 overscroll-contain"
+          style={{ overscrollBehavior: 'contain', touchAction: 'none' }}
+          onClick={() => setActiveDropdown(null)}
+          onWheel={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
+          onTouchMove={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
+        />
+      )}
 
       {/* ======================================================== */}
       {/* MOBILE NAVIGATION DRAWER (Full Categories & Phone)       */}

@@ -27,6 +27,8 @@ import { CustomerEnquiries } from './pages/customer/CustomerEnquiries';
 import { CustomerBookings } from './pages/customer/CustomerBookings';
 import { CustomerPayments } from './pages/customer/CustomerPayments';
 import { CustomerProfile } from './pages/customer/CustomerProfile';
+import { CustomerDocuments } from './pages/customer/CustomerDocuments';
+import { CustomerSupport } from './pages/customer/CustomerSupport';
 
 // Staff Pages
 import { StaffDashboard } from './pages/staff/StaffDashboard';
@@ -35,6 +37,10 @@ import { StaffFollowUps } from './pages/staff/StaffFollowUps';
 import { StaffBookings } from './pages/staff/StaffBookings';
 import { StaffProfile } from './pages/staff/StaffProfile';
 
+// Operations Logistics Pages
+import { OperationsDashboard } from './pages/operations/OperationsDashboard';
+import { OperationsBookings } from './pages/operations/OperationsBookings';
+
 // Agent Pages
 import { AgentDashboard } from './pages/agent/AgentDashboard';
 import { AgentMarketplace } from './pages/agent/AgentMarketplace';
@@ -42,6 +48,8 @@ import { AgentPurchases } from './pages/agent/AgentPurchases';
 import { AgentBookings } from './pages/agent/AgentBookings';
 import { AgentTransactions } from './pages/agent/AgentTransactions';
 import { AgentProfile } from './pages/agent/AgentProfile';
+import { AgentDocuments } from './pages/agent/AgentDocuments';
+import { AgentCustomers } from './pages/agent/AgentCustomers';
 
 // Admin Pages
 import { AdminDashboard } from './pages/admin/AdminDashboard';
@@ -92,7 +100,10 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, allowedRoles 
       case 'manager':
         return <Navigate to="/manager/dashboard" replace />;
       case 'staff':
+      case 'sales':
         return <Navigate to="/staff/dashboard" replace />;
+      case 'operations':
+        return <Navigate to="/operations/dashboard" replace />;
       case 'agent':
         return <Navigate to="/agent/dashboard" replace />;
       case 'customer':
@@ -113,7 +124,9 @@ export const App: React.FC = () => {
     switch (user.role) {
       case 'admin': return '/admin/dashboard';
       case 'manager': return '/manager/dashboard';
-      case 'staff': return '/staff/dashboard';
+      case 'staff':
+      case 'sales': return '/staff/dashboard';
+      case 'operations': return '/operations/dashboard';
       case 'agent': return '/agent/dashboard';
       default: return '/customer/dashboard';
     }
@@ -201,6 +214,41 @@ export const App: React.FC = () => {
         element={
           <ProtectedRoute allowedRoles={['customer']}>
             <CustomerProfile />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/customer/documents"
+        element={
+          <ProtectedRoute allowedRoles={['customer', 'operations', 'admin', 'manager']}>
+            <CustomerDocuments />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/customer/support"
+        element={
+          <ProtectedRoute allowedRoles={['customer', 'admin', 'manager', 'operations']}>
+            <CustomerSupport />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Operations Logistics Routes */}
+      <Route path="/operations" element={<Navigate to="/operations/dashboard" replace />} />
+      <Route
+        path="/operations/dashboard"
+        element={
+          <ProtectedRoute allowedRoles={['operations', 'manager', 'admin']}>
+            <OperationsDashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/operations/bookings"
+        element={
+          <ProtectedRoute allowedRoles={['operations', 'manager', 'admin']}>
+            <OperationsBookings />
           </ProtectedRoute>
         }
       />
@@ -295,6 +343,22 @@ export const App: React.FC = () => {
         element={
           <ProtectedRoute allowedRoles={['agent']}>
             <AgentProfile />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/agent/documents"
+        element={
+          <ProtectedRoute allowedRoles={['agent', 'admin', 'manager']}>
+            <AgentDocuments />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/agent/customers"
+        element={
+          <ProtectedRoute allowedRoles={['agent', 'admin', 'manager']}>
+            <AgentCustomers />
           </ProtectedRoute>
         }
       />

@@ -177,7 +177,7 @@ app.post('/api/auth/login', (req, res) => {
   });
 });
 
-// Demo Login (Instant switch between roles for testing: admin, manager, staff, agent, customer)
+// Demo Login (Instant switch between roles for testing: admin, manager, sales/staff, operations, agent, customer)
 app.post('/api/auth/demo-login', (req, res) => {
   const { role, agency_slug } = req.body;
   let targetAgency = db.findOne('agencies', (a) => a.slug === (agency_slug || 'travel-genie'));
@@ -185,9 +185,15 @@ app.post('/api/auth/demo-login', (req, res) => {
     targetAgency = db.findAll('agencies')[0];
   }
 
-  let user = db.findOne('users', (u) => (u.agency_id === targetAgency.id || u.role === 'admin' || u.role === 'manager') && u.role === (role || 'admin'));
+  const requestedRole = (role || 'admin').toLowerCase();
+  const roleAliases = requestedRole === 'sales' ? ['sales', 'staff'] : [requestedRole];
+
+  let user = db.findOne('users', (u) => 
+    (u.agency_id === targetAgency.id || u.role === 'admin' || u.role === 'manager') && 
+    roleAliases.includes(u.role.toLowerCase())
+  );
   if (!user) {
-    user = db.findOne('users', (u) => u.role === (role || 'admin'));
+    user = db.findOne('users', (u) => roleAliases.includes(u.role.toLowerCase()));
   }
   if (!user) {
     return res.status(404).json({ error: `Demo user for role '${role}' not found.` });
@@ -701,6 +707,104 @@ app.get('/api/customer/payments', authenticate, authorize(['customer']), (req, r
   res.json({ payments, bookings });
 });
 
+// Process Direct Customer Payment
+app.post('/api/customer/payments', authenticate, authorize(['customer']), (req, res) => {
+  const userId = req.user.id;
+  const userEmail = req.user.email.toLowerCase();
+  const { booking_id, amount, payment_method, transaction_reference, notes } = req.body;
+
+  if (!booking_id || !amount || Number(amount) <= 0) {
+    return res.status(400).json({ error: 'Booking ID and a valid payment amount are required.' });
+  }
+
+  const booking = db.findById('bookings', booking_id);
+  if (!booking || (booking.customer_id !== userId && (!booking.customer_email || booking.customer_email.toLowerCase() !== userEmail))) {
+    return res.status(404).json({ error: 'Booking not found or does not belong to your account.' });
+  }
+
+  const payAmount = Number(amount);
+  const currentAdvance = (booking.advance_amount || 0) + payAmount;
+  const currentBalance = Math.max(0, (booking.total_amount || 0) - currentAdvance);
+  const paymentStatus = currentBalance === 0 ? 'Paid' : 'Partial';
+
+  const newPayment = db.insert('payments', {
+    agency_id: booking.agency_id,
+    booking_id: booking.id,
+    customer_id: userId,
+    amount: payAmount,
+    payment_type: currentBalance === 0 ? 'Full / Final Settlement' : 'Advance / Partial Installment',
+    payment_method: payment_method || 'UPI / NetBanking',
+    transaction_reference: transaction_reference || `CUST-TXN-${Date.now()}`,
+    payment_date: new Date().toISOString(),
+    notes: notes || 'Direct customer payment received online.',
+    status: 'Completed'
+  });
+
+  // Update booking
+  const updateFields = {
+    advance_amount: currentAdvance,
+    balance_amount: currentBalance,
+    payment_status: paymentStatus
+  };
+  if (paymentStatus === 'Paid' && booking.booking_status === 'Pending') {
+    updateFields.booking_status = 'Confirmed';
+  }
+  db.update('bookings', booking.id, updateFields);
+
+  // Generate official tax invoice
+  const subtotal = Math.round(payAmount / 1.05);
+  const tax = payAmount - subtotal;
+  const inv = db.insert('invoices', {
+    agency_id: booking.agency_id,
+    invoice_number: `TG-INV-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`,
+    booking_id: booking.id,
+    customer_id: userId,
+    customer_name: req.user.name,
+    invoice_date: new Date().toISOString().split('T')[0],
+    subtotal,
+    cgst: Math.round(tax / 2),
+    sgst: Math.round(tax / 2),
+    igst: 0,
+    total_amount: payAmount,
+    payment_status: paymentStatus,
+    pdf_url: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80',
+    created_at: new Date().toISOString()
+  });
+
+  // Notify customer
+  db.insert('notifications', {
+    agency_id: booking.agency_id,
+    user_id: userId,
+    title: 'Payment Successful!',
+    message: `Payment of ₹${payAmount.toLocaleString('en-IN')} confirmed for booking #${booking.booking_number}. Invoice #${inv.invoice_number} generated.`,
+    type: 'success',
+    link: '/customer/payments',
+    is_read: false,
+    created_at: new Date().toISOString()
+  });
+
+  // Notify operations & manager
+  const staffToNotify = db.findAll('users', (u) => u.agency_id === booking.agency_id && (u.role === 'manager' || u.role === 'admin' || u.role === 'operations'));
+  for (const s of staffToNotify) {
+    db.createNotification(
+      booking.agency_id,
+      s.id,
+      'Customer Payment Received',
+      `Customer ${req.user.name} paid ₹${payAmount.toLocaleString('en-IN')} for booking #${booking.booking_number}. Status: ${paymentStatus}.`,
+      'info',
+      s.role === 'operations' ? '/operations/bookings' : '/admin/payments'
+    );
+  }
+
+  res.status(201).json({
+    success: true,
+    message: 'Payment processed and verified successfully.',
+    payment: newPayment,
+    invoice: inv,
+    booking_update: { advance_amount: currentAdvance, balance_amount: currentBalance, payment_status: paymentStatus }
+  });
+});
+
 // Customer Profile
 app.get('/api/customer/profile', authenticate, authorize(['customer']), (req, res) => {
   const profile = db.findOne('customer_profiles', (cp) => cp.user_id === req.user.id);
@@ -784,8 +888,11 @@ app.post('/api/admin/users', authenticate, authorize(['admin']), (req, res) => {
   }
 
   const prefixMap = {
+    admin: 'ADM',
     manager: 'MGR',
     staff: 'STF',
+    sales: 'SLS',
+    operations: 'OPS',
     agent: 'AGT',
     customer: 'CUS'
   };
@@ -2022,22 +2129,86 @@ app.post('/api/staff/leads/:id/convert', authenticate, authorize(['staff']), (re
       notes: 'Initial booking deposit recorded during lead conversion.',
       status: 'Completed'
     });
+
+    const subtotal = Math.round(adv / 1.05);
+    const tax = adv - subtotal;
+    db.insert('invoices', {
+      agency_id: agencyId,
+      invoice_number: `TG-INV-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`,
+      booking_id: newBooking.id,
+      customer_id: lead.customer_id,
+      customer_name: lead.customer_name,
+      invoice_date: new Date().toISOString().split('T')[0],
+      subtotal,
+      cgst: Math.round(tax / 2),
+      sgst: Math.round(tax / 2),
+      igst: 0,
+      total_amount: adv,
+      payment_status: bal === 0 ? 'Paid' : 'Partial',
+      pdf_url: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80',
+      created_at: new Date().toISOString()
+    });
   }
+
+  // Auto-create operational arrangements & checklist tasks
+  db.insert('operations_arrangements', {
+    agency_id: agencyId,
+    booking_id: newBooking.id,
+    trip_status: 'Booking Received',
+    hotel_name: 'Pending Hotel Allocation',
+    room_category: 'Standard / As per quotation',
+    meal_plan: 'Breakfast included',
+    vehicle_type: 'AC Sedan / SUV as per group size',
+    special_instructions: special_requests || lead.notes || '',
+    dossier_generated: false,
+    updated_at: new Date().toISOString()
+  });
+
+  const opsChecklist = [
+    { title: 'Verify Passenger Identification & Passport Copies', priority: 'High', due_days: 2 },
+    { title: 'Confirm Hotel Accommodations & Room Vouchers', priority: 'High', due_days: 5 },
+    { title: 'Arrange Airport & Local Transportation Logistics', priority: 'Medium', due_days: 7 },
+    { title: 'Generate Consolidated Travel Itinerary Dossier', priority: 'High', due_days: 10 }
+  ];
+  const nowMs = Date.now();
+  for (const item of opsChecklist) {
+    db.insert('operations_tasks', {
+      agency_id: agencyId,
+      booking_id: newBooking.id,
+      task_title: item.title,
+      due_date: new Date(nowMs + item.due_days * 86400000).toISOString().split('T')[0],
+      status: 'PENDING',
+      priority: item.priority,
+      assigned_executive: 'usr_operations_karthik',
+      created_at: new Date().toISOString()
+    });
+  }
+
+  // Audit booking status change
+  db.insert('booking_status_history', {
+    agency_id: agencyId,
+    booking_id: newBooking.id,
+    from_status: 'QUOTATION_PENDING',
+    to_status: 'CONFIRMED',
+    changed_by: req.user.id,
+    notes: `Lead converted to confirmed booking #${bookingNum} with ₹${adv} advance deposit.`,
+    created_at: new Date().toISOString()
+  });
 
   // Update lead status to 'Converted'
   db.update('leads', lead.id, { status: 'Converted' });
   db.recordActivity(lead.id, staffId, 'status_change', `Lead successfully CONVERTED to confirmed Booking #${bookingNum}!`);
 
-  // Notify admin
-  const admins = db.findAll('users', (u) => u.agency_id === agencyId && u.role === 'admin');
-  for (const admin of admins) {
+  // Notify Admin, Manager, and Operations Executive
+  const opsStaff = db.findAll('users', (u) => u.agency_id === agencyId && (u.role === 'admin' || u.role === 'manager' || u.role === 'operations'));
+  for (const staffMember of opsStaff) {
     db.createNotification(
       agencyId,
-      admin.id,
-      'Lead Converted!',
-      `Staff ${req.user.name} converted lead #${lead.id} into confirmed booking #${bookingNum} (₹${tot.toLocaleString('en-IN')}).`,
+      staffMember.id,
+      'New Confirmed Booking for Execution!',
+      `Staff ${req.user.name} converted lead #${lead.id} into confirmed booking #${bookingNum} (${lead.interested_destination}). Operational arrangements initialized.`,
       'success',
-      '/admin/bookings'
+      staffMember.role === 'operations' ? '/operations/bookings' : '/admin/bookings'
     );
   }
 
@@ -2261,6 +2432,751 @@ app.put('/api/notifications/read-all', authenticate, (req, res) => {
     db.update('notifications', n.id, { is_read: true });
   }
   res.json({ success: true, count: userNotifs.length });
+});
+
+// ==========================================
+// OPERATIONS EXECUTIVE & LOGISTICS PORTAL
+// ==========================================
+
+// Operations Dashboard Stats & Overview
+app.get('/api/operations/dashboard', authenticate, authorize(['operations', 'manager', 'admin']), (req, res) => {
+  const agencyId = req.user.agency_id;
+  const bookings = db.findAll('bookings', (b) => b.agency_id === agencyId);
+  const arrangements = db.findAll('operations_arrangements', (a) => a.agency_id === agencyId) || [];
+  const documents = db.findAll('travel_documents', (d) => d.agency_id === agencyId) || [];
+
+  const arrangementsMap = new Map();
+  arrangements.forEach((a) => arrangementsMap.set(a.booking_id, a));
+
+  const stats = {
+    total_confirmed_bookings: bookings.length,
+    arrangements_pending: bookings.filter((b) => {
+      const arr = arrangementsMap.get(b.id);
+      return !arr || arr.trip_status === 'Booking Received' || arr.trip_status === 'Arrangements Pending';
+    }).length,
+    hotel_confirmed: arrangements.filter((a) => a.trip_status === 'Hotel Confirmed').length,
+    transport_confirmed: arrangements.filter((a) => a.trip_status === 'Transport Confirmed').length,
+    documents_ready: arrangements.filter((a) => a.trip_status === 'Documents Ready' || a.trip_status === 'Ready to Travel').length,
+    trips_in_progress: arrangements.filter((a) => a.trip_status === 'Trip In Progress').length,
+    trips_completed: arrangements.filter((a) => a.trip_status === 'Trip Completed').length,
+    issues_reported: arrangements.filter((a) => a.trip_status === 'Issue Reported').length,
+    total_documents: documents.length,
+    pending_customer_verifications: documents.filter((d) => d.category === 'Customer-Provided' && d.status === 'pending').length
+  };
+
+  const enrichedBookings = bookings.map((b) => {
+    const arr = arrangementsMap.get(b.id) || {
+      id: `arr_${b.id}`,
+      agency_id: agencyId,
+      booking_id: b.id,
+      trip_status: 'Booking Received',
+      updated_at: b.created_at
+    };
+    const docs = documents.filter((d) => d.booking_id === b.id);
+    return {
+      ...b,
+      operations: arr,
+      documents_count: docs.length
+    };
+  });
+
+  res.json({ stats, bookings: enrichedBookings });
+});
+
+// Get all bookings for operations execution
+app.get('/api/operations/bookings', authenticate, authorize(['operations', 'manager', 'admin']), (req, res) => {
+  const agencyId = req.user.agency_id;
+  const bookings = db.findAll('bookings', (b) => b.agency_id === agencyId);
+  const arrangements = db.findAll('operations_arrangements', (a) => a.agency_id === agencyId) || [];
+  const documents = db.findAll('travel_documents', (d) => d.agency_id === agencyId) || [];
+
+  const arrMap = new Map();
+  arrangements.forEach((a) => arrMap.set(a.booking_id, a));
+
+  const result = bookings.map((b) => {
+    const arr = arrMap.get(b.id) || {
+      id: `arr_${b.id}`,
+      agency_id: agencyId,
+      booking_id: b.id,
+      trip_status: 'Booking Received',
+      updated_at: b.created_at
+    };
+    const docs = documents.filter((d) => d.booking_id === b.id);
+    return {
+      ...b,
+      operations: arr,
+      documents: docs
+    };
+  });
+
+  res.json(result);
+});
+
+// Update operations arrangements (hotel, vehicle, driver, guide)
+app.put('/api/operations/bookings/:id/arrangements', authenticate, authorize(['operations', 'manager', 'admin']), (req, res) => {
+  const bookingId = req.params.id;
+  const booking = db.findById('bookings', bookingId);
+  if (!booking) {
+    return res.status(404).json({ error: 'Booking not found.' });
+  }
+
+  let arrangement = db.findOne('operations_arrangements', (a) => a.booking_id === bookingId);
+  const updateData = {
+    ...req.body,
+    updated_at: new Date().toISOString()
+  };
+
+  if (arrangement) {
+    arrangement = db.update('operations_arrangements', arrangement.id, updateData);
+  } else {
+    arrangement = db.insert('operations_arrangements', {
+      agency_id: booking.agency_id,
+      booking_id: bookingId,
+      trip_status: req.body.trip_status || 'Arrangements Pending',
+      ...updateData
+    });
+  }
+
+  // Notify customer if booking has customer_id
+  if (booking.customer_id) {
+    db.insert('notifications', {
+      agency_id: booking.agency_id,
+      user_id: booking.customer_id,
+      title: 'Trip Arrangements Updated',
+      message: `Logistics details for your trip ${booking.package_title} have been updated by our Operations team.`,
+      type: 'info',
+      link: '/customer/documents',
+      is_read: false,
+      created_at: new Date().toISOString()
+    });
+  }
+
+  res.json(arrangement);
+});
+
+// Advance trip operational status
+app.put('/api/operations/bookings/:id/trip-status', authenticate, authorize(['operations', 'manager', 'admin']), (req, res) => {
+  const bookingId = req.params.id;
+  const { trip_status } = req.body;
+  const booking = db.findById('bookings', bookingId);
+  if (!booking) {
+    return res.status(404).json({ error: 'Booking not found.' });
+  }
+
+  let arrangement = db.findOne('operations_arrangements', (a) => a.booking_id === bookingId);
+  if (arrangement) {
+    arrangement = db.update('operations_arrangements', arrangement.id, {
+      trip_status,
+      updated_at: new Date().toISOString()
+    });
+  } else {
+    arrangement = db.insert('operations_arrangements', {
+      agency_id: booking.agency_id,
+      booking_id: bookingId,
+      trip_status,
+      updated_at: new Date().toISOString()
+    });
+  }
+
+  // Update booking_status if completed
+  if (trip_status === 'Trip Completed') {
+    db.update('bookings', booking.id, { booking_status: 'Completed' });
+  } else if (trip_status === 'Trip In Progress') {
+    db.update('bookings', booking.id, { booking_status: 'In Progress' });
+  }
+
+  res.json(arrangement);
+});
+
+// Generate consolidated travel dossier
+app.post('/api/operations/bookings/:id/generate-dossier', authenticate, authorize(['operations', 'manager', 'admin']), (req, res) => {
+  const bookingId = req.params.id;
+  const booking = db.findById('bookings', bookingId);
+  if (!booking) {
+    return res.status(404).json({ error: 'Booking not found.' });
+  }
+
+  let arrangement = db.findOne('operations_arrangements', (a) => a.booking_id === bookingId);
+  const dossierDoc = db.insert('travel_documents', {
+    agency_id: booking.agency_id,
+    booking_id: bookingId,
+    customer_id: booking.customer_id,
+    category: 'Booking Confirmation',
+    title: `Consolidated Travel Dossier - ${booking.package_title}`,
+    file_name: `TripByGenie_Consolidated_Dossier_${booking.booking_number}.pdf`,
+    file_url: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80',
+    file_size: '1.4 MB',
+    file_type: 'application/pdf',
+    status: 'available',
+    uploaded_by_role: req.user.role,
+    uploaded_by_name: req.user.name,
+    notes: 'Official all-inclusive travel dossier with hotel confirmations, driver contacts, day-by-day itineraries, and emergency support numbers.',
+    created_at: new Date().toISOString()
+  });
+
+  if (arrangement) {
+    arrangement = db.update('operations_arrangements', arrangement.id, {
+      dossier_generated: true,
+      dossier_url: dossierDoc.file_url,
+      trip_status: 'Documents Ready',
+      updated_at: new Date().toISOString()
+    });
+  }
+
+  if (booking.customer_id) {
+    db.insert('notifications', {
+      agency_id: booking.agency_id,
+      user_id: booking.customer_id,
+      title: 'Travel Documents Ready!',
+      message: `Your consolidated travel dossier for ${booking.package_title} is ready to download in your Digital Document Wallet.`,
+      type: 'success',
+      link: '/customer/documents',
+      is_read: false,
+      created_at: new Date().toISOString()
+    });
+  }
+
+  res.json({ success: true, document: dossierDoc, arrangement });
+});
+
+// ==========================================
+// DIGITAL DOCUMENT WALLET & TRAVEL DOCUMENTS
+// ==========================================
+
+// Get travel documents (scoped by role & query)
+app.get('/api/documents', authenticate, (req, res) => {
+  const userRole = req.user.role;
+  const userId = req.user.id;
+  const agencyId = req.user.agency_id;
+  const { booking_id, category, customer_id } = req.query;
+
+  let docs = db.findAll('travel_documents', (d) => d.agency_id === agencyId) || [];
+
+  if (userRole === 'customer') {
+    // Customers only see documents for their bookings or uploaded by them
+    const userBookings = db.findAll('bookings', (b) => b.customer_id === userId).map((b) => b.id);
+    docs = docs.filter((d) => d.customer_id === userId || userBookings.includes(d.booking_id));
+  } else if (userRole === 'agent') {
+    docs = docs.filter((d) => d.agent_id === userId || d.uploaded_by_role === 'agent');
+  }
+
+  if (booking_id) {
+    docs = docs.filter((d) => d.booking_id === booking_id);
+  }
+  if (category && category !== 'all') {
+    docs = docs.filter((d) => d.category === category);
+  }
+  if (customer_id) {
+    docs = docs.filter((d) => d.customer_id === customer_id);
+  }
+
+  res.json(docs);
+});
+
+// Upload travel document (supports customer uploads and staff/ops vouchers)
+app.post('/api/documents/upload', authenticate, (req, res) => {
+  const {
+    booking_id,
+    customer_id,
+    category,
+    title,
+    file_name,
+    file_url,
+    file_size,
+    file_type,
+    notes,
+    expiry_date
+  } = req.body;
+
+  if (!title || !category) {
+    return res.status(400).json({ error: 'Document title and category are required.' });
+  }
+
+  const isCustomerUpload = req.user.role === 'customer' || category === 'Customer-Provided';
+  const newDoc = db.insert('travel_documents', {
+    agency_id: req.user.agency_id,
+    booking_id: booking_id || '',
+    customer_id: customer_id || (req.user.role === 'customer' ? req.user.id : ''),
+    category,
+    title,
+    file_name: file_name || `${title.replace(/\s+/g, '_')}.pdf`,
+    file_url: file_url || 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80',
+    file_size: file_size || '350 KB',
+    file_type: file_type || 'application/pdf',
+    status: isCustomerUpload ? 'pending' : 'available',
+    uploaded_by_role: req.user.role,
+    uploaded_by_name: req.user.name,
+    notes: notes || '',
+    expiry_date: expiry_date || '',
+    created_at: new Date().toISOString()
+  });
+
+  // Notify operations if uploaded by customer
+  if (isCustomerUpload) {
+    const opsUsers = db.findAll('users', (u) => u.role === 'operations' || u.role === 'manager');
+    opsUsers.forEach((op) => {
+      db.insert('notifications', {
+        agency_id: req.user.agency_id,
+        user_id: op.id,
+        title: 'New Traveler Document Uploaded',
+        message: `${req.user.name} uploaded ${title} for verification.`,
+        type: 'info',
+        link: '/operations/bookings',
+        is_read: false,
+        created_at: new Date().toISOString()
+      });
+    });
+  }
+
+  res.status(201).json(newDoc);
+});
+
+// Verify or reject customer document
+app.put('/api/documents/:id/verify', authenticate, authorize(['operations', 'manager', 'admin']), (req, res) => {
+  const { status, notes } = req.body; // 'verified' | 'rejected'
+  const doc = db.findById('travel_documents', req.params.id);
+  if (!doc) {
+    return res.status(404).json({ error: 'Document not found.' });
+  }
+
+  const updated = db.update('travel_documents', doc.id, {
+    status: status || 'verified',
+    notes: notes ? `${doc.notes ? doc.notes + ' ' : ''}${notes}` : doc.notes,
+    verified_by: req.user.name,
+    verified_at: new Date().toISOString()
+  });
+
+  if (doc.customer_id) {
+    db.insert('notifications', {
+      agency_id: doc.agency_id,
+      user_id: doc.customer_id,
+      title: status === 'verified' ? 'Document Verified' : 'Document Action Required',
+      message: `Your uploaded document "${doc.title}" has been marked as ${status}.`,
+      type: status === 'verified' ? 'success' : 'alert',
+      link: '/customer/documents',
+      is_read: false,
+      created_at: new Date().toISOString()
+    });
+  }
+
+  res.json(updated);
+});
+
+// Delete document
+app.delete('/api/documents/:id', authenticate, (req, res) => {
+  const doc = db.findById('travel_documents', req.params.id);
+  if (!doc) {
+    return res.status(404).json({ error: 'Document not found.' });
+  }
+  db.delete('travel_documents', doc.id);
+  res.json({ success: true, message: 'Document deleted successfully.' });
+});
+
+// Authenticated Secure Document Download (Enforces Customer and Agent Isolation)
+app.get('/api/documents/:id/download', authenticate, (req, res) => {
+  const doc = db.findById('travel_documents', req.params.id);
+  if (!doc) {
+    return res.status(404).json({ error: 'Travel document not found.' });
+  }
+
+  const user = req.user;
+  // Authorization isolation checks
+  if (user.role === 'customer') {
+    const userBookings = db.findAll('bookings', (b) => b.customer_id === user.id).map((b) => b.id);
+    if (doc.customer_id !== user.id && !userBookings.includes(doc.booking_id)) {
+      return res.status(403).json({ error: 'Access denied: cannot access another traveler’s private travel document.' });
+    }
+  } else if (user.role === 'agent') {
+    if (doc.agent_id && doc.agent_id !== user.id) {
+      return res.status(403).json({ error: 'Access denied: cannot access another travel agent’s document.' });
+    }
+  }
+
+  // Audit document access
+  db.insert('audit_logs', {
+    user_id: user.id,
+    action: 'DOCUMENT_DOWNLOADED',
+    entity_type: 'TRAVEL_DOCUMENT',
+    entity_id: doc.id,
+    details: `${user.name} (${user.role}) downloaded ${doc.title}`,
+    created_at: new Date().toISOString()
+  });
+
+  // If local file exists, send file as attachment
+  if (doc.local_path && fs.existsSync(doc.local_path)) {
+    return res.download(doc.local_path, doc.file_name || 'document.pdf');
+  }
+
+  // Redirect to secure document URL
+  if (doc.file_url) {
+    return res.redirect(doc.file_url);
+  }
+
+  res.status(404).json({ error: 'Document binary file path unavailable.' });
+});
+
+// ==========================================
+// CUSTOMER SUPPORT TICKETS
+// ==========================================
+
+// Get tickets (scoped)
+app.get('/api/support/tickets', authenticate, (req, res) => {
+  const user = req.user;
+  let tickets = db.findAll('support_tickets', (t) => t.agency_id === user.agency_id) || [];
+
+  if (user.role === 'customer') {
+    tickets = tickets.filter((t) => t.user_id === user.id);
+  }
+
+  res.json(tickets);
+});
+
+// Create new support ticket
+app.post('/api/support/tickets', authenticate, (req, res) => {
+  const { subject, category, priority, booking_id, message } = req.body;
+  if (!subject || !message) {
+    return res.status(400).json({ error: 'Subject and message are required.' });
+  }
+
+  const ticketNum = `TKT-${Math.floor(1000 + Math.random() * 9000)}`;
+  const newTicket = db.insert('support_tickets', {
+    ticket_number: ticketNum,
+    agency_id: req.user.agency_id,
+    user_id: req.user.id,
+    customer_name: req.user.name,
+    customer_email: req.user.email,
+    booking_id: booking_id || '',
+    subject,
+    category: category || 'General Enquiry',
+    priority: priority || 'medium',
+    status: 'open',
+    assigned_to: 'Support & Operations Team',
+    messages: [
+      {
+        id: `msg_${Date.now()}`,
+        sender_role: req.user.role,
+        sender_name: req.user.name,
+        message,
+        created_at: new Date().toISOString()
+      }
+    ],
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  });
+
+  // Notify team
+  const teamUsers = db.findAll('users', (u) => u.role === 'operations' || u.role === 'manager' || u.role === 'admin');
+  teamUsers.forEach((m) => {
+    db.insert('notifications', {
+      agency_id: req.user.agency_id,
+      user_id: m.id,
+      title: `New Support Ticket ${ticketNum}`,
+      message: `${req.user.name}: "${subject}"`,
+      type: 'warning',
+      link: '/manager/dashboard',
+      is_read: false,
+      created_at: new Date().toISOString()
+    });
+  });
+
+  res.status(201).json(newTicket);
+});
+
+// Reply to support ticket
+app.post('/api/support/tickets/:id/messages', authenticate, (req, res) => {
+  const ticket = db.findById('support_tickets', req.params.id);
+  if (!ticket) {
+    return res.status(404).json({ error: 'Support ticket not found.' });
+  }
+
+  const { message } = req.body;
+  if (!message) {
+    return res.status(400).json({ error: 'Message cannot be empty.' });
+  }
+
+  const newMessage = {
+    id: `msg_${Date.now()}`,
+    sender_role: req.user.role,
+    sender_name: req.user.name,
+    message,
+    created_at: new Date().toISOString()
+  };
+
+  const updatedMessages = [...(ticket.messages || []), newMessage];
+  const newStatus = req.user.role === 'customer' ? 'open' : 'in_progress';
+
+  const updated = db.update('support_tickets', ticket.id, {
+    messages: updatedMessages,
+    status: newStatus,
+    updated_at: new Date().toISOString()
+  });
+
+  // Notify other party
+  const recipientUserId = req.user.role === 'customer' ? null : ticket.user_id;
+  if (recipientUserId) {
+    db.insert('notifications', {
+      agency_id: ticket.agency_id,
+      user_id: recipientUserId,
+      title: `Response on ${ticket.ticket_number}`,
+      message: `${req.user.name}: "${message.substring(0, 80)}..."`,
+      type: 'info',
+      link: '/customer/support',
+      is_read: false,
+      created_at: new Date().toISOString()
+    });
+  }
+
+  res.json(updated);
+});
+
+// Update support ticket status
+app.put('/api/support/tickets/:id/status', authenticate, (req, res) => {
+  const { status } = req.body;
+  const ticket = db.findById('support_tickets', req.params.id);
+  if (!ticket) {
+    return res.status(404).json({ error: 'Ticket not found.' });
+  }
+
+  const updated = db.update('support_tickets', ticket.id, {
+    status,
+    updated_at: new Date().toISOString()
+  });
+  res.json(updated);
+});
+
+// ==========================================
+// B2B WHOLESALE PRICING ENGINE & AGENT HUB
+// ==========================================
+
+// Wholesale Tiered Pricing Engine
+app.post('/api/b2b/calculate-price', authenticate, (req, res) => {
+  const { package_id, travelers_count } = req.body;
+  const pax = Math.max(1, parseInt(travelers_count, 10) || 1);
+
+  const pkg = db.findById('packages', package_id);
+  if (!pkg) {
+    return res.status(404).json({ error: 'Package not found.' });
+  }
+
+  const baseWholesale = pkg.agent_wholesale_price || pkg.wholesale_price || Math.round(pkg.public_price * 0.85);
+  const retailPrice = pkg.public_price;
+
+  let tierName = 'Standard B2B Tier (1-4 Pax)';
+  let discountPct = 0;
+
+  if (pax >= 20) {
+    tierName = 'Mega Group Wholesale Tier (20+ Pax)';
+    discountPct = 15;
+  } else if (pax >= 10) {
+    tierName = 'Medium Group Wholesale Tier (10-19 Pax)';
+    discountPct = 10;
+  } else if (pax >= 5) {
+    tierName = 'Small Group Wholesale Tier (5-9 Pax)';
+    discountPct = 5;
+  }
+
+  const discountAmountPerPax = Math.round(baseWholesale * (discountPct / 100));
+  const finalWholesalePerPax = baseWholesale - discountAmountPerPax;
+  const totalWholesaleCost = finalWholesalePerPax * pax;
+  const totalRetailPrice = retailPrice * pax;
+  const projectedMarginTotal = totalRetailPrice - totalWholesaleCost;
+  const marginPct = Math.round((projectedMarginTotal / totalRetailPrice) * 100);
+
+  res.json({
+    package_id: pkg.id,
+    package_title: pkg.title,
+    travelers_count: pax,
+    tier_name: tierName,
+    tier_discount_pct: discountPct,
+    base_wholesale_price: baseWholesale,
+    discount_amount_per_pax: discountAmountPerPax,
+    final_wholesale_price_per_pax: finalWholesalePerPax,
+    total_wholesale_cost: totalWholesaleCost,
+    suggested_retail_price: retailPrice,
+    total_retail_price: totalRetailPrice,
+    projected_margin_total: projectedMarginTotal,
+    margin_pct: marginPct
+  });
+});
+
+// B2B Documents (Invoices, White-label vouchers)
+app.get('/api/b2b/documents', authenticate, (req, res) => {
+  const purchases = db.findAll('agent_purchases', (p) => p.agency_id === req.user.agency_id) || [];
+  const b2bDocs = purchases.map((p) => ({
+    id: `inv_${p.id}`,
+    purchase_id: p.id,
+    package_title: p.package_title,
+    client_name: p.client_name,
+    amount: p.total_cost,
+    invoice_number: `INV-B2B-${p.id.replace(/[^0-9]/g, '').slice(-4) || '9021'}`,
+    date: p.created_at,
+    status: 'Paid',
+    invoice_url: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80',
+    voucher_url: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80'
+  }));
+  res.json(b2bDocs);
+});
+
+// Agent End Customers
+app.get('/api/b2b/customers', authenticate, (req, res) => {
+  const customers = db.findAll('agent_customers', (c) => c.agency_id === req.user.agency_id) || [];
+  res.json(customers);
+});
+
+app.post('/api/b2b/customers', authenticate, (req, res) => {
+  const { name, email, phone, passport_number, id_proof_type, id_proof_number, notes } = req.body;
+  if (!name || !phone) {
+    return res.status(400).json({ error: 'Passenger name and phone number are required.' });
+  }
+
+  const newCustomer = db.insert('agent_customers', {
+    agency_id: req.user.agency_id,
+    agent_id: req.user.id,
+    name,
+    email: email || '',
+    phone,
+    passport_number: passport_number || '',
+    id_proof_type: id_proof_type || 'Passport',
+    id_proof_number: id_proof_number || '',
+    notes: notes || '',
+    created_at: new Date().toISOString()
+  });
+
+  res.status(201).json(newCustomer);
+});
+
+// ==========================================
+// BRANCHES MANAGEMENT
+// ==========================================
+app.get('/api/admin/branches', authenticate, (req, res) => {
+  const branches = db.findAll('branches', (b) => b.agency_id === req.user.agency_id) || [];
+  res.json(branches);
+});
+
+app.post('/api/admin/branches', authenticate, authorize(['admin']), (req, res) => {
+  const { name, code, city, address, manager_name, phone, email } = req.body;
+  if (!name || !code || !city) {
+    return res.status(400).json({ error: 'Branch name, code, and city are required.' });
+  }
+
+  const newBranch = db.insert('branches', {
+    agency_id: req.user.agency_id,
+    name,
+    code,
+    city,
+    address: address || '',
+    manager_name: manager_name || '',
+    phone: phone || '',
+    email: email || '',
+    status: 'active'
+  });
+
+  res.status(201).json(newBranch);
+});
+
+// ==========================================
+// REFUNDS & FINANCIAL ADJUSTMENTS
+// ==========================================
+app.get('/api/admin/refunds', authenticate, authorize(['admin', 'manager']), (req, res) => {
+  const refunds = db.findAll('refunds') || [];
+  res.json(refunds);
+});
+
+app.post('/api/admin/refunds', authenticate, authorize(['admin', 'manager']), (req, res) => {
+  const { booking_id, payment_id, amount, reason } = req.body;
+  if (!booking_id || !amount || Number(amount) <= 0) {
+    return res.status(400).json({ error: 'Booking ID and valid refund amount are required.' });
+  }
+
+  const booking = db.findById('bookings', booking_id);
+  if (!booking) {
+    return res.status(404).json({ error: 'Booking not found.' });
+  }
+
+  const refundAmt = Number(amount);
+  const newRefund = db.insert('refunds', {
+    booking_id,
+    payment_id: payment_id || '',
+    customer_id: booking.customer_id,
+    amount: refundAmt,
+    reason: reason || 'Customer cancellation or itinerary amendment refund',
+    status: 'APPROVED',
+    requested_by: req.user.name,
+    approved_by: req.user.name,
+    transaction_reference: `RFND-${Date.now()}`,
+    processed_at: new Date().toISOString()
+  });
+
+  // Adjust booking advance
+  const updatedAdvance = Math.max(0, (booking.advance_amount || 0) - refundAmt);
+  const updatedBalance = Math.max(0, (booking.total_amount || 0) - updatedAdvance);
+  db.update('bookings', booking.id, {
+    advance_amount: updatedAdvance,
+    balance_amount: updatedBalance,
+    payment_status: updatedAdvance === 0 ? 'Refunded' : 'Partial'
+  });
+
+  // Audit log
+  db.insert('audit_logs', {
+    user_id: req.user.id,
+    action: 'REFUND_PROCESSED',
+    entity_type: 'REFUND',
+    entity_id: newRefund.id,
+    details: `Processed ₹${refundAmt} refund for booking #${booking.booking_number}`,
+    created_at: new Date().toISOString()
+  });
+
+  res.status(201).json(newRefund);
+});
+
+// ==========================================
+// AUDIT LOGS & COMPLIANCE
+// ==========================================
+app.get('/api/admin/audit-logs', authenticate, authorize(['admin', 'manager']), (req, res) => {
+  const logs = db.findAll('audit_logs') || [];
+  logs.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+  res.json(logs);
+});
+
+// ==========================================
+// QUOTATIONS APPROVAL WORKFLOW
+// ==========================================
+app.put('/api/admin/quotations/:id/approve-discount', authenticate, authorize(['admin', 'manager']), (req, res) => {
+  const quote = db.findById('quotations', req.params.id);
+  if (!quote) {
+    return res.status(404).json({ error: 'Quotation not found.' });
+  }
+
+  const { approved_discount, manager_notes } = req.body;
+  const newDiscount = Number(approved_discount) || quote.discount || 0;
+  const newFinal = Math.max(0, Number(quote.total_amount) - newDiscount);
+
+  const updated = db.update('quotations', quote.id, {
+    discount: newDiscount,
+    final_amount: newFinal,
+    status: 'Approved',
+    manager_approval: {
+      approved_by: req.user.name,
+      approved_at: new Date().toISOString(),
+      notes: manager_notes || 'Exceptional discount approved by Operations Manager.'
+    }
+  });
+
+  // Notify sales staff
+  if (quote.staff_id) {
+    db.insert('notifications', {
+      agency_id: req.user.agency_id,
+      user_id: quote.staff_id,
+      title: 'Quotation Discount Approved!',
+      message: `Manager ${req.user.name} approved discount of ₹${newDiscount.toLocaleString('en-IN')} on Quotation #${quote.quotation_number}.`,
+      type: 'success',
+      link: '/staff/leads',
+      is_read: false,
+      created_at: new Date().toISOString()
+    });
+  }
+
+  res.json(updated);
 });
 
 // Health Check

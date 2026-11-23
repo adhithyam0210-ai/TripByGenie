@@ -78,7 +78,8 @@
       "status": "active",
       "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
       "created_at": "2026-01-01T10:00:00.000Z",
-      "updated_at": "2026-11-20T07:50:37.389Z"
+      "updated_at": "2026-11-20T07:50:37.389Z",
+      "branch_id": "br_chennai_hq"
     },
     {
       "id": "usr_manager_genie",
@@ -91,7 +92,8 @@
       "password_hash": "$2b$10$r8kcNz760iwwx.OwfE4f0emcHJd1yHRDtqEboXVUTWPKLC0FAUu5u",
       "status": "active",
       "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
-      "created_at": "2026-01-02T10:00:00.000Z"
+      "created_at": "2026-01-02T10:00:00.000Z",
+      "branch_id": "br_chennai_hq"
     },
     {
       "id": "usr_staff_priya",
@@ -105,7 +107,9 @@
       "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80",
       "created_at": "2026-01-05T10:00:00.000Z",
       "updated_at": "2026-11-20T07:50:54.091Z",
-      "display_id": "STF-2001"
+      "display_id": "STF-2001",
+      "branch_id": "br_chennai_hq",
+      "reporting_manager_id": "usr_manager_genie"
     },
     {
       "id": "usr_staff_rahul",
@@ -118,7 +122,9 @@
       "status": "active",
       "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
       "created_at": "2026-01-06T10:00:00.000Z",
-      "display_id": "STF-2001"
+      "display_id": "STF-2001",
+      "branch_id": "br_chennai_hq",
+      "reporting_manager_id": "usr_manager_genie"
     },
     {
       "id": "usr_agent_vikram",
@@ -131,7 +137,8 @@
       "status": "active",
       "avatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80",
       "created_at": "2026-01-10T10:00:00.000Z",
-      "display_id": "AGT-3001"
+      "display_id": "AGT-3001",
+      "branch_id": "br_bangalore"
     },
     {
       "id": "usr_agent_sunita",
@@ -144,7 +151,8 @@
       "status": "active",
       "avatar": "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=200&q=80",
       "created_at": "2026-01-12T10:00:00.000Z",
-      "display_id": "AGT-3001"
+      "display_id": "AGT-3001",
+      "branch_id": "br_bangalore"
     },
     {
       "id": "usr_cust_ananya",
@@ -157,7 +165,8 @@
       "status": "active",
       "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80",
       "created_at": "2026-01-15T10:00:00.000Z",
-      "display_id": "CUS-4001"
+      "display_id": "CUS-4001",
+      "branch_id": "br_mumbai"
     },
     {
       "id": "usr_cust_rohit",
@@ -170,7 +179,8 @@
       "status": "active",
       "avatar": "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=200&q=80",
       "created_at": "2026-01-18T10:00:00.000Z",
-      "display_id": "CUS-4001"
+      "display_id": "CUS-4001",
+      "branch_id": "br_mumbai"
     },
     {
       "id": "usr_admin_voyage",
@@ -183,7 +193,8 @@
       "status": "active",
       "avatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80",
       "created_at": "2026-01-10T10:00:00.000Z",
-      "display_id": "ADM-0001"
+      "display_id": "ADM-0001",
+      "branch_id": "br_chennai_hq"
     },
     {
       "id": "d21d6159-463c-48a0-919e-3adb555820b3",
@@ -198,7 +209,8 @@
       "status": "active",
       "is_active": true,
       "created_at": "2026-11-19T08:04:35.640Z",
-      "updated_at": "2026-11-19T08:04:35.640Z"
+      "updated_at": "2026-11-19T08:04:35.640Z",
+      "branch_id": "br_chennai_hq"
     },
     {
       "id": "d61ec41b-3506-43a6-8ade-2f5fcd8b911c",
@@ -213,7 +225,8 @@
       "status": "active",
       "is_active": true,
       "created_at": "2026-11-19T08:05:39.358Z",
-      "updated_at": "2026-11-19T08:05:39.358Z"
+      "updated_at": "2026-11-19T08:05:39.358Z",
+      "branch_id": "br_chennai_hq"
     },
     {
       "id": "ce2b4cf2-d3cc-4384-b9cc-3251410531db",
@@ -228,7 +241,8 @@
       "status": "active",
       "is_active": true,
       "created_at": "2026-11-19T08:06:13.295Z",
-      "updated_at": "2026-11-19T08:06:13.295Z"
+      "updated_at": "2026-11-19T08:06:13.295Z",
+      "branch_id": "br_chennai_hq"
     },
     {
       "id": "95cbd82d-19b6-4155-b98f-11860e9a6d75",
@@ -244,7 +258,8 @@
       "is_active": true,
       "created_by": "usr_admin_genie",
       "created_at": "2026-11-19T08:06:13.577Z",
-      "updated_at": "2026-11-19T08:06:13.577Z"
+      "updated_at": "2026-11-19T08:06:13.577Z",
+      "branch_id": "br_chennai_hq"
     },
     {
       "id": "35d14860-8b8b-4bbf-a598-5d5cf62234e9",
@@ -260,7 +275,8 @@
       "is_active": true,
       "created_by": "usr_admin_genie",
       "created_at": "2026-11-19T08:06:13.701Z",
-      "updated_at": "2026-11-19T08:06:13.701Z"
+      "updated_at": "2026-11-19T08:06:13.701Z",
+      "branch_id": "br_chennai_hq"
     },
     {
       "id": "26ed0066-7fab-47ec-9228-561c8cc74601",
@@ -275,7 +291,8 @@
       "status": "active",
       "is_active": true,
       "created_at": "2026-11-19T08:12:14.741Z",
-      "updated_at": "2026-11-19T08:12:14.741Z"
+      "updated_at": "2026-11-19T08:12:14.741Z",
+      "branch_id": "br_chennai_hq"
     },
     {
       "id": "97d05778-f97a-467f-b595-294d60c3a53e",
@@ -291,7 +308,8 @@
       "is_active": true,
       "created_by": "usr_admin_genie",
       "created_at": "2026-11-19T08:12:15.122Z",
-      "updated_at": "2026-11-19T08:12:15.122Z"
+      "updated_at": "2026-11-19T08:12:15.122Z",
+      "branch_id": "br_chennai_hq"
     },
     {
       "id": "a6ee2202-61a7-46aa-a9a7-967d4d79ed1c",
@@ -307,7 +325,23 @@
       "is_active": true,
       "created_by": "usr_admin_genie",
       "created_at": "2026-11-19T08:12:15.397Z",
-      "updated_at": "2026-11-19T08:12:15.397Z"
+      "updated_at": "2026-11-19T08:12:15.397Z",
+      "branch_id": "br_chennai_hq"
+    },
+    {
+      "id": "usr_operations_karthik",
+      "display_id": "OPS-2002",
+      "agency_id": "agency_travel_genie",
+      "role": "operations",
+      "name": "Karthik Raman",
+      "email": "operations@travelgenie.com",
+      "phone": "+91 99404 63567",
+      "password_hash": "$2b$10$r8kcNz760iwwx.OwfE4f0emcHJd1yHRDtqEboXVUTWPKLC0FAUu5u",
+      "status": "active",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
+      "created_at": "2026-01-15T09:00:00Z",
+      "branch_id": "br_chennai_hq",
+      "reporting_manager_id": "usr_manager_genie"
     }
   ],
   "staff_profiles": [
@@ -67975,8 +68009,9 @@
       "message": "Priya Nair has sent your personalized Maldives quotation. View details and confirm.",
       "type": "info",
       "link": "/customer/enquiries",
-      "is_read": false,
-      "created_at": "2026-11-18T10:15:00.000Z"
+      "is_read": true,
+      "created_at": "2026-11-18T10:15:00.000Z",
+      "updated_at": "2026-11-21T09:13:25.071Z"
     },
     {
       "agency_id": "agency_travel_genie",
@@ -68327,6 +68362,2193 @@
       "summary": "Travel Voucher generated and issued: VCH-935724",
       "created_at": "2026-11-19T08:12:15.724Z",
       "updated_at": "2026-11-19T08:12:15.724Z"
+    }
+  ],
+  "branches": [
+    {
+      "id": "br_chennai_hq",
+      "agency_id": "agency_travel_genie",
+      "name": "Chennai Corporate Headquarters (South India)",
+      "code": "MAA-HQ",
+      "city": "Chennai",
+      "address": "A, E, Trip By Genie, 31, W Jones Rd, Periyapet, Saidapet, Chennai, Tamil Nadu 600015",
+      "manager_name": "Rajesh Kumar",
+      "phone": "+91 (44) 46071374",
+      "email": "chennai.hq@tripbygenie.in",
+      "status": "active"
+    },
+    {
+      "id": "br_bangalore",
+      "agency_id": "agency_travel_genie",
+      "name": "Bengaluru Tech Park Regional Hub",
+      "code": "BLR-01",
+      "city": "Bengaluru",
+      "address": "Level 4, Prestige Meridian, MG Road, Bengaluru, Karnataka 560001",
+      "manager_name": "Sneha Hegde",
+      "phone": "+91 (80) 41238900",
+      "email": "bangalore@tripbygenie.in",
+      "status": "active"
+    },
+    {
+      "id": "br_mumbai",
+      "agency_id": "agency_travel_genie",
+      "name": "Mumbai Western Financial Hub",
+      "code": "BOM-01",
+      "city": "Mumbai",
+      "address": "Unit 502, The Capital, Bandra Kurla Complex (BKC), Mumbai, Maharashtra 400051",
+      "manager_name": "Amitabh Joshi",
+      "phone": "+91 (22) 66782200",
+      "email": "mumbai@tripbygenie.in",
+      "status": "active"
+    },
+    {
+      "id": "br_delhi",
+      "agency_id": "agency_travel_genie",
+      "name": "Delhi NCR Northern Regional Office",
+      "code": "DEL-01",
+      "city": "New Delhi",
+      "address": "Statesman House, Barakhamba Road, Connaught Place, New Delhi 110001",
+      "manager_name": "Virendra Singh",
+      "phone": "+91 (11) 23315600",
+      "email": "delhi@tripbygenie.in",
+      "status": "active"
+    }
+  ],
+  "travel_documents": [
+    {
+      "id": "doc_bk_01",
+      "agency_id": "agency_travel_genie",
+      "booking_id": "bk_4011",
+      "customer_id": "usr_cust_rohit",
+      "category": "Booking Confirmation",
+      "title": "Official Booking Voucher - Bali Wonders 6D5N",
+      "file_name": "TripByGenie_Booking_Voucher_BK-2026-4011.pdf",
+      "file_url": "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80",
+      "file_size": "245 KB",
+      "file_type": "application/pdf",
+      "status": "available",
+      "uploaded_by_role": "operations",
+      "uploaded_by_name": "Karthik Raman (Operations Executive)",
+      "notes": "Confirmed package voucher with all confirmed inclusions and emergency helpline numbers.",
+      "created_at": "2026-02-10T11:30:00Z"
+    },
+    {
+      "id": "doc_flt_01",
+      "agency_id": "agency_travel_genie",
+      "booking_id": "bk_4011",
+      "customer_id": "usr_cust_rohit",
+      "category": "Flight & Travel Ticket",
+      "title": "E-Tickets: Chennai (MAA) to Denpasar Bali (DPS) Roundtrip",
+      "file_name": "Flight_ETicket_MAA_DPS_Indigo_6E1602.pdf",
+      "file_url": "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&q=80",
+      "file_size": "420 KB",
+      "file_type": "application/pdf",
+      "status": "available",
+      "uploaded_by_role": "operations",
+      "uploaded_by_name": "Karthik Raman (Operations Executive)",
+      "notes": "Includes 25kg checked baggage and reserved standard aisle seats.",
+      "created_at": "2026-02-12T14:15:00Z"
+    },
+    {
+      "id": "doc_htl_01",
+      "agency_id": "agency_travel_genie",
+      "booking_id": "bk_4011",
+      "customer_id": "usr_cust_rohit",
+      "category": "Hotel Voucher",
+      "title": "The Seminyak Beach Resort & Spa Voucher",
+      "file_name": "Hotel_Voucher_Seminyak_OceanVilla.pdf",
+      "file_url": "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80",
+      "file_size": "310 KB",
+      "file_type": "application/pdf",
+      "status": "available",
+      "uploaded_by_role": "operations",
+      "uploaded_by_name": "Karthik Raman (Operations Executive)",
+      "notes": "Confirmation #SMR-8921-ID. Complimentary daily breakfast and welcome tropical fruit basket.",
+      "created_at": "2026-02-12T15:00:00Z"
+    },
+    {
+      "id": "doc_tr_01",
+      "agency_id": "agency_travel_genie",
+      "booking_id": "bk_4011",
+      "customer_id": "usr_cust_rohit",
+      "category": "Transport Voucher",
+      "title": "Private AC Sightseeing & Airport Transfer Pass",
+      "file_name": "Transport_Pass_Toyota_Alphard_Bali.pdf",
+      "file_url": "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80",
+      "file_size": "180 KB",
+      "file_type": "application/pdf",
+      "status": "available",
+      "uploaded_by_role": "operations",
+      "uploaded_by_name": "Karthik Raman (Operations Executive)",
+      "notes": "Assigned Driver: Wayan Sudirta (+62 812-3456-7890). Vehicle: Toyota Alphard VIP AC.",
+      "created_at": "2026-02-13T10:00:00Z"
+    },
+    {
+      "id": "doc_act_01",
+      "agency_id": "agency_travel_genie",
+      "booking_id": "bk_4011",
+      "customer_id": "usr_cust_rohit",
+      "category": "Activity Pass",
+      "title": "Uluwatu Temple Sunset & Kecak Dance VIP Entry Pass",
+      "file_name": "Activity_Pass_Uluwatu_VIP_Tickets.pdf",
+      "file_url": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80",
+      "file_size": "195 KB",
+      "file_type": "application/pdf",
+      "status": "available",
+      "uploaded_by_role": "operations",
+      "uploaded_by_name": "Karthik Raman (Operations Executive)",
+      "notes": "Reserved front-row seating vouchers. Show starts at 18:00 Bali local time.",
+      "created_at": "2026-02-13T12:00:00Z"
+    },
+    {
+      "id": "doc_cst_01",
+      "agency_id": "agency_travel_genie",
+      "booking_id": "bk_4011",
+      "customer_id": "usr_cust_rohit",
+      "category": "Customer-Provided",
+      "title": "Passport Copy - Rohit Kulkarni (Exp 2031)",
+      "file_name": "Passport_Copy_Rohit_Kulkarni.pdf",
+      "file_url": "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80",
+      "file_size": "540 KB",
+      "file_type": "application/pdf",
+      "status": "verified",
+      "uploaded_by_role": "customer",
+      "uploaded_by_name": "Rohit Kulkarni",
+      "expiry_date": "2031-08-15",
+      "notes": "Verified by Operations team for Bali immigration requirements.",
+      "created_at": "2026-02-08T09:30:00Z"
+    },
+    {
+      "id": "doc_cst_02",
+      "agency_id": "agency_travel_genie",
+      "booking_id": "bk_4011",
+      "customer_id": "usr_cust_rohit",
+      "category": "Customer-Provided",
+      "title": "International Travel Insurance Policy Certificate",
+      "file_name": "TataAIG_Travel_Guard_Policy.pdf",
+      "file_url": "https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=800&q=80",
+      "file_size": "620 KB",
+      "file_type": "application/pdf",
+      "status": "verified",
+      "uploaded_by_role": "customer",
+      "uploaded_by_name": "Rohit Kulkarni",
+      "expiry_date": "2026-03-31",
+      "notes": "$100,000 USD emergency medical & baggage cover.",
+      "created_at": "2026-02-09T16:20:00Z"
+    },
+    {
+      "id": "doc_bk_02",
+      "agency_id": "agency_travel_genie",
+      "booking_id": "bk_4012",
+      "customer_id": "usr_cust_ananya",
+      "category": "Booking Confirmation",
+      "title": "Trip Confirmation Voucher - Enchanting Kashmir 6D5N",
+      "file_name": "TripByGenie_Voucher_Kashmir_BK-2026-4012.pdf",
+      "file_url": "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80",
+      "file_size": "260 KB",
+      "file_type": "application/pdf",
+      "status": "available",
+      "uploaded_by_role": "operations",
+      "uploaded_by_name": "Karthik Raman (Operations Executive)",
+      "notes": "Includes houseboat stay at Dal Lake and Gulmarg Gondola Phase 1 & 2 tickets.",
+      "created_at": "2026-02-14T11:00:00Z"
+    },
+    {
+      "id": "doc_htl_02",
+      "agency_id": "agency_travel_genie",
+      "booking_id": "bk_4012",
+      "customer_id": "usr_cust_ananya",
+      "category": "Hotel Voucher",
+      "title": "The Khyber Himalayan Resort & Spa Confirmation",
+      "file_name": "Hotel_Voucher_Khyber_Gulmarg.pdf",
+      "file_url": "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80",
+      "file_size": "280 KB",
+      "file_type": "application/pdf",
+      "status": "available",
+      "uploaded_by_role": "operations",
+      "uploaded_by_name": "Karthik Raman (Operations Executive)",
+      "notes": "Premier Valley View Room with heated indoor pool access.",
+      "created_at": "2026-02-14T12:00:00Z"
+    },
+    {
+      "id": "doc_cst_03",
+      "agency_id": "agency_travel_genie",
+      "booking_id": "bk_4012",
+      "customer_id": "usr_cust_ananya",
+      "category": "Customer-Provided",
+      "title": "Aadhaar Card / Government Photo ID",
+      "file_name": "Govt_ID_Proof_Ananya_Rao.pdf",
+      "file_url": "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80",
+      "file_size": "340 KB",
+      "file_type": "application/pdf",
+      "status": "verified",
+      "uploaded_by_role": "customer",
+      "uploaded_by_name": "Ananya Rao",
+      "notes": "Submitted for Kashmir hotel verification & Gondola passes.",
+      "created_at": "2026-02-14T09:00:00Z"
+    }
+  ],
+  "operations_arrangements": [
+    {
+      "id": "arr_01",
+      "agency_id": "agency_travel_genie",
+      "booking_id": "bk_4011",
+      "trip_status": "Hotel Confirmed",
+      "hotel_name": "The Seminyak Beach Resort & Spa (Bali)",
+      "room_category": "Deluxe Ocean View Pool Villa",
+      "meal_plan": "Daily Buffet Breakfast + 2 Gourmet Dinners",
+      "hotel_confirmation_number": "SMR-8921-ID",
+      "hotel_check_in": "2026-03-15",
+      "hotel_check_out": "2026-03-20",
+      "vehicle_type": "Toyota Alphard VIP AC",
+      "driver_name": "Wayan Sudirta",
+      "driver_phone": "+62 812-3456-7890",
+      "pickup_location": "Denpasar International Airport (DPS) Arrival Gate 3",
+      "drop_location": "The Seminyak Beach Resort Lobby",
+      "guide_name": "Ketut Artha",
+      "guide_phone": "+62 813-9876-5432",
+      "special_instructions": "Anniversary celebration. Complimentary fruit basket and honeymoon cake requested on arrival.",
+      "dossier_generated": true,
+      "dossier_url": "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80",
+      "updated_at": "2026-02-18T10:30:00Z"
+    },
+    {
+      "id": "arr_02",
+      "agency_id": "agency_travel_genie",
+      "booking_id": "bk_4012",
+      "trip_status": "Transport Confirmed",
+      "hotel_name": "The Khyber Himalayan Resort & Spa, Gulmarg",
+      "room_category": "Premier Valley View Luxury Room",
+      "meal_plan": "Breakfast & Dinner (Modified American Plan)",
+      "hotel_confirmation_number": "KHY-2026-671",
+      "hotel_check_in": "2026-03-22",
+      "hotel_check_out": "2026-03-27",
+      "vehicle_type": "Toyota Innova Crysta 4x4 Luxury",
+      "driver_name": "Mohammad Altaf",
+      "driver_phone": "+91 94190 12345",
+      "pickup_location": "Srinagar Airport (SXR) Arrival Hall",
+      "drop_location": "Dal Lake Houseboat Ghat No. 7",
+      "guide_name": "Bashir Ahmed",
+      "guide_phone": "+91 94191 54321",
+      "special_instructions": "Gondola tickets booked for Phase 1 & 2 on Day 3. Snow chains installed on vehicle for Gulmarg climb.",
+      "dossier_generated": false,
+      "updated_at": "2026-02-19T14:10:00Z"
+    },
+    {
+      "id": "arr_03",
+      "agency_id": "agency_travel_genie",
+      "booking_id": "boo_9c7481bf72",
+      "trip_status": "Ready to Travel",
+      "hotel_name": "Hotel Schweizerhof Zurich & Sunstar Alpine Grindelwald",
+      "room_category": "Superior Alpine View Twin Room",
+      "meal_plan": "Continental Swiss Buffet Breakfast",
+      "hotel_confirmation_number": "SWZ-9921-CH",
+      "hotel_check_in": "2026-04-05",
+      "hotel_check_out": "2026-04-12",
+      "vehicle_type": "First Class Swiss Travel Rail Pass + Station Limousine",
+      "driver_name": "Lukas Meyer",
+      "driver_phone": "+41 79 123 4567",
+      "pickup_location": "Zurich Kloten Airport (ZRH) Terminal 2",
+      "drop_location": "Grindelwald Sunstar Hotel",
+      "guide_name": "Heidi Zgraggen",
+      "guide_phone": "+41 78 765 4321",
+      "special_instructions": "Jungfraujoch Top of Europe seat reservations confirmed. Swiss Rail electronic passes delivered.",
+      "dossier_generated": true,
+      "dossier_url": "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80",
+      "updated_at": "2026-02-20T08:45:00Z"
+    }
+  ],
+  "support_tickets": [
+    {
+      "id": "tkt_1042",
+      "ticket_number": "TKT-1042",
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_cust_rohit",
+      "customer_name": "Rohit Kulkarni",
+      "customer_email": "rohit.customer@gmail.com",
+      "booking_id": "bk_4011",
+      "subject": "Request to add Tanah Lot Sunset Tour to Bali Itinerary",
+      "category": "Booking Modification",
+      "priority": "medium",
+      "status": "in_progress",
+      "assigned_to": "Karthik Raman (Operations)",
+      "messages": [
+        {
+          "id": "msg_01",
+          "sender_role": "customer",
+          "sender_name": "Rohit Kulkarni",
+          "message": "Hi team, could we please add a visit to Tanah Lot temple on Day 4 afternoon? Please let me know if any extra vehicle charges apply.",
+          "created_at": "2026-02-15T10:14:00Z"
+        },
+        {
+          "id": "msg_02",
+          "sender_role": "operations",
+          "sender_name": "Karthik Raman (Operations)",
+          "message": "Hello Mr. Rohit! We have coordinated with our local Bali operations manager. Tanah Lot can easily be added to your private vehicle schedule on Day 4 at no extra vehicle charge! The entry ticket is 75,000 IDR per person payable on arrival.",
+          "created_at": "2026-02-15T11:30:00Z"
+        }
+      ],
+      "created_at": "2026-02-15T10:14:00Z",
+      "updated_at": "2026-02-15T11:30:00Z"
+    },
+    {
+      "id": "tkt_1038",
+      "ticket_number": "TKT-1038",
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_cust_ananya",
+      "customer_name": "Ananya Rao",
+      "customer_email": "ananya.customer@gmail.com",
+      "booking_id": "bk_4012",
+      "subject": "Jain/Vegetarian meal preference confirmation for Srinagar trip",
+      "category": "General Enquiry",
+      "priority": "low",
+      "status": "resolved",
+      "assigned_to": "Priya Nair (Sales Executive)",
+      "messages": [
+        {
+          "id": "msg_03",
+          "sender_role": "customer",
+          "sender_name": "Ananya Rao",
+          "message": "Kindly ensure pure vegetarian meals without onion and garlic during our stay in the Dal Lake houseboat and Gulmarg resort.",
+          "created_at": "2026-02-14T15:20:00Z"
+        },
+        {
+          "id": "msg_04",
+          "sender_role": "staff",
+          "sender_name": "Priya Nair",
+          "message": "Dear Ananya, we have flagged your special dietary requirement in your hotel and houseboat vouchers with the head chef. You will be served customized pure Jain/vegetarian meals throughout your journey!",
+          "created_at": "2026-02-14T16:05:00Z"
+        }
+      ],
+      "created_at": "2026-02-14T15:20:00Z",
+      "updated_at": "2026-02-14T16:05:00Z"
+    }
+  ],
+  "agent_customers": [
+    {
+      "id": "ag_cst_01",
+      "agency_id": "agency_travel_genie",
+      "agent_id": "usr_agent_vikram",
+      "name": "Dr. Ramesh Sharma & Family",
+      "email": "ramesh.sharma@medicare.in",
+      "phone": "+91 98200 44551",
+      "passport_number": "Z9821456",
+      "id_proof_type": "Passport",
+      "id_proof_number": "Z9821456",
+      "notes": "Premium VIP client. Booked Enchanting Kashmir through GlobeTrotters Agency.",
+      "created_at": "2026-02-05T12:00:00Z"
+    },
+    {
+      "id": "ag_cst_02",
+      "agency_id": "agency_travel_genie",
+      "agent_id": "usr_agent_vikram",
+      "name": "Mr. Akash Verma",
+      "email": "akash.verma@techsolutions.com",
+      "phone": "+91 98110 33221",
+      "passport_number": "M7744123",
+      "id_proof_type": "Passport",
+      "id_proof_number": "M7744123",
+      "notes": "Booked Bali package for 2 pax.",
+      "created_at": "2026-02-07T14:30:00Z"
+    },
+    {
+      "id": "ag_cst_03",
+      "agency_id": "agency_travel_genie",
+      "agent_id": "usr_agent_vikram",
+      "name": "Mrs. Sunita & Rahul Kapoor",
+      "email": "rahul.kapoor@innovate.co",
+      "phone": "+91 98450 11223",
+      "passport_number": "P5566778",
+      "id_proof_type": "Passport",
+      "id_proof_number": "P5566778",
+      "notes": "Swiss Highlights tour for autumn departure.",
+      "created_at": "2026-02-10T16:00:00Z"
+    }
+  ],
+  "roles": [
+    {
+      "id": "role_admin",
+      "name": "Super Admin",
+      "code": "admin",
+      "description": "Universal full-system authority and branch oversight"
+    },
+    {
+      "id": "role_manager",
+      "name": "Manager",
+      "code": "manager",
+      "description": "Daily business operations, branch oversight, and lead assignment"
+    },
+    {
+      "id": "role_staff",
+      "name": "Sales Executive",
+      "code": "staff",
+      "description": "Customer acquisition, lead pipeline, quotations, and booking conversions"
+    },
+    {
+      "id": "role_operations",
+      "name": "Operations Executive",
+      "code": "operations",
+      "description": "Confirmed trip execution, hotel/transport arrangements, vouchers, and travel dossiers"
+    },
+    {
+      "id": "role_customer",
+      "name": "Customer",
+      "code": "customer",
+      "description": "Trip bookings, itineraries, digital document wallet, and payments"
+    },
+    {
+      "id": "role_agent",
+      "name": "B2B Travel Agent",
+      "code": "agent",
+      "description": "Wholesale package purchasing, bulk bookings, agent wallet, and passenger directory"
+    }
+  ],
+  "permissions": [
+    {
+      "id": "perm_users_manage",
+      "name": "Manage Users & Roles",
+      "module": "Administration"
+    },
+    {
+      "id": "perm_branch_manage",
+      "name": "Manage Branches",
+      "module": "Administration"
+    },
+    {
+      "id": "perm_pkg_manage",
+      "name": "Manage Packages & Itineraries",
+      "module": "Inventory"
+    },
+    {
+      "id": "perm_leads_assign",
+      "name": "Assign Leads to Sales Team",
+      "module": "Sales CRM"
+    },
+    {
+      "id": "perm_leads_view_all",
+      "name": "View All Branch Leads",
+      "module": "Sales CRM"
+    },
+    {
+      "id": "perm_leads_view_own",
+      "name": "View Assigned Leads",
+      "module": "Sales CRM"
+    },
+    {
+      "id": "perm_quote_create",
+      "name": "Create Quotations",
+      "module": "Sales CRM"
+    },
+    {
+      "id": "perm_quote_approve_disc",
+      "name": "Approve High-Value Discounts",
+      "module": "Sales CRM"
+    },
+    {
+      "id": "perm_booking_create",
+      "name": "Convert & Create Bookings",
+      "module": "Bookings"
+    },
+    {
+      "id": "perm_booking_view_all",
+      "name": "View All Bookings",
+      "module": "Bookings"
+    },
+    {
+      "id": "perm_ops_execute",
+      "name": "Execute Travel Arrangements",
+      "module": "Operations"
+    },
+    {
+      "id": "perm_docs_upload",
+      "name": "Upload Vouchers & Dossiers",
+      "module": "Operations"
+    },
+    {
+      "id": "perm_finance_manage",
+      "name": "Manage Payments & Ledger",
+      "module": "Finance"
+    },
+    {
+      "id": "perm_b2b_approve",
+      "name": "Approve B2B Travel Agents",
+      "module": "B2B Wholesale"
+    },
+    {
+      "id": "perm_b2b_purchase",
+      "name": "Wholesale Package Purchasing",
+      "module": "B2B Wholesale"
+    },
+    {
+      "id": "perm_client_access",
+      "name": "Access Customer Portal",
+      "module": "Customer Portal"
+    }
+  ],
+  "role_permissions": [
+    {
+      "role_code": "admin",
+      "permission_id": "perm_users_manage"
+    },
+    {
+      "role_code": "admin",
+      "permission_id": "perm_branch_manage"
+    },
+    {
+      "role_code": "admin",
+      "permission_id": "perm_pkg_manage"
+    },
+    {
+      "role_code": "admin",
+      "permission_id": "perm_leads_assign"
+    },
+    {
+      "role_code": "admin",
+      "permission_id": "perm_leads_view_all"
+    },
+    {
+      "role_code": "admin",
+      "permission_id": "perm_leads_view_own"
+    },
+    {
+      "role_code": "admin",
+      "permission_id": "perm_quote_create"
+    },
+    {
+      "role_code": "admin",
+      "permission_id": "perm_quote_approve_disc"
+    },
+    {
+      "role_code": "admin",
+      "permission_id": "perm_booking_create"
+    },
+    {
+      "role_code": "admin",
+      "permission_id": "perm_booking_view_all"
+    },
+    {
+      "role_code": "admin",
+      "permission_id": "perm_ops_execute"
+    },
+    {
+      "role_code": "admin",
+      "permission_id": "perm_docs_upload"
+    },
+    {
+      "role_code": "admin",
+      "permission_id": "perm_finance_manage"
+    },
+    {
+      "role_code": "admin",
+      "permission_id": "perm_b2b_approve"
+    },
+    {
+      "role_code": "admin",
+      "permission_id": "perm_b2b_purchase"
+    },
+    {
+      "role_code": "admin",
+      "permission_id": "perm_client_access"
+    },
+    {
+      "role_code": "manager",
+      "permission_id": "perm_pkg_manage"
+    },
+    {
+      "role_code": "manager",
+      "permission_id": "perm_leads_assign"
+    },
+    {
+      "role_code": "manager",
+      "permission_id": "perm_leads_view_all"
+    },
+    {
+      "role_code": "manager",
+      "permission_id": "perm_quote_approve_disc"
+    },
+    {
+      "role_code": "manager",
+      "permission_id": "perm_booking_create"
+    },
+    {
+      "role_code": "manager",
+      "permission_id": "perm_booking_view_all"
+    },
+    {
+      "role_code": "manager",
+      "permission_id": "perm_ops_execute"
+    },
+    {
+      "role_code": "manager",
+      "permission_id": "perm_docs_upload"
+    },
+    {
+      "role_code": "manager",
+      "permission_id": "perm_finance_manage"
+    },
+    {
+      "role_code": "manager",
+      "permission_id": "perm_b2b_approve"
+    },
+    {
+      "role_code": "staff",
+      "permission_id": "perm_leads_view_own"
+    },
+    {
+      "role_code": "staff",
+      "permission_id": "perm_quote_create"
+    },
+    {
+      "role_code": "staff",
+      "permission_id": "perm_booking_create"
+    },
+    {
+      "role_code": "operations",
+      "permission_id": "perm_ops_execute"
+    },
+    {
+      "role_code": "operations",
+      "permission_id": "perm_docs_upload"
+    },
+    {
+      "role_code": "operations",
+      "permission_id": "perm_booking_view_all"
+    },
+    {
+      "role_code": "customer",
+      "permission_id": "perm_client_access"
+    },
+    {
+      "role_code": "agent",
+      "permission_id": "perm_b2b_purchase"
+    }
+  ],
+  "user_roles": [
+    {
+      "user_id": "usr_admin_genie",
+      "role_code": "admin",
+      "assigned_at": "2026-01-01T10:00:00.000Z"
+    },
+    {
+      "user_id": "usr_manager_genie",
+      "role_code": "manager",
+      "assigned_at": "2026-01-02T10:00:00.000Z"
+    },
+    {
+      "user_id": "usr_staff_priya",
+      "role_code": "staff",
+      "assigned_at": "2026-01-05T10:00:00.000Z"
+    },
+    {
+      "user_id": "usr_staff_rahul",
+      "role_code": "staff",
+      "assigned_at": "2026-01-06T10:00:00.000Z"
+    },
+    {
+      "user_id": "usr_agent_vikram",
+      "role_code": "agent",
+      "assigned_at": "2026-01-10T10:00:00.000Z"
+    },
+    {
+      "user_id": "usr_agent_sunita",
+      "role_code": "agent",
+      "assigned_at": "2026-01-12T10:00:00.000Z"
+    },
+    {
+      "user_id": "usr_cust_ananya",
+      "role_code": "customer",
+      "assigned_at": "2026-01-15T10:00:00.000Z"
+    },
+    {
+      "user_id": "usr_cust_rohit",
+      "role_code": "customer",
+      "assigned_at": "2026-01-18T10:00:00.000Z"
+    },
+    {
+      "user_id": "usr_admin_voyage",
+      "role_code": "admin",
+      "assigned_at": "2026-01-10T10:00:00.000Z"
+    },
+    {
+      "user_id": "d21d6159-463c-48a0-919e-3adb555820b3",
+      "role_code": "CUSTOMER",
+      "assigned_at": "2026-11-19T08:04:35.640Z"
+    },
+    {
+      "user_id": "d61ec41b-3506-43a6-8ade-2f5fcd8b911c",
+      "role_code": "CUSTOMER",
+      "assigned_at": "2026-11-19T08:05:39.358Z"
+    },
+    {
+      "user_id": "ce2b4cf2-d3cc-4384-b9cc-3251410531db",
+      "role_code": "CUSTOMER",
+      "assigned_at": "2026-11-19T08:06:13.295Z"
+    },
+    {
+      "user_id": "95cbd82d-19b6-4155-b98f-11860e9a6d75",
+      "role_code": "STAFF",
+      "assigned_at": "2026-11-19T08:06:13.577Z"
+    },
+    {
+      "user_id": "35d14860-8b8b-4bbf-a598-5d5cf62234e9",
+      "role_code": "AGENT",
+      "assigned_at": "2026-11-19T08:06:13.701Z"
+    },
+    {
+      "user_id": "26ed0066-7fab-47ec-9228-561c8cc74601",
+      "role_code": "CUSTOMER",
+      "assigned_at": "2026-11-19T08:12:14.741Z"
+    },
+    {
+      "user_id": "97d05778-f97a-467f-b595-294d60c3a53e",
+      "role_code": "STAFF",
+      "assigned_at": "2026-11-19T08:12:15.122Z"
+    },
+    {
+      "user_id": "a6ee2202-61a7-46aa-a9a7-967d4d79ed1c",
+      "role_code": "AGENT",
+      "assigned_at": "2026-11-19T08:12:15.397Z"
+    },
+    {
+      "user_id": "usr_operations_karthik",
+      "role_code": "operations",
+      "assigned_at": "2026-01-15T09:00:00Z"
+    }
+  ],
+  "customers": [
+    {
+      "id": "cust_001",
+      "user_id": "usr_cust_ananya",
+      "name": "Ananya Rao",
+      "email": "ananya.customer@gmail.com",
+      "phone": "+91 98201 54321",
+      "dob": "1992-05-14",
+      "nationality": "Indian",
+      "passport_number": "Z1234567",
+      "passport_expiry": "2030-05-14",
+      "address": "Bandra West, Mumbai, Maharashtra 400050",
+      "loyalty_tier": "Gold",
+      "branch_id": "br_mumbai",
+      "created_at": "2026-01-10T09:00:00Z"
+    },
+    {
+      "id": "cust_002",
+      "user_id": "usr_cust_rohit",
+      "name": "Rohit Kulkarni",
+      "email": "rohit.customer@gmail.com",
+      "phone": "+91 97401 23456",
+      "dob": "1988-11-20",
+      "nationality": "Indian",
+      "passport_number": "K9876543",
+      "passport_expiry": "2031-10-12",
+      "address": "Koramangala 4th Block, Bengaluru, Karnataka 560034",
+      "loyalty_tier": "Silver",
+      "branch_id": "br_bangalore",
+      "created_at": "2026-01-15T11:30:00Z"
+    }
+  ],
+  "customer_travellers": [
+    {
+      "id": "trav_001",
+      "customer_id": "cust_001",
+      "first_name": "Ananya",
+      "last_name": "Rao",
+      "gender": "Female",
+      "age": 32,
+      "passport_no": "Z1234567",
+      "passport_expiry": "2030-05-14",
+      "meal_preference": "Vegetarian"
+    },
+    {
+      "id": "trav_002",
+      "customer_id": "cust_001",
+      "first_name": "Siddharth",
+      "last_name": "Rao",
+      "gender": "Male",
+      "age": 34,
+      "passport_no": "Z7654321",
+      "passport_expiry": "2029-08-20",
+      "meal_preference": "Non-Vegetarian"
+    },
+    {
+      "id": "trav_003",
+      "customer_id": "cust_002",
+      "first_name": "Rohit",
+      "last_name": "Kulkarni",
+      "gender": "Male",
+      "age": 36,
+      "passport_no": "K9876543",
+      "passport_expiry": "2031-10-12",
+      "meal_preference": "Vegetarian"
+    }
+  ],
+  "enquiries": [
+    {
+      "enquiry_id": "ENQ-1001",
+      "lead_id": "lead_1001",
+      "customer_name": "Ananya Rao",
+      "email": "ananya.customer@gmail.com",
+      "phone": "+91 98765 00006",
+      "destination": "Maldives",
+      "travel_dates": "2026-12-20",
+      "adults": 2,
+      "children": 0,
+      "budget": "₹2,00,000 - ₹2,50,000",
+      "source": "Website",
+      "assigned_sales_executive": "usr_staff_priya",
+      "status": "Quotation Sent",
+      "created_at": "2026-11-16T14:30:00.000Z"
+    },
+    {
+      "enquiry_id": "ENQ-1002",
+      "lead_id": "lead_1002",
+      "customer_name": "Rohit Kulkarni",
+      "email": "rohit.customer@gmail.com",
+      "phone": "+91 98765 00007",
+      "destination": "Bali",
+      "travel_dates": "2027-01-10",
+      "adults": 4,
+      "children": 0,
+      "budget": "₹1,50,000 - ₹2,00,000",
+      "source": "Website",
+      "assigned_sales_executive": "usr_staff_rahul",
+      "status": "Converted",
+      "created_at": "2026-11-14T09:20:00.000Z"
+    },
+    {
+      "enquiry_id": "ENQ-1003",
+      "lead_id": "lead_1003",
+      "customer_name": "Dr. Sameer Joshi",
+      "email": "sameer.joshi@apollohospitals.org",
+      "phone": "+91 98451 98765",
+      "destination": "Switzerland",
+      "travel_dates": "2027-02-05",
+      "adults": 2,
+      "children": 0,
+      "budget": "₹3,50,000+",
+      "source": "Website",
+      "assigned_sales_executive": "usr_staff_priya",
+      "status": "Contacted",
+      "created_at": "2026-11-17T11:45:00.000Z"
+    },
+    {
+      "enquiry_id": "ENQ-1004",
+      "lead_id": "lead_1004",
+      "customer_name": "Meenakshi Iyer",
+      "email": "meenakshi.iyer@tcs.com",
+      "phone": "+91 97401 23456",
+      "destination": "Kashmir",
+      "travel_dates": "2026-12-15",
+      "adults": 6,
+      "children": 0,
+      "budget": "₹1,80,000 - ₹2,20,000",
+      "source": "Website",
+      "assigned_sales_executive": "usr_staff_rahul",
+      "status": "Follow-up Required",
+      "created_at": "2026-11-15T15:10:00.000Z"
+    },
+    {
+      "enquiry_id": "ENQ-1005",
+      "lead_id": "lead_1005",
+      "customer_name": "Karan Malhotra",
+      "email": "karan.m@gmail.com",
+      "phone": "+91 99887 66554",
+      "destination": "Dubai",
+      "travel_dates": "2026-12-25",
+      "adults": 3,
+      "children": 0,
+      "budget": "₹1,20,000 - ₹1,50,000",
+      "source": "Website",
+      "assigned_sales_executive": "usr_staff_priya",
+      "status": "Assigned",
+      "created_at": "2026-11-19T08:15:00.000Z"
+    },
+    {
+      "enquiry_id": "ENQ-1006",
+      "lead_id": "lead_1006",
+      "customer_name": "Rajesh & Kavita Bansal",
+      "email": "bansal.exports@gmail.com",
+      "phone": "+91 94140 11223",
+      "destination": "Kerala",
+      "travel_dates": "2026-12-10",
+      "adults": 2,
+      "children": 0,
+      "budget": "₹50,000 - ₹60,000",
+      "source": "Website",
+      "assigned_sales_executive": "usr_staff_rahul",
+      "status": "Assigned",
+      "created_at": "2026-11-18T16:20:00.000Z"
+    },
+    {
+      "enquiry_id": "ENQ-7079",
+      "lead_id": "lea_ea79e7079c",
+      "customer_name": "Rajesh Mehra",
+      "email": "rajesh.mehra@example.com",
+      "phone": "+91 9811223344",
+      "destination": "Switzerland",
+      "travel_dates": "2026-12-10",
+      "adults": 3,
+      "children": 0,
+      "budget": "₹3,00,000 - ₹5,00,000",
+      "source": "Website",
+      "assigned_sales_executive": null,
+      "status": "New",
+      "created_at": "2026-11-19T06:43:56.231Z"
+    },
+    {
+      "enquiry_id": "ENQ-6331",
+      "lead_id": "lea_bda26b3b31",
+      "customer_name": "Rajesh Mehra",
+      "email": "rajesh.mehra@example.com",
+      "phone": "+91 9811223344",
+      "destination": "Switzerland",
+      "travel_dates": "2026-12-10",
+      "adults": 3,
+      "children": 0,
+      "budget": "₹3,00,000 - ₹5,00,000",
+      "source": "Website",
+      "assigned_sales_executive": "usr_staff_priya",
+      "status": "Quotation Sent",
+      "created_at": "2026-11-19T06:44:50.401Z"
+    },
+    {
+      "enquiry_id": "ENQ-9715",
+      "lead_id": "lea_f971db5caf",
+      "customer_name": "Rajesh Mehra",
+      "email": "rajesh.mehra@example.com",
+      "phone": "+91 9811223344",
+      "destination": "Switzerland",
+      "travel_dates": "2026-12-10",
+      "adults": 3,
+      "children": 0,
+      "budget": "₹3,00,000 - ₹5,00,000",
+      "source": "Website",
+      "assigned_sales_executive": "usr_staff_priya",
+      "status": "Converted",
+      "created_at": "2026-11-19T06:45:46.864Z"
+    },
+    {
+      "enquiry_id": "ENQ-1409",
+      "lead_id": "lea_1eaab40cb9",
+      "customer_name": "Rajesh Mehra",
+      "email": "rajesh.mehra@example.com",
+      "phone": "+91 9811223344",
+      "destination": "Switzerland",
+      "travel_dates": "2026-12-10",
+      "adults": 3,
+      "children": 0,
+      "budget": "₹3,00,000 - ₹5,00,000",
+      "source": "Website",
+      "assigned_sales_executive": "usr_staff_priya",
+      "status": "Converted",
+      "created_at": "2026-11-19T06:48:53.742Z"
+    },
+    {
+      "enquiry_id": "ENQ-6015",
+      "lead_id": "3cb4c50c-8365-440d-9903-8b64da6c01b5",
+      "customer_name": "Priya Sharma",
+      "email": "traveler_1795075475500@example.com",
+      "phone": "+919876543210",
+      "travel_dates": null,
+      "adults": 2,
+      "children": 0,
+      "source": "WEBSITE_SIGNUP_PACKAGE_SELECTION",
+      "assigned_sales_executive": null,
+      "status": "NEW",
+      "created_at": "2026-11-19T08:04:35.646Z"
+    },
+    {
+      "enquiry_id": "ENQ-7771",
+      "lead_id": "37cc4045-eaff-4d94-ba37-1160ef7a771b",
+      "customer_name": "Priya Sharma",
+      "email": "traveler_1795075539244@example.com",
+      "phone": "+919876543210",
+      "travel_dates": null,
+      "adults": 2,
+      "children": 0,
+      "source": "WEBSITE_SIGNUP_PACKAGE_SELECTION",
+      "assigned_sales_executive": null,
+      "status": "NEW",
+      "created_at": "2026-11-19T08:05:39.360Z"
+    },
+    {
+      "enquiry_id": "ENQ-8413",
+      "lead_id": "939a13af-82e5-4106-bb0b-29405c498413",
+      "customer_name": "Priya Sharma",
+      "email": "traveler_1795075573173@example.com",
+      "phone": "+919876543210",
+      "travel_dates": null,
+      "adults": 2,
+      "children": 0,
+      "source": "WEBSITE_SIGNUP_PACKAGE_SELECTION",
+      "assigned_sales_executive": "95cbd82d-19b6-4155-b98f-11860e9a6d75",
+      "status": "CONVERTED",
+      "created_at": "2026-11-19T08:06:13.298Z"
+    },
+    {
+      "enquiry_id": "ENQ-0313",
+      "lead_id": "f4154ee1-a292-4a1b-bcbf-2bba1c2e0313",
+      "customer_name": "Priya Sharma",
+      "email": "traveler_1795075934614@example.com",
+      "phone": "+919876543210",
+      "travel_dates": null,
+      "adults": 2,
+      "children": 0,
+      "source": "WEBSITE_SIGNUP_PACKAGE_SELECTION",
+      "assigned_sales_executive": "97d05778-f97a-467f-b595-294d60c3a53e",
+      "status": "CONVERTED",
+      "created_at": "2026-11-19T08:12:14.744Z"
+    },
+    {
+      "enquiry_id": "ENQ-1843",
+      "lead_id": "lea_51f18fd43d",
+      "customer_name": "Aditya Sharma",
+      "email": "admin@travelgenie.com",
+      "phone": "+91 98765 00001",
+      "destination": "Kerala",
+      "travel_dates": "",
+      "adults": 2,
+      "children": 0,
+      "budget": "₹2,00,000+",
+      "source": "Website",
+      "assigned_sales_executive": null,
+      "status": "New",
+      "created_at": "2026-11-19T08:54:41.590Z"
+    }
+  ],
+  "lead_assignments": [
+    {
+      "id": "la_001",
+      "lead_id": "lead_01",
+      "assigned_by": "usr_manager_genie",
+      "assigned_to": "usr_staff_priya",
+      "assigned_at": "2026-02-15T09:30:00Z",
+      "notes": "High intent customer looking for Bali luxury villa."
+    },
+    {
+      "id": "la_002",
+      "lead_id": "lead_02",
+      "assigned_by": "usr_manager_genie",
+      "assigned_to": "usr_staff_rahul",
+      "assigned_at": "2026-02-16T10:15:00Z",
+      "notes": "Follow up on Switzerland glacier express quotation."
+    },
+    {
+      "id": "la_003",
+      "lead_id": "lead_03",
+      "assigned_by": "usr_manager_genie",
+      "assigned_to": "usr_staff_priya",
+      "assigned_at": "2026-02-17T11:00:00Z",
+      "notes": "Direct website enquiry for Kashmir family package."
+    }
+  ],
+  "follow_ups": [
+    {
+      "id": "fu_001",
+      "lead_id": "lead_01",
+      "staff_id": "usr_staff_priya",
+      "customer_name": "Aditi Deshmukh",
+      "due_date": "2026-02-22",
+      "time": "14:30",
+      "channel": "CALL",
+      "agenda": "Discuss 5-Star Bali private pool villa upgrade options",
+      "status": "PENDING"
+    },
+    {
+      "id": "fu_002",
+      "lead_id": "lead_02",
+      "staff_id": "usr_staff_rahul",
+      "customer_name": "Varun Grover",
+      "due_date": "2026-02-22",
+      "time": "16:00",
+      "channel": "WHATSAPP",
+      "agenda": "Confirm Swiss travel rail pass first-class preferences",
+      "status": "PENDING"
+    },
+    {
+      "id": "fu_003",
+      "lead_id": "lead_03",
+      "staff_id": "usr_staff_priya",
+      "customer_name": "Meera Iyer",
+      "due_date": "2026-02-23",
+      "time": "11:00",
+      "channel": "CALL",
+      "agenda": "Review Gulmarg Gondola Phase 2 booking details",
+      "status": "PENDING"
+    }
+  ],
+  "customer_interactions": [
+    {
+      "id": "38280965-fa5a-49ea-8ca0-7303126926ba",
+      "lead_id": "939a13af-82e5-4106-bb0b-29405c498413",
+      "staff_id": "95cbd82d-19b6-4155-b98f-11860e9a6d75",
+      "channel": "NOTE",
+      "summary": "Lead assigned to Rahul Verma (STF-2184) by Administrator",
+      "created_at": "2026-11-19T08:06:13.716Z",
+      "updated_at": "2026-11-19T08:06:13.716Z"
+    },
+    {
+      "id": "210c84a3-412c-40ef-9365-9690b1578b21",
+      "lead_id": "939a13af-82e5-4106-bb0b-29405c498413",
+      "staff_id": "95cbd82d-19b6-4155-b98f-11860e9a6d75",
+      "channel": "CALL",
+      "summary": "Connected with Priya. Discussed 5-star houseboat upgrade in Dal Lake.",
+      "created_at": "2026-11-19T08:06:13.862Z",
+      "updated_at": "2026-11-19T08:06:13.862Z"
+    },
+    {
+      "id": "2438ed11-6096-4607-875a-5ca394964c2b",
+      "lead_id": "939a13af-82e5-4106-bb0b-29405c498413",
+      "staff_id": "95cbd82d-19b6-4155-b98f-11860e9a6d75",
+      "channel": "NOTE",
+      "summary": "Stage transitioned from ASSIGNED to CONTACTED",
+      "created_at": "2026-11-19T08:06:13.882Z",
+      "updated_at": "2026-11-19T08:06:13.882Z"
+    },
+    {
+      "id": "4bbb0d92-168b-4d4e-bcbb-de4dd7635689",
+      "lead_id": "939a13af-82e5-4106-bb0b-29405c498413",
+      "staff_id": "95cbd82d-19b6-4155-b98f-11860e9a6d75",
+      "channel": "NOTE",
+      "summary": "Stage transitioned from CONTACTED to QUOTE_SENT with quote: ₹135000",
+      "created_at": "2026-11-19T08:06:13.923Z",
+      "updated_at": "2026-11-19T08:06:13.923Z"
+    },
+    {
+      "id": "1ed53bcf-ab79-4eb6-82d1-4631197639ae",
+      "lead_id": "939a13af-82e5-4106-bb0b-29405c498413",
+      "staff_id": "95cbd82d-19b6-4155-b98f-11860e9a6d75",
+      "channel": "NOTE",
+      "summary": "Stage transitioned from QUOTE_SENT to CONVERTED",
+      "created_at": "2026-11-19T08:06:13.954Z",
+      "updated_at": "2026-11-19T08:06:13.954Z"
+    },
+    {
+      "id": "2194181c-9bbe-43c6-a26e-8be252479e08",
+      "lead_id": "939a13af-82e5-4106-bb0b-29405c498413",
+      "staff_id": "95cbd82d-19b6-4155-b98f-11860e9a6d75",
+      "channel": "NOTE",
+      "summary": "Travel Voucher generated and issued: VCH-573973",
+      "created_at": "2026-11-19T08:06:13.973Z",
+      "updated_at": "2026-11-19T08:06:13.973Z"
+    },
+    {
+      "id": "e9092178-0e84-4b4b-b587-4c2b9b1d2925",
+      "lead_id": "f4154ee1-a292-4a1b-bcbf-2bba1c2e0313",
+      "staff_id": "97d05778-f97a-467f-b595-294d60c3a53e",
+      "channel": "NOTE",
+      "summary": "Lead assigned to Rahul Verma (STF-8491) by Administrator",
+      "created_at": "2026-11-19T08:12:15.419Z",
+      "updated_at": "2026-11-19T08:12:15.419Z"
+    },
+    {
+      "id": "ff7f6527-9fda-4061-ad80-b405d77cfb5b",
+      "lead_id": "f4154ee1-a292-4a1b-bcbf-2bba1c2e0313",
+      "staff_id": "97d05778-f97a-467f-b595-294d60c3a53e",
+      "channel": "CALL",
+      "summary": "Connected with Priya. Discussed 5-star houseboat upgrade in Dal Lake.",
+      "created_at": "2026-11-19T08:12:15.575Z",
+      "updated_at": "2026-11-19T08:12:15.575Z"
+    },
+    {
+      "id": "1b5e0df2-8453-4631-9bb6-b0fcb536abd9",
+      "lead_id": "f4154ee1-a292-4a1b-bcbf-2bba1c2e0313",
+      "staff_id": "97d05778-f97a-467f-b595-294d60c3a53e",
+      "channel": "NOTE",
+      "summary": "Stage transitioned from ASSIGNED to CONTACTED",
+      "created_at": "2026-11-19T08:12:15.601Z",
+      "updated_at": "2026-11-19T08:12:15.601Z"
+    },
+    {
+      "id": "d90ffa36-569e-4629-9483-178467686d16",
+      "lead_id": "f4154ee1-a292-4a1b-bcbf-2bba1c2e0313",
+      "staff_id": "97d05778-f97a-467f-b595-294d60c3a53e",
+      "channel": "NOTE",
+      "summary": "Stage transitioned from CONTACTED to QUOTE_SENT with quote: ₹135000",
+      "created_at": "2026-11-19T08:12:15.651Z",
+      "updated_at": "2026-11-19T08:12:15.651Z"
+    },
+    {
+      "id": "4fc0bfae-d0ac-49d5-b11d-553f4c006f3f",
+      "lead_id": "f4154ee1-a292-4a1b-bcbf-2bba1c2e0313",
+      "staff_id": "97d05778-f97a-467f-b595-294d60c3a53e",
+      "channel": "NOTE",
+      "summary": "Stage transitioned from QUOTE_SENT to CONVERTED",
+      "created_at": "2026-11-19T08:12:15.695Z",
+      "updated_at": "2026-11-19T08:12:15.695Z"
+    },
+    {
+      "id": "2c3ec4cd-8f4c-425d-8058-cf12c5663d6a",
+      "lead_id": "f4154ee1-a292-4a1b-bcbf-2bba1c2e0313",
+      "staff_id": "97d05778-f97a-467f-b595-294d60c3a53e",
+      "channel": "NOTE",
+      "summary": "Travel Voucher generated and issued: VCH-935724",
+      "created_at": "2026-11-19T08:12:15.724Z",
+      "updated_at": "2026-11-19T08:12:15.724Z"
+    }
+  ],
+  "package_pricing": [
+    {
+      "id": "pp_pkg_kashmir_paradise",
+      "package_id": "pkg_kashmir_paradise",
+      "package_title": "Enchanting Kashmir: Srinagar, Gulmarg & Pahalgam",
+      "b2c_adult_price": 32500,
+      "b2c_child_price": 22750,
+      "b2b_wholesale_price": 26000,
+      "tier_silver_discount_pct": 5,
+      "tier_gold_discount_pct": 10,
+      "tier_platinum_discount_pct": 15,
+      "minimum_agent_pax": 2,
+      "seasonal_multiplier": 1,
+      "currency": "INR",
+      "status": "active"
+    },
+    {
+      "id": "pp_pkg_maldives_luxury",
+      "package_id": "pkg_maldives_luxury",
+      "package_title": "Romantic Maldives: 5-Star Overwater Villa Retreat",
+      "b2c_adult_price": 115000,
+      "b2c_child_price": 80500,
+      "b2b_wholesale_price": 92000,
+      "tier_silver_discount_pct": 5,
+      "tier_gold_discount_pct": 10,
+      "tier_platinum_discount_pct": 15,
+      "minimum_agent_pax": 2,
+      "seasonal_multiplier": 1,
+      "currency": "INR",
+      "status": "active"
+    },
+    {
+      "id": "pp_pkg_bali_bliss",
+      "package_id": "pkg_bali_bliss",
+      "package_title": "Bali Wonders: Ubud Rainforest & Seminyak Beaches",
+      "b2c_adult_price": 48000,
+      "b2c_child_price": 33600,
+      "b2b_wholesale_price": 38400,
+      "tier_silver_discount_pct": 5,
+      "tier_gold_discount_pct": 10,
+      "tier_platinum_discount_pct": 15,
+      "minimum_agent_pax": 2,
+      "seasonal_multiplier": 1,
+      "currency": "INR",
+      "status": "active"
+    },
+    {
+      "id": "pp_pkg_dubai_extravaganza",
+      "package_id": "pkg_dubai_extravaganza",
+      "package_title": "Dazzling Dubai & Desert Odyssey",
+      "b2c_adult_price": 42000,
+      "b2c_child_price": 29400,
+      "b2b_wholesale_price": 33600,
+      "tier_silver_discount_pct": 5,
+      "tier_gold_discount_pct": 10,
+      "tier_platinum_discount_pct": 15,
+      "minimum_agent_pax": 2,
+      "seasonal_multiplier": 1,
+      "currency": "INR",
+      "status": "active"
+    },
+    {
+      "id": "pp_pkg_swiss_dream",
+      "package_id": "pkg_swiss_dream",
+      "package_title": "Grand Swiss Alpine Odyssey: Zurich, Lucerne & Interlaken",
+      "b2c_adult_price": 165000,
+      "b2c_child_price": 115500,
+      "b2b_wholesale_price": 132000,
+      "tier_silver_discount_pct": 5,
+      "tier_gold_discount_pct": 10,
+      "tier_platinum_discount_pct": 15,
+      "minimum_agent_pax": 2,
+      "seasonal_multiplier": 1,
+      "currency": "INR",
+      "status": "active"
+    },
+    {
+      "id": "pp_pkg_kerala_backwaters",
+      "package_id": "pkg_kerala_backwaters",
+      "package_title": "Kerala Serenity: Munnar Hills, Thekkady & Alleppey Houseboat",
+      "b2c_adult_price": 24500,
+      "b2c_child_price": 17150,
+      "b2b_wholesale_price": 19600,
+      "tier_silver_discount_pct": 5,
+      "tier_gold_discount_pct": 10,
+      "tier_platinum_discount_pct": 15,
+      "minimum_agent_pax": 2,
+      "seasonal_multiplier": 1,
+      "currency": "INR",
+      "status": "active"
+    },
+    {
+      "id": "pp_pkg_group_himachal",
+      "package_id": "pkg_group_himachal",
+      "package_title": "Shimla & Manali Snowy Escapade (Guaranteed Group Departure)",
+      "b2c_adult_price": 18500,
+      "b2c_child_price": 12950,
+      "b2b_wholesale_price": 14800,
+      "tier_silver_discount_pct": 5,
+      "tier_gold_discount_pct": 10,
+      "tier_platinum_discount_pct": 15,
+      "minimum_agent_pax": 2,
+      "seasonal_multiplier": 1,
+      "currency": "INR",
+      "status": "active"
+    },
+    {
+      "id": "pp_pkg_group_vietnam",
+      "package_id": "pkg_group_vietnam",
+      "package_title": "Vietnam Discovery: Hanoi, Halong Bay & Da Nang (Fixed Group Tour)",
+      "b2c_adult_price": 68500,
+      "b2c_child_price": 47950,
+      "b2b_wholesale_price": 54800,
+      "tier_silver_discount_pct": 5,
+      "tier_gold_discount_pct": 10,
+      "tier_platinum_discount_pct": 15,
+      "minimum_agent_pax": 2,
+      "seasonal_multiplier": 1,
+      "currency": "INR",
+      "status": "active"
+    },
+    {
+      "id": "pp_pkg_honeymoon_paris",
+      "package_id": "pkg_honeymoon_paris",
+      "package_title": "Parisian Romance & French Riviera Magic",
+      "b2c_adult_price": 189000,
+      "b2c_child_price": 132300,
+      "b2b_wholesale_price": 151200,
+      "tier_silver_discount_pct": 5,
+      "tier_gold_discount_pct": 10,
+      "tier_platinum_discount_pct": 15,
+      "minimum_agent_pax": 2,
+      "seasonal_multiplier": 1,
+      "currency": "INR",
+      "status": "active"
+    },
+    {
+      "id": "pp_pkg_goa_getaway",
+      "package_id": "pkg_goa_getaway",
+      "package_title": "Vibrant Goa: Beachfront Luxury & Heritage Mansions",
+      "b2c_adult_price": 16500,
+      "b2c_child_price": 11550,
+      "b2b_wholesale_price": 13200,
+      "tier_silver_discount_pct": 5,
+      "tier_gold_discount_pct": 10,
+      "tier_platinum_discount_pct": 15,
+      "minimum_agent_pax": 2,
+      "seasonal_multiplier": 1,
+      "currency": "INR",
+      "status": "active"
+    },
+    {
+      "id": "pp_77cad543-2433-4383-b0e9-372ce70f4a72",
+      "package_id": "77cad543-2433-4383-b0e9-372ce70f4a72",
+      "package_title": "Kashmir Autumn Splendor",
+      "b2c_adult_price": 45000,
+      "b2c_child_price": 31500,
+      "b2b_wholesale_price": 36000,
+      "tier_silver_discount_pct": 5,
+      "tier_gold_discount_pct": 10,
+      "tier_platinum_discount_pct": 15,
+      "minimum_agent_pax": 2,
+      "seasonal_multiplier": 1,
+      "currency": "INR",
+      "status": "active"
+    },
+    {
+      "id": "pp_pkg_zimbabwe_unveiled_harare_to_victoria_falls_jo_0",
+      "package_id": "pkg_zimbabwe_unveiled_harare_to_victoria_falls_jo_0",
+      "package_title": "Zimbabwe Unveiled: Harare to Victoria Falls Journey",
+      "b2c_adult_price": 92000,
+      "b2c_child_price": 64400,
+      "b2b_wholesale_price": 73600,
+      "tier_silver_discount_pct": 5,
+      "tier_gold_discount_pct": 10,
+      "tier_platinum_discount_pct": 15,
+      "minimum_agent_pax": 2,
+      "seasonal_multiplier": 1,
+      "currency": "INR",
+      "status": "active"
+    },
+    {
+      "id": "pp_pkg_journey_through_imperial_morocco_casablanca_t_0",
+      "package_id": "pkg_journey_through_imperial_morocco_casablanca_t_0",
+      "package_title": "Journey Through Imperial Morocco: Casablanca to Marrakech in 8 Days",
+      "b2c_adult_price": 111000,
+      "b2c_child_price": 77700,
+      "b2b_wholesale_price": 88800,
+      "tier_silver_discount_pct": 5,
+      "tier_gold_discount_pct": 10,
+      "tier_platinum_discount_pct": 15,
+      "minimum_agent_pax": 2,
+      "seasonal_multiplier": 1,
+      "currency": "INR",
+      "status": "active"
+    },
+    {
+      "id": "pp_pkg_morocco_magic_an_immersive_12_days_experience_1",
+      "package_id": "pkg_morocco_magic_an_immersive_12_days_experience_1",
+      "package_title": "Morocco Magic: An Immersive 12-Days Experience from Casablanca to Marrakech",
+      "b2c_adult_price": 149000,
+      "b2c_child_price": 104300,
+      "b2b_wholesale_price": 119200,
+      "tier_silver_discount_pct": 5,
+      "tier_gold_discount_pct": 10,
+      "tier_platinum_discount_pct": 15,
+      "minimum_agent_pax": 2,
+      "seasonal_multiplier": 1,
+      "currency": "INR",
+      "status": "active"
+    },
+    {
+      "id": "pp_pkg_escape_to_morocco_a_honeymoon_of_passion_wond_2",
+      "package_id": "pkg_escape_to_morocco_a_honeymoon_of_passion_wond_2",
+      "package_title": "Escape to Morocco: A Honeymoon of Passion &amp; Wonder",
+      "b2c_adult_price": 111000,
+      "b2c_child_price": 77700,
+      "b2b_wholesale_price": 88800,
+      "tier_silver_discount_pct": 5,
+      "tier_gold_discount_pct": 10,
+      "tier_platinum_discount_pct": 15,
+      "minimum_agent_pax": 2,
+      "seasonal_multiplier": 1,
+      "currency": "INR",
+      "status": "active"
+    },
+    {
+      "id": "pp_pkg_a_slice_of_paradise_jewels_of_mahe_in_seychel_0",
+      "package_id": "pkg_a_slice_of_paradise_jewels_of_mahe_in_seychel_0",
+      "package_title": "A Slice of Paradise: Jewels of Mahe in Seychelles",
+      "b2c_adult_price": 82500,
+      "b2c_child_price": 57750,
+      "b2b_wholesale_price": 66000,
+      "tier_silver_discount_pct": 5,
+      "tier_gold_discount_pct": 10,
+      "tier_platinum_discount_pct": 15,
+      "minimum_agent_pax": 2,
+      "seasonal_multiplier": 1,
+      "currency": "INR",
+      "status": "active"
+    },
+    {
+      "id": "pp_pkg_where_paradise_begins_mahe_island_holiday_pac_1",
+      "package_id": "pkg_where_paradise_begins_mahe_island_holiday_pac_1",
+      "package_title": "Where Paradise Begins: Mahe Island Holiday Packages",
+      "b2c_adult_price": 92000,
+      "b2c_child_price": 64400,
+      "b2b_wholesale_price": 73600,
+      "tier_silver_discount_pct": 5,
+      "tier_gold_discount_pct": 10,
+      "tier_platinum_discount_pct": 15,
+      "minimum_agent_pax": 2,
+      "seasonal_multiplier": 1,
+      "currency": "INR",
+      "status": "active"
+    },
+    {
+      "id": "pp_pkg_a_tropical_family_getaway_in_the_heart_of_sey_2",
+      "package_id": "pkg_a_tropical_family_getaway_in_the_heart_of_sey_2",
+      "package_title": "A Tropical Family Getaway in the Heart of Seychelles",
+      "b2c_adult_price": 82500,
+      "b2c_child_price": 57750,
+      "b2b_wholesale_price": 66000,
+      "tier_silver_discount_pct": 5,
+      "tier_gold_discount_pct": 10,
+      "tier_platinum_discount_pct": 15,
+      "minimum_agent_pax": 2,
+      "seasonal_multiplier": 1,
+      "currency": "INR",
+      "status": "active"
+    },
+    {
+      "id": "pp_pkg_a_signature_journey_through_south_africas_spl_0",
+      "package_id": "pkg_a_signature_journey_through_south_africas_spl_0",
+      "package_title": "A Signature Journey Through South Africa’s Splendours",
+      "b2c_adult_price": 149000,
+      "b2c_child_price": 104300,
+      "b2b_wholesale_price": 119200,
+      "tier_silver_discount_pct": 5,
+      "tier_gold_discount_pct": 10,
+      "tier_platinum_discount_pct": 15,
+      "minimum_agent_pax": 2,
+      "seasonal_multiplier": 1,
+      "currency": "INR",
+      "status": "active"
+    },
+    {
+      "id": "pp_pkg_explore_the_magic_of_south_africa_exclusive_h_1",
+      "package_id": "pkg_explore_the_magic_of_south_africa_exclusive_h_1",
+      "package_title": "Explore the Magic of South Africa: Exclusive Holiday Packages Await!",
+      "b2c_adult_price": 120500,
+      "b2c_child_price": 84350,
+      "b2b_wholesale_price": 96400,
+      "tier_silver_discount_pct": 5,
+      "tier_gold_discount_pct": 10,
+      "tier_platinum_discount_pct": 15,
+      "minimum_agent_pax": 2,
+      "seasonal_multiplier": 1,
+      "currency": "INR",
+      "status": "active"
+    },
+    {
+      "id": "pp_pkg_amazing_south_africa_tours_with_victoria_fall_2",
+      "package_id": "pkg_amazing_south_africa_tours_with_victoria_fall_2",
+      "package_title": "Amazing South Africa Tours with Victoria Falls Delight",
+      "b2c_adult_price": 63500,
+      "b2c_child_price": 44450,
+      "b2b_wholesale_price": 50800,
+      "tier_silver_discount_pct": 5,
+      "tier_gold_discount_pct": 10,
+      "tier_platinum_discount_pct": 15,
+      "minimum_agent_pax": 2,
+      "seasonal_multiplier": 1,
+      "currency": "INR",
+      "status": "active"
+    },
+    {
+      "id": "pp_pkg_south_african_grand_tour_with_south_africa_kn_3",
+      "package_id": "pkg_south_african_grand_tour_with_south_africa_kn_3",
+      "package_title": "South African  Grand Tour with South Africa, Knysna &amp; Johannesburg",
+      "b2c_adult_price": 120500,
+      "b2c_child_price": 84350,
+      "b2b_wholesale_price": 96400,
+      "tier_silver_discount_pct": 5,
+      "tier_gold_discount_pct": 10,
+      "tier_platinum_discount_pct": 15,
+      "minimum_agent_pax": 2,
+      "seasonal_multiplier": 1,
+      "currency": "INR",
+      "status": "active"
+    },
+    {
+      "id": "pp_pkg_quick_escape_to_kruger_3_day_safari_package_4",
+      "package_id": "pkg_quick_escape_to_kruger_3_day_safari_package_4",
+      "package_title": "Quick Escape to Kruger: 3-Day Safari Package",
+      "b2c_adult_price": 63500,
+      "b2c_child_price": 44450,
+      "b2b_wholesale_price": 50800,
+      "tier_silver_discount_pct": 5,
+      "tier_gold_discount_pct": 10,
+      "tier_platinum_discount_pct": 15,
+      "minimum_agent_pax": 2,
+      "seasonal_multiplier": 1,
+      "currency": "INR",
+      "status": "active"
+    },
+    {
+      "id": "pp_pkg_south_africa_with_kenya_tour_package_5",
+      "package_id": "pkg_south_africa_with_kenya_tour_package_5",
+      "package_title": "Where Adventure Begins With South Africa &amp; Kenya",
+      "b2c_adult_price": 168000,
+      "b2c_child_price": 117600,
+      "b2b_wholesale_price": 134400,
+      "tier_silver_discount_pct": 5,
+      "tier_gold_discount_pct": 10,
+      "tier_platinum_discount_pct": 15,
+      "minimum_agent_pax": 2,
+      "seasonal_multiplier": 1,
+      "currency": "INR",
+      "status": "active"
+    },
+    {
+      "id": "pp_pkg_journey_through_south_africa_a_wonder_filled__6",
+      "package_id": "pkg_journey_through_south_africa_a_wonder_filled__6",
+      "package_title": "Journey Through South Africa: A Wonder Filled Holiday Package",
+      "b2c_adult_price": 149000,
+      "b2c_child_price": 104300,
+      "b2b_wholesale_price": 119200,
+      "tier_silver_discount_pct": 5,
+      "tier_gold_discount_pct": 10,
+      "tier_platinum_discount_pct": 15,
+      "minimum_agent_pax": 2,
+      "seasonal_multiplier": 1,
+      "currency": "INR",
+      "status": "active"
+    },
+    {
+      "id": "pp_pkg_journey_through_south_africas_wonders_7",
+      "package_id": "pkg_journey_through_south_africas_wonders_7",
+      "package_title": "Journey Through South Africa’s Wonders",
+      "b2c_adult_price": 92000,
+      "b2c_child_price": 64400,
+      "b2b_wholesale_price": 73600,
+      "tier_silver_discount_pct": 5,
+      "tier_gold_discount_pct": 10,
+      "tier_platinum_discount_pct": 15,
+      "minimum_agent_pax": 2,
+      "seasonal_multiplier": 1,
+      "currency": "INR",
+      "status": "active"
+    },
+    {
+      "id": "pp_pkg_cape_town_to_knysna_a_south_african_coastal_d_8",
+      "package_id": "pkg_cape_town_to_knysna_a_south_african_coastal_d_8",
+      "package_title": "Cape Town to Knysna: A South African Coastal Dream",
+      "b2c_adult_price": 73000,
+      "b2c_child_price": 51100,
+      "b2b_wholesale_price": 58400,
+      "tier_silver_discount_pct": 5,
+      "tier_gold_discount_pct": 10,
+      "tier_platinum_discount_pct": 15,
+      "minimum_agent_pax": 2,
+      "seasonal_multiplier": 1,
+      "currency": "INR",
+      "status": "active"
+    },
+    {
+      "id": "pp_pkg_durban_delights_the_heart_of_south_african_ad_9",
+      "package_id": "pkg_durban_delights_the_heart_of_south_african_ad_9",
+      "package_title": "Durban Delights: The Heart of South African Adventure",
+      "b2c_adult_price": 73000,
+      "b2c_child_price": 51100,
+      "b2b_wholesale_price": 58400,
+      "tier_silver_discount_pct": 5,
+      "tier_gold_discount_pct": 10,
+      "tier_platinum_discount_pct": 15,
+      "minimum_agent_pax": 2,
+      "seasonal_multiplier": 1,
+      "currency": "INR",
+      "status": "active"
+    },
+    {
+      "id": "pp_pkg_discover_kenyas_beauty_with_nairobi_safari_to_0",
+      "package_id": "pkg_discover_kenyas_beauty_with_nairobi_safari_to_0",
+      "package_title": "Discover Kenya’s Beauty with Nairobi Safari tour Package",
+      "b2c_adult_price": 92000,
+      "b2c_child_price": 64400,
+      "b2b_wholesale_price": 73600,
+      "tier_silver_discount_pct": 5,
+      "tier_gold_discount_pct": 10,
+      "tier_platinum_discount_pct": 15,
+      "minimum_agent_pax": 2,
+      "seasonal_multiplier": 1,
+      "currency": "INR",
+      "status": "active"
+    },
+    {
+      "id": "pp_pkg_great_migration_safari_kenya_tour_adventure_1",
+      "package_id": "pkg_great_migration_safari_kenya_tour_adventure_1",
+      "package_title": "Great Migration Safari: Kenya Tour Adventure",
+      "b2c_adult_price": 101500,
+      "b2c_child_price": 71050,
+      "b2b_wholesale_price": 81200,
+      "tier_silver_discount_pct": 5,
+      "tier_gold_discount_pct": 10,
+      "tier_platinum_discount_pct": 15,
+      "minimum_agent_pax": 2,
+      "seasonal_multiplier": 1,
+      "currency": "INR",
+      "status": "active"
+    }
+  ],
+  "quotation_items": [
+    {
+      "id": "qi_001",
+      "quotation_id": "qt_101",
+      "day_number": 1,
+      "title": "Luxury Airport Transfer & Welcome Dinner",
+      "service_type": "Transfer & Meals",
+      "base_cost": 8000,
+      "markup": 2000,
+      "final_price": 10000
+    },
+    {
+      "id": "qi_002",
+      "quotation_id": "qt_101",
+      "day_number": 2,
+      "title": "Private Island Catamaran Cruise & Snorkeling",
+      "service_type": "Activity",
+      "base_cost": 25000,
+      "markup": 5000,
+      "final_price": 30000
+    },
+    {
+      "id": "qi_003",
+      "quotation_id": "qt_101",
+      "day_number": 3,
+      "title": "5-Star Resort Pool Villa Accommodation (4 Nights)",
+      "service_type": "Hotel",
+      "base_cost": 65000,
+      "markup": 10000,
+      "final_price": 75000
+    }
+  ],
+  "booking_status_history": [
+    {
+      "id": "bsh_01",
+      "booking_id": "bk_4011",
+      "from_status": "QUOTATION_PENDING",
+      "to_status": "CONFIRMED",
+      "changed_by": "usr_staff_priya",
+      "notes": "Advance payment of ₹50,000 received via UPI.",
+      "created_at": "2026-02-18T10:00:00Z"
+    },
+    {
+      "id": "bsh_02",
+      "booking_id": "bk_4011",
+      "from_status": "CONFIRMED",
+      "to_status": "OPERATIONS_IN_PROGRESS",
+      "changed_by": "usr_operations_karthik",
+      "notes": "Hotel confirmation code SMR-8921-ID received.",
+      "created_at": "2026-02-18T14:30:00Z"
+    },
+    {
+      "id": "bsh_03",
+      "booking_id": "bk_4012",
+      "from_status": "QUOTATION_PENDING",
+      "to_status": "CONFIRMED",
+      "changed_by": "usr_staff_rahul",
+      "notes": "Booking confirmed with advance deposit.",
+      "created_at": "2026-02-19T09:15:00Z"
+    }
+  ],
+  "refunds": [
+    {
+      "id": "ref_001",
+      "booking_id": "bk_4011",
+      "payment_id": "pay_01",
+      "customer_id": "usr_cust_ananya",
+      "amount": 5000,
+      "reason": "Flight schedule change refund adjustment",
+      "status": "APPROVED",
+      "requested_by": "usr_staff_priya",
+      "approved_by": "usr_manager_genie",
+      "transaction_reference": "RFND-2026-8819",
+      "processed_at": "2026-02-20T11:00:00Z"
+    }
+  ],
+  "invoices": [
+    {
+      "id": "inv_001",
+      "invoice_number": "TG-INV-2026-001",
+      "booking_id": "bk_4011",
+      "customer_id": "usr_cust_ananya",
+      "customer_name": "Ananya Rao",
+      "invoice_date": "2026-02-18",
+      "subtotal": 135000,
+      "cgst": 3375,
+      "sgst": 3375,
+      "igst": 0,
+      "total_amount": 141750,
+      "payment_status": "Partial",
+      "pdf_url": "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80",
+      "created_at": "2026-02-18T10:15:00Z"
+    },
+    {
+      "id": "inv_002",
+      "invoice_number": "TG-INV-2026-002",
+      "booking_id": "bk_4012",
+      "customer_id": "usr_cust_rohit",
+      "customer_name": "Rohit Kulkarni",
+      "invoice_date": "2026-02-19",
+      "subtotal": 82000,
+      "cgst": 2050,
+      "sgst": 2050,
+      "igst": 0,
+      "total_amount": 86100,
+      "payment_status": "Paid",
+      "pdf_url": "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80",
+      "created_at": "2026-02-19T09:30:00Z"
+    }
+  ],
+  "operations_tasks": [
+    {
+      "id": "opt_001",
+      "booking_id": "bk_4011",
+      "task_title": "Verify Passenger Passport & Visa Status",
+      "due_date": "2026-02-25",
+      "status": "COMPLETED",
+      "priority": "High",
+      "assigned_executive": "usr_operations_karthik"
+    },
+    {
+      "id": "opt_002",
+      "booking_id": "bk_4011",
+      "task_title": "Confirm Deluxe Pool Villa at Seminyak Resort",
+      "due_date": "2026-02-28",
+      "status": "COMPLETED",
+      "priority": "High",
+      "assigned_executive": "usr_operations_karthik"
+    },
+    {
+      "id": "opt_003",
+      "booking_id": "bk_4011",
+      "task_title": "Dispatch Toyota Alphard VIP Chauffeur Details",
+      "due_date": "2026-03-05",
+      "status": "IN_PROGRESS",
+      "priority": "Medium",
+      "assigned_executive": "usr_operations_karthik"
+    },
+    {
+      "id": "opt_004",
+      "booking_id": "bk_4011",
+      "task_title": "Generate Consolidated Travel Dossier",
+      "due_date": "2026-03-08",
+      "status": "COMPLETED",
+      "priority": "High",
+      "assigned_executive": "usr_operations_karthik"
+    },
+    {
+      "id": "opt_005",
+      "booking_id": "bk_4012",
+      "task_title": "Kashmir Hotel & Houseboat Reconfirmation",
+      "due_date": "2026-03-10",
+      "status": "IN_PROGRESS",
+      "priority": "High",
+      "assigned_executive": "usr_operations_karthik"
+    },
+    {
+      "id": "opt_006",
+      "booking_id": "bk_4012",
+      "task_title": "Pre-book Gulmarg Gondola Phase 2 Passes",
+      "due_date": "2026-03-12",
+      "status": "COMPLETED",
+      "priority": "High",
+      "assigned_executive": "usr_operations_karthik"
+    }
+  ],
+  "suppliers": [
+    {
+      "id": "sup_001",
+      "name": "The Seminyak Beach Resort & Spa",
+      "category": "Hotel",
+      "contact_person": "Wayan Artha",
+      "email": "reservations@theseminyak.com",
+      "phone": "+62 361 730814",
+      "city": "Bali",
+      "country": "Indonesia",
+      "status": "Active"
+    },
+    {
+      "id": "sup_002",
+      "name": "The Khyber Himalayan Resort & Spa",
+      "category": "Hotel",
+      "contact_person": "Bilal Khan",
+      "email": "reservations@khyberhotels.com",
+      "phone": "+91 1954 254666",
+      "city": "Gulmarg",
+      "country": "India",
+      "status": "Active"
+    },
+    {
+      "id": "sup_003",
+      "name": "Singapore Airlines Partner Desk",
+      "category": "Airline",
+      "contact_person": "Karen Tan",
+      "email": "b2b@singaporeair.com",
+      "phone": "+65 6223 8888",
+      "city": "Singapore",
+      "country": "Singapore",
+      "status": "Active"
+    },
+    {
+      "id": "sup_004",
+      "name": "Bali Chauffeur & VIP Luxury Transfers",
+      "category": "Transport",
+      "contact_person": "Ketut Sudirta",
+      "email": "dispatch@balitransfers.com",
+      "phone": "+62 812-3456-7890",
+      "city": "Denpasar",
+      "country": "Indonesia",
+      "status": "Active"
+    }
+  ],
+  "supplier_bookings": [
+    {
+      "id": "sb_001",
+      "booking_id": "bk_4011",
+      "supplier_id": "sup_001",
+      "service_type": "Hotel",
+      "confirmation_number": "SMR-8921-ID",
+      "cost_price": 65000,
+      "currency": "INR",
+      "status": "CONFIRMED"
+    },
+    {
+      "id": "sb_002",
+      "booking_id": "bk_4011",
+      "supplier_id": "sup_004",
+      "service_type": "Transport",
+      "confirmation_number": "VIP-TRF-902",
+      "cost_price": 8500,
+      "currency": "INR",
+      "status": "CONFIRMED"
+    },
+    {
+      "id": "sb_003",
+      "booking_id": "bk_4012",
+      "supplier_id": "sup_002",
+      "service_type": "Hotel",
+      "confirmation_number": "KHY-2026-671",
+      "cost_price": 54000,
+      "currency": "INR",
+      "status": "CONFIRMED"
+    }
+  ],
+  "b2b_agents": [
+    {
+      "id": "ap_vikram",
+      "user_id": "usr_agent_vikram",
+      "agency_id": "agency_travel_genie",
+      "company_name": "GlobeTrotters B2B Partner Ltd",
+      "agent_id": "AGT-9042",
+      "wholesale_discount_pct": 12,
+      "credit_limit": 500000,
+      "total_purchases": 380000,
+      "total_sales": 475000,
+      "total_margin": 95000,
+      "status": "approved"
+    },
+    {
+      "id": "ap_sunita",
+      "user_id": "usr_agent_sunita",
+      "agency_id": "agency_travel_genie",
+      "company_name": "WanderExpress Holidays",
+      "agent_id": "AGT-8811",
+      "wholesale_discount_pct": 10,
+      "credit_limit": 300000,
+      "total_purchases": 195000,
+      "total_sales": 245000,
+      "total_margin": 50000,
+      "status": "approved"
+    }
+  ],
+  "agent_pricing": [
+    {
+      "tier": "Silver",
+      "discount_percentage": 10,
+      "min_quarterly_bookings": 3,
+      "credit_limit": 200000,
+      "payment_terms": "Advance / 7 Days"
+    },
+    {
+      "tier": "Gold",
+      "discount_percentage": 15,
+      "min_quarterly_bookings": 10,
+      "credit_limit": 500000,
+      "payment_terms": "Net 15 Days"
+    },
+    {
+      "tier": "Platinum",
+      "discount_percentage": 20,
+      "min_quarterly_bookings": 25,
+      "credit_limit": 1000000,
+      "payment_terms": "Net 30 Days"
+    }
+  ],
+  "agent_orders": [
+    {
+      "id": "pur_501",
+      "agency_id": "agency_travel_genie",
+      "agent_id": "usr_agent_vikram",
+      "package_id": "pkg_kashmir_paradise",
+      "package_title": "Enchanting Kashmir: Srinagar, Gulmarg & Pahalgam",
+      "travelers_count": 2,
+      "travel_date": "2026-12-15",
+      "wholesale_price": 26000,
+      "total_cost": 52000,
+      "client_name": "Mr. Akash Verma & Spouse",
+      "client_selling_price": 65000,
+      "projected_margin": 13000,
+      "status": "Confirmed",
+      "created_at": "2026-11-16T11:30:00.000Z"
+    },
+    {
+      "id": "pur_502",
+      "agency_id": "agency_travel_genie",
+      "agent_id": "usr_agent_vikram",
+      "package_id": "pkg_dubai_extravaganza",
+      "package_title": "Dazzling Dubai & Desert Odyssey",
+      "travelers_count": 4,
+      "travel_date": "2027-01-05",
+      "wholesale_price": 34000,
+      "total_cost": 136000,
+      "client_name": "Pooja Enterprises Executives",
+      "client_selling_price": 168000,
+      "projected_margin": 32000,
+      "status": "Pending",
+      "created_at": "2026-11-18T15:00:00.000Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "agent_id": "usr_agent_vikram",
+      "package_id": "pkg_kashmir_paradise",
+      "package_title": "Enchanting Kashmir: Srinagar, Gulmarg & Pahalgam",
+      "travelers_count": 2,
+      "travel_date": "2026-11-25",
+      "wholesale_price": 26000,
+      "total_cost": 52000,
+      "client_name": "Dr. Ramesh Sharma",
+      "client_selling_price": 65000,
+      "projected_margin": 13000,
+      "status": "Confirmed",
+      "created_at": "2026-11-19T06:48:53.974Z",
+      "id": "age_bad9f9a8b4",
+      "updated_at": "2026-11-19T06:48:53.974Z"
+    }
+  ],
+  "agent_wallets": [
+    {
+      "id": "wlt_vikram",
+      "agent_id": "usr_agent_vikram",
+      "agency_id": "agency_travel_genie",
+      "balance": 250000,
+      "credit_limit": 500000,
+      "available_credit": 750000,
+      "currency": "INR",
+      "status": "active"
+    },
+    {
+      "id": "wlt_sunita",
+      "agent_id": "usr_agent_sunita",
+      "agency_id": "agency_travel_genie",
+      "balance": 120000,
+      "credit_limit": 300000,
+      "available_credit": 420000,
+      "currency": "INR",
+      "status": "active"
+    }
+  ],
+  "wallet_transactions": [
+    {
+      "id": "tx_301",
+      "agency_id": "agency_travel_genie",
+      "agent_id": "usr_agent_vikram",
+      "type": "Purchase",
+      "amount": 52000,
+      "balance_after": 52000,
+      "reference_id": "pur_501",
+      "description": "Package purchase: Enchanting Kashmir (2 pax)",
+      "created_at": "2026-11-16T11:30:00.000Z"
+    },
+    {
+      "id": "tx_302",
+      "agency_id": "agency_travel_genie",
+      "agent_id": "usr_agent_vikram",
+      "type": "Payment",
+      "amount": 52000,
+      "balance_after": 0,
+      "reference_id": "pay_702",
+      "description": "NEFT settlement for Purchase #pur_501",
+      "created_at": "2026-11-16T12:30:00.000Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "agent_id": "usr_agent_vikram",
+      "type": "Purchase",
+      "amount": 52000,
+      "balance_after": 52000,
+      "reference_id": "age_bad9f9a8b4",
+      "description": "Wholesale purchase of Enchanting Kashmir: Srinagar, Gulmarg & Pahalgam for 2 pax.",
+      "created_at": "2026-11-19T06:48:54.005Z",
+      "id": "age_519c26ea3d",
+      "updated_at": "2026-11-19T06:48:54.005Z"
+    }
+  ],
+  "commissions": [
+    {
+      "id": "comm_001",
+      "agent_id": "usr_agent_vikram",
+      "booking_id": "bk_4011",
+      "order_amount": 145000,
+      "commission_rate": 8.5,
+      "commission_amount": 12325,
+      "status": "CREDITED",
+      "date": "2026-02-18"
+    },
+    {
+      "id": "comm_002",
+      "agent_id": "usr_agent_sunita",
+      "booking_id": "bk_4012",
+      "order_amount": 88000,
+      "commission_rate": 8,
+      "commission_amount": 7040,
+      "status": "CREDITED",
+      "date": "2026-02-19"
+    }
+  ],
+  "audit_logs": [
+    {
+      "id": "aud_001",
+      "user_id": "usr_admin_genie",
+      "action": "USER_ROLE_ASSIGNED",
+      "entity_type": "USER",
+      "entity_id": "usr_operations_karthik",
+      "ip_address": "127.0.0.1",
+      "details": "Assigned operations role to Karthik Raman",
+      "created_at": "2026-02-15T10:00:00Z"
+    },
+    {
+      "id": "aud_002",
+      "user_id": "usr_manager_genie",
+      "action": "LEAD_ASSIGNED",
+      "entity_type": "LEAD",
+      "entity_id": "lead_01",
+      "ip_address": "127.0.0.1",
+      "details": "Assigned Bali enquiry to Priya Nair",
+      "created_at": "2026-02-15T09:30:00Z"
+    },
+    {
+      "id": "aud_003",
+      "user_id": "usr_staff_priya",
+      "action": "QUOTATION_DISPATCHED",
+      "entity_type": "QUOTATION",
+      "entity_id": "qt_101",
+      "ip_address": "127.0.0.1",
+      "details": "Dispatched Bali luxury quotation QT-2026-1001",
+      "created_at": "2026-02-16T11:00:00Z"
+    },
+    {
+      "id": "aud_004",
+      "user_id": "usr_staff_priya",
+      "action": "BOOKING_CONVERTED",
+      "entity_type": "BOOKING",
+      "entity_id": "bk_4011",
+      "ip_address": "127.0.0.1",
+      "details": "Converted lead to confirmed booking BK-4011",
+      "created_at": "2026-02-18T10:00:00Z"
+    },
+    {
+      "id": "aud_005",
+      "user_id": "usr_operations_karthik",
+      "action": "DOSSIER_GENERATED",
+      "entity_type": "TRAVEL_DOCUMENT",
+      "entity_id": "bk_4011",
+      "ip_address": "127.0.0.1",
+      "details": "Generated consolidated travel dossier for BK-4011",
+      "created_at": "2026-02-18T14:45:00Z"
+    }
+  ],
+  "system_settings": [
+    {
+      "id": "as_travel_genie",
+      "agency_id": "agency_travel_genie",
+      "default_wholesale_discount_pct": 12,
+      "lead_auto_assign": true,
+      "advance_payment_pct": 30,
+      "support_email": "support@tripbygenie.in",
+      "terms_conditions": "Standard cancellation policy applies. 25% charge for cancellations within 14 days of travel.",
+      "theme": {
+        "primary_navy": "#082C43",
+        "ocean_blue": "#17648A",
+        "warm_cream": "#F8F1E7",
+        "coral": "#FF795C",
+        "turquoise": "#55C9BD"
+      }
+    },
+    {
+      "id": "as_voyage_bliss",
+      "agency_id": "agency_voyage_bliss",
+      "default_wholesale_discount_pct": 15,
+      "lead_auto_assign": false,
+      "advance_payment_pct": 40,
+      "support_email": "concierge@voyagebliss.com",
+      "terms_conditions": "Luxury bespoke bookings require non-refundable deposits.",
+      "theme": {
+        "primary_navy": "#082C43",
+        "ocean_blue": "#17648A",
+        "warm_cream": "#F8F1E7",
+        "coral": "#FF795C",
+        "turquoise": "#55C9BD"
+      }
     }
   ]
 }

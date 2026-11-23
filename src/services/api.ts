@@ -872,5 +872,295 @@ export const api = {
       throw new Error('File upload failed.');
     }
     return response.json();
+  },
+
+  // ==========================================
+  // Operations Executive & Logistics Portal
+  // ==========================================
+  getOperationsDashboard: async () => {
+    try {
+      return await request<any>('/operations/dashboard');
+    } catch {
+      const bookings = fallbackData.bookings || [];
+      const arrangements = fallbackData.operations_arrangements || [];
+      const documents = fallbackData.travel_documents || [];
+      return {
+        stats: {
+          total_confirmed_bookings: bookings.length,
+          arrangements_pending: 1,
+          hotel_confirmed: 2,
+          transport_confirmed: 1,
+          documents_ready: 2,
+          trips_in_progress: 1,
+          trips_completed: 1,
+          issues_reported: 0,
+          total_documents: documents.length,
+          pending_customer_verifications: 1
+        },
+        bookings: bookings.map((b: any) => ({
+          ...b,
+          operations: arrangements.find((a: any) => a.booking_id === b.id) || {
+            trip_status: 'Booking Received'
+          },
+          documents_count: documents.filter((d: any) => d.booking_id === b.id).length
+        }))
+      };
+    }
+  },
+
+  getOperationsBookings: async () => {
+    try {
+      return await request<any[]>('/operations/bookings');
+    } catch {
+      const bookings = fallbackData.bookings || [];
+      const arrangements = fallbackData.operations_arrangements || [];
+      const documents = fallbackData.travel_documents || [];
+      return bookings.map((b: any) => ({
+        ...b,
+        operations: arrangements.find((a: any) => a.booking_id === b.id) || {
+          id: `arr_${b.id}`,
+          booking_id: b.id,
+          trip_status: 'Booking Received',
+          updated_at: b.created_at
+        },
+        documents: documents.filter((d: any) => d.booking_id === b.id)
+      }));
+    }
+  },
+
+  updateOperationsArrangements: (bookingId: string, data: any) =>
+    request<any>(`/operations/bookings/${bookingId}/arrangements`, {
+      method: 'PUT',
+      body: JSON.stringify(data)
+    }),
+
+  updateTripOperationalStatus: (bookingId: string, trip_status: string) =>
+    request<any>(`/operations/bookings/${bookingId}/trip-status`, {
+      method: 'PUT',
+      body: JSON.stringify({ trip_status })
+    }),
+
+  generateTravelDossier: (bookingId: string) =>
+    request<any>(`/operations/bookings/${bookingId}/generate-dossier`, {
+      method: 'POST'
+    }),
+
+  // ==========================================
+  // Digital Document Wallet & Travel Documents
+  // ==========================================
+  getTravelDocuments: async (params?: { booking_id?: string; category?: string; customer_id?: string }) => {
+    try {
+      const q = new URLSearchParams();
+      if (params?.booking_id) q.append('booking_id', params.booking_id);
+      if (params?.category) q.append('category', params.category);
+      if (params?.customer_id) q.append('customer_id', params.customer_id);
+      return await request<any[]>(`/documents?${q.toString()}`);
+    } catch {
+      let docs = fallbackData.travel_documents || [];
+      if (params?.booking_id) docs = docs.filter((d: any) => d.booking_id === params.booking_id);
+      if (params?.category && params.category !== 'all') docs = docs.filter((d: any) => d.category === params.category);
+      return docs;
+    }
+  },
+
+  uploadTravelDocument: (data: any) =>
+    request<any>('/documents/upload', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    }),
+
+  verifyTravelDocument: (id: string, data: { status: string; notes?: string }) =>
+    request<any>(`/documents/${id}/verify`, {
+      method: 'PUT',
+      body: JSON.stringify(data)
+    }),
+
+  deleteTravelDocument: (id: string) =>
+    request<any>(`/documents/${id}`, {
+      method: 'DELETE'
+    }),
+
+  // ==========================================
+  // Customer Support Tickets
+  // ==========================================
+  getSupportTickets: async () => {
+    try {
+      return await request<any[]>('/support/tickets');
+    } catch {
+      return fallbackData.support_tickets || [];
+    }
+  },
+
+  createSupportTicket: (data: any) =>
+    request<any>('/support/tickets', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    }),
+
+  replySupportTicket: (id: string, message: string) =>
+    request<any>(`/support/tickets/${id}/messages`, {
+      method: 'POST',
+      body: JSON.stringify({ message })
+    }),
+
+  updateSupportTicketStatus: (id: string, status: string) =>
+    request<any>(`/support/tickets/${id}/status`, {
+      method: 'PUT',
+      body: JSON.stringify({ status })
+    }),
+
+  // ==========================================
+  // B2B Wholesale Pricing Engine & Agent Hub
+  // ==========================================
+  calculateB2BPrice: async (package_id: string, travelers_count: number) => {
+    try {
+      return await request<any>('/b2b/calculate-price', {
+        method: 'POST',
+        body: JSON.stringify({ package_id, travelers_count })
+      });
+    } catch {
+      const pkg = fallbackData.packages?.find((p: any) => p.id === package_id) || fallbackData.packages[0];
+      const pax = Math.max(1, travelers_count || 1);
+      const baseWholesale = pkg?.agent_wholesale_price || pkg?.wholesale_price || Math.round((pkg?.public_price || 50000) * 0.85);
+      const retailPrice = pkg?.public_price || 60000;
+
+      let tierName = 'Standard B2B Tier (1-4 Pax)';
+      let discountPct = 0;
+      if (pax >= 20) {
+        tierName = 'Mega Group Wholesale Tier (20+ Pax)';
+        discountPct = 15;
+      } else if (pax >= 10) {
+        tierName = 'Medium Group Wholesale Tier (10-19 Pax)';
+        discountPct = 10;
+      } else if (pax >= 5) {
+        tierName = 'Small Group Wholesale Tier (5-9 Pax)';
+        discountPct = 5;
+      }
+
+      const discountAmountPerPax = Math.round(baseWholesale * (discountPct / 100));
+      const finalWholesalePerPax = baseWholesale - discountAmountPerPax;
+      const totalWholesaleCost = finalWholesalePerPax * pax;
+      const totalRetailPrice = retailPrice * pax;
+      const projectedMarginTotal = totalRetailPrice - totalWholesaleCost;
+      const marginPct = Math.round((projectedMarginTotal / totalRetailPrice) * 100);
+
+      return {
+        package_id: pkg?.id,
+        package_title: pkg?.title,
+        travelers_count: pax,
+        tier_name: tierName,
+        tier_discount_pct: discountPct,
+        base_wholesale_price: baseWholesale,
+        discount_amount_per_pax: discountAmountPerPax,
+        final_wholesale_price_per_pax: finalWholesalePerPax,
+        total_wholesale_cost: totalWholesaleCost,
+        suggested_retail_price: retailPrice,
+        total_retail_price: totalRetailPrice,
+        projected_margin_total: projectedMarginTotal,
+        margin_pct: marginPct
+      };
+    }
+  },
+
+  getB2BDocuments: async () => {
+    try {
+      return await request<any[]>('/b2b/documents');
+    } catch {
+      const purchases = fallbackData.agent_purchases || [];
+      return purchases.map((p: any) => ({
+        id: `inv_${p.id}`,
+        purchase_id: p.id,
+        package_title: p.package_title,
+        client_name: p.client_name,
+        amount: p.total_cost,
+        invoice_number: `INV-B2B-${p.id.replace(/[^0-9]/g, '').slice(-4) || '9021'}`,
+        date: p.created_at,
+        status: 'Paid',
+        invoice_url: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80',
+        voucher_url: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80'
+      }));
+    }
+  },
+
+  getAgentCustomers: async () => {
+    try {
+      return await request<any[]>('/b2b/customers');
+    } catch {
+      return fallbackData.agent_customers || [];
+    }
+  },
+
+  createAgentCustomer: (data: any) =>
+    request<any>('/b2b/customers', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    }),
+
+  // ==========================================
+  // Branches
+  // ==========================================
+  getBranches: async () => {
+    try {
+      return await request<any[]>('/admin/branches');
+    } catch {
+      return fallbackData.branches || [];
+    }
+  },
+
+  createBranch: (data: any) =>
+    request<any>('/admin/branches', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    }),
+
+  // ==========================================
+  // Customer Payments & Transactions
+  // ==========================================
+  processCustomerPayment: (data: { booking_id: string; amount: number; payment_method?: string; notes?: string }) =>
+    request<any>('/customer/payments', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    }),
+
+  // ==========================================
+  // Refunds & Financial Adjustments
+  // ==========================================
+  getRefunds: async () => {
+    try {
+      return await request<any[]>('/admin/refunds');
+    } catch {
+      return (fallbackData as any).refunds || [];
+    }
+  },
+
+  processRefund: (data: { booking_id: string; amount: number; reason?: string }) =>
+    request<any>('/admin/refunds', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    }),
+
+  // ==========================================
+  // Audit Logs & Compliance
+  // ==========================================
+  getAuditLogs: async () => {
+    try {
+      return await request<any[]>('/admin/audit-logs');
+    } catch {
+      return (fallbackData as any).audit_logs || [];
+    }
+  },
+
+  // ==========================================
+  // Quotations Approval
+  // ==========================================
+  approveQuotationDiscount: (quotationId: string, data: { approved_discount: number; manager_notes?: string }) =>
+    request<any>(`/admin/quotations/${quotationId}/approve-discount`, {
+      method: 'PUT',
+      body: JSON.stringify(data)
+    }),
+
+  downloadDocument: (documentId: string) => {
+    const token = getAuthToken();
+    window.open(`${API_BASE}/documents/${documentId}/download${token ? `?token=${token}` : ''}`, '_blank');
   }
 };

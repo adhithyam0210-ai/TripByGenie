@@ -12,6 +12,7 @@ class DatabaseEngine {
     this.init();
   }
 
+  
   init() {
     if (!fs.existsSync(DB_FILE)) {
       console.log('Database file not found. Seeding initial data from seedData...');

@@ -1,4 +1,147 @@
-export type UserRole = 'customer' | 'admin' | 'manager' | 'staff' | 'agent';
+export type UserRole = 'customer' | 'admin' | 'manager' | 'staff' | 'sales' | 'operations' | 'agent';
+
+export interface Branch {
+  id: string;
+  agency_id: string;
+  name: string;
+  code: string;
+  city: string;
+  address: string;
+  manager_name: string;
+  phone: string;
+  email: string;
+  status: 'active' | 'inactive';
+}
+
+export interface TravelDocument {
+  id: string;
+  agency_id: string;
+  booking_id: string;
+  customer_id?: string;
+  agent_id?: string;
+  category:
+    | 'Booking Confirmation'
+    | 'Flight & Travel Ticket'
+    | 'Hotel Voucher'
+    | 'Transport Voucher'
+    | 'Activity Pass'
+    | 'Customer-Provided';
+  title: string;
+  file_name: string;
+  file_url: string;
+  file_size?: string;
+  file_type?: string;
+  status: 'available' | 'pending' | 'processing' | 'verified' | 'rejected';
+  uploaded_by_role: 'operations' | 'admin' | 'manager' | 'customer' | 'agent' | 'staff';
+  uploaded_by_name: string;
+  notes?: string;
+  expiry_date?: string;
+  created_at: string;
+  updated_at?: string;
+}
+
+export type TripOperationalStatus =
+  | 'Booking Received'
+  | 'Arrangements Pending'
+  | 'Hotel Confirmed'
+  | 'Transport Confirmed'
+  | 'Documents Ready'
+  | 'Ready to Travel'
+  | 'Trip In Progress'
+  | 'Trip Completed'
+  | 'Issue Reported';
+
+export interface OperationsArrangement {
+  id: string;
+  agency_id: string;
+  booking_id: string;
+  trip_status: TripOperationalStatus;
+  hotel_name?: string;
+  room_category?: string;
+  meal_plan?: string;
+  hotel_confirmation_number?: string;
+  hotel_check_in?: string;
+  hotel_check_out?: string;
+  vehicle_type?: string;
+  driver_name?: string;
+  driver_phone?: string;
+  pickup_location?: string;
+  drop_location?: string;
+  guide_name?: string;
+  guide_phone?: string;
+  special_instructions?: string;
+  dossier_generated?: boolean;
+  dossier_url?: string;
+  updated_at: string;
+}
+
+export interface SupportTicketMessage {
+  id: string;
+  sender_role: string;
+  sender_name: string;
+  message: string;
+  created_at: string;
+}
+
+export interface SupportTicket {
+  id: string;
+  ticket_number: string;
+  agency_id: string;
+  user_id: string;
+  customer_name: string;
+  customer_email: string;
+  booking_id?: string;
+  subject: string;
+  category:
+    | 'General Enquiry'
+    | 'Booking Modification'
+    | 'Payment & Refund'
+    | 'On-Trip Support'
+    | 'Document Issue';
+  priority: 'low' | 'medium' | 'high' | 'urgent';
+  status: 'open' | 'in_progress' | 'resolved' | 'closed';
+  assigned_to?: string;
+  messages: SupportTicketMessage[];
+  created_at: string;
+  updated_at?: string;
+}
+
+export interface AgentCustomer {
+  id: string;
+  agency_id: string;
+  agent_id: string;
+  name: string;
+  email: string;
+  phone: string;
+  passport_number?: string;
+  id_proof_type?: string;
+  id_proof_number?: string;
+  notes?: string;
+  created_at: string;
+}
+
+export interface B2BPricingTier {
+  min_pax: number;
+  max_pax: number;
+  discount_pct: number;
+  tier_name: string;
+}
+
+export interface B2BPricingCalculation {
+  package_id: string;
+  package_title: string;
+  base_wholesale_price: number;
+  travelers_count: number;
+  tier_name: string;
+  tier_discount_pct: number;
+  discount_amount_per_pax: number;
+  final_wholesale_price_per_pax: number;
+  total_wholesale_cost: number;
+  suggested_retail_price: number;
+  total_retail_price: number;
+  projected_margin_total: number;
+  margin_pct: number;
+}
 
 export interface Agency {
   id: string;

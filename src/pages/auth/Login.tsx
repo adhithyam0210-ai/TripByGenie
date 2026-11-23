@@ -14,12 +14,12 @@ export const Login: React.FC = () => {
   const { login, demoLogin, getRoleDashboardPath } = useAuth();
   const { success, error } = useToast();
 
-  const [activeTab, setActiveTab] = useState<'admin' | 'manager' | 'staff' | 'agent' | 'customer'>(() => {
+  const [activeTab, setActiveTab] = useState<'admin' | 'manager' | 'staff' | 'operations' | 'agent' | 'customer'>(() => {
     const r = searchParams.get('role')?.toLowerCase();
-    if (r === 'staff' || r === 'agent' || r === 'admin' || r === 'customer' || r === 'manager') {
-      return r as any;
+    if (r === 'staff' || r === 'sales' || r === 'operations' || r === 'agent' || r === 'admin' || r === 'customer' || r === 'manager') {
+      return (r === 'sales' ? 'staff' : r) as any;
     }
-    return 'admin'; // Default to admin/manager
+    return 'admin';
   });
 
   const [email, setEmail] = useState('');
@@ -29,8 +29,8 @@ export const Login: React.FC = () => {
 
   useEffect(() => {
     const r = searchParams.get('role')?.toLowerCase();
-    if (r === 'staff' || r === 'agent' || r === 'admin' || r === 'customer' || r === 'manager') {
-      setActiveTab(r as any);
+    if (r === 'staff' || r === 'sales' || r === 'operations' || r === 'agent' || r === 'admin' || r === 'customer' || r === 'manager') {
+      setActiveTab((r === 'sales' ? 'staff' : r) as any);
     }
   }, [searchParams]);
 
@@ -55,10 +55,10 @@ export const Login: React.FC = () => {
     }
   };
 
-  const handleDemoLogin = async (role: 'admin' | 'manager' | 'staff' | 'agent' | 'customer', agencySlug?: string) => {
+  const handleDemoLogin = async (role: 'admin' | 'manager' | 'staff' | 'operations' | 'agent' | 'customer', agencySlug?: string) => {
     setIsLoading(true);
     try {
-      const userRole = await demoLogin(role, agencySlug);
+      const userRole = await demoLogin(role as any, agencySlug);
       success(`Switched to demo ${role.toUpperCase()} account.`);
       navigate(getRoleDashboardPath(userRole));
     } catch (err: any) {
@@ -77,28 +77,38 @@ export const Login: React.FC = () => {
       color: '#FF795C',
       bgLight: 'bg-[#FF795C]/10 text-[#082C43] border-[#FF795C]/30',
       activeTabClass: 'bg-[#082C43] text-white shadow-md',
-      desc: 'Super Admin control: Provision IDs, manage all roles, and oversee all operational tabs.',
+      desc: 'Super Admin control: Provision IDs, manage all roles, finances, branches & global system settings.',
       sampleEmail: 'admin@travelgenie.com'
     },
     manager: {
-      label: 'Manager CRM',
-      badge: 'Operations',
+      label: 'Manager',
+      badge: 'Management',
       icon: ShieldCheck,
       color: '#8B5CF6',
       bgLight: 'bg-purple-500/10 text-purple-900 border-purple-500/30',
       activeTabClass: 'bg-purple-800 text-white shadow-md',
-      desc: 'Operations & catalog control: Customer leads allocation to staff, packages, bookings, and destinations.',
+      desc: 'Operations & branch management: Lead distribution to sales, catalog, bookings & agent approvals.',
       sampleEmail: 'manager@travelgenie.com'
     },
     staff: {
-      label: 'Staff CRM',
-      badge: 'Operations',
+      label: 'Sales Executive',
+      badge: 'Sales CRM',
       icon: UserCheck,
       color: '#55C9BD',
       bgLight: 'bg-[#55C9BD]/10 text-[#082C43] border-[#55C9BD]/40',
       activeTabClass: 'bg-[#082C43] text-white shadow-md',
-      desc: 'Assigned customer leads, custom itineraries, consultations & follow-ups.',
+      desc: 'Assigned customer leads pipeline, customized quotations, follow-up calendar & booking conversions.',
       sampleEmail: 'priya.staff@travelgenie.com'
+    },
+    operations: {
+      label: 'Operations Exec',
+      badge: 'Logistics',
+      icon: Building2,
+      color: '#3B82F6',
+      bgLight: 'bg-blue-500/10 text-blue-900 border-blue-500/30',
+      activeTabClass: 'bg-blue-800 text-white shadow-md',
+      desc: 'Booking execution: Hotel confirmations, chauffeur/vehicle dispatch, voucher uploads & travel dossiers.',
+      sampleEmail: 'operations@travelgenie.com'
     },
     agent: {
       label: 'B2B Agent',
@@ -107,17 +117,17 @@ export const Login: React.FC = () => {
       color: '#F59E0B',
       bgLight: 'bg-amber-500/10 text-amber-900 border-amber-500/30',
       activeTabClass: 'bg-[#082C43] text-white shadow-md',
-      desc: 'B2B net pricing, package wholesale purchasing & agent ledger balance.',
+      desc: 'B2B volume tiered pricing, wholesale package orders, client vouchers & wallet credit ledger.',
       sampleEmail: 'vikram.agent@globetrotters.com'
     },
     customer: {
-      label: 'Customer Hub',
+      label: 'Customer',
       badge: 'Traveler',
       icon: User,
       color: '#10B981',
       bgLight: 'bg-emerald-500/10 text-emerald-900 border-emerald-500/30',
       activeTabClass: 'bg-[#082C43] text-white shadow-md',
-      desc: 'Personal bookings, payment receipts, vouchers & itinerary tracking.',
+      desc: 'Personal trips, Digital Document Wallet, e-tickets, payment receipts & 24/7 support tickets.',
       sampleEmail: 'ananya.customer@gmail.com'
     }
   };
@@ -149,8 +159,8 @@ export const Login: React.FC = () => {
             <span className="text-[11px] font-bold uppercase tracking-wider text-[#17648A] block mb-2">
               Select Your Access Role:
             </span>
-            <div className="grid grid-cols-2 sm:grid-cols-5 gap-1.5 p-1 bg-[#F8F1E7] rounded-2xl border border-[#EFE7DA]">
-              {(['admin', 'manager', 'staff', 'agent', 'customer'] as const).map((r) => {
+            <div className="grid grid-cols-3 sm:grid-cols-6 gap-1 p-1 bg-[#F8F1E7] rounded-2xl border border-[#EFE7DA]">
+              {(['admin', 'manager', 'staff', 'operations', 'agent', 'customer'] as const).map((r) => {
                 const conf = roleConfig[r];
                 const Icon = conf.icon;
                 const isSelected = activeTab === r;
@@ -163,14 +173,14 @@ export const Login: React.FC = () => {
                       setEmail(conf.sampleEmail);
                       setPassword('password123');
                     }}
-                    className={`flex items-center justify-center gap-1.5 py-2 px-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                    className={`flex flex-col sm:flex-row items-center justify-center gap-1 py-2 px-1 rounded-xl text-[11px] font-bold transition-all cursor-pointer ${
                       isSelected
                         ? 'bg-[#082C43] text-white shadow-sm ring-1 ring-black/10'
                         : 'text-[#082C43]/70 hover:text-[#082C43] hover:bg-white/60'
                     }`}
                   >
                     <Icon className="w-3.5 h-3.5 shrink-0" />
-                    <span className="truncate">{conf.label.replace(' Portal', '').replace(' CRM', '').replace(' Hub', '')}</span>
+                    <span className="truncate">{conf.label.replace('Super ', '').replace(' Executive', '').replace(' Exec', '')}</span>
                   </button>
                 );
               })}
