@@ -4,6 +4,7 @@ import { useAuth } from './context/AuthContext';
 import { DashboardLayout } from './components/layout/DashboardLayout';
 import { PublicLayout } from './components/layout/PublicLayout';
 import { ScrollToTop } from './components/common/ScrollToTop';
+import { SplashScreen } from './components/common/SplashScreen';
 
 // Public Pages
 import { Home } from './pages/public/Home';
@@ -139,6 +140,7 @@ export const App: React.FC = () => {
   return (
     <>
       <ScrollToTop />
+      <SplashScreen />
       <Routes>
       {/* Public Pages with Top Bar, Nav Menu, and Footer */}
       <Route element={<PublicLayout />}>

@@ -330,7 +330,12 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
         <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 flex items-center justify-between gap-4">
           {/* Logo & Brand matching tripbygenie.in */}
           <div className="shrink-0">
-            <BrandLogo size="md" to="/" onClick={() => setIsMobileMenuOpen(false)} />
+            <BrandLogo
+              size="lg"
+              imgClassName="h-13 sm:h-16 md:h-18 lg:h-[74px]"
+              to="/"
+              onClick={() => setIsMobileMenuOpen(false)}
+            />
           </div>
 
           {/* Desktop Navigation Links — Blue Pill Buttons matching Image 2 */}

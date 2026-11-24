@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 
 interface BrandLogoProps {
   className?: string;
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  imgClassName?: string;
+  size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
   to?: string;
   variant?: 'light' | 'dark' | 'auto';
   onClick?: (e: React.MouseEvent) => void;
@@ -11,16 +12,18 @@ interface BrandLogoProps {
 
 export const BrandLogo: React.FC<BrandLogoProps> = ({
   className = '',
+  imgClassName = '',
   size = 'md',
   to = '/',
   variant = 'auto',
   onClick
 }) => {
   const heightClasses = {
-    sm: 'h-8',
-    md: 'h-10 sm:h-11',
-    lg: 'h-12 sm:h-14',
-    xl: 'h-16'
+    sm: 'h-8 sm:h-9',
+    md: 'h-11 sm:h-13',
+    lg: 'h-14 sm:h-16 md:h-18 lg:h-20',
+    xl: 'h-18 sm:h-22 md:h-24',
+    '2xl': 'h-24 sm:h-28 md:h-32'
   };
 
   const handleClick = (e: React.MouseEvent) => {
@@ -29,14 +32,16 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
   };
 
   const logoImg = (
-    <div className={`inline-flex items-center gap-2 ${className}`}>
-      {/* Official TripByGenie logo from reference */}
+    <div
+      className={`inline-flex items-center ${
+        variant === 'light' ? 'bg-white px-3 py-1.5 rounded-xl shadow-xs' : ''
+      } ${className}`}
+    >
+      {/* Official TripByGenie logo */}
       <img
         src="/logo.png"
-        alt="TripByGenie — A Elite Travel Experience"
-        className={`${heightClasses[size]} w-auto object-contain ${
-          variant === 'light' ? 'brightness-110 drop-shadow-[0_1px_3px_rgba(255,255,255,0.4)]' : ''
-        }`}
+        alt="Trip By Genie — A Elite Travel Experience"
+        className={`${imgClassName || heightClasses[size]} w-auto object-contain transition-all`}
         onError={(e) => {
           // Fallback if image fails to load
           const target = e.currentTarget;

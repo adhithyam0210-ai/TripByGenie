@@ -92,9 +92,7 @@ export const ActivateAccount: React.FC = () => {
 
       {/* Header with Brand Logo */}
       <header className="p-6 relative z-10 flex items-center justify-between max-w-7xl mx-auto w-full">
-        <Link to="/" className="flex items-center gap-2">
-          <BrandLogo />
-        </Link>
+        <BrandLogo size="md" to="/" />
         <Link
           to="/login"
           className="text-xs font-bold text-[#082C43] hover:text-[#FF795C] transition-colors"
