@@ -78,9 +78,9 @@
       "status": "active",
       "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
       "created_at": "2026-01-01T10:00:00.000Z",
-      "updated_at": "2026-11-24T03:07:24.175Z",
+      "updated_at": "2026-11-24T04:58:11.317Z",
       "branch_id": "br_chennai_hq",
-      "last_login_at": "2026-11-24T03:07:24.174Z"
+      "last_login_at": "2026-11-24T04:58:11.316Z"
     },
     {
       "id": "usr_manager_genie",
@@ -108,11 +108,11 @@
       "status": "active",
       "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80",
       "created_at": "2026-01-05T10:00:00.000Z",
-      "updated_at": "2026-11-24T03:07:24.781Z",
+      "updated_at": "2026-11-24T04:58:12.207Z",
       "display_id": "STF-2001",
       "branch_id": "br_chennai_hq",
       "reporting_manager_id": "usr_manager_genie",
-      "last_login_at": "2026-11-24T03:07:24.780Z"
+      "last_login_at": "2026-11-24T04:58:12.206Z"
     },
     {
       "id": "usr_staff_rahul",
@@ -654,6 +654,108 @@
       "created_at": "2026-11-24T03:13:04.709Z",
       "id": "use_ea6bb81016",
       "updated_at": "2026-11-24T03:13:04.709Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "role": "agent",
+      "name": "Rohan Mehra",
+      "email": "partner.travel_1795495550768@voyageexpress.com",
+      "phone": "+91 9811150768",
+      "password_hash": "$2b$10$SVoj2hY1Aqn3DQhYd2dyZeoEGSg9427FPQZXZROgr3Xz7IZJI8.oe",
+      "status": "active",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
+      "created_at": "2026-11-24T04:45:51.110Z",
+      "id": "use_7850a80661",
+      "updated_at": "2026-11-24T04:45:54.093Z",
+      "account_status": "ACTIVE",
+      "activation_status": "ACTIVATED",
+      "activated_at": "2026-11-24T04:45:52.372Z",
+      "last_login_at": "2026-11-24T04:45:54.093Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "role": "customer",
+      "customer_code": "CUS-2026-0039",
+      "name": "Ananya Rao",
+      "email": "ananya.traveler_1795495559452@example.com",
+      "phone": "+91 9876559452",
+      "password_hash": "$2b$10$O9wKmI5BklPgqLpYU4y.A.666btmEXF0qiyLSNpmtAnZHQ4jN6sH.",
+      "status": "active",
+      "account_status": "ACTIVE",
+      "activation_status": "ACTIVATED",
+      "created_at": "2026-11-24T04:46:03.233Z",
+      "id": "use_33588e349b",
+      "updated_at": "2026-11-24T04:46:04.613Z",
+      "activated_at": "2026-11-24T04:46:04.042Z",
+      "last_login_at": "2026-11-24T04:46:04.612Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "role": "agent",
+      "name": "Rohan Mehra",
+      "email": "partner.travel_1795496018500@voyageexpress.com",
+      "phone": "+91 9811118500",
+      "password_hash": "$2b$10$YsP7tvuXrLJr/eB2b4yfbO6LPqliECsPgFNdsC2YrNWqsbJj4cCRG",
+      "status": "active",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
+      "created_at": "2026-11-24T04:53:38.936Z",
+      "id": "use_85621e80fe",
+      "updated_at": "2026-11-24T04:53:42.832Z",
+      "account_status": "ACTIVE",
+      "activation_status": "ACTIVATED",
+      "activated_at": "2026-11-24T04:53:40.155Z",
+      "last_login_at": "2026-11-24T04:53:42.831Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "role": "customer",
+      "customer_code": "CUS-2026-0041",
+      "name": "Ananya Rao",
+      "email": "ananya.traveler_1795496026307@example.com",
+      "phone": "+91 9876526307",
+      "password_hash": "$2b$10$GvmiFdw2iaxlCMPDPoADIeihToxvBCYDpl4DBNba2iLOVN8TxE3ui",
+      "status": "active",
+      "account_status": "ACTIVE",
+      "activation_status": "ACTIVATED",
+      "created_at": "2026-11-24T04:53:55.914Z",
+      "id": "use_df793e7f30",
+      "updated_at": "2026-11-24T04:53:59.592Z",
+      "activated_at": "2026-11-24T04:53:58.077Z",
+      "last_login_at": "2026-11-24T04:53:59.592Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "role": "agent",
+      "name": "Rohan Mehra",
+      "email": "partner.travel_1795496282673@voyageexpress.com",
+      "phone": "+91 9811182673",
+      "password_hash": "$2b$10$LUZOBDiHCzD7R6/cJCggfewBbcnpbUvkn/qz5OjnoyLQU5FiQzlQm",
+      "status": "active",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
+      "created_at": "2026-11-24T04:58:02.986Z",
+      "id": "use_c6a907c75c",
+      "updated_at": "2026-11-24T04:58:07.128Z",
+      "account_status": "ACTIVE",
+      "activation_status": "ACTIVATED",
+      "activated_at": "2026-11-24T04:58:04.253Z",
+      "last_login_at": "2026-11-24T04:58:07.127Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "role": "customer",
+      "customer_code": "CUS-2026-0043",
+      "name": "Ananya Rao",
+      "email": "ananya.traveler_1795496290315@example.com",
+      "phone": "+91 9876590315",
+      "password_hash": "$2b$10$PYl0JzMY363LRXBvzwSyTelSNjvvASw3EXzMlzBcGd8TnFTObMl0a",
+      "status": "active",
+      "account_status": "ACTIVE",
+      "activation_status": "ACTIVATED",
+      "created_at": "2026-11-24T04:58:15.136Z",
+      "id": "use_2ca63f443e",
+      "updated_at": "2026-11-24T04:58:17.453Z",
+      "activated_at": "2026-11-24T04:58:16.603Z",
+      "last_login_at": "2026-11-24T04:58:17.453Z"
     }
   ],
   "staff_profiles": [
@@ -841,6 +943,51 @@
       "created_at": "2026-11-24T03:07:18.177Z",
       "id": "age_df1c660d15",
       "updated_at": "2026-11-24T03:07:19.336Z"
+    },
+    {
+      "user_id": "use_7850a80661",
+      "agency_id": "agency_travel_genie",
+      "company_name": "Voyage Express Wholesale Pvt Ltd",
+      "agent_id": "B2B-2026-0011",
+      "wholesale_discount_pct": 15,
+      "credit_limit": 750000,
+      "total_purchases": 0,
+      "total_sales": 0,
+      "total_margin": 0,
+      "status": "approved",
+      "created_at": "2026-11-24T04:45:51.255Z",
+      "id": "age_10a3192310",
+      "updated_at": "2026-11-24T04:45:52.673Z"
+    },
+    {
+      "user_id": "use_85621e80fe",
+      "agency_id": "agency_travel_genie",
+      "company_name": "Voyage Express Wholesale Pvt Ltd",
+      "agent_id": "B2B-2026-0012",
+      "wholesale_discount_pct": 15,
+      "credit_limit": 750000,
+      "total_purchases": 0,
+      "total_sales": 0,
+      "total_margin": 0,
+      "status": "approved",
+      "created_at": "2026-11-24T04:53:39.133Z",
+      "id": "age_2b958fa35b",
+      "updated_at": "2026-11-24T04:53:40.649Z"
+    },
+    {
+      "user_id": "use_c6a907c75c",
+      "agency_id": "agency_travel_genie",
+      "company_name": "Voyage Express Wholesale Pvt Ltd",
+      "agent_id": "B2B-2026-0013",
+      "wholesale_discount_pct": 15,
+      "credit_limit": 750000,
+      "total_purchases": 0,
+      "total_sales": 0,
+      "total_margin": 0,
+      "status": "approved",
+      "created_at": "2026-11-24T04:58:03.139Z",
+      "id": "age_1343f1f69b",
+      "updated_at": "2026-11-24T04:58:04.657Z"
     }
   ],
   "customer_profiles": [
@@ -989,6 +1136,42 @@
       "id": "cus_f115f60040",
       "created_at": "2026-11-24T03:13:04.818Z",
       "updated_at": "2026-11-24T03:13:04.818Z"
+    },
+    {
+      "user_id": "use_33588e349b",
+      "customer_code": "CUS-2026-0039",
+      "agency_id": "agency_travel_genie",
+      "name": "Ananya Rao",
+      "email": "ananya.traveler_1795495559452@example.com",
+      "phone": "+91 9876559452",
+      "preferred_currency": "INR",
+      "id": "cus_8687e39c59",
+      "created_at": "2026-11-24T04:46:03.283Z",
+      "updated_at": "2026-11-24T04:46:03.283Z"
+    },
+    {
+      "user_id": "use_df793e7f30",
+      "customer_code": "CUS-2026-0041",
+      "agency_id": "agency_travel_genie",
+      "name": "Ananya Rao",
+      "email": "ananya.traveler_1795496026307@example.com",
+      "phone": "+91 9876526307",
+      "preferred_currency": "INR",
+      "id": "cus_1d58e4931c",
+      "created_at": "2026-11-24T04:53:56.106Z",
+      "updated_at": "2026-11-24T04:53:56.106Z"
+    },
+    {
+      "user_id": "use_2ca63f443e",
+      "customer_code": "CUS-2026-0043",
+      "agency_id": "agency_travel_genie",
+      "name": "Ananya Rao",
+      "email": "ananya.traveler_1795496290315@example.com",
+      "phone": "+91 9876590315",
+      "preferred_currency": "INR",
+      "id": "cus_57ce85148e",
+      "created_at": "2026-11-24T04:58:15.191Z",
+      "updated_at": "2026-11-24T04:58:15.191Z"
     }
   ],
   "hero_banners": [
@@ -68779,6 +68962,114 @@
       "latest_quotation_number": "QT-2026-6637-V1",
       "booking_id": "boo_8adfd972c8",
       "booking_number": "BK-2026-0030"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "enquiry_id": "ENQ-2026-0028",
+      "customer_id": null,
+      "customer_name": "Ananya Rao",
+      "customer_email": "ananya.traveler_1795495559452@example.com",
+      "customer_phone": "+91 9876559452",
+      "country": "India",
+      "city": "Bengaluru",
+      "departure_city": "Bengaluru",
+      "interested_destination": "Switzerland Alps & Scenic Trains",
+      "interested_package_id": "pkg_switzerland_luxury",
+      "travel_date": "2026-12-24",
+      "return_date": "2026-12-31",
+      "adults": 2,
+      "children": 1,
+      "infants": 0,
+      "travelers_count": 3,
+      "budget": "₹2,50,000 - ₹3,50,000",
+      "travel_type": "Family Vacation",
+      "lead_source": "Universal Landing Page",
+      "campaign_source": "https://tripbygenie.in/packages/switzerland",
+      "status": "Partially Paid",
+      "assigned_staff_id": "usr_staff_priya",
+      "assigned_staff_name": "Priya Nair",
+      "follow_up_date": "2026-11-25",
+      "notes": "Requirements finalized for 7-day luxury Swiss Alps tour.",
+      "created_at": "2026-11-24T04:45:59.595Z",
+      "id": "lea_1582680143",
+      "updated_at": "2026-11-24T04:46:02.809Z",
+      "assigned_sales_executive": "Priya Nair",
+      "latest_quotation_id": "quo_09dcffb4cc",
+      "latest_quotation_number": "QT-2026-3374-V1",
+      "booking_id": "boo_6158263340",
+      "booking_number": "BK-2026-0034"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "enquiry_id": "ENQ-2026-0029",
+      "customer_id": null,
+      "customer_name": "Ananya Rao",
+      "customer_email": "ananya.traveler_1795496026307@example.com",
+      "customer_phone": "+91 9876526307",
+      "country": "India",
+      "city": "Bengaluru",
+      "departure_city": "Bengaluru",
+      "interested_destination": "Switzerland Alps & Scenic Trains",
+      "interested_package_id": "pkg_switzerland_luxury",
+      "travel_date": "2026-12-24",
+      "return_date": "2026-12-31",
+      "adults": 2,
+      "children": 1,
+      "infants": 0,
+      "travelers_count": 3,
+      "budget": "₹2,50,000 - ₹3,50,000",
+      "travel_type": "Family Vacation",
+      "lead_source": "Universal Landing Page",
+      "campaign_source": "https://tripbygenie.in/packages/switzerland",
+      "status": "Partially Paid",
+      "assigned_staff_id": "usr_staff_priya",
+      "assigned_staff_name": "Priya Nair",
+      "follow_up_date": "2026-11-25",
+      "notes": "Requirements finalized for 7-day luxury Swiss Alps tour.",
+      "created_at": "2026-11-24T04:53:46.481Z",
+      "id": "lea_fd8302023b",
+      "updated_at": "2026-11-24T04:53:54.381Z",
+      "assigned_sales_executive": "Priya Nair",
+      "latest_quotation_id": "quo_25227e29dc",
+      "latest_quotation_number": "QT-2026-6669-V1",
+      "booking_id": "boo_08df4a118b",
+      "booking_number": "BK-2026-0037"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "enquiry_id": "ENQ-2026-0030",
+      "customer_id": null,
+      "customer_name": "Ananya Rao",
+      "customer_email": "ananya.traveler_1795496290315@example.com",
+      "customer_phone": "+91 9876590315",
+      "country": "India",
+      "city": "Bengaluru",
+      "departure_city": "Bengaluru",
+      "interested_destination": "Switzerland Alps & Scenic Trains",
+      "interested_package_id": "pkg_switzerland_luxury",
+      "travel_date": "2026-12-24",
+      "return_date": "2026-12-31",
+      "adults": 2,
+      "children": 1,
+      "infants": 0,
+      "travelers_count": 3,
+      "budget": "₹2,50,000 - ₹3,50,000",
+      "travel_type": "Family Vacation",
+      "lead_source": "Universal Landing Page",
+      "campaign_source": "https://tripbygenie.in/packages/switzerland",
+      "status": "Partially Paid",
+      "assigned_staff_id": "usr_staff_priya",
+      "assigned_staff_name": "Priya Nair",
+      "follow_up_date": "2026-11-25",
+      "notes": "Requirements finalized for 7-day luxury Swiss Alps tour.",
+      "created_at": "2026-11-24T04:58:10.452Z",
+      "id": "lea_6b991c7757",
+      "updated_at": "2026-11-24T04:58:14.449Z",
+      "assigned_sales_executive": "Priya Nair",
+      "latest_quotation_id": "quo_7a4cecd385",
+      "latest_quotation_number": "QT-2026-5334-V1",
+      "booking_id": "boo_9c6808d203",
+      "booking_number": "BK-2026-0040"
     }
   ],
   "lead_activities": [
@@ -69704,6 +69995,195 @@
       "id": "lea_b4105d8b95",
       "created_at": "2026-11-24T03:07:26.903Z",
       "updated_at": "2026-11-24T03:07:26.903Z"
+    },
+    {
+      "lead_id": "lea_1582680143",
+      "user_id": "system",
+      "activity_type": "status_change",
+      "description": "Lead created from Enquiry #ENQ-2026-0028 via Universal Landing Page enquiry form.",
+      "id": "lea_817c7abaa7",
+      "created_at": "2026-11-24T04:45:59.756Z",
+      "updated_at": "2026-11-24T04:45:59.756Z"
+    },
+    {
+      "lead_id": "lea_1582680143",
+      "user_id": "usr_admin_genie",
+      "activity_type": "assignment",
+      "description": "Assigned to Priya Nair by Admin. High-intent Switzerland luxury family holiday inquiry.",
+      "id": "lea_d9b3bf5a0b",
+      "created_at": "2026-11-24T04:46:00.732Z",
+      "updated_at": "2026-11-24T04:46:00.732Z"
+    },
+    {
+      "lead_id": "lea_1582680143",
+      "user_id": "usr_staff_priya",
+      "activity_type": "interaction",
+      "description": "[CALL] Spoke with Mrs. Ananya. Discussed 5-star mountain chalet in Zermatt and 1st-class Swiss Travel Pass. | Customer Response: Customer very interested in customized itinerary with private airport transfers.",
+      "id": "lea_a7c019947a",
+      "created_at": "2026-11-24T04:46:01.118Z",
+      "updated_at": "2026-11-24T04:46:01.118Z"
+    },
+    {
+      "lead_id": "lea_1582680143",
+      "user_id": "usr_staff_priya",
+      "activity_type": "status_change",
+      "description": "Staff Priya Nair changed status to 'Qualified'. Note: Requirements finalized for 7-day luxury Swiss Alps tour. ",
+      "id": "lea_812d5223d3",
+      "created_at": "2026-11-24T04:46:01.410Z",
+      "updated_at": "2026-11-24T04:46:01.410Z"
+    },
+    {
+      "lead_id": "lea_1582680143",
+      "user_id": "usr_staff_priya",
+      "activity_type": "quotation",
+      "description": "Dispatched Quotation #QT-2026-3374-V1 (v1) for ₹1,68,000. Required Advance: ₹50,400",
+      "id": "lea_b3dcebb124",
+      "created_at": "2026-11-24T04:46:01.951Z",
+      "updated_at": "2026-11-24T04:46:01.951Z"
+    },
+    {
+      "lead_id": "lea_1582680143",
+      "user_id": "usr_staff_priya",
+      "activity_type": "status_change",
+      "description": "Trip Confirmed! Booking #BK-2026-0034 registered. Required advance: ₹50,400.",
+      "id": "lea_80be5ec53a",
+      "created_at": "2026-11-24T04:46:02.304Z",
+      "updated_at": "2026-11-24T04:46:02.304Z"
+    },
+    {
+      "lead_id": "lea_1582680143",
+      "user_id": "system",
+      "activity_type": "payment",
+      "description": "Advance payment of ₹50,400 successfully verified via gateway.",
+      "id": "lea_e4206e8509",
+      "created_at": "2026-11-24T04:46:02.907Z",
+      "updated_at": "2026-11-24T04:46:02.907Z"
+    },
+    {
+      "lead_id": "lea_fd8302023b",
+      "user_id": "system",
+      "activity_type": "status_change",
+      "description": "Lead created from Enquiry #ENQ-2026-0029 via Universal Landing Page enquiry form.",
+      "id": "lea_95d331a5d4",
+      "created_at": "2026-11-24T04:53:46.652Z",
+      "updated_at": "2026-11-24T04:53:46.652Z"
+    },
+    {
+      "lead_id": "lea_fd8302023b",
+      "user_id": "usr_admin_genie",
+      "activity_type": "assignment",
+      "description": "Assigned to Priya Nair by Admin. High-intent Switzerland luxury family holiday inquiry.",
+      "id": "lea_3c708d89e5",
+      "created_at": "2026-11-24T04:53:48.554Z",
+      "updated_at": "2026-11-24T04:53:48.554Z"
+    },
+    {
+      "lead_id": "lea_fd8302023b",
+      "user_id": "usr_staff_priya",
+      "activity_type": "interaction",
+      "description": "[CALL] Spoke with Mrs. Ananya. Discussed 5-star mountain chalet in Zermatt and 1st-class Swiss Travel Pass. | Customer Response: Customer very interested in customized itinerary with private airport transfers.",
+      "id": "lea_644419853e",
+      "created_at": "2026-11-24T04:53:50.072Z",
+      "updated_at": "2026-11-24T04:53:50.072Z"
+    },
+    {
+      "lead_id": "lea_fd8302023b",
+      "user_id": "usr_staff_priya",
+      "activity_type": "status_change",
+      "description": "Staff Priya Nair changed status to 'Qualified'. Note: Requirements finalized for 7-day luxury Swiss Alps tour. ",
+      "id": "lea_302705173d",
+      "created_at": "2026-11-24T04:53:50.715Z",
+      "updated_at": "2026-11-24T04:53:50.715Z"
+    },
+    {
+      "lead_id": "lea_fd8302023b",
+      "user_id": "usr_staff_priya",
+      "activity_type": "quotation",
+      "description": "Dispatched Quotation #QT-2026-6669-V1 (v1) for ₹1,68,000. Required Advance: ₹50,400",
+      "id": "lea_d36f5579a5",
+      "created_at": "2026-11-24T04:53:52.066Z",
+      "updated_at": "2026-11-24T04:53:52.066Z"
+    },
+    {
+      "lead_id": "lea_fd8302023b",
+      "user_id": "usr_staff_priya",
+      "activity_type": "status_change",
+      "description": "Trip Confirmed! Booking #BK-2026-0037 registered. Required advance: ₹50,400.",
+      "id": "lea_61a5ec23f6",
+      "created_at": "2026-11-24T04:53:53.233Z",
+      "updated_at": "2026-11-24T04:53:53.233Z"
+    },
+    {
+      "lead_id": "lea_fd8302023b",
+      "user_id": "system",
+      "activity_type": "payment",
+      "description": "Advance payment of ₹50,400 successfully verified via gateway.",
+      "id": "lea_823f62c25b",
+      "created_at": "2026-11-24T04:53:54.816Z",
+      "updated_at": "2026-11-24T04:53:54.816Z"
+    },
+    {
+      "lead_id": "lea_6b991c7757",
+      "user_id": "system",
+      "activity_type": "status_change",
+      "description": "Lead created from Enquiry #ENQ-2026-0030 via Universal Landing Page enquiry form.",
+      "id": "lea_f57fc32e57",
+      "created_at": "2026-11-24T04:58:10.597Z",
+      "updated_at": "2026-11-24T04:58:10.597Z"
+    },
+    {
+      "lead_id": "lea_6b991c7757",
+      "user_id": "usr_admin_genie",
+      "activity_type": "assignment",
+      "description": "Assigned to Priya Nair by Admin. High-intent Switzerland luxury family holiday inquiry.",
+      "id": "lea_5147073c52",
+      "created_at": "2026-11-24T04:58:11.757Z",
+      "updated_at": "2026-11-24T04:58:11.757Z"
+    },
+    {
+      "lead_id": "lea_6b991c7757",
+      "user_id": "usr_staff_priya",
+      "activity_type": "interaction",
+      "description": "[CALL] Spoke with Mrs. Ananya. Discussed 5-star mountain chalet in Zermatt and 1st-class Swiss Travel Pass. | Customer Response: Customer very interested in customized itinerary with private airport transfers.",
+      "id": "lea_2eca51ba7f",
+      "created_at": "2026-11-24T04:58:12.377Z",
+      "updated_at": "2026-11-24T04:58:12.377Z"
+    },
+    {
+      "lead_id": "lea_6b991c7757",
+      "user_id": "usr_staff_priya",
+      "activity_type": "status_change",
+      "description": "Staff Priya Nair changed status to 'Qualified'. Note: Requirements finalized for 7-day luxury Swiss Alps tour. ",
+      "id": "lea_6cbde159bf",
+      "created_at": "2026-11-24T04:58:12.772Z",
+      "updated_at": "2026-11-24T04:58:12.772Z"
+    },
+    {
+      "lead_id": "lea_6b991c7757",
+      "user_id": "usr_staff_priya",
+      "activity_type": "quotation",
+      "description": "Dispatched Quotation #QT-2026-5334-V1 (v1) for ₹1,68,000. Required Advance: ₹50,400",
+      "id": "lea_b90859fbc0",
+      "created_at": "2026-11-24T04:58:13.512Z",
+      "updated_at": "2026-11-24T04:58:13.512Z"
+    },
+    {
+      "lead_id": "lea_6b991c7757",
+      "user_id": "usr_staff_priya",
+      "activity_type": "status_change",
+      "description": "Trip Confirmed! Booking #BK-2026-0040 registered. Required advance: ₹50,400.",
+      "id": "lea_bdfb608695",
+      "created_at": "2026-11-24T04:58:13.883Z",
+      "updated_at": "2026-11-24T04:58:13.883Z"
+    },
+    {
+      "lead_id": "lea_6b991c7757",
+      "user_id": "system",
+      "activity_type": "payment",
+      "description": "Advance payment of ₹50,400 successfully verified via gateway.",
+      "id": "lea_a78acf0e13",
+      "created_at": "2026-11-24T04:58:14.641Z",
+      "updated_at": "2026-11-24T04:58:14.641Z"
     }
   ],
   "quotations": [
@@ -70253,6 +70733,180 @@
       "created_at": "2026-11-24T03:07:25.386Z",
       "id": "quo_56c04870f1",
       "updated_at": "2026-11-24T03:07:25.386Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_1582680143",
+      "package_id": "pkg_switzerland_luxury",
+      "package_title": "Switzerland Alps & Scenic Trains",
+      "staff_id": "usr_staff_priya",
+      "staff_name": "Priya Nair",
+      "quotation_number": "QT-2026-3374-V1",
+      "version": 1,
+      "customer_name": "Ananya Rao",
+      "customer_email": "ananya.traveler_1795495559452@example.com",
+      "customer_phone": "+91 9876559452",
+      "package_amount": 150000,
+      "additional_charges": 20000,
+      "discount": 10000,
+      "taxes": 8000,
+      "subtotal": 160000,
+      "total_amount": 170000,
+      "final_amount": 168000,
+      "required_advance_amount": 50400,
+      "advance_percentage": 30,
+      "balance_amount": 117600,
+      "terms_and_conditions": "Standard cancellation policy applies. 30% non-refundable advance required to confirm.",
+      "valid_until": "2026-12-01",
+      "items": [
+        {
+          "description": "Luxury 5-Star Mountain Chalet Stay (6 Nights)",
+          "amount": 100000
+        },
+        {
+          "description": "Swiss Travel Pass First Class (3 Pax)",
+          "amount": 40000
+        },
+        {
+          "description": "Private Airport & Sightseeing Transfers",
+          "amount": 20000
+        }
+      ],
+      "itinerary": [
+        {
+          "description": "Luxury 5-Star Mountain Chalet Stay (6 Nights)",
+          "amount": 100000
+        },
+        {
+          "description": "Swiss Travel Pass First Class (3 Pax)",
+          "amount": 40000
+        },
+        {
+          "description": "Private Airport & Sightseeing Transfers",
+          "amount": 20000
+        }
+      ],
+      "notes": "Includes 5-star Zermatt chalet, Glacier Express first class, and private driver.",
+      "status": "Sent",
+      "created_at": "2026-11-24T04:46:01.550Z",
+      "id": "quo_09dcffb4cc",
+      "updated_at": "2026-11-24T04:46:01.550Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_fd8302023b",
+      "package_id": "pkg_switzerland_luxury",
+      "package_title": "Switzerland Alps & Scenic Trains",
+      "staff_id": "usr_staff_priya",
+      "staff_name": "Priya Nair",
+      "quotation_number": "QT-2026-6669-V1",
+      "version": 1,
+      "customer_name": "Ananya Rao",
+      "customer_email": "ananya.traveler_1795496026307@example.com",
+      "customer_phone": "+91 9876526307",
+      "package_amount": 150000,
+      "additional_charges": 20000,
+      "discount": 10000,
+      "taxes": 8000,
+      "subtotal": 160000,
+      "total_amount": 170000,
+      "final_amount": 168000,
+      "required_advance_amount": 50400,
+      "advance_percentage": 30,
+      "balance_amount": 117600,
+      "terms_and_conditions": "Standard cancellation policy applies. 30% non-refundable advance required to confirm.",
+      "valid_until": "2026-12-01",
+      "items": [
+        {
+          "description": "Luxury 5-Star Mountain Chalet Stay (6 Nights)",
+          "amount": 100000
+        },
+        {
+          "description": "Swiss Travel Pass First Class (3 Pax)",
+          "amount": 40000
+        },
+        {
+          "description": "Private Airport & Sightseeing Transfers",
+          "amount": 20000
+        }
+      ],
+      "itinerary": [
+        {
+          "description": "Luxury 5-Star Mountain Chalet Stay (6 Nights)",
+          "amount": 100000
+        },
+        {
+          "description": "Swiss Travel Pass First Class (3 Pax)",
+          "amount": 40000
+        },
+        {
+          "description": "Private Airport & Sightseeing Transfers",
+          "amount": 20000
+        }
+      ],
+      "notes": "Includes 5-star Zermatt chalet, Glacier Express first class, and private driver.",
+      "status": "Sent",
+      "created_at": "2026-11-24T04:53:50.968Z",
+      "id": "quo_25227e29dc",
+      "updated_at": "2026-11-24T04:53:50.969Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_6b991c7757",
+      "package_id": "pkg_switzerland_luxury",
+      "package_title": "Switzerland Alps & Scenic Trains",
+      "staff_id": "usr_staff_priya",
+      "staff_name": "Priya Nair",
+      "quotation_number": "QT-2026-5334-V1",
+      "version": 1,
+      "customer_name": "Ananya Rao",
+      "customer_email": "ananya.traveler_1795496290315@example.com",
+      "customer_phone": "+91 9876590315",
+      "package_amount": 150000,
+      "additional_charges": 20000,
+      "discount": 10000,
+      "taxes": 8000,
+      "subtotal": 160000,
+      "total_amount": 170000,
+      "final_amount": 168000,
+      "required_advance_amount": 50400,
+      "advance_percentage": 30,
+      "balance_amount": 117600,
+      "terms_and_conditions": "Standard cancellation policy applies. 30% non-refundable advance required to confirm.",
+      "valid_until": "2026-12-01",
+      "items": [
+        {
+          "description": "Luxury 5-Star Mountain Chalet Stay (6 Nights)",
+          "amount": 100000
+        },
+        {
+          "description": "Swiss Travel Pass First Class (3 Pax)",
+          "amount": 40000
+        },
+        {
+          "description": "Private Airport & Sightseeing Transfers",
+          "amount": 20000
+        }
+      ],
+      "itinerary": [
+        {
+          "description": "Luxury 5-Star Mountain Chalet Stay (6 Nights)",
+          "amount": 100000
+        },
+        {
+          "description": "Swiss Travel Pass First Class (3 Pax)",
+          "amount": 40000
+        },
+        {
+          "description": "Private Airport & Sightseeing Transfers",
+          "amount": 20000
+        }
+      ],
+      "notes": "Includes 5-star Zermatt chalet, Glacier Express first class, and private driver.",
+      "status": "Sent",
+      "created_at": "2026-11-24T04:58:12.935Z",
+      "id": "quo_7a4cecd385",
+      "updated_at": "2026-11-24T04:58:12.935Z"
     }
   ],
   "bookings": [
@@ -71160,6 +71814,264 @@
       "customer_id": "use_ea6bb81016",
       "customer_code": "CUS-2026-0037",
       "customer_account_status": "INVITATION_SENT"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "booking_number": "B2B-2026-2693",
+      "customer_id": null,
+      "customer_name": "Dr. Suresh Kumar",
+      "customer_email": "b2bclient_1795495550768@example.com",
+      "customer_phone": "+91 98450 12345",
+      "booking_type": "B2B",
+      "agent_id": "use_7850a80661",
+      "agent_name": "Rohan Mehra",
+      "package_id": "pkg_kashmir_paradise",
+      "package_title": "Enchanting Kashmir: Srinagar, Gulmarg & Pahalgam",
+      "travel_start_date": "2026-12-20",
+      "travel_end_date": "",
+      "travelers_count": 2,
+      "traveler_details": [
+        {
+          "name": "Dr. Suresh Kumar",
+          "age": 45,
+          "gender": "Male"
+        },
+        {
+          "name": "Mrs. Sunita Kumar",
+          "age": 42,
+          "gender": "Female"
+        }
+      ],
+      "total_amount": 65000,
+      "advance_amount": 52000,
+      "balance_amount": 0,
+      "payment_status": "Paid",
+      "booking_status": "Confirmed",
+      "special_requests": "B2B Wholesale purchase by Agent Rohan Mehra. Margin: ₹13,000",
+      "created_at": "2026-11-24T04:45:53.326Z",
+      "id": "boo_0fb5c72396",
+      "updated_at": "2026-11-24T04:45:53.358Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "booking_number": "BK-2026-0034",
+      "enquiry_id": "ENQ-2026-0028",
+      "lead_id": "lea_1582680143",
+      "quotation_id": "quo_09dcffb4cc",
+      "quotation_number": "QT-2026-3374-V1",
+      "sales_executive_id": "usr_staff_priya",
+      "sales_executive_name": "Priya Nair",
+      "customer_id": "use_33588e349b",
+      "customer_name": "Ananya Rao",
+      "customer_email": "ananya.traveler_1795495559452@example.com",
+      "customer_phone": "+91 9876559452",
+      "package_id": "pkg_switzerland_luxury",
+      "package_title": "Switzerland Alps & Scenic Trains",
+      "travel_start_date": "2026-12-10",
+      "travel_end_date": "2026-12-17",
+      "travelers_count": 3,
+      "total_amount": 168000,
+      "required_advance_amount": 50400,
+      "advance_percentage": 30,
+      "advance_amount": 50400,
+      "balance_amount": 117600,
+      "payment_status": "PARTIALLY_PAID",
+      "booking_status": "BOOKING_CONFIRMED",
+      "payment_link": "/pay/BK-2026-0034",
+      "special_requests": "Requirements finalized for 7-day luxury Swiss Alps tour.",
+      "created_at": "2026-11-24T04:46:02.077Z",
+      "id": "boo_6158263340",
+      "updated_at": "2026-11-24T04:46:04.187Z",
+      "advance_paid_at": "2026-11-24T04:46:02.668Z",
+      "customer_code": "CUS-2026-0039",
+      "customer_account_status": "ACTIVE",
+      "invitation_sent_at": "2026-11-24T04:46:03.437Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "booking_number": "BK-FAILED-1795495559452",
+      "customer_name": "Unpaid Traveler",
+      "customer_email": "unpaid_1795495559452@example.com",
+      "total_amount": 100000,
+      "advance_amount": 0,
+      "balance_amount": 100000,
+      "payment_status": "PENDING",
+      "booking_status": "PAYMENT_PENDING",
+      "created_at": "2026-11-24T04:46:04.675Z",
+      "id": "boo_db6f78ef96",
+      "updated_at": "2026-11-24T04:46:04.675Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "booking_number": "B2B-2026-6256",
+      "customer_id": null,
+      "customer_name": "Dr. Suresh Kumar",
+      "customer_email": "b2bclient_1795496018500@example.com",
+      "customer_phone": "+91 98450 12345",
+      "booking_type": "B2B",
+      "agent_id": "use_85621e80fe",
+      "agent_name": "Rohan Mehra",
+      "package_id": "pkg_kashmir_paradise",
+      "package_title": "Enchanting Kashmir: Srinagar, Gulmarg & Pahalgam",
+      "travel_start_date": "2026-12-20",
+      "travel_end_date": "",
+      "travelers_count": 2,
+      "traveler_details": [
+        {
+          "name": "Dr. Suresh Kumar",
+          "age": 45,
+          "gender": "Male"
+        },
+        {
+          "name": "Mrs. Sunita Kumar",
+          "age": 42,
+          "gender": "Female"
+        }
+      ],
+      "total_amount": 65000,
+      "advance_amount": 52000,
+      "balance_amount": 0,
+      "payment_status": "Paid",
+      "booking_status": "Confirmed",
+      "special_requests": "B2B Wholesale purchase by Agent Rohan Mehra. Margin: ₹13,000",
+      "created_at": "2026-11-24T04:53:41.743Z",
+      "id": "boo_b5d2e4f825",
+      "updated_at": "2026-11-24T04:53:41.781Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "booking_number": "BK-2026-0037",
+      "enquiry_id": "ENQ-2026-0029",
+      "lead_id": "lea_fd8302023b",
+      "quotation_id": "quo_25227e29dc",
+      "quotation_number": "QT-2026-6669-V1",
+      "sales_executive_id": "usr_staff_priya",
+      "sales_executive_name": "Priya Nair",
+      "customer_id": "use_df793e7f30",
+      "customer_name": "Ananya Rao",
+      "customer_email": "ananya.traveler_1795496026307@example.com",
+      "customer_phone": "+91 9876526307",
+      "package_id": "pkg_switzerland_luxury",
+      "package_title": "Switzerland Alps & Scenic Trains",
+      "travel_start_date": "2026-12-10",
+      "travel_end_date": "2026-12-17",
+      "travelers_count": 3,
+      "total_amount": 168000,
+      "required_advance_amount": 50400,
+      "advance_percentage": 30,
+      "advance_amount": 50400,
+      "balance_amount": 117600,
+      "payment_status": "PARTIALLY_PAID",
+      "booking_status": "BOOKING_CONFIRMED",
+      "payment_link": "/pay/BK-2026-0037",
+      "special_requests": "Requirements finalized for 7-day luxury Swiss Alps tour.",
+      "created_at": "2026-11-24T04:53:52.645Z",
+      "id": "boo_08df4a118b",
+      "updated_at": "2026-11-24T04:53:58.791Z",
+      "advance_paid_at": "2026-11-24T04:53:53.936Z",
+      "customer_code": "CUS-2026-0041",
+      "customer_account_status": "ACTIVE",
+      "invitation_sent_at": "2026-11-24T04:53:56.448Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "booking_number": "BK-FAILED-1795496026307",
+      "customer_name": "Unpaid Traveler",
+      "customer_email": "unpaid_1795496026307@example.com",
+      "total_amount": 100000,
+      "advance_amount": 0,
+      "balance_amount": 100000,
+      "payment_status": "PENDING",
+      "booking_status": "PAYMENT_PENDING",
+      "created_at": "2026-11-24T04:53:59.732Z",
+      "id": "boo_ef59aefb48",
+      "updated_at": "2026-11-24T04:53:59.732Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "booking_number": "B2B-2026-5395",
+      "customer_id": null,
+      "customer_name": "Dr. Suresh Kumar",
+      "customer_email": "b2bclient_1795496282673@example.com",
+      "customer_phone": "+91 98450 12345",
+      "booking_type": "B2B",
+      "agent_id": "use_c6a907c75c",
+      "agent_name": "Rohan Mehra",
+      "package_id": "pkg_kashmir_paradise",
+      "package_title": "Enchanting Kashmir: Srinagar, Gulmarg & Pahalgam",
+      "travel_start_date": "2026-12-20",
+      "travel_end_date": "",
+      "travelers_count": 2,
+      "traveler_details": [
+        {
+          "name": "Dr. Suresh Kumar",
+          "age": 45,
+          "gender": "Male"
+        },
+        {
+          "name": "Mrs. Sunita Kumar",
+          "age": 42,
+          "gender": "Female"
+        }
+      ],
+      "total_amount": 65000,
+      "advance_amount": 52000,
+      "balance_amount": 0,
+      "payment_status": "Paid",
+      "booking_status": "Confirmed",
+      "special_requests": "B2B Wholesale purchase by Agent Rohan Mehra. Margin: ₹13,000",
+      "created_at": "2026-11-24T04:58:05.724Z",
+      "id": "boo_53698b8dc4",
+      "updated_at": "2026-11-24T04:58:05.780Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "booking_number": "BK-2026-0040",
+      "enquiry_id": "ENQ-2026-0030",
+      "lead_id": "lea_6b991c7757",
+      "quotation_id": "quo_7a4cecd385",
+      "quotation_number": "QT-2026-5334-V1",
+      "sales_executive_id": "usr_staff_priya",
+      "sales_executive_name": "Priya Nair",
+      "customer_id": "use_2ca63f443e",
+      "customer_name": "Ananya Rao",
+      "customer_email": "ananya.traveler_1795496290315@example.com",
+      "customer_phone": "+91 9876590315",
+      "package_id": "pkg_switzerland_luxury",
+      "package_title": "Switzerland Alps & Scenic Trains",
+      "travel_start_date": "2026-12-10",
+      "travel_end_date": "2026-12-17",
+      "travelers_count": 3,
+      "total_amount": 168000,
+      "required_advance_amount": 50400,
+      "advance_percentage": 30,
+      "advance_amount": 50400,
+      "balance_amount": 117600,
+      "payment_status": "PARTIALLY_PAID",
+      "booking_status": "BOOKING_CONFIRMED",
+      "payment_link": "/pay/BK-2026-0040",
+      "special_requests": "Requirements finalized for 7-day luxury Swiss Alps tour.",
+      "created_at": "2026-11-24T04:58:13.667Z",
+      "id": "boo_9c6808d203",
+      "updated_at": "2026-11-24T04:58:16.858Z",
+      "advance_paid_at": "2026-11-24T04:58:14.255Z",
+      "customer_code": "CUS-2026-0043",
+      "customer_account_status": "ACTIVE",
+      "invitation_sent_at": "2026-11-24T04:58:15.414Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "booking_number": "BK-FAILED-1795496290315",
+      "customer_name": "Unpaid Traveler",
+      "customer_email": "unpaid_1795496290315@example.com",
+      "total_amount": 100000,
+      "advance_amount": 0,
+      "balance_amount": 100000,
+      "payment_status": "PENDING",
+      "booking_status": "PAYMENT_PENDING",
+      "created_at": "2026-11-24T04:58:17.530Z",
+      "id": "boo_dd3a417be1",
+      "updated_at": "2026-11-24T04:58:17.530Z"
     }
   ],
   "booking_travellers": [
@@ -71532,6 +72444,105 @@
       "created_at": "2026-11-24T03:13:04.526Z",
       "id": "pay_2bcc1889f8",
       "updated_at": "2026-11-24T03:13:04.588Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "booking_id": "boo_6158263340",
+      "booking_number": "BK-2026-0034",
+      "customer_id": null,
+      "amount": 50400,
+      "payment_type": "Advance",
+      "payment_method": "UPI / NetBanking",
+      "transaction_reference": "PAY-GATEWAY-UPI-1795495559452",
+      "gateway": "Razorpay / UPI Payment Gateway",
+      "status": "SUCCESS",
+      "notes": "Customer paid 30% booking advance via UPI.",
+      "payment_date": "2026-11-24T04:46:02.623Z",
+      "id": "pay_eac7098958",
+      "created_at": "2026-11-24T04:46:02.623Z",
+      "updated_at": "2026-11-24T04:46:02.623Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "booking_id": "boo_db6f78ef96",
+      "booking_number": "BK-FAILED-1795495559452",
+      "customer_id": null,
+      "amount": 30000,
+      "payment_type": "Advance",
+      "payment_method": "UPI",
+      "transaction_reference": "FAILED-TXN-1795495564734",
+      "status": "FAILED",
+      "failure_reason": "Transaction declined by issuer / simulated gateway failure",
+      "payment_date": "2026-11-24T04:46:04.734Z",
+      "id": "pay_e6524c9065",
+      "created_at": "2026-11-24T04:46:04.735Z",
+      "updated_at": "2026-11-24T04:46:04.735Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "booking_id": "boo_08df4a118b",
+      "booking_number": "BK-2026-0037",
+      "customer_id": null,
+      "amount": 50400,
+      "payment_type": "Advance",
+      "payment_method": "UPI / NetBanking",
+      "transaction_reference": "PAY-GATEWAY-UPI-1795496026307",
+      "gateway": "Razorpay / UPI Payment Gateway",
+      "status": "SUCCESS",
+      "notes": "Customer paid 30% booking advance via UPI.",
+      "payment_date": "2026-11-24T04:53:53.867Z",
+      "id": "pay_37ed481a5b",
+      "created_at": "2026-11-24T04:53:53.868Z",
+      "updated_at": "2026-11-24T04:53:53.868Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "booking_id": "boo_ef59aefb48",
+      "booking_number": "BK-FAILED-1795496026307",
+      "customer_id": null,
+      "amount": 30000,
+      "payment_type": "Advance",
+      "payment_method": "UPI",
+      "transaction_reference": "FAILED-TXN-1795496039856",
+      "status": "FAILED",
+      "failure_reason": "Transaction declined by issuer / simulated gateway failure",
+      "payment_date": "2026-11-24T04:53:59.856Z",
+      "id": "pay_37a1a77fc7",
+      "created_at": "2026-11-24T04:53:59.857Z",
+      "updated_at": "2026-11-24T04:53:59.857Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "booking_id": "boo_9c6808d203",
+      "booking_number": "BK-2026-0040",
+      "customer_id": null,
+      "amount": 50400,
+      "payment_type": "Advance",
+      "payment_method": "UPI / NetBanking",
+      "transaction_reference": "PAY-GATEWAY-UPI-1795496290315",
+      "gateway": "Razorpay / UPI Payment Gateway",
+      "status": "SUCCESS",
+      "notes": "Customer paid 30% booking advance via UPI.",
+      "payment_date": "2026-11-24T04:58:14.225Z",
+      "id": "pay_d58f91bd25",
+      "created_at": "2026-11-24T04:58:14.225Z",
+      "updated_at": "2026-11-24T04:58:14.225Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "booking_id": "boo_dd3a417be1",
+      "booking_number": "BK-FAILED-1795496290315",
+      "customer_id": null,
+      "amount": 30000,
+      "payment_type": "Advance",
+      "payment_method": "UPI",
+      "transaction_reference": "FAILED-TXN-1795496297655",
+      "status": "FAILED",
+      "failure_reason": "Transaction declined by issuer / simulated gateway failure",
+      "payment_date": "2026-11-24T04:58:17.655Z",
+      "id": "pay_2aeba8d8fe",
+      "created_at": "2026-11-24T04:58:17.655Z",
+      "updated_at": "2026-11-24T04:58:17.655Z"
     }
   ],
   "agent_purchases": [
@@ -71817,6 +72828,99 @@
       "created_at": "2026-11-24T03:07:19.938Z",
       "id": "age_9a2aa46b66",
       "updated_at": "2026-11-24T03:07:19.939Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "agent_id": "use_7850a80661",
+      "package_id": "pkg_kashmir_paradise",
+      "package_title": "Enchanting Kashmir: Srinagar, Gulmarg & Pahalgam",
+      "travelers_count": 2,
+      "travel_date": "2026-12-20",
+      "wholesale_price": 26000,
+      "total_cost": 52000,
+      "client_name": "Dr. Suresh Kumar",
+      "client_email": "b2bclient_1795495550768@example.com",
+      "client_phone": "+91 98450 12345",
+      "traveler_details": [
+        {
+          "name": "Dr. Suresh Kumar",
+          "age": 45,
+          "gender": "Male"
+        },
+        {
+          "name": "Mrs. Sunita Kumar",
+          "age": 42,
+          "gender": "Female"
+        }
+      ],
+      "client_selling_price": 65000,
+      "projected_margin": 13000,
+      "status": "Confirmed",
+      "created_at": "2026-11-24T04:45:53.282Z",
+      "id": "age_437c2ca403",
+      "updated_at": "2026-11-24T04:45:53.282Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "agent_id": "use_85621e80fe",
+      "package_id": "pkg_kashmir_paradise",
+      "package_title": "Enchanting Kashmir: Srinagar, Gulmarg & Pahalgam",
+      "travelers_count": 2,
+      "travel_date": "2026-12-20",
+      "wholesale_price": 26000,
+      "total_cost": 52000,
+      "client_name": "Dr. Suresh Kumar",
+      "client_email": "b2bclient_1795496018500@example.com",
+      "client_phone": "+91 98450 12345",
+      "traveler_details": [
+        {
+          "name": "Dr. Suresh Kumar",
+          "age": 45,
+          "gender": "Male"
+        },
+        {
+          "name": "Mrs. Sunita Kumar",
+          "age": 42,
+          "gender": "Female"
+        }
+      ],
+      "client_selling_price": 65000,
+      "projected_margin": 13000,
+      "status": "Confirmed",
+      "created_at": "2026-11-24T04:53:41.639Z",
+      "id": "age_22fc0e52e9",
+      "updated_at": "2026-11-24T04:53:41.639Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "agent_id": "use_c6a907c75c",
+      "package_id": "pkg_kashmir_paradise",
+      "package_title": "Enchanting Kashmir: Srinagar, Gulmarg & Pahalgam",
+      "travelers_count": 2,
+      "travel_date": "2026-12-20",
+      "wholesale_price": 26000,
+      "total_cost": 52000,
+      "client_name": "Dr. Suresh Kumar",
+      "client_email": "b2bclient_1795496282673@example.com",
+      "client_phone": "+91 98450 12345",
+      "traveler_details": [
+        {
+          "name": "Dr. Suresh Kumar",
+          "age": 45,
+          "gender": "Male"
+        },
+        {
+          "name": "Mrs. Sunita Kumar",
+          "age": 42,
+          "gender": "Female"
+        }
+      ],
+      "client_selling_price": 65000,
+      "projected_margin": 13000,
+      "status": "Confirmed",
+      "created_at": "2026-11-24T04:58:05.620Z",
+      "id": "age_5ce73fb7e0",
+      "updated_at": "2026-11-24T04:58:05.620Z"
     }
   ],
   "agent_transactions": [
@@ -71949,6 +73053,42 @@
       "created_at": "2026-11-24T03:07:20.071Z",
       "id": "age_d8c232f18c",
       "updated_at": "2026-11-24T03:07:20.102Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "agent_id": "use_7850a80661",
+      "type": "Purchase",
+      "amount": 52000,
+      "balance_after": 52000,
+      "reference_id": "age_437c2ca403",
+      "description": "Wholesale purchase of Enchanting Kashmir: Srinagar, Gulmarg & Pahalgam for 2 pax.",
+      "created_at": "2026-11-24T04:45:53.399Z",
+      "id": "age_9af7d598be",
+      "updated_at": "2026-11-24T04:45:53.420Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "agent_id": "use_85621e80fe",
+      "type": "Purchase",
+      "amount": 52000,
+      "balance_after": 52000,
+      "reference_id": "age_22fc0e52e9",
+      "description": "Wholesale purchase of Enchanting Kashmir: Srinagar, Gulmarg & Pahalgam for 2 pax.",
+      "created_at": "2026-11-24T04:53:41.841Z",
+      "id": "age_bfcbc3c0d7",
+      "updated_at": "2026-11-24T04:53:41.887Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "agent_id": "use_c6a907c75c",
+      "type": "Purchase",
+      "amount": 52000,
+      "balance_after": 52000,
+      "reference_id": "age_5ce73fb7e0",
+      "description": "Wholesale purchase of Enchanting Kashmir: Srinagar, Gulmarg & Pahalgam for 2 pax.",
+      "created_at": "2026-11-24T04:58:05.851Z",
+      "id": "age_db47f18345",
+      "updated_at": "2026-11-24T04:58:05.900Z"
     }
   ],
   "testimonials": [
@@ -73883,6 +75023,438 @@
       "id": "not_41a467e6a3",
       "created_at": "2026-11-24T03:07:28.686Z",
       "updated_at": "2026-11-24T03:07:28.686Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "title": "New B2B Agent Purchase",
+      "message": "Agent Rohan Mehra placed a wholesale purchase for Enchanting Kashmir: Srinagar, Gulmarg & Pahalgam (₹52,000).",
+      "type": "info",
+      "link": "/admin/bookings",
+      "is_read": false,
+      "id": "not_d2a402a19e",
+      "created_at": "2026-11-24T04:45:53.494Z",
+      "updated_at": "2026-11-24T04:45:53.494Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "title": "New Customer Enquiry",
+      "message": "Enquiry #ENQ-2026-0028 from Ananya Rao for Switzerland Alps & Scenic Trains. Awaiting assignment.",
+      "type": "info",
+      "link": "/admin/leads",
+      "is_read": false,
+      "id": "not_bf88a06677",
+      "created_at": "2026-11-24T04:46:00.130Z",
+      "updated_at": "2026-11-24T04:46:00.130Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_manager_genie",
+      "title": "New Customer Enquiry",
+      "message": "Enquiry #ENQ-2026-0028 from Ananya Rao for Switzerland Alps & Scenic Trains. Awaiting assignment.",
+      "type": "info",
+      "link": "/manager/leads",
+      "is_read": false,
+      "id": "not_79fb45ddb0",
+      "created_at": "2026-11-24T04:46:00.226Z",
+      "updated_at": "2026-11-24T04:46:00.226Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_staff_priya",
+      "title": "Leads Assigned",
+      "message": "You have been assigned 1 lead(s) by Administrator.",
+      "type": "info",
+      "link": "/staff/leads",
+      "is_read": false,
+      "id": "not_15551bdd60",
+      "created_at": "2026-11-24T04:46:00.832Z",
+      "updated_at": "2026-11-24T04:46:00.832Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "title": "Trip Confirmed by Customer",
+      "message": "Ananya Rao confirmed holiday for Switzerland Alps & Scenic Trains. Booking #BK-2026-0034 awaiting advance payment of ₹50,400.",
+      "type": "info",
+      "link": "/admin/bookings",
+      "is_read": false,
+      "id": "not_540c1247b2",
+      "created_at": "2026-11-24T04:46:02.482Z",
+      "updated_at": "2026-11-24T04:46:02.482Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_manager_genie",
+      "title": "Trip Confirmed by Customer",
+      "message": "Ananya Rao confirmed holiday for Switzerland Alps & Scenic Trains. Booking #BK-2026-0034 awaiting advance payment of ₹50,400.",
+      "type": "info",
+      "link": "/admin/bookings",
+      "is_read": false,
+      "id": "not_6435f1742f",
+      "created_at": "2026-11-24T04:46:02.562Z",
+      "updated_at": "2026-11-24T04:46:02.562Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "title": "Advance Payment Received - Account Creation Eligible!",
+      "message": "Verified advance of ₹50,400 for booking #BK-2026-0034 (Ananya Rao). Eligible for \"CREATE CUSTOMER LOGIN\".",
+      "type": "success",
+      "link": "/admin/bookings",
+      "is_read": false,
+      "id": "not_df32dff5a9",
+      "created_at": "2026-11-24T04:46:03.057Z",
+      "updated_at": "2026-11-24T04:46:03.057Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_manager_genie",
+      "title": "Advance Payment Received - Account Creation Eligible!",
+      "message": "Verified advance of ₹50,400 for booking #BK-2026-0034 (Ananya Rao). Eligible for \"CREATE CUSTOMER LOGIN\".",
+      "type": "success",
+      "link": "/admin/bookings",
+      "is_read": false,
+      "id": "not_2e6ccb708a",
+      "created_at": "2026-11-24T04:46:03.114Z",
+      "updated_at": "2026-11-24T04:46:03.114Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_staff_priya",
+      "title": "Partial Payment Verified!",
+      "message": "Customer Ananya Rao paid ₹50,400 for booking #BK-2026-0034.",
+      "type": "success",
+      "link": "/staff/bookings",
+      "is_read": false,
+      "id": "not_7b2211e674",
+      "created_at": "2026-11-24T04:46:03.174Z",
+      "updated_at": "2026-11-24T04:46:03.174Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "use_33588e349b",
+      "title": "Welcome to Your Travel Portal!",
+      "message": "Your customer account is now fully active. Explore your holiday bookings, payments, and itineraries.",
+      "type": "success",
+      "link": "/customer/dashboard",
+      "is_read": false,
+      "id": "not_4e0ca2a154",
+      "created_at": "2026-11-24T04:46:04.347Z",
+      "updated_at": "2026-11-24T04:46:04.347Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "title": "Customer Account Activated",
+      "message": "Customer Ananya Rao (ananya.traveler_1795495559452@example.com) has activated their account.",
+      "type": "info",
+      "link": "/admin/customers",
+      "is_read": false,
+      "id": "not_4fe917fad2",
+      "created_at": "2026-11-24T04:46:04.399Z",
+      "updated_at": "2026-11-24T04:46:04.399Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_manager_genie",
+      "title": "Customer Account Activated",
+      "message": "Customer Ananya Rao (ananya.traveler_1795495559452@example.com) has activated their account.",
+      "type": "info",
+      "link": "/admin/customers",
+      "is_read": false,
+      "id": "not_8341342d47",
+      "created_at": "2026-11-24T04:46:04.447Z",
+      "updated_at": "2026-11-24T04:46:04.447Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "title": "New B2B Agent Purchase",
+      "message": "Agent Rohan Mehra placed a wholesale purchase for Enchanting Kashmir: Srinagar, Gulmarg & Pahalgam (₹52,000).",
+      "type": "info",
+      "link": "/admin/bookings",
+      "is_read": false,
+      "id": "not_4802ab054e",
+      "created_at": "2026-11-24T04:53:41.962Z",
+      "updated_at": "2026-11-24T04:53:41.962Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "title": "New Customer Enquiry",
+      "message": "Enquiry #ENQ-2026-0029 from Ananya Rao for Switzerland Alps & Scenic Trains. Awaiting assignment.",
+      "type": "info",
+      "link": "/admin/leads",
+      "is_read": false,
+      "id": "not_c5bc0d6e49",
+      "created_at": "2026-11-24T04:53:47.067Z",
+      "updated_at": "2026-11-24T04:53:47.067Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_manager_genie",
+      "title": "New Customer Enquiry",
+      "message": "Enquiry #ENQ-2026-0029 from Ananya Rao for Switzerland Alps & Scenic Trains. Awaiting assignment.",
+      "type": "info",
+      "link": "/manager/leads",
+      "is_read": false,
+      "id": "not_a3dd28a261",
+      "created_at": "2026-11-24T04:53:47.184Z",
+      "updated_at": "2026-11-24T04:53:47.184Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_staff_priya",
+      "title": "Leads Assigned",
+      "message": "You have been assigned 1 lead(s) by Administrator.",
+      "type": "info",
+      "link": "/staff/leads",
+      "is_read": false,
+      "id": "not_964636f5ae",
+      "created_at": "2026-11-24T04:53:48.890Z",
+      "updated_at": "2026-11-24T04:53:48.890Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "title": "Trip Confirmed by Customer",
+      "message": "Ananya Rao confirmed holiday for Switzerland Alps & Scenic Trains. Booking #BK-2026-0037 awaiting advance payment of ₹50,400.",
+      "type": "info",
+      "link": "/admin/bookings",
+      "is_read": false,
+      "id": "not_d4bbab20a0",
+      "created_at": "2026-11-24T04:53:53.487Z",
+      "updated_at": "2026-11-24T04:53:53.487Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_manager_genie",
+      "title": "Trip Confirmed by Customer",
+      "message": "Ananya Rao confirmed holiday for Switzerland Alps & Scenic Trains. Booking #BK-2026-0037 awaiting advance payment of ₹50,400.",
+      "type": "info",
+      "link": "/admin/bookings",
+      "is_read": false,
+      "id": "not_8ee98bb788",
+      "created_at": "2026-11-24T04:53:53.674Z",
+      "updated_at": "2026-11-24T04:53:53.674Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "title": "Advance Payment Received - Account Creation Eligible!",
+      "message": "Verified advance of ₹50,400 for booking #BK-2026-0037 (Ananya Rao). Eligible for \"CREATE CUSTOMER LOGIN\".",
+      "type": "success",
+      "link": "/admin/bookings",
+      "is_read": false,
+      "id": "not_d3c435ecfc",
+      "created_at": "2026-11-24T04:53:55.411Z",
+      "updated_at": "2026-11-24T04:53:55.411Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_manager_genie",
+      "title": "Advance Payment Received - Account Creation Eligible!",
+      "message": "Verified advance of ₹50,400 for booking #BK-2026-0037 (Ananya Rao). Eligible for \"CREATE CUSTOMER LOGIN\".",
+      "type": "success",
+      "link": "/admin/bookings",
+      "is_read": false,
+      "id": "not_201e4e4ce1",
+      "created_at": "2026-11-24T04:53:55.584Z",
+      "updated_at": "2026-11-24T04:53:55.584Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_staff_priya",
+      "title": "Partial Payment Verified!",
+      "message": "Customer Ananya Rao paid ₹50,400 for booking #BK-2026-0037.",
+      "type": "success",
+      "link": "/staff/bookings",
+      "is_read": false,
+      "id": "not_84e96e27bf",
+      "created_at": "2026-11-24T04:53:55.750Z",
+      "updated_at": "2026-11-24T04:53:55.750Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "use_df793e7f30",
+      "title": "Welcome to Your Travel Portal!",
+      "message": "Your customer account is now fully active. Explore your holiday bookings, payments, and itineraries.",
+      "type": "success",
+      "link": "/customer/dashboard",
+      "is_read": false,
+      "id": "not_dff7571a0e",
+      "created_at": "2026-11-24T04:53:59.081Z",
+      "updated_at": "2026-11-24T04:53:59.081Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "title": "Customer Account Activated",
+      "message": "Customer Ananya Rao (ananya.traveler_1795496026307@example.com) has activated their account.",
+      "type": "info",
+      "link": "/admin/customers",
+      "is_read": false,
+      "id": "not_a54f051867",
+      "created_at": "2026-11-24T04:53:59.212Z",
+      "updated_at": "2026-11-24T04:53:59.212Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_manager_genie",
+      "title": "Customer Account Activated",
+      "message": "Customer Ananya Rao (ananya.traveler_1795496026307@example.com) has activated their account.",
+      "type": "info",
+      "link": "/admin/customers",
+      "is_read": false,
+      "id": "not_251adf467b",
+      "created_at": "2026-11-24T04:53:59.332Z",
+      "updated_at": "2026-11-24T04:53:59.332Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "title": "New B2B Agent Purchase",
+      "message": "Agent Rohan Mehra placed a wholesale purchase for Enchanting Kashmir: Srinagar, Gulmarg & Pahalgam (₹52,000).",
+      "type": "info",
+      "link": "/admin/bookings",
+      "is_read": false,
+      "id": "not_67c31f8b5f",
+      "created_at": "2026-11-24T04:58:06.025Z",
+      "updated_at": "2026-11-24T04:58:06.025Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "title": "New Customer Enquiry",
+      "message": "Enquiry #ENQ-2026-0030 from Ananya Rao for Switzerland Alps & Scenic Trains. Awaiting assignment.",
+      "type": "info",
+      "link": "/admin/leads",
+      "is_read": false,
+      "id": "not_81eb644586",
+      "created_at": "2026-11-24T04:58:10.969Z",
+      "updated_at": "2026-11-24T04:58:10.969Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_manager_genie",
+      "title": "New Customer Enquiry",
+      "message": "Enquiry #ENQ-2026-0030 from Ananya Rao for Switzerland Alps & Scenic Trains. Awaiting assignment.",
+      "type": "info",
+      "link": "/manager/leads",
+      "is_read": false,
+      "id": "not_3c47877403",
+      "created_at": "2026-11-24T04:58:11.050Z",
+      "updated_at": "2026-11-24T04:58:11.050Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_staff_priya",
+      "title": "Leads Assigned",
+      "message": "You have been assigned 1 lead(s) by Administrator.",
+      "type": "info",
+      "link": "/staff/leads",
+      "is_read": false,
+      "id": "not_e56b742df5",
+      "created_at": "2026-11-24T04:58:11.958Z",
+      "updated_at": "2026-11-24T04:58:11.958Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "title": "Trip Confirmed by Customer",
+      "message": "Ananya Rao confirmed holiday for Switzerland Alps & Scenic Trains. Booking #BK-2026-0040 awaiting advance payment of ₹50,400.",
+      "type": "info",
+      "link": "/admin/bookings",
+      "is_read": false,
+      "id": "not_35bd209f53",
+      "created_at": "2026-11-24T04:58:14.041Z",
+      "updated_at": "2026-11-24T04:58:14.041Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_manager_genie",
+      "title": "Trip Confirmed by Customer",
+      "message": "Ananya Rao confirmed holiday for Switzerland Alps & Scenic Trains. Booking #BK-2026-0040 awaiting advance payment of ₹50,400.",
+      "type": "info",
+      "link": "/admin/bookings",
+      "is_read": false,
+      "id": "not_7315e62969",
+      "created_at": "2026-11-24T04:58:14.137Z",
+      "updated_at": "2026-11-24T04:58:14.137Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "title": "Advance Payment Received - Account Creation Eligible!",
+      "message": "Verified advance of ₹50,400 for booking #BK-2026-0040 (Ananya Rao). Eligible for \"CREATE CUSTOMER LOGIN\".",
+      "type": "success",
+      "link": "/admin/bookings",
+      "is_read": false,
+      "id": "not_07c0dce0af",
+      "created_at": "2026-11-24T04:58:14.862Z",
+      "updated_at": "2026-11-24T04:58:14.862Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_manager_genie",
+      "title": "Advance Payment Received - Account Creation Eligible!",
+      "message": "Verified advance of ₹50,400 for booking #BK-2026-0040 (Ananya Rao). Eligible for \"CREATE CUSTOMER LOGIN\".",
+      "type": "success",
+      "link": "/admin/bookings",
+      "is_read": false,
+      "id": "not_2381b4c1e6",
+      "created_at": "2026-11-24T04:58:14.958Z",
+      "updated_at": "2026-11-24T04:58:14.958Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_staff_priya",
+      "title": "Partial Payment Verified!",
+      "message": "Customer Ananya Rao paid ₹50,400 for booking #BK-2026-0040.",
+      "type": "success",
+      "link": "/staff/bookings",
+      "is_read": false,
+      "id": "not_c445f02ef7",
+      "created_at": "2026-11-24T04:58:15.019Z",
+      "updated_at": "2026-11-24T04:58:15.019Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "use_2ca63f443e",
+      "title": "Welcome to Your Travel Portal!",
+      "message": "Your customer account is now fully active. Explore your holiday bookings, payments, and itineraries.",
+      "type": "success",
+      "link": "/customer/dashboard",
+      "is_read": false,
+      "id": "not_460f133094",
+      "created_at": "2026-11-24T04:58:17.029Z",
+      "updated_at": "2026-11-24T04:58:17.029Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "title": "Customer Account Activated",
+      "message": "Customer Ananya Rao (ananya.traveler_1795496290315@example.com) has activated their account.",
+      "type": "info",
+      "link": "/admin/customers",
+      "is_read": false,
+      "id": "not_2ed0f794a0",
+      "created_at": "2026-11-24T04:58:17.164Z",
+      "updated_at": "2026-11-24T04:58:17.164Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_manager_genie",
+      "title": "Customer Account Activated",
+      "message": "Customer Ananya Rao (ananya.traveler_1795496290315@example.com) has activated their account.",
+      "type": "info",
+      "link": "/admin/customers",
+      "is_read": false,
+      "id": "not_f77057cd84",
+      "created_at": "2026-11-24T04:58:17.233Z",
+      "updated_at": "2026-11-24T04:58:17.233Z"
     }
   ],
   "travel_services": [
@@ -75000,6 +76572,45 @@
       "status": "INVITATION_SENT",
       "created_at": "2026-11-24T03:13:04.927Z",
       "updated_at": "2026-11-24T03:13:04.927Z"
+    },
+    {
+      "id": "CUS-2026-0039",
+      "customer_code": "CUS-2026-0039",
+      "user_id": "use_33588e349b",
+      "agency_id": "agency_travel_genie",
+      "name": "Ananya Rao",
+      "email": "ananya.traveler_1795495559452@example.com",
+      "phone": "+91 9876559452",
+      "status": "ACTIVE",
+      "created_at": "2026-11-24T04:46:03.344Z",
+      "updated_at": "2026-11-24T04:46:04.136Z",
+      "activated_at": "2026-11-24T04:46:04.136Z"
+    },
+    {
+      "id": "CUS-2026-0041",
+      "customer_code": "CUS-2026-0041",
+      "user_id": "use_df793e7f30",
+      "agency_id": "agency_travel_genie",
+      "name": "Ananya Rao",
+      "email": "ananya.traveler_1795496026307@example.com",
+      "phone": "+91 9876526307",
+      "status": "ACTIVE",
+      "created_at": "2026-11-24T04:53:56.232Z",
+      "updated_at": "2026-11-24T04:53:58.592Z",
+      "activated_at": "2026-11-24T04:53:58.591Z"
+    },
+    {
+      "id": "CUS-2026-0043",
+      "customer_code": "CUS-2026-0043",
+      "user_id": "use_2ca63f443e",
+      "agency_id": "agency_travel_genie",
+      "name": "Ananya Rao",
+      "email": "ananya.traveler_1795496290315@example.com",
+      "phone": "+91 9876590315",
+      "status": "ACTIVE",
+      "created_at": "2026-11-24T04:58:15.271Z",
+      "updated_at": "2026-11-24T04:58:16.755Z",
+      "activated_at": "2026-11-24T04:58:16.754Z"
     }
   ],
   "customer_travellers": [
@@ -75569,6 +77180,81 @@
       "created_at": "2026-11-24T03:07:23.494Z",
       "id": "enq_c96c59134d",
       "updated_at": "2026-11-24T03:07:23.495Z"
+    },
+    {
+      "enquiry_id": "ENQ-2026-0028",
+      "customer_name": "Ananya Rao",
+      "customer_email": "ananya.traveler_1795495559452@example.com",
+      "customer_phone": "+91 9876559452",
+      "country": "India",
+      "departure_city": "Bengaluru",
+      "destination": "Switzerland Alps & Scenic Trains",
+      "package_id": "pkg_switzerland_luxury",
+      "departure_date": "2026-12-24",
+      "return_date": "2026-12-31",
+      "adults": 2,
+      "children": 1,
+      "infants": 0,
+      "budget": "₹2,50,000 - ₹3,50,000",
+      "travel_type": "Family Vacation",
+      "special_requirements": "Scenic window seating on Glacier Express train",
+      "additional_message": "Please advise on child discounts for mountain excursions.",
+      "source": "Universal Landing Page",
+      "campaign_source": "https://tripbygenie.in/packages/switzerland",
+      "status": "NEW",
+      "created_at": "2026-11-24T04:45:59.539Z",
+      "id": "enq_cb9c11a013",
+      "updated_at": "2026-11-24T04:45:59.540Z"
+    },
+    {
+      "enquiry_id": "ENQ-2026-0029",
+      "customer_name": "Ananya Rao",
+      "customer_email": "ananya.traveler_1795496026307@example.com",
+      "customer_phone": "+91 9876526307",
+      "country": "India",
+      "departure_city": "Bengaluru",
+      "destination": "Switzerland Alps & Scenic Trains",
+      "package_id": "pkg_switzerland_luxury",
+      "departure_date": "2026-12-24",
+      "return_date": "2026-12-31",
+      "adults": 2,
+      "children": 1,
+      "infants": 0,
+      "budget": "₹2,50,000 - ₹3,50,000",
+      "travel_type": "Family Vacation",
+      "special_requirements": "Scenic window seating on Glacier Express train",
+      "additional_message": "Please advise on child discounts for mountain excursions.",
+      "source": "Universal Landing Page",
+      "campaign_source": "https://tripbygenie.in/packages/switzerland",
+      "status": "NEW",
+      "created_at": "2026-11-24T04:53:46.410Z",
+      "id": "enq_a89cf1e861",
+      "updated_at": "2026-11-24T04:53:46.411Z"
+    },
+    {
+      "enquiry_id": "ENQ-2026-0030",
+      "customer_name": "Ananya Rao",
+      "customer_email": "ananya.traveler_1795496290315@example.com",
+      "customer_phone": "+91 9876590315",
+      "country": "India",
+      "departure_city": "Bengaluru",
+      "destination": "Switzerland Alps & Scenic Trains",
+      "package_id": "pkg_switzerland_luxury",
+      "departure_date": "2026-12-24",
+      "return_date": "2026-12-31",
+      "adults": 2,
+      "children": 1,
+      "infants": 0,
+      "budget": "₹2,50,000 - ₹3,50,000",
+      "travel_type": "Family Vacation",
+      "special_requirements": "Scenic window seating on Glacier Express train",
+      "additional_message": "Please advise on child discounts for mountain excursions.",
+      "source": "Universal Landing Page",
+      "campaign_source": "https://tripbygenie.in/packages/switzerland",
+      "status": "NEW",
+      "created_at": "2026-11-24T04:58:10.388Z",
+      "id": "enq_11a6806dde",
+      "updated_at": "2026-11-24T04:58:10.390Z"
     }
   ],
   "lead_assignments": [
@@ -75730,6 +77416,51 @@
       "id": "lea_2a890b69b8",
       "created_at": "2026-11-24T03:07:24.324Z",
       "updated_at": "2026-11-24T03:07:24.324Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_1582680143",
+      "assigned_by": "usr_admin_genie",
+      "assigned_by_name": "Aditya Sharma (Super Admin)",
+      "staff_id": "usr_staff_priya",
+      "staff_name": "Priya Nair",
+      "previous_staff_id": null,
+      "previous_staff_name": "Unassigned",
+      "notes": "High-intent Switzerland luxury family holiday inquiry.",
+      "assigned_at": "2026-11-24T04:46:00.575Z",
+      "id": "lea_0fadc34c52",
+      "created_at": "2026-11-24T04:46:00.598Z",
+      "updated_at": "2026-11-24T04:46:00.598Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_fd8302023b",
+      "assigned_by": "usr_admin_genie",
+      "assigned_by_name": "Aditya Sharma (Super Admin)",
+      "staff_id": "usr_staff_priya",
+      "staff_name": "Priya Nair",
+      "previous_staff_id": null,
+      "previous_staff_name": "Unassigned",
+      "notes": "High-intent Switzerland luxury family holiday inquiry.",
+      "assigned_at": "2026-11-24T04:53:47.904Z",
+      "id": "lea_ad3b397175",
+      "created_at": "2026-11-24T04:53:48.008Z",
+      "updated_at": "2026-11-24T04:53:48.008Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_6b991c7757",
+      "assigned_by": "usr_admin_genie",
+      "assigned_by_name": "Aditya Sharma (Super Admin)",
+      "staff_id": "usr_staff_priya",
+      "staff_name": "Priya Nair",
+      "previous_staff_id": null,
+      "previous_staff_name": "Unassigned",
+      "notes": "High-intent Switzerland luxury family holiday inquiry.",
+      "assigned_at": "2026-11-24T04:58:11.499Z",
+      "id": "lea_48e0141e20",
+      "created_at": "2026-11-24T04:58:11.565Z",
+      "updated_at": "2026-11-24T04:58:11.565Z"
     }
   ],
   "follow_ups": [
@@ -75853,6 +77584,39 @@
       "created_at": "2026-11-24T03:07:25.043Z",
       "id": "fol_520c00fedd",
       "updated_at": "2026-11-24T03:07:25.081Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_1582680143",
+      "staff_id": "usr_staff_priya",
+      "scheduled_date": "2026-11-25",
+      "notes": "Spoke with Mrs. Ananya. Discussed 5-star mountain chalet in Zermatt and 1st-class Swiss Travel Pass.",
+      "status": "SCHEDULED",
+      "created_at": "2026-11-24T04:46:01.200Z",
+      "id": "fol_0ebf94e1bf",
+      "updated_at": "2026-11-24T04:46:01.243Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_fd8302023b",
+      "staff_id": "usr_staff_priya",
+      "scheduled_date": "2026-11-25",
+      "notes": "Spoke with Mrs. Ananya. Discussed 5-star mountain chalet in Zermatt and 1st-class Swiss Travel Pass.",
+      "status": "SCHEDULED",
+      "created_at": "2026-11-24T04:53:50.340Z",
+      "id": "fol_2987914578",
+      "updated_at": "2026-11-24T04:53:50.459Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_6b991c7757",
+      "staff_id": "usr_staff_priya",
+      "scheduled_date": "2026-11-25",
+      "notes": "Spoke with Mrs. Ananya. Discussed 5-star mountain chalet in Zermatt and 1st-class Swiss Travel Pass.",
+      "status": "SCHEDULED",
+      "created_at": "2026-11-24T04:58:12.520Z",
+      "id": "fol_3ddf8991b6",
+      "updated_at": "2026-11-24T04:58:12.557Z"
     }
   ],
   "customer_interactions": [
@@ -76067,6 +77831,45 @@
       "created_at": "2026-11-24T03:07:24.855Z",
       "id": "cus_012360decd",
       "updated_at": "2026-11-24T03:07:24.856Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_1582680143",
+      "staff_id": "usr_staff_priya",
+      "staff_name": "Priya Nair",
+      "channel": "CALL",
+      "summary": "Spoke with Mrs. Ananya. Discussed 5-star mountain chalet in Zermatt and 1st-class Swiss Travel Pass.",
+      "customer_response": "Customer very interested in customized itinerary with private airport transfers.",
+      "preferences": null,
+      "created_at": "2026-11-24T04:46:01.072Z",
+      "id": "cus_7b9a09f10a",
+      "updated_at": "2026-11-24T04:46:01.072Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_fd8302023b",
+      "staff_id": "usr_staff_priya",
+      "staff_name": "Priya Nair",
+      "channel": "CALL",
+      "summary": "Spoke with Mrs. Ananya. Discussed 5-star mountain chalet in Zermatt and 1st-class Swiss Travel Pass.",
+      "customer_response": "Customer very interested in customized itinerary with private airport transfers.",
+      "preferences": null,
+      "created_at": "2026-11-24T04:53:49.836Z",
+      "id": "cus_06a3a6186a",
+      "updated_at": "2026-11-24T04:53:49.837Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_6b991c7757",
+      "staff_id": "usr_staff_priya",
+      "staff_name": "Priya Nair",
+      "channel": "CALL",
+      "summary": "Spoke with Mrs. Ananya. Discussed 5-star mountain chalet in Zermatt and 1st-class Swiss Travel Pass.",
+      "customer_response": "Customer very interested in customized itinerary with private airport transfers.",
+      "preferences": null,
+      "created_at": "2026-11-24T04:58:12.264Z",
+      "id": "cus_d8340c6f3d",
+      "updated_at": "2026-11-24T04:58:12.264Z"
     }
   ],
   "package_pricing": [
@@ -76740,6 +78543,87 @@
       "id": "quo_f1e359b72d",
       "created_at": "2026-11-24T03:07:25.601Z",
       "updated_at": "2026-11-24T03:07:25.601Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "quotation_id": "quo_09dcffb4cc",
+      "description": "Luxury 5-Star Mountain Chalet Stay (6 Nights)",
+      "amount": 100000,
+      "id": "quo_fe4c68ca67",
+      "created_at": "2026-11-24T04:46:01.612Z",
+      "updated_at": "2026-11-24T04:46:01.612Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "quotation_id": "quo_09dcffb4cc",
+      "description": "Swiss Travel Pass First Class (3 Pax)",
+      "amount": 40000,
+      "id": "quo_59830afb65",
+      "created_at": "2026-11-24T04:46:01.686Z",
+      "updated_at": "2026-11-24T04:46:01.686Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "quotation_id": "quo_09dcffb4cc",
+      "description": "Private Airport & Sightseeing Transfers",
+      "amount": 20000,
+      "id": "quo_4226ecece2",
+      "created_at": "2026-11-24T04:46:01.743Z",
+      "updated_at": "2026-11-24T04:46:01.743Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "quotation_id": "quo_25227e29dc",
+      "description": "Luxury 5-Star Mountain Chalet Stay (6 Nights)",
+      "amount": 100000,
+      "id": "quo_0d656435a1",
+      "created_at": "2026-11-24T04:53:51.093Z",
+      "updated_at": "2026-11-24T04:53:51.093Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "quotation_id": "quo_25227e29dc",
+      "description": "Swiss Travel Pass First Class (3 Pax)",
+      "amount": 40000,
+      "id": "quo_4950ae4cb8",
+      "created_at": "2026-11-24T04:53:51.254Z",
+      "updated_at": "2026-11-24T04:53:51.254Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "quotation_id": "quo_25227e29dc",
+      "description": "Private Airport & Sightseeing Transfers",
+      "amount": 20000,
+      "id": "quo_17bc6f33ad",
+      "created_at": "2026-11-24T04:53:51.488Z",
+      "updated_at": "2026-11-24T04:53:51.488Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "quotation_id": "quo_7a4cecd385",
+      "description": "Luxury 5-Star Mountain Chalet Stay (6 Nights)",
+      "amount": 100000,
+      "id": "quo_1bb69ebdca",
+      "created_at": "2026-11-24T04:58:13.016Z",
+      "updated_at": "2026-11-24T04:58:13.016Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "quotation_id": "quo_7a4cecd385",
+      "description": "Swiss Travel Pass First Class (3 Pax)",
+      "amount": 40000,
+      "id": "quo_d6cab27fdf",
+      "created_at": "2026-11-24T04:58:13.131Z",
+      "updated_at": "2026-11-24T04:58:13.131Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "quotation_id": "quo_7a4cecd385",
+      "description": "Private Airport & Sightseeing Transfers",
+      "amount": 20000,
+      "id": "quo_33821e495a",
+      "created_at": "2026-11-24T04:58:13.213Z",
+      "updated_at": "2026-11-24T04:58:13.213Z"
     }
   ],
   "booking_status_history": [
@@ -76945,6 +78829,72 @@
       "created_at": "2026-11-24T03:07:26.683Z",
       "id": "boo_90f783ad68",
       "updated_at": "2026-11-24T03:07:26.717Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "booking_id": "boo_6158263340",
+      "from_status": "NONE",
+      "to_status": "PAYMENT_PENDING",
+      "changed_by": "usr_staff_priya",
+      "notes": "Initial trip confirmation recorded.",
+      "created_at": "2026-11-24T04:46:02.351Z",
+      "id": "boo_2df3e29e1c",
+      "updated_at": "2026-11-24T04:46:02.385Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "booking_id": "boo_6158263340",
+      "from_status": "PAYMENT_PENDING",
+      "to_status": "BOOKING_CONFIRMED",
+      "changed_by": "payment_gateway",
+      "notes": "Advance payment of ₹50,400 verified. Txn: PAY-GATEWAY-UPI-1795495559452.",
+      "created_at": "2026-11-24T04:46:02.732Z",
+      "id": "boo_97a478a4dc",
+      "updated_at": "2026-11-24T04:46:02.760Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "booking_id": "boo_08df4a118b",
+      "from_status": "NONE",
+      "to_status": "PAYMENT_PENDING",
+      "changed_by": "usr_staff_priya",
+      "notes": "Initial trip confirmation recorded.",
+      "created_at": "2026-11-24T04:53:53.296Z",
+      "id": "boo_895a81c116",
+      "updated_at": "2026-11-24T04:53:53.356Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "booking_id": "boo_08df4a118b",
+      "from_status": "PAYMENT_PENDING",
+      "to_status": "BOOKING_CONFIRMED",
+      "changed_by": "payment_gateway",
+      "notes": "Advance payment of ₹50,400 verified. Txn: PAY-GATEWAY-UPI-1795496026307.",
+      "created_at": "2026-11-24T04:53:54.082Z",
+      "id": "boo_fdf8697c53",
+      "updated_at": "2026-11-24T04:53:54.165Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "booking_id": "boo_9c6808d203",
+      "from_status": "NONE",
+      "to_status": "PAYMENT_PENDING",
+      "changed_by": "usr_staff_priya",
+      "notes": "Initial trip confirmation recorded.",
+      "created_at": "2026-11-24T04:58:13.914Z",
+      "id": "boo_2d6bc6a8b6",
+      "updated_at": "2026-11-24T04:58:13.961Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "booking_id": "boo_9c6808d203",
+      "from_status": "PAYMENT_PENDING",
+      "to_status": "BOOKING_CONFIRMED",
+      "changed_by": "payment_gateway",
+      "notes": "Advance payment of ₹50,400 verified. Txn: PAY-GATEWAY-UPI-1795496290315.",
+      "created_at": "2026-11-24T04:58:14.375Z",
+      "id": "boo_5c67b15dcf",
+      "updated_at": "2026-11-24T04:58:14.397Z"
     }
   ],
   "refunds": [
@@ -77138,6 +79088,60 @@
       "created_at": "2026-11-24T03:07:26.944Z",
       "id": "inv_6e35f732d1",
       "updated_at": "2026-11-24T03:07:26.970Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "invoice_number": "TG-INV-2026-7235",
+      "booking_id": "boo_6158263340",
+      "customer_name": "Ananya Rao",
+      "customer_email": "ananya.traveler_1795495559452@example.com",
+      "invoice_date": "2026-11-24",
+      "subtotal": 48000,
+      "cgst": 1200,
+      "sgst": 1200,
+      "igst": 0,
+      "total_amount": 50400,
+      "payment_status": "PARTIALLY_PAID",
+      "pdf_url": "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80",
+      "created_at": "2026-11-24T04:46:02.939Z",
+      "id": "inv_0f53a39e08",
+      "updated_at": "2026-11-24T04:46:02.959Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "invoice_number": "TG-INV-2026-3307",
+      "booking_id": "boo_08df4a118b",
+      "customer_name": "Ananya Rao",
+      "customer_email": "ananya.traveler_1795496026307@example.com",
+      "invoice_date": "2026-11-24",
+      "subtotal": 48000,
+      "cgst": 1200,
+      "sgst": 1200,
+      "igst": 0,
+      "total_amount": 50400,
+      "payment_status": "PARTIALLY_PAID",
+      "pdf_url": "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80",
+      "created_at": "2026-11-24T04:53:54.966Z",
+      "id": "inv_967d5eb28e",
+      "updated_at": "2026-11-24T04:53:55.068Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "invoice_number": "TG-INV-2026-4078",
+      "booking_id": "boo_9c6808d203",
+      "customer_name": "Ananya Rao",
+      "customer_email": "ananya.traveler_1795496290315@example.com",
+      "invoice_date": "2026-11-24",
+      "subtotal": 48000,
+      "cgst": 1200,
+      "sgst": 1200,
+      "igst": 0,
+      "total_amount": 50400,
+      "payment_status": "PARTIALLY_PAID",
+      "pdf_url": "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80",
+      "created_at": "2026-11-24T04:58:14.676Z",
+      "id": "inv_169430cb6f",
+      "updated_at": "2026-11-24T04:58:14.697Z"
     }
   ],
   "operations_tasks": [
@@ -77492,6 +79496,78 @@
       "created_at": "2026-11-24T03:07:18.105Z",
       "id": "b2b_5218d801b2",
       "updated_at": "2026-11-24T03:07:20.832Z"
+    },
+    {
+      "agent_id": "B2B-2026-0011",
+      "user_id": "use_7850a80661",
+      "agency_id": "agency_travel_genie",
+      "agent_name": "Rohan Mehra",
+      "company_name": "Voyage Express Wholesale Pvt Ltd",
+      "email": "partner.travel_1795495550768@voyageexpress.com",
+      "phone": "+91 9811150768",
+      "business_address": "Level 5, Express Trade Tower, Sector 62, Noida, UP",
+      "gst_number": "07AAAAA1111A1Z9",
+      "business_reg_number": "U74999DL2024PTC123456",
+      "contact_person": "Rohan Mehra (Managing Director)",
+      "account_type": "WHOLESALE",
+      "account_status": "ACTIVE",
+      "invitation_status": "ACTIVATED",
+      "wholesale_discount_pct": 15,
+      "credit_limit": 750000,
+      "invitation_sent_at": "2026-11-24T04:45:51.937Z",
+      "activated_at": "2026-11-24T04:45:52.501Z",
+      "last_login_at": "2026-11-24T04:45:54.144Z",
+      "created_at": "2026-11-24T04:45:51.162Z",
+      "id": "b2b_32e6138e26",
+      "updated_at": "2026-11-24T04:45:54.145Z"
+    },
+    {
+      "agent_id": "B2B-2026-0012",
+      "user_id": "use_85621e80fe",
+      "agency_id": "agency_travel_genie",
+      "agent_name": "Rohan Mehra",
+      "company_name": "Voyage Express Wholesale Pvt Ltd",
+      "email": "partner.travel_1795496018500@voyageexpress.com",
+      "phone": "+91 9811118500",
+      "business_address": "Level 5, Express Trade Tower, Sector 62, Noida, UP",
+      "gst_number": "07AAAAA1111A1Z9",
+      "business_reg_number": "U74999DL2024PTC123456",
+      "contact_person": "Rohan Mehra (Managing Director)",
+      "account_type": "WHOLESALE",
+      "account_status": "ACTIVE",
+      "invitation_status": "ACTIVATED",
+      "wholesale_discount_pct": 15,
+      "credit_limit": 750000,
+      "invitation_sent_at": "2026-11-24T04:53:39.824Z",
+      "activated_at": "2026-11-24T04:53:40.325Z",
+      "last_login_at": "2026-11-24T04:53:42.930Z",
+      "created_at": "2026-11-24T04:53:39.012Z",
+      "id": "b2b_7fa4113cc8",
+      "updated_at": "2026-11-24T04:53:42.930Z"
+    },
+    {
+      "agent_id": "B2B-2026-0013",
+      "user_id": "use_c6a907c75c",
+      "agency_id": "agency_travel_genie",
+      "agent_name": "Rohan Mehra",
+      "company_name": "Voyage Express Wholesale Pvt Ltd",
+      "email": "partner.travel_1795496282673@voyageexpress.com",
+      "phone": "+91 9811182673",
+      "business_address": "Level 5, Express Trade Tower, Sector 62, Noida, UP",
+      "gst_number": "07AAAAA1111A1Z9",
+      "business_reg_number": "U74999DL2024PTC123456",
+      "contact_person": "Rohan Mehra (Managing Director)",
+      "account_type": "WHOLESALE",
+      "account_status": "ACTIVE",
+      "invitation_status": "ACTIVATED",
+      "wholesale_discount_pct": 15,
+      "credit_limit": 750000,
+      "invitation_sent_at": "2026-11-24T04:58:03.804Z",
+      "activated_at": "2026-11-24T04:58:04.383Z",
+      "last_login_at": "2026-11-24T04:58:07.247Z",
+      "created_at": "2026-11-24T04:58:03.038Z",
+      "id": "b2b_23b52fec8b",
+      "updated_at": "2026-11-24T04:58:07.247Z"
     }
   ],
   "agent_pricing": [
@@ -78457,6 +80533,246 @@
       "id": "aud_0431d4705a",
       "created_at": "2026-11-24T03:13:05.287Z",
       "updated_at": "2026-11-24T03:13:05.287Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "system",
+      "action": "CREATE_LEAD",
+      "entity_type": "lead",
+      "entity_id": "lea_1582680143",
+      "details": {
+        "enquiry_id": "ENQ-2026-0028",
+        "customer_name": "Ananya Rao",
+        "customer_email": "ananya.traveler_1795495559452@example.com",
+        "destination": "Switzerland Alps & Scenic Trains"
+      },
+      "timestamp": "2026-11-24T04:45:59.903Z",
+      "id": "aud_f7f101c03b",
+      "created_at": "2026-11-24T04:45:59.940Z",
+      "updated_at": "2026-11-24T04:45:59.940Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "action": "ASSIGN_LEAD",
+      "entity_type": "lead",
+      "entity_id": "lea_1582680143",
+      "details": {
+        "staff_id": "usr_staff_priya",
+        "staff_name": "Priya Nair",
+        "previous_staff_id": null,
+        "notes": "High-intent Switzerland luxury family holiday inquiry."
+      },
+      "timestamp": "2026-11-24T04:46:00.765Z",
+      "id": "aud_bf01ef12d1",
+      "created_at": "2026-11-24T04:46:00.785Z",
+      "updated_at": "2026-11-24T04:46:00.785Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "action": "CREATE_CUSTOMER_LOGIN",
+      "entity_type": "customer",
+      "entity_id": "CUS-2026-0039",
+      "details": {
+        "booking_id": "boo_6158263340",
+        "booking_number": "BK-2026-0034",
+        "customer_name": "Ananya Rao",
+        "email": "ananya.traveler_1795495559452@example.com"
+      },
+      "timestamp": "2026-11-24T04:46:03.549Z",
+      "id": "aud_f1a244bed2",
+      "created_at": "2026-11-24T04:46:03.574Z",
+      "updated_at": "2026-11-24T04:46:03.574Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "action": "RESEND_CUSTOMER_INVITATION",
+      "entity_type": "customer",
+      "entity_id": "CUS-2026-0039",
+      "details": {
+        "email": "ananya.traveler_1795495559452@example.com"
+      },
+      "timestamp": "2026-11-24T04:46:03.814Z",
+      "id": "aud_8c10e63ef3",
+      "created_at": "2026-11-24T04:46:03.833Z",
+      "updated_at": "2026-11-24T04:46:03.833Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "use_33588e349b",
+      "action": "ACTIVATE_CUSTOMER_ACCOUNT",
+      "entity_type": "customer",
+      "entity_id": "use_33588e349b",
+      "details": {
+        "customer_id": "CUS-2026-0039",
+        "email": "ananya.traveler_1795495559452@example.com"
+      },
+      "timestamp": "2026-11-24T04:46:04.233Z",
+      "id": "aud_084a9ffabd",
+      "created_at": "2026-11-24T04:46:04.268Z",
+      "updated_at": "2026-11-24T04:46:04.268Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "system",
+      "action": "CREATE_LEAD",
+      "entity_type": "lead",
+      "entity_id": "lea_fd8302023b",
+      "details": {
+        "enquiry_id": "ENQ-2026-0029",
+        "customer_name": "Ananya Rao",
+        "customer_email": "ananya.traveler_1795496026307@example.com",
+        "destination": "Switzerland Alps & Scenic Trains"
+      },
+      "timestamp": "2026-11-24T04:53:46.809Z",
+      "id": "aud_90cd964a76",
+      "created_at": "2026-11-24T04:53:46.845Z",
+      "updated_at": "2026-11-24T04:53:46.845Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "action": "ASSIGN_LEAD",
+      "entity_type": "lead",
+      "entity_id": "lea_fd8302023b",
+      "details": {
+        "staff_id": "usr_staff_priya",
+        "staff_name": "Priya Nair",
+        "previous_staff_id": null,
+        "notes": "High-intent Switzerland luxury family holiday inquiry."
+      },
+      "timestamp": "2026-11-24T04:53:48.656Z",
+      "id": "aud_d835f19605",
+      "created_at": "2026-11-24T04:53:48.730Z",
+      "updated_at": "2026-11-24T04:53:48.730Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "action": "CREATE_CUSTOMER_LOGIN",
+      "entity_type": "customer",
+      "entity_id": "CUS-2026-0041",
+      "details": {
+        "booking_id": "boo_08df4a118b",
+        "booking_number": "BK-2026-0037",
+        "customer_name": "Ananya Rao",
+        "email": "ananya.traveler_1795496026307@example.com"
+      },
+      "timestamp": "2026-11-24T04:53:56.839Z",
+      "id": "aud_2bd9191c41",
+      "created_at": "2026-11-24T04:53:56.908Z",
+      "updated_at": "2026-11-24T04:53:56.908Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "action": "RESEND_CUSTOMER_INVITATION",
+      "entity_type": "customer",
+      "entity_id": "CUS-2026-0041",
+      "details": {
+        "email": "ananya.traveler_1795496026307@example.com"
+      },
+      "timestamp": "2026-11-24T04:53:57.585Z",
+      "id": "aud_d0aa99d192",
+      "created_at": "2026-11-24T04:53:57.649Z",
+      "updated_at": "2026-11-24T04:53:57.649Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "use_df793e7f30",
+      "action": "ACTIVATE_CUSTOMER_ACCOUNT",
+      "entity_type": "customer",
+      "entity_id": "use_df793e7f30",
+      "details": {
+        "customer_id": "CUS-2026-0041",
+        "email": "ananya.traveler_1795496026307@example.com"
+      },
+      "timestamp": "2026-11-24T04:53:58.869Z",
+      "id": "aud_bba324b9db",
+      "created_at": "2026-11-24T04:53:58.925Z",
+      "updated_at": "2026-11-24T04:53:58.925Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "system",
+      "action": "CREATE_LEAD",
+      "entity_type": "lead",
+      "entity_id": "lea_6b991c7757",
+      "details": {
+        "enquiry_id": "ENQ-2026-0030",
+        "customer_name": "Ananya Rao",
+        "customer_email": "ananya.traveler_1795496290315@example.com",
+        "destination": "Switzerland Alps & Scenic Trains"
+      },
+      "timestamp": "2026-11-24T04:58:10.740Z",
+      "id": "aud_0952675a55",
+      "created_at": "2026-11-24T04:58:10.787Z",
+      "updated_at": "2026-11-24T04:58:10.787Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "action": "ASSIGN_LEAD",
+      "entity_type": "lead",
+      "entity_id": "lea_6b991c7757",
+      "details": {
+        "staff_id": "usr_staff_priya",
+        "staff_name": "Priya Nair",
+        "previous_staff_id": null,
+        "notes": "High-intent Switzerland luxury family holiday inquiry."
+      },
+      "timestamp": "2026-11-24T04:58:11.798Z",
+      "id": "aud_2188dd70d0",
+      "created_at": "2026-11-24T04:58:11.848Z",
+      "updated_at": "2026-11-24T04:58:11.848Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "action": "CREATE_CUSTOMER_LOGIN",
+      "entity_type": "customer",
+      "entity_id": "CUS-2026-0043",
+      "details": {
+        "booking_id": "boo_9c6808d203",
+        "booking_number": "BK-2026-0040",
+        "customer_name": "Ananya Rao",
+        "email": "ananya.traveler_1795496290315@example.com"
+      },
+      "timestamp": "2026-11-24T04:58:15.622Z",
+      "id": "aud_df7db171b2",
+      "created_at": "2026-11-24T04:58:15.654Z",
+      "updated_at": "2026-11-24T04:58:15.654Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "action": "RESEND_CUSTOMER_INVITATION",
+      "entity_type": "customer",
+      "entity_id": "CUS-2026-0043",
+      "details": {
+        "email": "ananya.traveler_1795496290315@example.com"
+      },
+      "timestamp": "2026-11-24T04:58:16.187Z",
+      "id": "aud_dd1501d8a9",
+      "created_at": "2026-11-24T04:58:16.238Z",
+      "updated_at": "2026-11-24T04:58:16.238Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "use_2ca63f443e",
+      "action": "ACTIVATE_CUSTOMER_ACCOUNT",
+      "entity_type": "customer",
+      "entity_id": "use_2ca63f443e",
+      "details": {
+        "customer_id": "CUS-2026-0043",
+        "email": "ananya.traveler_1795496290315@example.com"
+      },
+      "timestamp": "2026-11-24T04:58:16.917Z",
+      "id": "aud_c1578a49bf",
+      "created_at": "2026-11-24T04:58:16.962Z",
+      "updated_at": "2026-11-24T04:58:16.962Z"
     }
   ],
   "system_settings": [
@@ -79065,6 +81381,204 @@
       "created_at": "2026-11-24T03:07:26.815Z",
       "id": "lea_f5e1b7b3ca",
       "updated_at": "2026-11-24T03:07:26.840Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_1582680143",
+      "from_status": "NONE",
+      "to_status": "NEW",
+      "changed_by": "system",
+      "notes": "Enquiry #ENQ-2026-0028 submitted.",
+      "created_at": "2026-11-24T04:45:59.811Z",
+      "id": "lea_92a042df49",
+      "updated_at": "2026-11-24T04:45:59.850Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_1582680143",
+      "from_status": "New",
+      "to_status": "Assigned",
+      "changed_by": "usr_admin_genie",
+      "notes": "Lead assigned to Priya Nair. High-intent Switzerland luxury family holiday inquiry.",
+      "created_at": "2026-11-24T04:46:00.625Z",
+      "id": "lea_893b2703cf",
+      "updated_at": "2026-11-24T04:46:00.661Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_1582680143",
+      "from_status": "Assigned",
+      "to_status": "Qualified",
+      "changed_by": "usr_staff_priya",
+      "notes": "Requirements finalized for 7-day luxury Swiss Alps tour.",
+      "created_at": "2026-11-24T04:46:01.453Z",
+      "id": "lea_f25aa05aef",
+      "updated_at": "2026-11-24T04:46:01.477Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_1582680143",
+      "from_status": "Qualified",
+      "to_status": "Quotation Sent",
+      "changed_by": "usr_staff_priya",
+      "notes": "Quotation #QT-2026-3374-V1 dispatched.",
+      "created_at": "2026-11-24T04:46:01.847Z",
+      "id": "lea_26f6a2f89a",
+      "updated_at": "2026-11-24T04:46:01.874Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_1582680143",
+      "from_status": "Quotation Sent",
+      "to_status": "Customer Confirmed",
+      "changed_by": "usr_staff_priya",
+      "notes": "Customer confirmed trip. Booking #BK-2026-0034 created awaiting advance deposit of ₹50,400.",
+      "created_at": "2026-11-24T04:46:02.186Z",
+      "id": "lea_ea7e4ce693",
+      "updated_at": "2026-11-24T04:46:02.220Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_1582680143",
+      "from_status": "Customer Confirmed",
+      "to_status": "Partially Paid",
+      "changed_by": "system",
+      "notes": "Partial payment verified.",
+      "created_at": "2026-11-24T04:46:02.838Z",
+      "id": "lea_304d670fae",
+      "updated_at": "2026-11-24T04:46:02.858Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_fd8302023b",
+      "from_status": "NONE",
+      "to_status": "NEW",
+      "changed_by": "system",
+      "notes": "Enquiry #ENQ-2026-0029 submitted.",
+      "created_at": "2026-11-24T04:53:46.710Z",
+      "id": "lea_bb23aaf497",
+      "updated_at": "2026-11-24T04:53:46.751Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_fd8302023b",
+      "from_status": "New",
+      "to_status": "Assigned",
+      "changed_by": "usr_admin_genie",
+      "notes": "Lead assigned to Priya Nair. High-intent Switzerland luxury family holiday inquiry.",
+      "created_at": "2026-11-24T04:53:48.147Z",
+      "id": "lea_ca3ed27304",
+      "updated_at": "2026-11-24T04:53:48.292Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_fd8302023b",
+      "from_status": "Assigned",
+      "to_status": "Qualified",
+      "changed_by": "usr_staff_priya",
+      "notes": "Requirements finalized for 7-day luxury Swiss Alps tour.",
+      "created_at": "2026-11-24T04:53:50.779Z",
+      "id": "lea_c80734f8d4",
+      "updated_at": "2026-11-24T04:53:50.838Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_fd8302023b",
+      "from_status": "Qualified",
+      "to_status": "Quotation Sent",
+      "changed_by": "usr_staff_priya",
+      "notes": "Quotation #QT-2026-6669-V1 dispatched.",
+      "created_at": "2026-11-24T04:53:51.732Z",
+      "id": "lea_708f7fc368",
+      "updated_at": "2026-11-24T04:53:51.799Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_fd8302023b",
+      "from_status": "Quotation Sent",
+      "to_status": "Customer Confirmed",
+      "changed_by": "usr_staff_priya",
+      "notes": "Customer confirmed trip. Booking #BK-2026-0037 created awaiting advance deposit of ₹50,400.",
+      "created_at": "2026-11-24T04:53:52.969Z",
+      "id": "lea_a68dbcbada",
+      "updated_at": "2026-11-24T04:53:53.057Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_fd8302023b",
+      "from_status": "Customer Confirmed",
+      "to_status": "Partially Paid",
+      "changed_by": "system",
+      "notes": "Partial payment verified.",
+      "created_at": "2026-11-24T04:53:54.536Z",
+      "id": "lea_9baa87a55c",
+      "updated_at": "2026-11-24T04:53:54.619Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_6b991c7757",
+      "from_status": "NONE",
+      "to_status": "NEW",
+      "changed_by": "system",
+      "notes": "Enquiry #ENQ-2026-0030 submitted.",
+      "created_at": "2026-11-24T04:58:10.647Z",
+      "id": "lea_aa0a274a07",
+      "updated_at": "2026-11-24T04:58:10.689Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_6b991c7757",
+      "from_status": "New",
+      "to_status": "Assigned",
+      "changed_by": "usr_admin_genie",
+      "notes": "Lead assigned to Priya Nair. High-intent Switzerland luxury family holiday inquiry.",
+      "created_at": "2026-11-24T04:58:11.635Z",
+      "id": "lea_9ffb084831",
+      "updated_at": "2026-11-24T04:58:11.683Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_6b991c7757",
+      "from_status": "Assigned",
+      "to_status": "Qualified",
+      "changed_by": "usr_staff_priya",
+      "notes": "Requirements finalized for 7-day luxury Swiss Alps tour.",
+      "created_at": "2026-11-24T04:58:12.837Z",
+      "id": "lea_fd531ec5f4",
+      "updated_at": "2026-11-24T04:58:12.863Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_6b991c7757",
+      "from_status": "Qualified",
+      "to_status": "Quotation Sent",
+      "changed_by": "usr_staff_priya",
+      "notes": "Quotation #QT-2026-5334-V1 dispatched.",
+      "created_at": "2026-11-24T04:58:13.359Z",
+      "id": "lea_199f01df2a",
+      "updated_at": "2026-11-24T04:58:13.393Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_6b991c7757",
+      "from_status": "Quotation Sent",
+      "to_status": "Customer Confirmed",
+      "changed_by": "usr_staff_priya",
+      "notes": "Customer confirmed trip. Booking #BK-2026-0040 created awaiting advance deposit of ₹50,400.",
+      "created_at": "2026-11-24T04:58:13.793Z",
+      "id": "lea_93b74953b2",
+      "updated_at": "2026-11-24T04:58:13.816Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_6b991c7757",
+      "from_status": "Customer Confirmed",
+      "to_status": "Partially Paid",
+      "changed_by": "system",
+      "notes": "Partial payment verified.",
+      "created_at": "2026-11-24T04:58:14.481Z",
+      "id": "lea_2b948d0c88",
+      "updated_at": "2026-11-24T04:58:14.520Z"
     }
   ],
   "email_logs": [
@@ -80108,6 +82622,366 @@
       "id": "ema_b6bd56c740",
       "created_at": "2026-11-24T03:13:05.448Z",
       "updated_at": "2026-11-24T03:13:05.448Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "to_email": "partner.travel_1795495550768@voyageexpress.com",
+      "subject": "Welcome to Trip by Genie – Your B2B Agent Account Is Ready!",
+      "template_name": "AGENT_ACCOUNT_INVITATION",
+      "status": "DELIVERED",
+      "metadata": {
+        "agent_id": "B2B-2026-0011",
+        "agent_name": "Rohan Mehra",
+        "company_name": "Voyage Express Wholesale Pvt Ltd",
+        "activation_link": "http://localhost:3000/activate-account?token=c7c1bb9a3ca5eccc60b7acf166760c48c4c9131798bd5df3b9efd1372712c9ae&type=b2b",
+        "activation_token_preview": "c7c1bb9a..."
+      },
+      "sent_at": "2026-11-24T04:45:51.553Z",
+      "id": "ema_43c4bad6b7",
+      "created_at": "2026-11-24T04:45:51.594Z",
+      "updated_at": "2026-11-24T04:45:51.594Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "to_email": "partner.travel_1795495550768@voyageexpress.com",
+      "subject": "Welcome to Trip by Genie – Your B2B Agent Account Is Ready!",
+      "template_name": "AGENT_ACCOUNT_INVITATION",
+      "status": "DELIVERED",
+      "metadata": {
+        "agent_id": "B2B-2026-0011",
+        "agent_name": "Rohan Mehra",
+        "company_name": "Voyage Express Wholesale Pvt Ltd",
+        "activation_link": "http://localhost:3000/activate-account?token=061406421cae94ca9e6a5cea90c246108c678f18f8684d9a0230fb55e9d1a3f9&type=b2b",
+        "activation_token_preview": "06140642..."
+      },
+      "sent_at": "2026-11-24T04:45:52.043Z",
+      "id": "ema_4ced036660",
+      "created_at": "2026-11-24T04:45:52.092Z",
+      "updated_at": "2026-11-24T04:45:52.092Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "to_email": "ananya.traveler_1795495559452@example.com",
+      "subject": "Enquiry Received: ENQ-2026-0028 - Your Trip to Switzerland Alps & Scenic Trains",
+      "template_name": "ENQUIRY_ACKNOWLEDGEMENT",
+      "status": "DELIVERED",
+      "metadata": {
+        "enquiry_id": "ENQ-2026-0028",
+        "customer_name": "Ananya Rao",
+        "destination": "Switzerland Alps & Scenic Trains"
+      },
+      "sent_at": "2026-11-24T04:45:59.990Z",
+      "id": "ema_0bd4c6b10c",
+      "created_at": "2026-11-24T04:46:00.038Z",
+      "updated_at": "2026-11-24T04:46:00.038Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "to_email": "ananya.traveler_1795495559452@example.com",
+      "subject": "Your Custom Travel Quotation: QT-2026-3374-V1 for Switzerland Alps & Scenic Trains",
+      "template_name": "QUOTATION_PROPOSAL",
+      "status": "DELIVERED",
+      "metadata": {
+        "quote_number": "QT-2026-3374-V1",
+        "customer_name": "Ananya Rao",
+        "total_amount": 168000,
+        "required_advance": 50400
+      },
+      "sent_at": "2026-11-24T04:46:01.983Z",
+      "id": "ema_edeb0ca265",
+      "created_at": "2026-11-24T04:46:02.010Z",
+      "updated_at": "2026-11-24T04:46:02.010Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "to_email": "ananya.traveler_1795495559452@example.com",
+      "subject": "Payment Confirmed: ₹50,400 for Booking #BK-2026-0034",
+      "template_name": "PAYMENT_RECEIPT",
+      "status": "DELIVERED",
+      "metadata": {
+        "booking_number": "BK-2026-0034",
+        "amount_paid": 50400,
+        "remaining_balance": 117600,
+        "txn_ref": "PAY-GATEWAY-UPI-1795495559452"
+      },
+      "sent_at": "2026-11-24T04:46:02.986Z",
+      "id": "ema_1664fa1ea3",
+      "created_at": "2026-11-24T04:46:03.008Z",
+      "updated_at": "2026-11-24T04:46:03.008Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "to_email": "ananya.traveler_1795495559452@example.com",
+      "subject": "Your Travel Account Is Ready – Access Your Booking Details",
+      "template_name": "CUSTOMER_ACCOUNT_INVITATION",
+      "status": "DELIVERED",
+      "metadata": {
+        "customer_id": "CUS-2026-0039",
+        "booking_id": "BK-2026-0034",
+        "activation_link": "http://localhost:3000/activate-account?token=cd1487a40740339bc588f7d4785ae99a22f8c37ad32bd40f9b490dba5a841f8d",
+        "activation_token_preview": "cd1487a4..."
+      },
+      "sent_at": "2026-11-24T04:46:03.609Z",
+      "id": "ema_ffc331fc53",
+      "created_at": "2026-11-24T04:46:03.631Z",
+      "updated_at": "2026-11-24T04:46:03.631Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "to_email": "ananya.traveler_1795495559452@example.com",
+      "subject": "Your Travel Account Is Ready – Access Your Booking Details",
+      "template_name": "CUSTOMER_ACCOUNT_INVITATION",
+      "status": "DELIVERED",
+      "metadata": {
+        "customer_id": "CUS-2026-0039",
+        "booking_id": "BK-2026-0034",
+        "activation_link": "http://localhost:3000/activate-account?token=c46b793ee88daadcf7346b8fa1902d51ae3b920f2e7bce3c1966bb740f71f010",
+        "activation_token_preview": "c46b793e..."
+      },
+      "sent_at": "2026-11-24T04:46:03.765Z",
+      "id": "ema_1c0592781a",
+      "created_at": "2026-11-24T04:46:03.785Z",
+      "updated_at": "2026-11-24T04:46:03.785Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "to_email": "partner.travel_1795496018500@voyageexpress.com",
+      "subject": "Welcome to Trip by Genie – Your B2B Agent Account Is Ready!",
+      "template_name": "AGENT_ACCOUNT_INVITATION",
+      "status": "DELIVERED",
+      "metadata": {
+        "agent_id": "B2B-2026-0012",
+        "agent_name": "Rohan Mehra",
+        "company_name": "Voyage Express Wholesale Pvt Ltd",
+        "activation_link": "http://localhost:3000/activate-account?token=01a7fd2d0508c139d0832dbe830e9db0cbdef0d77f1e307afa7e153751a096bb&type=b2b",
+        "activation_token_preview": "01a7fd2d..."
+      },
+      "sent_at": "2026-11-24T04:53:39.418Z",
+      "id": "ema_f24e200c3e",
+      "created_at": "2026-11-24T04:53:39.470Z",
+      "updated_at": "2026-11-24T04:53:39.470Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "to_email": "partner.travel_1795496018500@voyageexpress.com",
+      "subject": "Welcome to Trip by Genie – Your B2B Agent Account Is Ready!",
+      "template_name": "AGENT_ACCOUNT_INVITATION",
+      "status": "DELIVERED",
+      "metadata": {
+        "agent_id": "B2B-2026-0012",
+        "agent_name": "Rohan Mehra",
+        "company_name": "Voyage Express Wholesale Pvt Ltd",
+        "activation_link": "http://localhost:3000/activate-account?token=794e07c41a48ab6dfb65ecbf6bf64e8d5470b34ba93a726784bea00c10606765&type=b2b",
+        "activation_token_preview": "794e07c4..."
+      },
+      "sent_at": "2026-11-24T04:53:39.891Z",
+      "id": "ema_a775159350",
+      "created_at": "2026-11-24T04:53:39.929Z",
+      "updated_at": "2026-11-24T04:53:39.929Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "to_email": "ananya.traveler_1795496026307@example.com",
+      "subject": "Enquiry Received: ENQ-2026-0029 - Your Trip to Switzerland Alps & Scenic Trains",
+      "template_name": "ENQUIRY_ACKNOWLEDGEMENT",
+      "status": "DELIVERED",
+      "metadata": {
+        "enquiry_id": "ENQ-2026-0029",
+        "customer_name": "Ananya Rao",
+        "destination": "Switzerland Alps & Scenic Trains"
+      },
+      "sent_at": "2026-11-24T04:53:46.912Z",
+      "id": "ema_3c78136ff6",
+      "created_at": "2026-11-24T04:53:46.963Z",
+      "updated_at": "2026-11-24T04:53:46.963Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "to_email": "ananya.traveler_1795496026307@example.com",
+      "subject": "Your Custom Travel Quotation: QT-2026-6669-V1 for Switzerland Alps & Scenic Trains",
+      "template_name": "QUOTATION_PROPOSAL",
+      "status": "DELIVERED",
+      "metadata": {
+        "quote_number": "QT-2026-6669-V1",
+        "customer_name": "Ananya Rao",
+        "total_amount": 168000,
+        "required_advance": 50400
+      },
+      "sent_at": "2026-11-24T04:53:52.189Z",
+      "id": "ema_deab77d813",
+      "created_at": "2026-11-24T04:53:52.306Z",
+      "updated_at": "2026-11-24T04:53:52.306Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "to_email": "ananya.traveler_1795496026307@example.com",
+      "subject": "Payment Confirmed: ₹50,400 for Booking #BK-2026-0037",
+      "template_name": "PAYMENT_RECEIPT",
+      "status": "DELIVERED",
+      "metadata": {
+        "booking_number": "BK-2026-0037",
+        "amount_paid": 50400,
+        "remaining_balance": 117600,
+        "txn_ref": "PAY-GATEWAY-UPI-1795496026307"
+      },
+      "sent_at": "2026-11-24T04:53:55.153Z",
+      "id": "ema_d56d7b1a2c",
+      "created_at": "2026-11-24T04:53:55.251Z",
+      "updated_at": "2026-11-24T04:53:55.251Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "to_email": "ananya.traveler_1795496026307@example.com",
+      "subject": "Your Travel Account Is Ready – Access Your Booking Details",
+      "template_name": "CUSTOMER_ACCOUNT_INVITATION",
+      "status": "DELIVERED",
+      "metadata": {
+        "customer_id": "CUS-2026-0041",
+        "booking_id": "BK-2026-0037",
+        "activation_link": "http://localhost:3000/activate-account?token=0fa9948869b307974e88bdf8b62728638995bcebb90f09d0aa5cbfbe5aa5783f",
+        "activation_token_preview": "0fa99488..."
+      },
+      "sent_at": "2026-11-24T04:53:56.989Z",
+      "id": "ema_34a774a545",
+      "created_at": "2026-11-24T04:53:57.044Z",
+      "updated_at": "2026-11-24T04:53:57.044Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "to_email": "ananya.traveler_1795496026307@example.com",
+      "subject": "Your Travel Account Is Ready – Access Your Booking Details",
+      "template_name": "CUSTOMER_ACCOUNT_INVITATION",
+      "status": "DELIVERED",
+      "metadata": {
+        "customer_id": "CUS-2026-0041",
+        "booking_id": "BK-2026-0037",
+        "activation_link": "http://localhost:3000/activate-account?token=ed1bd334b6927f7509b57de29a96cab596bedac433fb496e16d964a3b03ba015",
+        "activation_token_preview": "ed1bd334..."
+      },
+      "sent_at": "2026-11-24T04:53:57.457Z",
+      "id": "ema_2bd51c5769",
+      "created_at": "2026-11-24T04:53:57.512Z",
+      "updated_at": "2026-11-24T04:53:57.512Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "to_email": "partner.travel_1795496282673@voyageexpress.com",
+      "subject": "Welcome to Trip by Genie – Your B2B Agent Account Is Ready!",
+      "template_name": "AGENT_ACCOUNT_INVITATION",
+      "status": "DELIVERED",
+      "metadata": {
+        "agent_id": "B2B-2026-0013",
+        "agent_name": "Rohan Mehra",
+        "company_name": "Voyage Express Wholesale Pvt Ltd",
+        "activation_link": "http://localhost:3000/activate-account?token=66066839e5821d48a4f29f2e3941a289f5a0a44b043dc07b12884dc231a59e6f&type=b2b",
+        "activation_token_preview": "66066839..."
+      },
+      "sent_at": "2026-11-24T04:58:03.427Z",
+      "id": "ema_94224fbf79",
+      "created_at": "2026-11-24T04:58:03.470Z",
+      "updated_at": "2026-11-24T04:58:03.470Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "to_email": "partner.travel_1795496282673@voyageexpress.com",
+      "subject": "Welcome to Trip by Genie – Your B2B Agent Account Is Ready!",
+      "template_name": "AGENT_ACCOUNT_INVITATION",
+      "status": "DELIVERED",
+      "metadata": {
+        "agent_id": "B2B-2026-0013",
+        "agent_name": "Rohan Mehra",
+        "company_name": "Voyage Express Wholesale Pvt Ltd",
+        "activation_link": "http://localhost:3000/activate-account?token=875101cde86b5ea6cc0bdaa10c8ab8b9d8701a799df3b143ee903a03ea9f3461&type=b2b",
+        "activation_token_preview": "875101cd..."
+      },
+      "sent_at": "2026-11-24T04:58:03.910Z",
+      "id": "ema_5b60fb69d2",
+      "created_at": "2026-11-24T04:58:03.949Z",
+      "updated_at": "2026-11-24T04:58:03.949Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "to_email": "ananya.traveler_1795496290315@example.com",
+      "subject": "Enquiry Received: ENQ-2026-0030 - Your Trip to Switzerland Alps & Scenic Trains",
+      "template_name": "ENQUIRY_ACKNOWLEDGEMENT",
+      "status": "DELIVERED",
+      "metadata": {
+        "enquiry_id": "ENQ-2026-0030",
+        "customer_name": "Ananya Rao",
+        "destination": "Switzerland Alps & Scenic Trains"
+      },
+      "sent_at": "2026-11-24T04:58:10.837Z",
+      "id": "ema_d57c9d5d55",
+      "created_at": "2026-11-24T04:58:10.889Z",
+      "updated_at": "2026-11-24T04:58:10.889Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "to_email": "ananya.traveler_1795496290315@example.com",
+      "subject": "Your Custom Travel Quotation: QT-2026-5334-V1 for Switzerland Alps & Scenic Trains",
+      "template_name": "QUOTATION_PROPOSAL",
+      "status": "DELIVERED",
+      "metadata": {
+        "quote_number": "QT-2026-5334-V1",
+        "customer_name": "Ananya Rao",
+        "total_amount": 168000,
+        "required_advance": 50400
+      },
+      "sent_at": "2026-11-24T04:58:13.554Z",
+      "id": "ema_df2116b353",
+      "created_at": "2026-11-24T04:58:13.589Z",
+      "updated_at": "2026-11-24T04:58:13.589Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "to_email": "ananya.traveler_1795496290315@example.com",
+      "subject": "Payment Confirmed: ₹50,400 for Booking #BK-2026-0040",
+      "template_name": "PAYMENT_RECEIPT",
+      "status": "DELIVERED",
+      "metadata": {
+        "booking_number": "BK-2026-0040",
+        "amount_paid": 50400,
+        "remaining_balance": 117600,
+        "txn_ref": "PAY-GATEWAY-UPI-1795496290315"
+      },
+      "sent_at": "2026-11-24T04:58:14.738Z",
+      "id": "ema_af4ce15cae",
+      "created_at": "2026-11-24T04:58:14.785Z",
+      "updated_at": "2026-11-24T04:58:14.785Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "to_email": "ananya.traveler_1795496290315@example.com",
+      "subject": "Your Travel Account Is Ready – Access Your Booking Details",
+      "template_name": "CUSTOMER_ACCOUNT_INVITATION",
+      "status": "DELIVERED",
+      "metadata": {
+        "customer_id": "CUS-2026-0043",
+        "booking_id": "BK-2026-0040",
+        "activation_link": "http://localhost:3000/activate-account?token=064004bf7a38e5237edacaefdfe1e15b5a688f2e0d8fcb9d4d8187634e85e155",
+        "activation_token_preview": "064004bf..."
+      },
+      "sent_at": "2026-11-24T04:58:15.718Z",
+      "id": "ema_a5aad7f566",
+      "created_at": "2026-11-24T04:58:15.780Z",
+      "updated_at": "2026-11-24T04:58:15.780Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "to_email": "ananya.traveler_1795496290315@example.com",
+      "subject": "Your Travel Account Is Ready – Access Your Booking Details",
+      "template_name": "CUSTOMER_ACCOUNT_INVITATION",
+      "status": "DELIVERED",
+      "metadata": {
+        "customer_id": "CUS-2026-0043",
+        "booking_id": "BK-2026-0040",
+        "activation_link": "http://localhost:3000/activate-account?token=3148fd8ae2db7991e739fb18f9be48aac3c0b3dd7a5006722d9d4f9f0f80a782",
+        "activation_token_preview": "3148fd8a..."
+      },
+      "sent_at": "2026-11-24T04:58:16.075Z",
+      "id": "ema_73a51cd81d",
+      "created_at": "2026-11-24T04:58:16.127Z",
+      "updated_at": "2026-11-24T04:58:16.127Z"
     }
   ],
   "customer_account_invitations": [
@@ -80406,6 +83280,105 @@
       "created_at": "2026-11-24T03:13:05.054Z",
       "id": "cus_9b585da73a",
       "updated_at": "2026-11-24T03:13:05.054Z"
+    },
+    {
+      "customer_id": "CUS-2026-0039",
+      "user_id": "use_33588e349b",
+      "booking_id": "boo_6158263340",
+      "booking_number": "BK-2026-0034",
+      "email": "ananya.traveler_1795495559452@example.com",
+      "token": "cd1487a40740339bc588f7d4785ae99a22f8c37ad32bd40f9b490dba5a841f8d",
+      "expires_at": "2026-11-26T04:46:03.381Z",
+      "is_used": true,
+      "used_at": null,
+      "created_by": "usr_admin_genie",
+      "created_by_name": "Aditya Sharma (Super Admin)",
+      "created_at": "2026-11-24T04:46:03.412Z",
+      "id": "cus_ec426f75ef",
+      "updated_at": "2026-11-24T04:46:03.687Z",
+      "notes": "Superceded by resend invitation."
+    },
+    {
+      "customer_id": "CUS-2026-0039",
+      "user_id": "use_33588e349b",
+      "booking_id": "boo_6158263340",
+      "booking_number": "BK-2026-0034",
+      "email": "ananya.traveler_1795495559452@example.com",
+      "token": "c46b793ee88daadcf7346b8fa1902d51ae3b920f2e7bce3c1966bb740f71f010",
+      "expires_at": "2026-11-26T04:46:03.719Z",
+      "is_used": true,
+      "used_at": "2026-11-24T04:46:04.011Z",
+      "created_by": "usr_admin_genie",
+      "created_by_name": "Aditya Sharma (Super Admin)",
+      "created_at": "2026-11-24T04:46:03.719Z",
+      "id": "cus_07a59595ca",
+      "updated_at": "2026-11-24T04:46:04.011Z"
+    },
+    {
+      "customer_id": "CUS-2026-0041",
+      "user_id": "use_df793e7f30",
+      "booking_id": "boo_08df4a118b",
+      "booking_number": "BK-2026-0037",
+      "email": "ananya.traveler_1795496026307@example.com",
+      "token": "0fa9948869b307974e88bdf8b62728638995bcebb90f09d0aa5cbfbe5aa5783f",
+      "expires_at": "2026-11-26T04:53:56.296Z",
+      "is_used": true,
+      "used_at": null,
+      "created_by": "usr_admin_genie",
+      "created_by_name": "Aditya Sharma (Super Admin)",
+      "created_at": "2026-11-24T04:53:56.349Z",
+      "id": "cus_6aac01e751",
+      "updated_at": "2026-11-24T04:53:57.255Z",
+      "notes": "Superceded by resend invitation."
+    },
+    {
+      "customer_id": "CUS-2026-0041",
+      "user_id": "use_df793e7f30",
+      "booking_id": "boo_08df4a118b",
+      "booking_number": "BK-2026-0037",
+      "email": "ananya.traveler_1795496026307@example.com",
+      "token": "ed1bd334b6927f7509b57de29a96cab596bedac433fb496e16d964a3b03ba015",
+      "expires_at": "2026-11-26T04:53:57.318Z",
+      "is_used": true,
+      "used_at": "2026-11-24T04:53:58.000Z",
+      "created_by": "usr_admin_genie",
+      "created_by_name": "Aditya Sharma (Super Admin)",
+      "created_at": "2026-11-24T04:53:57.318Z",
+      "id": "cus_8cd8b8a38f",
+      "updated_at": "2026-11-24T04:53:58.000Z"
+    },
+    {
+      "customer_id": "CUS-2026-0043",
+      "user_id": "use_2ca63f443e",
+      "booking_id": "boo_9c6808d203",
+      "booking_number": "BK-2026-0040",
+      "email": "ananya.traveler_1795496290315@example.com",
+      "token": "064004bf7a38e5237edacaefdfe1e15b5a688f2e0d8fcb9d4d8187634e85e155",
+      "expires_at": "2026-11-26T04:58:15.336Z",
+      "is_used": true,
+      "used_at": null,
+      "created_by": "usr_admin_genie",
+      "created_by_name": "Aditya Sharma (Super Admin)",
+      "created_at": "2026-11-24T04:58:15.378Z",
+      "id": "cus_24f6bfc3ae",
+      "updated_at": "2026-11-24T04:58:15.913Z",
+      "notes": "Superceded by resend invitation."
+    },
+    {
+      "customer_id": "CUS-2026-0043",
+      "user_id": "use_2ca63f443e",
+      "booking_id": "boo_9c6808d203",
+      "booking_number": "BK-2026-0040",
+      "email": "ananya.traveler_1795496290315@example.com",
+      "token": "3148fd8ae2db7991e739fb18f9be48aac3c0b3dd7a5006722d9d4f9f0f80a782",
+      "expires_at": "2026-11-26T04:58:15.992Z",
+      "is_used": true,
+      "used_at": "2026-11-24T04:58:16.551Z",
+      "created_by": "usr_admin_genie",
+      "created_by_name": "Aditya Sharma (Super Admin)",
+      "created_at": "2026-11-24T04:58:15.992Z",
+      "id": "cus_1a25bda2a8",
+      "updated_at": "2026-11-24T04:58:16.552Z"
     }
   ],
   "customer_account_status_history": [
@@ -80512,6 +83485,45 @@
       "created_at": "2026-11-24T03:07:27.610Z",
       "id": "cus_734e35ffff",
       "updated_at": "2026-11-24T03:07:27.643Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "use_33588e349b",
+      "customer_id": "CUS-2026-0039",
+      "booking_id": "boo_6158263340",
+      "from_status": "NOT_CREATED",
+      "to_status": "INVITATION_SENT",
+      "changed_by": "usr_admin_genie",
+      "notes": "Manager Aditya Sharma (Super Admin) initiated secure customer login invitation.",
+      "created_at": "2026-11-24T04:46:03.486Z",
+      "id": "cus_2b86fcf69b",
+      "updated_at": "2026-11-24T04:46:03.514Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "use_df793e7f30",
+      "customer_id": "CUS-2026-0041",
+      "booking_id": "boo_08df4a118b",
+      "from_status": "NOT_CREATED",
+      "to_status": "INVITATION_SENT",
+      "changed_by": "usr_admin_genie",
+      "notes": "Manager Aditya Sharma (Super Admin) initiated secure customer login invitation.",
+      "created_at": "2026-11-24T04:53:56.669Z",
+      "id": "cus_274e719b30",
+      "updated_at": "2026-11-24T04:53:56.738Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "use_2ca63f443e",
+      "customer_id": "CUS-2026-0043",
+      "booking_id": "boo_9c6808d203",
+      "from_status": "NOT_CREATED",
+      "to_status": "INVITATION_SENT",
+      "changed_by": "usr_admin_genie",
+      "notes": "Manager Aditya Sharma (Super Admin) initiated secure customer login invitation.",
+      "created_at": "2026-11-24T04:58:15.508Z",
+      "id": "cus_da2b6ecac0",
+      "updated_at": "2026-11-24T04:58:15.572Z"
     }
   ],
   "agent_account_invitations": [
@@ -80754,6 +83766,96 @@
       "created_at": "2026-11-24T03:07:18.542Z",
       "id": "age_fda0821585",
       "updated_at": "2026-11-24T03:07:18.986Z"
+    },
+    {
+      "agent_id": "B2B-2026-0011",
+      "b2b_agent_id": "b2b_32e6138e26",
+      "user_id": "use_7850a80661",
+      "email": "partner.travel_1795495550768@voyageexpress.com",
+      "token": "c7c1bb9a3ca5eccc60b7acf166760c48c4c9131798bd5df3b9efd1372712c9ae",
+      "token_hash": "fb8452c31b59e058cdd0444f7124d919d9ef7f0e69af409599fd88f350514a54",
+      "expires_at": "2026-11-26T04:45:51.354Z",
+      "is_used": true,
+      "used_at": "2026-11-24T04:45:51.703Z",
+      "created_by": "usr_admin_genie",
+      "created_at": "2026-11-24T04:45:51.354Z",
+      "id": "age_c6fa6fabf6",
+      "updated_at": "2026-11-24T04:45:51.703Z"
+    },
+    {
+      "agent_id": "B2B-2026-0011",
+      "b2b_agent_id": "b2b_32e6138e26",
+      "user_id": "use_7850a80661",
+      "email": "partner.travel_1795495550768@voyageexpress.com",
+      "token": "061406421cae94ca9e6a5cea90c246108c678f18f8684d9a0230fb55e9d1a3f9",
+      "token_hash": "746fee7c8c7d0607de43499d3e9477430c79c0f0dc1091fd8a41287a3905965a",
+      "expires_at": "2026-11-26T04:45:51.762Z",
+      "is_used": true,
+      "used_at": "2026-11-24T04:45:52.329Z",
+      "created_by": "usr_admin_genie",
+      "created_at": "2026-11-24T04:45:51.762Z",
+      "id": "age_ad384e7fab",
+      "updated_at": "2026-11-24T04:45:52.329Z"
+    },
+    {
+      "agent_id": "B2B-2026-0012",
+      "b2b_agent_id": "b2b_7fa4113cc8",
+      "user_id": "use_85621e80fe",
+      "email": "partner.travel_1795496018500@voyageexpress.com",
+      "token": "01a7fd2d0508c139d0832dbe830e9db0cbdef0d77f1e307afa7e153751a096bb",
+      "token_hash": "8bbea8a1922b7b4b2c56922fb27c949a91323f67acd0c012f94878fda6fe2ddb",
+      "expires_at": "2026-11-26T04:53:39.226Z",
+      "is_used": true,
+      "used_at": "2026-11-24T04:53:39.579Z",
+      "created_by": "usr_admin_genie",
+      "created_at": "2026-11-24T04:53:39.226Z",
+      "id": "age_5789053c49",
+      "updated_at": "2026-11-24T04:53:39.579Z"
+    },
+    {
+      "agent_id": "B2B-2026-0012",
+      "b2b_agent_id": "b2b_7fa4113cc8",
+      "user_id": "use_85621e80fe",
+      "email": "partner.travel_1795496018500@voyageexpress.com",
+      "token": "794e07c41a48ab6dfb65ecbf6bf64e8d5470b34ba93a726784bea00c10606765",
+      "token_hash": "05f341c8d25c754b06ac7ecaefd74c4370d7ae69871f46ffadaf0a0d5b4bf736",
+      "expires_at": "2026-11-26T04:53:39.615Z",
+      "is_used": true,
+      "used_at": "2026-11-24T04:53:40.107Z",
+      "created_by": "usr_admin_genie",
+      "created_at": "2026-11-24T04:53:39.615Z",
+      "id": "age_277d502e4e",
+      "updated_at": "2026-11-24T04:53:40.107Z"
+    },
+    {
+      "agent_id": "B2B-2026-0013",
+      "b2b_agent_id": "b2b_23b52fec8b",
+      "user_id": "use_c6a907c75c",
+      "email": "partner.travel_1795496282673@voyageexpress.com",
+      "token": "66066839e5821d48a4f29f2e3941a289f5a0a44b043dc07b12884dc231a59e6f",
+      "token_hash": "2ccba33494fb90b720d6be2dbeeffb42afefbdb8ad6b93c19a33318351a5aae2",
+      "expires_at": "2026-11-26T04:58:03.236Z",
+      "is_used": true,
+      "used_at": "2026-11-24T04:58:03.579Z",
+      "created_by": "usr_admin_genie",
+      "created_at": "2026-11-24T04:58:03.236Z",
+      "id": "age_cadb55da63",
+      "updated_at": "2026-11-24T04:58:03.579Z"
+    },
+    {
+      "agent_id": "B2B-2026-0013",
+      "b2b_agent_id": "b2b_23b52fec8b",
+      "user_id": "use_c6a907c75c",
+      "email": "partner.travel_1795496282673@voyageexpress.com",
+      "token": "875101cde86b5ea6cc0bdaa10c8ab8b9d8701a799df3b143ee903a03ea9f3461",
+      "token_hash": "ea1db9369402bcbd4c1b927a0c60e77c24870ce5d8db6b1a387d471fc5faa6f9",
+      "expires_at": "2026-11-26T04:58:03.636Z",
+      "is_used": true,
+      "used_at": "2026-11-24T04:58:04.211Z",
+      "created_by": "usr_admin_genie",
+      "created_at": "2026-11-24T04:58:03.636Z",
+      "id": "age_39786cfd36",
+      "updated_at": "2026-11-24T04:58:04.211Z"
     }
   ],
   "agent_invitation_history": [
@@ -81028,6 +84130,117 @@
       "created_at": "2026-11-24T03:07:19.165Z",
       "id": "age_250e74bea5",
       "updated_at": "2026-11-24T03:07:19.193Z"
+    },
+    {
+      "agent_id": "B2B-2026-0011",
+      "action": "INVITATION_CREATED",
+      "performed_by": "usr_admin_genie",
+      "details": {
+        "agent_name": "Rohan Mehra",
+        "company_name": "Voyage Express Wholesale Pvt Ltd",
+        "email": "partner.travel_1795495550768@voyageexpress.com",
+        "account_type": "WHOLESALE"
+      },
+      "created_at": "2026-11-24T04:45:51.454Z",
+      "id": "age_0487eb73ad",
+      "updated_at": "2026-11-24T04:45:51.498Z"
+    },
+    {
+      "agent_id": "B2B-2026-0011",
+      "action": "INVITATION_RESENT",
+      "performed_by": "usr_admin_genie",
+      "details": {
+        "resent_at": "2026-11-24T04:45:51.842Z"
+      },
+      "created_at": "2026-11-24T04:45:51.842Z",
+      "id": "age_b6570a9d71",
+      "updated_at": "2026-11-24T04:45:51.881Z"
+    },
+    {
+      "agent_id": "B2B-2026-0011",
+      "action": "ACCOUNT_ACTIVATED",
+      "performed_by": "use_7850a80661",
+      "details": {
+        "email": "partner.travel_1795495550768@voyageexpress.com",
+        "activated_at": "2026-11-24T04:45:52.527Z"
+      },
+      "created_at": "2026-11-24T04:45:52.527Z",
+      "id": "age_f679442c21",
+      "updated_at": "2026-11-24T04:45:52.548Z"
+    },
+    {
+      "agent_id": "B2B-2026-0012",
+      "action": "INVITATION_CREATED",
+      "performed_by": "usr_admin_genie",
+      "details": {
+        "agent_name": "Rohan Mehra",
+        "company_name": "Voyage Express Wholesale Pvt Ltd",
+        "email": "partner.travel_1795496018500@voyageexpress.com",
+        "account_type": "WHOLESALE"
+      },
+      "created_at": "2026-11-24T04:53:39.318Z",
+      "id": "age_2443cd120e",
+      "updated_at": "2026-11-24T04:53:39.358Z"
+    },
+    {
+      "agent_id": "B2B-2026-0012",
+      "action": "INVITATION_RESENT",
+      "performed_by": "usr_admin_genie",
+      "details": {
+        "resent_at": "2026-11-24T04:53:39.719Z"
+      },
+      "created_at": "2026-11-24T04:53:39.719Z",
+      "id": "age_2a5f94523c",
+      "updated_at": "2026-11-24T04:53:39.775Z"
+    },
+    {
+      "agent_id": "B2B-2026-0012",
+      "action": "ACCOUNT_ACTIVATED",
+      "performed_by": "use_85621e80fe",
+      "details": {
+        "email": "partner.travel_1795496018500@voyageexpress.com",
+        "activated_at": "2026-11-24T04:53:40.369Z"
+      },
+      "created_at": "2026-11-24T04:53:40.369Z",
+      "id": "age_d39126df23",
+      "updated_at": "2026-11-24T04:53:40.398Z"
+    },
+    {
+      "agent_id": "B2B-2026-0013",
+      "action": "INVITATION_CREATED",
+      "performed_by": "usr_admin_genie",
+      "details": {
+        "agent_name": "Rohan Mehra",
+        "company_name": "Voyage Express Wholesale Pvt Ltd",
+        "email": "partner.travel_1795496282673@voyageexpress.com",
+        "account_type": "WHOLESALE"
+      },
+      "created_at": "2026-11-24T04:58:03.328Z",
+      "id": "age_8bb45124b0",
+      "updated_at": "2026-11-24T04:58:03.372Z"
+    },
+    {
+      "agent_id": "B2B-2026-0013",
+      "action": "INVITATION_RESENT",
+      "performed_by": "usr_admin_genie",
+      "details": {
+        "resent_at": "2026-11-24T04:58:03.718Z"
+      },
+      "created_at": "2026-11-24T04:58:03.718Z",
+      "id": "age_d8ed328a4d",
+      "updated_at": "2026-11-24T04:58:03.750Z"
+    },
+    {
+      "agent_id": "B2B-2026-0013",
+      "action": "ACCOUNT_ACTIVATED",
+      "performed_by": "use_c6a907c75c",
+      "details": {
+        "email": "partner.travel_1795496282673@voyageexpress.com",
+        "activated_at": "2026-11-24T04:58:04.430Z"
+      },
+      "created_at": "2026-11-24T04:58:04.430Z",
+      "id": "age_e36d6451e2",
+      "updated_at": "2026-11-24T04:58:04.469Z"
     }
   ],
   "agent_status_history": [
@@ -81210,6 +84423,96 @@
       "created_at": "2026-11-24T03:07:20.570Z",
       "id": "age_5228a0344f",
       "updated_at": "2026-11-24T03:07:20.594Z"
+    },
+    {
+      "agent_id": "B2B-2026-0011",
+      "old_status": "INVITATION_PENDING",
+      "new_status": "ACTIVE",
+      "changed_by": "use_7850a80661",
+      "reason": "Agent activated account via secure single-use invitation link.",
+      "created_at": "2026-11-24T04:45:52.579Z",
+      "id": "age_7d03e142d7",
+      "updated_at": "2026-11-24T04:45:52.611Z"
+    },
+    {
+      "agent_id": "B2B-2026-0011",
+      "old_status": "active",
+      "new_status": "suspended",
+      "changed_by": "usr_admin_genie",
+      "reason": "Annual trade license verification pending.",
+      "created_at": "2026-11-24T04:45:53.654Z",
+      "id": "age_a058fbf64b",
+      "updated_at": "2026-11-24T04:45:53.690Z"
+    },
+    {
+      "agent_id": "B2B-2026-0011",
+      "old_status": "suspended",
+      "new_status": "active",
+      "changed_by": "usr_admin_genie",
+      "reason": "License verified successfully.",
+      "created_at": "2026-11-24T04:45:53.882Z",
+      "id": "age_a4c6af492c",
+      "updated_at": "2026-11-24T04:45:53.912Z"
+    },
+    {
+      "agent_id": "B2B-2026-0012",
+      "old_status": "INVITATION_PENDING",
+      "new_status": "ACTIVE",
+      "changed_by": "use_85621e80fe",
+      "reason": "Agent activated account via secure single-use invitation link.",
+      "created_at": "2026-11-24T04:53:40.460Z",
+      "id": "age_e8654e27aa",
+      "updated_at": "2026-11-24T04:53:40.529Z"
+    },
+    {
+      "agent_id": "B2B-2026-0012",
+      "old_status": "active",
+      "new_status": "suspended",
+      "changed_by": "usr_admin_genie",
+      "reason": "Annual trade license verification pending.",
+      "created_at": "2026-11-24T04:53:42.250Z",
+      "id": "age_fe8aa688c4",
+      "updated_at": "2026-11-24T04:53:42.286Z"
+    },
+    {
+      "agent_id": "B2B-2026-0012",
+      "old_status": "suspended",
+      "new_status": "active",
+      "changed_by": "usr_admin_genie",
+      "reason": "License verified successfully.",
+      "created_at": "2026-11-24T04:53:42.577Z",
+      "id": "age_a4e4c109a1",
+      "updated_at": "2026-11-24T04:53:42.620Z"
+    },
+    {
+      "agent_id": "B2B-2026-0013",
+      "old_status": "INVITATION_PENDING",
+      "new_status": "ACTIVE",
+      "changed_by": "use_c6a907c75c",
+      "reason": "Agent activated account via secure single-use invitation link.",
+      "created_at": "2026-11-24T04:58:04.527Z",
+      "id": "age_a98432d3c8",
+      "updated_at": "2026-11-24T04:58:04.567Z"
+    },
+    {
+      "agent_id": "B2B-2026-0013",
+      "old_status": "active",
+      "new_status": "suspended",
+      "changed_by": "usr_admin_genie",
+      "reason": "Annual trade license verification pending.",
+      "created_at": "2026-11-24T04:58:06.358Z",
+      "id": "age_f91e3d2282",
+      "updated_at": "2026-11-24T04:58:06.406Z"
+    },
+    {
+      "agent_id": "B2B-2026-0013",
+      "old_status": "suspended",
+      "new_status": "active",
+      "changed_by": "usr_admin_genie",
+      "reason": "License verified successfully.",
+      "created_at": "2026-11-24T04:58:06.731Z",
+      "id": "age_08c118e02b",
+      "updated_at": "2026-11-24T04:58:06.787Z"
     }
   ]
 }

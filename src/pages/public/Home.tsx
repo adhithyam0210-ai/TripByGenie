@@ -246,6 +246,134 @@ export const Home: React.FC = () => {
     }
   };
 
+  // MICE Mobile Slider with Native Smooth Swipe & Dynamic Bump Effect
+  const miceSliderRef = useRef<HTMLDivElement>(null);
+  const [activeMiceIndex, setActiveMiceIndex] = useState(0);
+
+  const handleMiceScroll = () => {
+    if (miceSliderRef.current) {
+      const { scrollLeft, clientWidth } = miceSliderRef.current;
+      const cardWidth = clientWidth * 0.86;
+      const index = Math.round(scrollLeft / cardWidth);
+      setActiveMiceIndex(Math.min(Math.max(index, 0), 3));
+    }
+  };
+
+  const scrollToMiceCard = (idx: number) => {
+    if (miceSliderRef.current) {
+      const card = miceSliderRef.current.children[idx] as HTMLElement;
+      if (card) {
+        card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+      setActiveMiceIndex(idx);
+    }
+  };
+
+  const micePillars = [
+    {
+      letter: 'M',
+      title: 'Meetings',
+      subtitle: 'Boardrooms & Strategic Offsites',
+      desc: 'Executive board meetings, leadership retreats, high-speed Wi-Fi, audio-visual projection, and confidential business dining.',
+      highlights: ['Executive Boardroom Suites', 'AV & Digital Whiteboards', 'Private Business Dining'],
+      tag: 'Leadership & Strategy',
+      themeColor: 'text-[#17648A]',
+      badgeBg: 'bg-[#17648A]',
+      img: 'https://images.unsplash.com/photo-1517502884422-41eaead166d4?auto=format&fit=crop&w=800&q=80'
+    },
+    {
+      letter: 'I',
+      title: 'Incentives',
+      subtitle: 'Employee & Dealer Reward Tours',
+      desc: 'Reward top performers and dealers with memorable luxury getaways to Dubai, Bali, Thailand, Sri Lanka, Goa, and luxury cruises.',
+      highlights: ['5-Star Luxury Stays', 'Private Yacht & Catamaran Parties', 'Curated Gala Evenings'],
+      tag: 'Rewards & Recognition',
+      themeColor: 'text-[#FF795C]',
+      badgeBg: 'bg-[#FF795C]',
+      img: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80'
+    },
+    {
+      letter: 'C',
+      title: 'Conferences',
+      subtitle: 'National & Global Summits',
+      desc: 'End-to-end coordination for 50 to 1,500+ delegates. Room blocks, bulk airfare discounts, delegate registration, and stage production.',
+      highlights: ['Bulk Group Airfares', 'Large 5-Star Hotel Blocks', 'Acoustics & LED Video Walls'],
+      tag: 'Summits & Conventions',
+      themeColor: 'text-[#55C9BD]',
+      badgeBg: 'bg-[#008080]',
+      img: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80'
+    },
+    {
+      letter: 'E',
+      title: 'Exhibitions & Events',
+      subtitle: 'Product Launches & Gala Galas',
+      desc: 'Flawless execution for brand showcases, dealer expos, and themed gala nights with custom stall fabrication and celebrity artists.',
+      highlights: ['Custom Stall Fabrication', 'Intelligent Lighting & Sound', 'Celebrity Emcees & Artists'],
+      tag: 'Trade Expos & Galas',
+      themeColor: 'text-[#082C43]',
+      badgeBg: 'bg-[#082C43]',
+      img: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80'
+    }
+  ];
+
+  const renderMiceCard = (pillar: typeof micePillars[0], isCompactMobile = false, isActive = true) => (
+    <div
+      key={pillar.title}
+      className={`h-full rounded-2xl sm:rounded-3xl overflow-hidden bg-white border border-[#EFE7DA] flex flex-col justify-between group transition-all duration-300 ${
+        isCompactMobile
+          ? `w-[86vw] max-w-[340px] shrink-0 snap-center ${
+              isActive ? 'scale-100 shadow-xl opacity-100 ring-1 ring-[#082C43]/10' : 'scale-[0.93] shadow-xs opacity-75'
+            }`
+          : 'shadow-xs hover:shadow-md'
+      }`}
+    >
+      <div>
+        {/* Visual Photographic Header with Badges */}
+        <div className={`relative ${isCompactMobile ? 'h-48' : 'h-44 sm:h-52'} overflow-hidden bg-slate-900`}>
+          <img
+            src={pillar.img}
+            alt={pillar.title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+          
+          {/* Top Left Title Badge - Compact & Sleek */}
+          <div className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full bg-white/95 text-[#082C43] shadow-xs text-[10px] sm:text-[11px] font-bold tracking-normal flex items-center border border-[#EFE7DA]">
+            <span>{pillar.title}</span>
+          </div>
+
+          {/* Top Right Tag Badge - Compact & Sleek */}
+          <div className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full bg-white/95 text-[#082C43] shadow-xs text-[9px] sm:text-[10px] font-semibold tracking-normal border border-[#EFE7DA]">
+            {pillar.tag}
+          </div>
+
+          {/* Bottom Image Subtitle */}
+          <div className="absolute bottom-3 left-3 right-3 text-white">
+            <p className="text-sm font-bold font-display drop-shadow-sm leading-tight text-white group-hover:text-amber-200 transition-colors">
+              {pillar.subtitle}
+            </p>
+          </div>
+        </div>
+
+        {/* Card Content - Clean without SLA & Inquire Now buttons */}
+        <div className="p-4 sm:p-5 space-y-2.5 sm:space-y-3">
+          <p className="text-xs text-[#173247]/75 leading-relaxed">
+            {pillar.desc}
+          </p>
+
+          <div className="pt-2 border-t border-[#EFE7DA] space-y-1.5">
+            {pillar.highlights.map((h) => (
+              <div key={h} className="flex items-center gap-1.5 text-[11px] font-medium text-[#082C43]">
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#55C9BD] shrink-0" />
+                <span>{h}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
   const activeBanners = banners.length > 0 ? banners : defaultBanners;
   const currentBanner = activeBanners[currentBannerIndex] || defaultBanners[0];
 
@@ -254,6 +382,117 @@ export const Home: React.FC = () => {
       context.openTripModal();
     }
   };
+
+  // Easy Travel Loans Mobile Slider state & controls
+  const loanSliderRef = useRef<HTMLDivElement>(null);
+  const [activeLoanIndex, setActiveLoanIndex] = useState(0);
+
+  const handleLoanScroll = () => {
+    if (loanSliderRef.current) {
+      const { scrollLeft, clientWidth } = loanSliderRef.current;
+      const cardWidth = clientWidth * 0.78;
+      const index = Math.round(scrollLeft / cardWidth);
+      setActiveLoanIndex(Math.min(Math.max(index, 0), 4));
+    }
+  };
+
+  const scrollToLoanCard = (idx: number) => {
+    if (loanSliderRef.current) {
+      const card = loanSliderRef.current.children[idx] as HTMLElement;
+      if (card) {
+        card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+      setActiveLoanIndex(idx);
+    }
+  };
+
+  const loanCards = [
+    {
+      id: 'loan-zero-down',
+      title: 'Zero Rupees Down Payment With Genie',
+      subtitle: 'Hassle-Free Holidays Begin with Here',
+      badge: '₹0 Down Payment',
+      img: 'https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=600&q=80'
+    },
+    {
+      id: 'loan-zero-interest',
+      title: 'Zero Rupees Intrest With Genie',
+      subtitle: 'Hassle-Free Holidays Begin with Here',
+      badge: '0% Interest Rate',
+      img: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=600&q=80'
+    },
+    {
+      id: 'loan-zero-fee',
+      title: 'Zero Processing FEE With Genie',
+      subtitle: 'Hassle-Free Holidays Begin with Here',
+      badge: 'Zero Hidden Fees',
+      img: 'https://images.unsplash.com/photo-1539635278303-d4002c07eae3?auto=format&fit=crop&w=600&q=80'
+    },
+    {
+      id: 'loan-6-months',
+      title: '6 Months Easy Vacations With Genie',
+      subtitle: 'Hassle-Free Holidays Begin with Here',
+      badge: '6 Months Tenor',
+      img: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=600&q=80'
+    },
+    {
+      id: 'loan-no-cost-emi',
+      title: 'No Cost EMI Vacations With Genie',
+      subtitle: 'Hassle-Free Holidays Begin with Here',
+      badge: 'Instant Approval',
+      img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80'
+    }
+  ];
+
+  const renderLoanCard = (loanCard: typeof loanCards[0], isMobile = false) => (
+    <div
+      key={loanCard.id}
+      className={`group relative rounded-2xl overflow-hidden bg-[#082C43] text-white shadow-xs hover:shadow-md transition-all duration-300 flex flex-col border border-[#EFE7DA] ${
+        isMobile ? 'w-[78vw] max-w-[270px] shrink-0 snap-center' : ''
+      }`}
+    >
+      {/* Image Section with Dotted Flight Path Accent */}
+      <div className="relative h-36 sm:h-40 md:h-44 overflow-hidden bg-[#082C43]/40">
+        <img
+          src={loanCard.img}
+          alt={loanCard.title}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        />
+        {/* Seamless blended dark gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#082C43] via-[#082C43]/20 to-transparent" />
+        
+        {/* Flight Trail Decorative Vector */}
+        <svg
+          className="absolute inset-0 w-full h-full pointer-events-none opacity-30 group-hover:opacity-50 transition-opacity"
+          viewBox="0 0 200 200"
+          fill="none"
+        >
+          <path
+            d="M20 180 C 60 120, 140 160, 180 40"
+            stroke="white"
+            strokeWidth="1.5"
+            strokeDasharray="4 4"
+          />
+        </svg>
+
+        {/* Top Right Pill Badge - Solid White Background */}
+        <div className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full bg-white text-[#082C43] font-bold text-[9px] tracking-wider shadow-xs border border-[#EFE7DA]">
+          {loanCard.badge}
+        </div>
+      </div>
+
+      {/* Card Text Content with Brand Theme Color */}
+      <div className="p-3.5 sm:p-4 flex-1 flex flex-col justify-center text-center relative z-10 space-y-1 bg-[#082C43]">
+        <h3 className="text-sm sm:text-[15px] font-bold font-display leading-tight tracking-tight text-white group-hover:text-[#55C9BD] transition-colors">
+          {loanCard.title}
+        </h3>
+        
+        <p className="text-[11px] font-normal text-white/75 leading-tight">
+          {loanCard.subtitle}
+        </p>
+      </div>
+    </div>
+  );
 
   const filteredDestinations = destinations.filter((d) => {
     if (selectedRegion === 'all') return true;
@@ -479,21 +718,18 @@ export const Home: React.FC = () => {
       {/* ======================================================== */}
       {/* SECTION 2: TOURISM PACKAGE CATEGORIES (from tripbygenie) */}
       {/* ======================================================== */}
-      <section className="py-10 sm:py-12 bg-[#FFFDF8] relative">
+      <section className="py-6 sm:py-8 bg-[#FFFDF8] relative">
         <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
-          <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10">
-            <span className="text-xs font-bold uppercase tracking-widest text-[#FF795C] block mb-2">
-              Select The Best Packages For Your Tourism
-            </span>
+          <div className="text-center max-w-3xl mx-auto mb-5 sm:mb-6">
             <h2 className="text-3xl sm:text-4xl font-extrabold text-[#082C43] font-display">
               Handpicked Holiday Collections
             </h2>
-            <p className="text-sm text-[#173247]/75 mt-2">
+            <p className="text-sm text-[#173247]/75 mt-1.5">
               From idyllic backwaters and tea hills in South India to world-renowned global landmarks, find the perfect tour crafted with 4-star comfort.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
             {quickTourismCategories.map((cat) => (
               <Link
                 key={cat.title}
@@ -539,15 +775,12 @@ export const Home: React.FC = () => {
       {/* ======================================================== */}
       {/* SECTION 3: POPULAR DESTINATIONS                          */}
       {/* ======================================================== */}
-      <section className="py-10 sm:py-12 relative bg-[#F8F1E7]/40 border-y border-[#EFE7DA]">
+      <section className="py-6 sm:py-8 relative bg-[#F8F1E7]/40 border-y border-[#EFE7DA]">
         <TravelPatternBg variant="cream" opacity={0.04} />
 
         <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 relative z-10">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 sm:mb-8 gap-4">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-4 sm:mb-6 gap-3 sm:gap-4">
             <div>
-              <span className="text-xs font-bold uppercase tracking-widest text-[#FF795C] block mb-1">
-                Curated Travel Escapes
-              </span>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-[#082C43] font-display">
                 Popular Destinations
               </h2>
@@ -602,13 +835,10 @@ export const Home: React.FC = () => {
       {/* ======================================================== */}
       {/* SECTION 4: HOLIDAY PACKAGES & PRICING                    */}
       {/* ======================================================== */}
-      <section className="py-10 sm:py-12 relative bg-[#FFFDF8]">
+      <section className="py-6 sm:py-8 relative bg-[#FFFDF8]">
         <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 sm:mb-8 gap-4">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-4 sm:mb-6 gap-3 sm:gap-4">
             <div>
-              <span className="text-xs font-bold uppercase tracking-widest text-[#55C9BD] block mb-1">
-                Transparent Pricing • 4-Star Stays
-              </span>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-[#082C43] font-display">
                 Featured Holiday Packages
               </h2>
@@ -652,7 +882,7 @@ export const Home: React.FC = () => {
           </div>
 
           {/* Packages Grid - Exactly 9 Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {displayedPackages.map((pkg) => (
               <PackageCard
                 key={pkg.id}
@@ -663,7 +893,7 @@ export const Home: React.FC = () => {
           </div>
 
           {/* Explore All Packages CTA Button */}
-          <div className="mt-8 sm:mt-10 text-center">
+          <div className="mt-6 text-center">
             <Link to="/packages">
               <Button
                 variant="outline"
@@ -681,15 +911,12 @@ export const Home: React.FC = () => {
       {/* SECTION 5: GUARANTEED GROUP TOURS                        */}
       {/* ======================================================== */}
       {groupTours.length > 0 && (
-        <section className="py-10 sm:py-12 relative bg-[#082C43] text-white overflow-hidden">
+        <section className="py-6 sm:py-8 relative bg-[#082C43] text-white overflow-hidden">
           <TravelPatternBg variant="navy" opacity={0.06} />
 
           <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 relative z-10">
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 sm:mb-8 gap-4">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-4 sm:mb-6 gap-3 sm:gap-4">
               <div>
-                <span className="text-xs font-bold uppercase tracking-widest text-[#FF795C] block mb-1">
-                  Fixed Departure Departures
-                </span>
                 <h2 className="text-3xl sm:text-4xl font-extrabold text-white font-display">
                   Guaranteed Group Tours
                 </h2>
@@ -764,15 +991,12 @@ export const Home: React.FC = () => {
       {/* SECTION 5.8: MICE & CORPORATE TRAVEL (tripbygenie.in)     */}
       {/* Meetings, Incentives, Conferences & Exhibitions          */}
       {/* ======================================================== */}
-      <section className="py-10 sm:py-16 bg-[#F8F1E7]/70 relative border-t border-[#EFE7DA]">
+      <section className="py-6 sm:py-8 bg-[#F8F1E7]/70 relative border-t border-[#EFE7DA]">
         <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
           
           {/* Section Header matching tripbygenie.in */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-8 sm:mb-10">
-            <div className="max-w-3xl space-y-2">
-              <span className="text-xs font-bold uppercase tracking-widest text-[#FF795C] block">
-                MICE • MEETINGS • INCENTIVES • CONFERENCES • EXHIBITIONS
-              </span>
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
+            <div className="max-w-3xl space-y-1">
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#082C43] font-display">
                 Corporate Travel & MICE Solutions
               </h2>
@@ -781,155 +1005,90 @@ export const Home: React.FC = () => {
               </p>
             </div>
 
-            <div className="flex items-center gap-3 shrink-0 w-full sm:w-auto">
+            {/* Desktop Only Header Button */}
+            <div className="hidden sm:flex items-center gap-3 shrink-0">
               <Link
                 to="/mice"
-                className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#082C43] hover:bg-[#17648A] text-white text-xs font-bold shadow-sm transition-all w-full sm:w-auto"
+                className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#082C43] hover:bg-[#17648A] text-white text-xs font-bold shadow-sm transition-all"
               >
-                <span>View Full MICE Page</span>
+                <span>About MICE</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
           </div>
 
-          {/* 4 Rich Photographic MICE Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-            {[
-              {
-                letter: 'M',
-                title: 'Meetings',
-                subtitle: 'Boardrooms & Strategic Offsites',
-                desc: 'Executive board meetings, leadership retreats, high-speed Wi-Fi, audio-visual projection, and confidential business dining.',
-                highlights: ['Executive Boardroom Suites', 'AV & Digital Whiteboards', 'Private Business Dining'],
-                tag: 'Leadership & Strategy',
-                themeColor: 'text-[#17648A]',
-                badgeBg: 'bg-[#17648A]',
-                img: 'https://images.unsplash.com/photo-1517502884422-41eaead166d4?auto=format&fit=crop&w=800&q=80'
-              },
-              {
-                letter: 'I',
-                title: 'Incentives',
-                subtitle: 'Employee & Dealer Reward Tours',
-                desc: 'Reward top performers and dealers with memorable luxury getaways to Dubai, Bali, Thailand, Sri Lanka, Goa, and luxury cruises.',
-                highlights: ['5-Star Luxury Stays', 'Private Yacht & Catamaran Parties', 'Curated Gala Evenings'],
-                tag: 'Rewards & Recognition',
-                themeColor: 'text-[#FF795C]',
-                badgeBg: 'bg-[#FF795C]',
-                img: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80'
-              },
-              {
-                letter: 'C',
-                title: 'Conferences',
-                subtitle: 'National & Global Summits',
-                desc: 'End-to-end coordination for 50 to 1,500+ delegates. Room blocks, bulk airfare discounts, delegate registration, and stage production.',
-                highlights: ['Bulk Group Airfares', 'Large 5-Star Hotel Blocks', 'Acoustics & LED Video Walls'],
-                tag: 'Summits & Conventions',
-                themeColor: 'text-[#55C9BD]',
-                badgeBg: 'bg-[#008080]',
-                img: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80'
-              },
-              {
-                letter: 'E',
-                title: 'Exhibitions & Events',
-                subtitle: 'Product Launches & Gala Galas',
-                desc: 'Flawless execution for brand showcases, dealer expos, and themed gala nights with custom stall fabrication and celebrity artists.',
-                highlights: ['Custom Stall Fabrication', 'Intelligent Lighting & Sound', 'Celebrity Emcees & Artists'],
-                tag: 'Trade Expos & Galas',
-                themeColor: 'text-[#082C43]',
-                badgeBg: 'bg-[#082C43]',
-                img: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80'
-              }
-            ].map((pillar) => (
-              <div
-                key={pillar.title}
-                className="rounded-2xl sm:rounded-3xl overflow-hidden bg-white border border-[#EFE7DA] shadow-xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between group cursor-pointer"
-                onClick={handleOpenTripModal}
+          {/* Mobile View: High-Performance Smooth Swipe with Bump Effect */}
+          <div className="block sm:hidden">
+            <div 
+              ref={miceSliderRef}
+              onScroll={handleMiceScroll}
+              className="flex gap-3 overflow-x-auto snap-x snap-mandatory scroll-smooth py-3 px-2 scrollbar-none select-none"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              {micePillars.map((pillar, idx) => (
+                <div key={pillar.title} className="shrink-0 snap-center">
+                  {renderMiceCard(pillar, true, idx === activeMiceIndex)}
+                </div>
+              ))}
+            </div>
+
+            {/* Clean, Responsive Progress Dots */}
+            <div className="flex items-center justify-center gap-1.5 mt-2">
+              {micePillars.map((_, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => scrollToMiceCard(idx)}
+                  aria-label={`Go to slide ${idx + 1}`}
+                  className={`transition-all duration-300 rounded-full h-1.5 cursor-pointer ${
+                    activeMiceIndex === idx
+                      ? 'w-6 bg-[#082C43]'
+                      : 'w-1.5 bg-[#082C43]/20 hover:bg-[#082C43]/40'
+                  }`}
+                />
+              ))}
+            </div>
+
+            {/* Mobile View: About MICE Button (positioned below cards & dots, above corporate support bar) */}
+            <div className="mt-4 flex justify-center">
+              <Link
+                to="/mice"
+                className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-xl bg-[#082C43] hover:bg-[#17648A] text-white text-xs font-bold shadow-sm transition-all w-full max-w-[260px]"
               >
-                <div>
-                  {/* Visual Photographic Header with Badges */}
-                  <div className="relative h-44 sm:h-52 overflow-hidden bg-slate-900">
-                    <img
-                      src={pillar.img}
-                      alt={pillar.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-                    
-                    {/* Top Left Pillar Code Badge */}
-                    <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-white text-[#082C43] shadow-xs text-xs font-bold tracking-wider flex items-center gap-1.5 border border-[#EFE7DA]">
-                      <span className={`w-2 h-2 rounded-full ${pillar.badgeBg}`} />
-                      <span>{pillar.letter} • {pillar.title}</span>
-                    </div>
+                <span>About MICE</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+          </div>
 
-                    {/* Top Right Tag Badge */}
-                    <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-white text-[#082C43] shadow-xs text-[10px] font-bold tracking-wider border border-[#EFE7DA]">
-                      {pillar.tag}
-                    </div>
-
-                    {/* Bottom Image Subtitle */}
-                    <div className="absolute bottom-3 left-3 right-3 text-white">
-                      <p className="text-sm font-bold font-display drop-shadow-sm leading-tight text-white group-hover:text-amber-200 transition-colors">
-                        {pillar.subtitle}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Card Content */}
-                  <div className="p-4 sm:p-5 space-y-2.5 sm:space-y-3">
-                    <p className="text-xs text-[#173247]/75 leading-relaxed">
-                      {pillar.desc}
-                    </p>
-
-                    <div className="pt-2 border-t border-[#EFE7DA] space-y-1.5">
-                      {pillar.highlights.map((h) => (
-                        <div key={h} className="flex items-center gap-1.5 text-[11px] font-medium text-[#082C43]">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-[#55C9BD] shrink-0" />
-                          <span>{h}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Card Action Link */}
-                <div className="p-4 sm:p-5 pt-0">
-                  <div className="pt-3 border-t border-[#EFE7DA] flex items-center justify-between">
-                    <span className="text-[11px] font-bold text-[#55C9BD]">
-                      Custom Corporate SLA
-                    </span>
-                    <Link
-                      to="/mice"
-                      onClick={(e) => e.stopPropagation()}
-                      className="text-xs font-bold text-[#FF795C] hover:text-[#082C43] flex items-center gap-1 transition-colors"
-                    >
-                      <span>Inquire Now</span>
-                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            ))}
+          {/* Desktop & Tablet View: 4-Column Grid */}
+          <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            {micePillars.map((pillar) => renderMiceCard(pillar, false, true))}
           </div>
 
           {/* Corporate Support Bar */}
-          <div className="mt-8 p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-[#082C43] text-white flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 sm:gap-6 shadow-xl">
+          <div className="mt-6 sm:mt-8 p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-[#082C43] text-white flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 sm:gap-6 shadow-xl">
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-white/10 flex items-center justify-center shrink-0 text-[#55C9BD]">
-                <Globe2 className="w-5 h-5 sm:w-6 sm:h-6" />
+              <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-white/10 flex items-center justify-center shrink-0 text-[#55C9BD]">
+                <Globe2 className="w-4 h-4 sm:w-6 sm:h-6" />
               </div>
               <div>
-                <h4 className="text-sm sm:text-base font-bold font-display text-white">
+                <h4 className="text-xs sm:text-base font-bold font-display text-white leading-tight">
                   Corporate GST Invoicing • Group Flight Desks • 24/7 On-Site Coordinator
                 </h4>
-                <p className="text-xs text-white/75 mt-0.5">
+                <p className="text-[11px] sm:text-xs text-white/75 mt-0.5">
                   Popular offsite destinations: Goa, Kerala, Bali, Dubai, Thailand, Singapore, and Rajasthan.
                 </p>
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 w-full lg:w-auto">
+            <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-row sm:items-center sm:gap-3 w-full lg:w-auto">
               <Link to="/mice" className="w-full sm:w-auto">
-                <Button variant="primary" size="sm" className="w-full sm:w-auto font-bold text-xs shadow-md justify-center">
+                <Button
+                  variant="primary"
+                  size="sm"
+                  className="w-full sm:w-auto font-bold text-[11px] sm:text-xs py-1.5 sm:py-2.5 px-2.5 sm:px-4 rounded-lg sm:rounded-xl shadow-xs justify-center"
+                >
                   Request MICE Proposal
                 </Button>
               </Link>
@@ -937,9 +1096,9 @@ export const Home: React.FC = () => {
                 href="https://wa.me/919940463566?text=Hi%20TripbyGenie,%20I%20would%20like%20to%20inquire%20about%20Corporate%20MICE%20and%20Offsite%20packages%20for%20our%20company"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-bold shadow-xs transition-colors w-full sm:w-auto"
+                className="inline-flex items-center justify-center gap-1 sm:gap-1.5 px-2.5 sm:px-4 py-1.5 sm:py-2.5 rounded-lg sm:rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white text-[11px] sm:text-xs font-bold shadow-xs transition-colors w-full sm:w-auto"
               >
-                <PhoneCall className="w-3.5 h-3.5" />
+                <PhoneCall className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
                 <span>Corporate WhatsApp</span>
               </a>
             </div>
@@ -951,21 +1110,18 @@ export const Home: React.FC = () => {
       {/* ======================================================== */}
       {/* SECTION 6: TRAVEL SERVICES (10 Services from Reference)  */}
       {/* ======================================================== */}
-      <section className="py-10 sm:py-12 bg-[#FFFDF8] relative border-t border-[#EFE7DA]">
+      <section className="py-6 sm:py-8 bg-[#FFFDF8] relative border-t border-[#EFE7DA]">
         <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
-          <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
-            <span className="text-xs font-bold uppercase tracking-widest text-[#FF795C] block mb-2">
-              Comprehensive Travel Solutions
-            </span>
+          <div className="text-center max-w-2xl mx-auto mb-4 sm:mb-6">
             <h2 className="text-3xl sm:text-4xl font-extrabold text-[#082C43] font-display">
               End-to-End Travel Services
             </h2>
-            <p className="text-sm text-[#173247]/75 mt-2">
+            <p className="text-sm text-[#173247]/75 mt-1.5">
               From air ticketing and luxury coaches to hassle-free visa processing and corporate retreats.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4">
             {services.map((srv) => (
               <div
                 key={srv.id}
@@ -997,14 +1153,11 @@ export const Home: React.FC = () => {
       {/* SECTION 6.5: EASY TRAVEL LOANS (tripbygenie.in)           */}
       {/* 5 Cards with 0 Down Payment, 0% Interest, 0 Fee, 6M EMI  */}
       {/* ======================================================== */}
-      <section className="py-10 sm:py-14 bg-[#FFFDF8] relative border-t border-[#EFE7DA]">
+      <section className="py-6 sm:py-8 bg-[#FFFDF8] relative border-t border-[#EFE7DA]">
         <div className="max-w-[1450px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
           
           {/* Section Header */}
-          <div className="text-center max-w-3xl mx-auto space-y-2 mb-7 sm:mb-9">
-            <span className="text-xs font-bold uppercase tracking-widest text-[#FF795C] block">
-              FLEXIBLE VACATION FINANCING • NO-COST EMI
-            </span>
+          <div className="text-center max-w-3xl mx-auto space-y-1.5 mb-4 sm:mb-6">
             <h2 className="text-2xl sm:text-3xl font-extrabold text-[#082C43] font-display leading-tight">
               Say Goodbye to Stress, Hello to Blissful Holidays with Easy Travel Loans
             </h2>
@@ -1013,96 +1166,42 @@ export const Home: React.FC = () => {
             </p>
           </div>
 
-          {/* The 5 Cards from tripbygenie.in Screenshot - Compact & Sleek */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4">
-            {[
-              {
-                id: 'loan-zero-down',
-                title: 'Zero Rupees Down Payment With Genie',
-                subtitle: 'Hassle-Free Holidays Begin with Here',
-                badge: '₹0 Down Payment',
-                img: 'https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=600&q=80'
-              },
-              {
-                id: 'loan-zero-interest',
-                title: 'Zero Rupees Intrest With Genie',
-                subtitle: 'Hassle-Free Holidays Begin with Here',
-                badge: '0% Interest Rate',
-                img: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=600&q=80'
-              },
-              {
-                id: 'loan-zero-fee',
-                title: 'Zero Processing FEE With Genie',
-                subtitle: 'Hassle-Free Holidays Begin with Here',
-                badge: 'Zero Hidden Fees',
-                img: 'https://images.unsplash.com/photo-1539635278303-d4002c07eae3?auto=format&fit=crop&w=600&q=80'
-              },
-              {
-                id: 'loan-6-months',
-                title: '6 Months Easy Vacations With Genie',
-                subtitle: 'Hassle-Free Holidays Begin with Here',
-                badge: '6 Months Tenor',
-                img: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=600&q=80'
-              },
-              {
-                id: 'loan-no-cost-emi',
-                title: 'No Cost EMI Vacations With Genie',
-                subtitle: 'Hassle-Free Holidays Begin with Here',
-                badge: 'Instant Approval',
-                img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80'
-              }
-            ].map((loanCard) => (
-              <div
-                key={loanCard.id}
-                onClick={handleOpenTripModal}
-                className="group relative rounded-2xl overflow-hidden bg-[#082C43] text-white shadow-xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col cursor-pointer border border-[#EFE7DA]"
-              >
-                {/* Image Section with Dotted Flight Path Accent - Compact Height */}
-                <div className="relative h-36 sm:h-40 md:h-44 overflow-hidden bg-[#082C43]/40">
-                  <img
-                    src={loanCard.img}
-                    alt={loanCard.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  {/* Seamless blended dark gradient overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#082C43] via-[#082C43]/20 to-transparent" />
-                  
-                  {/* Flight Trail Decorative Vector */}
-                  <svg
-                    className="absolute inset-0 w-full h-full pointer-events-none opacity-30 group-hover:opacity-50 transition-opacity"
-                    viewBox="0 0 200 200"
-                    fill="none"
-                  >
-                    <path
-                      d="M20 180 C 60 120, 140 160, 180 40"
-                      stroke="white"
-                      strokeWidth="1.5"
-                      strokeDasharray="4 4"
-                    />
-                  </svg>
+          {/* Mobile View: Horizontal Smooth Slide View with Snap & Progress Dots */}
+          <div className="block sm:hidden">
+            <div
+              ref={loanSliderRef}
+              onScroll={handleLoanScroll}
+              className="flex gap-3 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-3 px-1 scrollbar-none"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              {loanCards.map((card) => renderLoanCard(card, true))}
+            </div>
 
-                  {/* Top Right Pill Badge - Solid White Background */}
-                  <div className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full bg-white text-[#082C43] font-bold text-[9px] tracking-wider shadow-xs border border-[#EFE7DA]">
-                    {loanCard.badge}
-                  </div>
-                </div>
+            {/* Subtle Progress Dots */}
+            <div className="flex items-center justify-center gap-1.5 mt-2.5">
+              {loanCards.map((_, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => scrollToLoanCard(idx)}
+                  aria-label={`Slide ${idx + 1}`}
+                  className={`transition-all duration-300 rounded-full h-1.5 ${
+                    activeLoanIndex === idx
+                      ? 'w-6 bg-[#082C43]'
+                      : 'w-1.5 bg-[#082C43]/20 hover:bg-[#082C43]/40'
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
 
-                {/* Card Text Content with Brand Theme Color - Compact & Centered */}
-                <div className="p-3.5 sm:p-4 flex-1 flex flex-col justify-center text-center relative z-10 space-y-1 bg-[#082C43]">
-                  <h3 className="text-sm sm:text-[15px] font-bold font-display leading-tight tracking-tight text-white group-hover:text-[#55C9BD] transition-colors">
-                    {loanCard.title}
-                  </h3>
-                  
-                  <p className="text-[11px] font-normal text-white/75 leading-tight">
-                    {loanCard.subtitle}
-                  </p>
-                </div>
-              </div>
-            ))}
+          {/* Desktop & Tablet View: 5-Column Side-by-Side Grid */}
+          <div className="hidden sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4">
+            {loanCards.map((card) => renderLoanCard(card, false))}
           </div>
 
           {/* Quick Eligibility Bar */}
-          <div className="mt-8 p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-[#F8F1E7] border border-[#EFE7DA] flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="mt-5 sm:mt-6 p-4 sm:p-5 rounded-2xl sm:rounded-3xl bg-[#F8F1E7] border border-[#EFE7DA] flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-2xl bg-[#55C9BD]/20 text-[#17648A] flex items-center justify-center shrink-0">
                 <CheckCircle2 className="w-5 h-5 text-[#55C9BD]" />
@@ -1144,10 +1243,10 @@ export const Home: React.FC = () => {
       {/* ======================================================== */}
       {/* SECTION 7: WHY TRAVEL WITH TRIP BY GENIE                 */}
       {/* ======================================================== */}
-      <section className="py-10 sm:py-12 bg-[#F8F1E7]/50 relative border-t border-[#EFE7DA]">
+      <section className="py-6 sm:py-8 bg-[#F8F1E7]/50 relative border-t border-[#EFE7DA]">
         <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
+            <div className="space-y-5">
               <h2 className="text-3xl sm:text-4xl font-extrabold text-[#082C43] font-display leading-tight">
                 Why Thousands Choose Trip by Genie For Their Holidays
               </h2>
@@ -1172,7 +1271,7 @@ export const Home: React.FC = () => {
                 ))}
               </div>
 
-              <div className="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full">
+              <div className="pt-3 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full">
                 <Button
                   variant="primary"
                   size="lg"
@@ -1192,11 +1291,11 @@ export const Home: React.FC = () => {
             </div>
 
             {/* Genuine Trust Stats Card */}
-            <div className="bg-[#082C43] text-white p-8 rounded-3xl shadow-2xl relative overflow-hidden">
+            <div className="bg-[#082C43] text-white p-6 sm:p-8 rounded-3xl shadow-2xl relative overflow-hidden">
               <TravelPatternBg variant="navy" opacity={0.08} />
-              <div className="relative z-10 space-y-6">
+              <div className="relative z-10 space-y-5">
                 <h3 className="text-xl font-bold font-display text-white">Genuine Business Milestones</h3>
-                <div className="grid grid-cols-2 gap-6">
+                <div className="grid grid-cols-2 gap-4 sm:gap-6">
                   <div className="p-4 rounded-2xl bg-white/10 backdrop-blur-xs">
                     <p className="text-3xl font-extrabold text-[#55C9BD] font-display">1,200+</p>
                     <p className="text-xs text-white/80 mt-1">Happy Travelers Curated</p>
@@ -1229,17 +1328,14 @@ export const Home: React.FC = () => {
       {/* SECTION 8: REAL CUSTOMER TESTIMONIALS (tripbygenie.in)   */}
       {/* Sliding stories from left to right with navigation arrows */}
       {/* ======================================================== */}
-      <section className="py-10 sm:py-12 bg-[#FFFDF8] relative overflow-hidden">
+      <section className="py-6 sm:py-8 bg-[#FFFDF8] relative overflow-hidden">
         <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
           {/* Header with Title */}
-          <div className="mb-8 sm:mb-10">
-            <span className="text-xs font-bold uppercase tracking-widest text-[#FF795C] block mb-2">
-              Stories From Our Travelers
-            </span>
+          <div className="mb-4 sm:mb-6">
             <h2 className="text-3xl sm:text-4xl font-extrabold text-[#082C43] font-display">
               Customer Testimonials
             </h2>
-            <p className="text-sm text-[#173247]/75 mt-2">
+            <p className="text-sm text-[#173247]/75 mt-1.5">
               Hear directly from families, honeymoon couples, and corporate groups who journeyed with Trip by Genie.
             </p>
           </div>
