@@ -14,30 +14,67 @@ interface PackageCardProps {
 export const getPackageFallbackImage = (title = '', destination = '', category = ''): string => {
   const s = `${title} ${destination} ${category}`.toLowerCase();
   if (s.includes('kerala') || s.includes('munnar') || s.includes('alleppey') || s.includes('kochi')) {
-    return 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=800&q=80';
+    return 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=85';
   }
-  if (s.includes('maldives') || s.includes('beach') || s.includes('island') || s.includes('mauritius') || s.includes('seychelles')) {
-    return 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=800&q=80';
+  if (s.includes('maldives') || s.includes('beach') || s.includes('island') || s.includes('mauritius')) {
+    return 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=1200&q=85';
+  }
+  if (s.includes('seychelles') || s.includes('mahe')) {
+    return 'https://images.unsplash.com/photo-1589553416260-f586c8f1514f?auto=format&fit=crop&w=1200&q=85';
+  }
+  if (s.includes('zimbabwe') || s.includes('victoria falls') || s.includes('africa') || s.includes('safari') || s.includes('kenya')) {
+    return 'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=1200&q=85';
+  }
+  if (s.includes('morocco') || s.includes('marrakech') || s.includes('casablanca')) {
+    return 'https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?auto=format&fit=crop&w=1200&q=85';
   }
   if (s.includes('europe') || s.includes('swiss') || s.includes('france') || s.includes('italy') || s.includes('paris')) {
-    return 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80';
+    return 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1200&q=85';
   }
   if (s.includes('bali') || s.includes('thailand') || s.includes('vietnam') || s.includes('singapore') || s.includes('asia')) {
-    return 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80';
+    return 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1200&q=85';
   }
   if (s.includes('australia') || s.includes('sydney') || s.includes('melbourne') || s.includes('pacific')) {
-    return 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=800&q=80';
+    return 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=1200&q=85';
   }
   if (s.includes('dubai') || s.includes('egypt') || s.includes('middle east')) {
-    return 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80';
+    return 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=85';
   }
   if (s.includes('kashmir') || s.includes('ladakh') || s.includes('himachal') || s.includes('manali')) {
-    return 'https://images.unsplash.com/photo-1595815771614-ade9d652a65d?auto=format&fit=crop&w=800&q=80';
+    return 'https://images.unsplash.com/photo-1595815771614-ade9d652a65d?auto=format&fit=crop&w=1200&q=85';
   }
   if (s.includes('honeymoon') || s.includes('romantic')) {
-    return 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=800&q=80';
+    return 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=1200&q=85';
   }
-  return 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80';
+  return 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1200&q=85';
+};
+
+export const getCrispPackageImage = (data: Package): string => {
+  const cover = data.cover_image || (data as any).image;
+  const title = (data.title || '').toLowerCase();
+  const dest = ((data as any).destination || '').toLowerCase();
+  const slug = (data.slug || data.id || '').toLowerCase();
+
+  // If missing or a 612x612 low-res thumbnail, replace with vibrant high-res photography
+  if (!cover || cover.includes('612x612')) {
+    if (title.includes('zimbabwe') || dest.includes('zimbabwe') || slug.includes('zimbabwe') || title.includes('victoria')) {
+      return 'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=1200&q=85';
+    }
+    if (title.includes('morocco') || dest.includes('morocco') || slug.includes('morocco') || title.includes('casablanca') || title.includes('marrakech')) {
+      return 'https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?auto=format&fit=crop&w=1200&q=85';
+    }
+    if (title.includes('seychelles') || dest.includes('seychelles') || slug.includes('seychelles') || title.includes('mahe')) {
+      return 'https://images.unsplash.com/photo-1589553416260-f586c8f1514f?auto=format&fit=crop&w=1200&q=85';
+    }
+    return getPackageFallbackImage(data.title, (data as any).destination, data.category);
+  }
+
+  // If unsplash, upgrade to high quality 1200px width
+  if (cover.includes('images.unsplash.com')) {
+    return cover.replace(/w=\d+/, 'w=1200').replace(/q=\d+/, 'q=85');
+  }
+
+  return cover;
 };
 
 export const PackageCard: React.FC<PackageCardProps> = ({
@@ -52,19 +89,25 @@ export const PackageCard: React.FC<PackageCardProps> = ({
   const pkgTitle = data.title || 'Curated Holiday Package';
   const pkgSlug = data.slug || data.id;
   const pkgCategory = data.category || 'Domestic Holiday Packages';
-  const pkgImage = data.cover_image || (data as any).image || getPackageFallbackImage(pkgTitle, (data as any).destination, pkgCategory);
+  const pkgImage = getCrispPackageImage(data);
   const pkgPrice = Number(isAgentView ? (data.b2b_price || data.price) : (data.public_price || data.b2c_price || data.price || 25000));
   const pkgDays = Number(data.duration_days || 4);
   const pkgNights = Number(data.duration_nights || Math.max(1, pkgDays - 1));
 
   return (
     <div className="group rounded-2xl bg-white border border-[#EFE7DA] shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col h-full">
-      {/* Clean Package Cover Image without AI-looking overlay badges */}
+      {/* Clean Package Cover Image with High-DPI Crisp Rendering */}
       <div className="relative h-48 sm:h-56 overflow-hidden bg-slate-100">
         <img
           src={pkgImage}
           alt={pkgTitle}
+          decoding="async"
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+          style={{
+            imageRendering: '-webkit-optimize-contrast',
+            transform: 'translate3d(0, 0, 0)',
+            backfaceVisibility: 'hidden'
+          }}
           loading="lazy"
           onError={(e) => {
             const target = e.currentTarget;

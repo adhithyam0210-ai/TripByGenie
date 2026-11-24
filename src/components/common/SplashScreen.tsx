@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const FRAMES = [
   '/splash_frames/frame_0.png',
@@ -14,25 +15,17 @@ const FRAMES = [
 
 // 130ms per frame provides a silky ~1.17s flight animation
 const FRAME_DURATION = 130;
-// Maximum 2.5s absolute ceiling (never wait longer than 2.5 seconds)
-const MAX_TIMEOUT_MS = 2500;
-// Minimum 1.1s display time so users catch the brand flight
-const MIN_DISPLAY_MS = 1100;
+// Maximum 6.5s absolute ceiling (safety in case a remote image connection hangs)
+const MAX_TIMEOUT_MS = 6500;
 
 export const SplashScreen: React.FC = () => {
-  // Show splash only when necessary: on fresh session visit (or ?splash=1 to force)
+  const location = useLocation();
+
+  // Show splash on load until images of cards and structure are completely loaded
   const [isVisible, setIsVisible] = useState<boolean>(() => {
     if (typeof window === 'undefined') return false;
     const params = new URLSearchParams(window.location.search);
     if (params.get('nosplash') === '1') return false;
-    if (params.get('splash') === '1') return true;
-
-    try {
-      const seen = sessionStorage.getItem('tbg_splash_seen');
-      if (seen) return false;
-    } catch {
-      // Storage unavailable
-    }
     return true;
   });
 
@@ -44,12 +37,7 @@ export const SplashScreen: React.FC = () => {
     if (dismissedRef.current) return;
     dismissedRef.current = true;
     setIsFading(true);
-    try {
-      sessionStorage.setItem('tbg_splash_seen', 'true');
-    } catch {
-      // Ignore
-    }
-    // Clean, quick 400ms fade transition to grant instant access
+    // Clean, quick 400ms fade transition to grant instant access to fully rendered page
     setTimeout(() => {
       setIsVisible(false);
     }, 400);
@@ -68,65 +56,71 @@ export const SplashScreen: React.FC = () => {
     const bgImg = new Image();
     bgImg.src = '/splash-bg.jpg';
 
-    // 2. Hardware-accelerated frame pacing with requestAnimationFrame
-    // Eliminates mobile timer jitter, frame drops, and drift
-    let animComplete = false;
+    // 2. Hardware-accelerated continuous frame pacing with requestAnimationFrame
+    // Loops continuously until cards, images, and structure are completely loaded
+    let animCompletedOnce = false;
     let startTime: number | null = null;
     let rafId: number;
 
+    const totalCycleDuration = FRAME_DURATION * FRAMES.length;
+
     const animate = (timestamp: number) => {
+      if (dismissedRef.current) return;
       if (!startTime) startTime = timestamp;
       const elapsed = timestamp - startTime;
-      const currentIdx = Math.min(Math.floor(elapsed / FRAME_DURATION), FRAMES.length - 1);
 
+      // Continuously loop through all frames seamlessly
+      const currentIdx = Math.floor(elapsed / FRAME_DURATION) % FRAMES.length;
       setFrameIndex(currentIdx);
 
-      if (currentIdx >= FRAMES.length - 1) {
-        animComplete = true;
-      } else {
-        rafId = requestAnimationFrame(animate);
+      // Verify at least one full flight animation cycle has completed
+      if (elapsed >= totalCycleDuration) {
+        animCompletedOnce = true;
       }
+
+      rafId = requestAnimationFrame(animate);
     };
 
     rafId = requestAnimationFrame(animate);
 
-    // 3. Track page readiness (homepage resources load in background)
-    let pageReady = document.readyState === 'complete';
-    const onPageLoad = () => {
-      pageReady = true;
-      if (animComplete) {
-        dismiss();
-      }
+    // 3. True Page & Card Images Readiness Checker
+    // Ensures the DOM structure is mounted and the visible card images are loaded and visible
+    const checkPageReady = (): boolean => {
+      // Structure check: main content or root container mounted
+      const main = document.querySelector('main') || document.getElementById('root');
+      if (!main) return false;
+
+      // Query all content images excluding splash screen itself
+      const imgs = Array.from(document.querySelectorAll('img')).filter((img) => {
+        return !img.closest('[role="dialog"]') && !img.src.includes('splash');
+      });
+
+      // If React has not yet rendered card images, structure is still loading
+      if (imgs.length < 3) return false;
+
+      // Check critical visible card images (hero banner, destination cards, package cards)
+      const criticalCards = imgs.slice(0, 10);
+      const allLoaded = criticalCards.every((img) => {
+        return img.complete && (img.naturalWidth > 0 || img.naturalHeight > 0);
+      });
+
+      return allLoaded;
     };
 
-    if (!pageReady) {
-      window.addEventListener('load', onPageLoad);
-    }
-
-    // 4. As soon as animation finishes AND page is ready, dismiss without delay
+    // 4. Poll readiness: once animation has completed at least one full cycle AND cards/images are completely loaded, dismiss
     const checkInterval = setInterval(() => {
-      if (document.readyState === 'complete') {
-        pageReady = true;
-      }
-      if (animComplete && pageReady) {
+      if (animCompletedOnce && checkPageReady()) {
         clearInterval(checkInterval);
         dismiss();
       }
-    }, 80);
+    }, 60);
 
-    // 5. Min timer: if page is already loaded, dismiss promptly (~1.1s)
-    const minTimer = setTimeout(() => {
-      if (pageReady || document.readyState === 'complete') {
-        dismiss();
-      }
-    }, MIN_DISPLAY_MS);
-
-    // 6. Absolute safety cap: maximum 2.5s
+    // 5. Absolute safety cap (max 6.5s in case a remote image connection hangs)
     const maxTimer = setTimeout(() => {
       dismiss();
     }, MAX_TIMEOUT_MS);
 
-    // 7. Allow instant bypass via tap/click or any keypress
+    // 6. Allow instant bypass via tap/click or any keypress
     const handleKeyDown = () => dismiss();
     window.addEventListener('keydown', handleKeyDown);
 
@@ -135,9 +129,7 @@ export const SplashScreen: React.FC = () => {
       document.body.style.touchAction = originalTouchAction;
       cancelAnimationFrame(rafId);
       clearInterval(checkInterval);
-      clearTimeout(minTimer);
       clearTimeout(maxTimer);
-      window.removeEventListener('load', onPageLoad);
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [isVisible]);
@@ -150,8 +142,9 @@ export const SplashScreen: React.FC = () => {
       aria-modal="true"
       aria-label="Trip By Genie Loading"
       onPointerDown={dismiss}
-      className={`fixed inset-0 z-[9999999] w-screen h-screen h-[100dvh] flex flex-col items-center justify-center bg-white bg-cover bg-center bg-no-repeat transition-opacity duration-400 ease-out select-none cursor-pointer ${isFading ? 'opacity-0 pointer-events-none' : 'opacity-100'
-        }`}
+      className={`fixed inset-0 z-[9999999] w-screen h-screen h-[100dvh] flex flex-col items-center justify-center bg-white bg-cover bg-center bg-no-repeat transition-opacity duration-400 ease-out select-none cursor-pointer ${
+        isFading ? 'opacity-0 pointer-events-none' : 'opacity-100'
+      }`}
       style={{
         backgroundImage: `url('/splash-bg.jpg')`,
         touchAction: 'none',
@@ -171,8 +164,9 @@ export const SplashScreen: React.FC = () => {
               key={src}
               src={src}
               alt=""
-              className={`absolute inset-0 w-full h-full object-contain pointer-events-none will-change-[opacity] ${idx === frameIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
-                }`}
+              className={`absolute inset-0 w-full h-full object-contain pointer-events-none will-change-[opacity] ${
+                idx === frameIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
+              }`}
               loading="eager"
             />
           ))}

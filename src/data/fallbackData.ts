@@ -487,7 +487,7 @@ export const fallbackData: any = {
       "country": "India",
       "region": "India",
       "description": "Pristine Radhanagar beaches, turquoise coral reefs for scuba diving, and historic Cellular Jail memorials.",
-      "image": "https://images.unsplash.com/photo-1589330273594-fade1ee91647?auto=format&fit=crop&w=800&q=80",
+      "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=90",
       "package_count": 3,
       "is_featured": false,
       "is_published": true,
@@ -8623,7 +8623,7 @@ export const fallbackData: any = {
       "agent_wholesale_price": 73600,
       "potential_margin": 18400,
       "margin_pct": "20%",
-      "cover_image": "https://tripbygenie.in/wp-content/uploads/2025/07/istockphoto-1237462133-612x612-1.webp",
+      "cover_image": "https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=1200&q=85",
       "gallery": [
         "https://tripbygenie.in/wp-content/uploads/2025/07/istockphoto-1237462133-612x612-1.webp"
       ],
@@ -8678,7 +8678,7 @@ export const fallbackData: any = {
       "agent_wholesale_price": 88800,
       "potential_margin": 22200,
       "margin_pct": "20%",
-      "cover_image": "https://tripbygenie.in/wp-content/uploads/2025/07/istockphoto-544676786-612x612-1.webp",
+      "cover_image": "https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?auto=format&fit=crop&w=1200&q=85",
       "gallery": [
         "https://tripbygenie.in/wp-content/uploads/2025/07/istockphoto-544676786-612x612-1.webp"
       ],
@@ -8849,7 +8849,7 @@ export const fallbackData: any = {
       "agent_wholesale_price": 66000,
       "potential_margin": 16500,
       "margin_pct": "20%",
-      "cover_image": "https://tripbygenie.in/wp-content/uploads/2025/07/istockphoto-1345873706-612x612-1.webp",
+      "cover_image": "https://images.unsplash.com/photo-1589553416260-f586c8f1514f?auto=format&fit=crop&w=1200&q=85",
       "gallery": [
         "https://tripbygenie.in/wp-content/uploads/2025/07/istockphoto-1345873706-612x612-1.webp"
       ],

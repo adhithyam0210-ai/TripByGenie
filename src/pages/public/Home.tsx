@@ -262,17 +262,39 @@ export const Home: React.FC = () => {
     }
   };
 
+  // Helper to accurately calculate active card index in horizontal snap slider based on real DOM geometry
+  const getActiveSliderIndex = (container: HTMLDivElement | null): number => {
+    if (!container) return 0;
+    const { scrollLeft, clientWidth, scrollWidth } = container;
+    const children = Array.from(container.children) as HTMLElement[];
+    if (!children.length) return 0;
+
+    // Boundary snap detection
+    if (scrollLeft <= 15) return 0;
+    if (scrollLeft + clientWidth >= scrollWidth - 25) return children.length - 1;
+
+    const viewportCenter = scrollLeft + clientWidth / 2;
+    let closestIndex = 0;
+    let minDistance = Infinity;
+
+    for (let i = 0; i < children.length; i++) {
+      const child = children[i];
+      const childCenter = child.offsetLeft + child.offsetWidth / 2;
+      const distance = Math.abs(childCenter - viewportCenter);
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestIndex = i;
+      }
+    }
+    return closestIndex;
+  };
+
   // MICE Mobile Slider with Native Smooth Swipe & Dynamic Bump Effect
   const miceSliderRef = useRef<HTMLDivElement>(null);
   const [activeMiceIndex, setActiveMiceIndex] = useState(0);
 
   const handleMiceScroll = () => {
-    if (miceSliderRef.current) {
-      const { scrollLeft, clientWidth } = miceSliderRef.current;
-      const cardWidth = clientWidth * 0.86;
-      const index = Math.round(scrollLeft / cardWidth);
-      setActiveMiceIndex(Math.min(Math.max(index, 0), 3));
-    }
+    setActiveMiceIndex(getActiveSliderIndex(miceSliderRef.current));
   };
 
   const scrollToMiceCard = (idx: number) => {
@@ -290,12 +312,7 @@ export const Home: React.FC = () => {
   const [activePackageIndex, setActivePackageIndex] = useState(0);
 
   const handlePackagesScroll = () => {
-    if (packagesSliderRef.current) {
-      const { scrollLeft, clientWidth } = packagesSliderRef.current;
-      const cardWidth = clientWidth * 0.86;
-      const index = Math.round(scrollLeft / cardWidth);
-      setActivePackageIndex(Math.min(Math.max(index, 0), Math.max(0, displayedPackages.length - 1)));
-    }
+    setActivePackageIndex(getActiveSliderIndex(packagesSliderRef.current));
   };
 
   const scrollToPackageCard = (idx: number) => {
@@ -320,12 +337,7 @@ export const Home: React.FC = () => {
   const [activeGroupTourIndex, setActiveGroupTourIndex] = useState(0);
 
   const handleGroupToursScroll = () => {
-    if (groupToursSliderRef.current) {
-      const { scrollLeft, clientWidth } = groupToursSliderRef.current;
-      const cardWidth = clientWidth * 0.86;
-      const index = Math.round(scrollLeft / cardWidth);
-      setActiveGroupTourIndex(Math.min(Math.max(index, 0), Math.max(0, upcomingGroupTours.length - 1)));
-    }
+    setActiveGroupTourIndex(getActiveSliderIndex(groupToursSliderRef.current));
   };
 
   const scrollToGroupTourCard = (idx: number) => {
@@ -391,7 +403,7 @@ export const Home: React.FC = () => {
       className={`h-full rounded-2xl sm:rounded-3xl overflow-hidden bg-white border border-[#EFE7DA] flex flex-col justify-between group transition-all duration-300 ${
         isCompactMobile
           ? `w-[86vw] max-w-[340px] shrink-0 snap-center ${
-              isActive ? 'scale-100 shadow-xl opacity-100 ring-1 ring-[#082C43]/10' : 'scale-[0.93] shadow-xs opacity-75'
+              isActive ? 'scale-100 shadow-xl opacity-100 ring-1 ring-[#082C43]/10' : 'scale-[0.94] shadow-md opacity-85'
             }`
           : 'shadow-xs hover:shadow-md'
       }`}
@@ -483,7 +495,7 @@ export const Home: React.FC = () => {
       className={`rounded-3xl bg-white/10 backdrop-blur-md border border-white/20 p-5 sm:p-6 flex flex-col justify-between hover:bg-white/15 transition-all duration-300 h-full ${
         isCompactMobile
           ? `w-[86vw] max-w-[340px] shrink-0 snap-center ${
-              isActive ? 'scale-100 shadow-2xl opacity-100 ring-1 ring-[#55C9BD]/40' : 'scale-[0.93] shadow-xs opacity-75'
+              isActive ? 'scale-100 shadow-2xl opacity-100 ring-1 ring-[#55C9BD]/40' : 'scale-[0.94] shadow-md opacity-85'
             }`
           : 'shadow-xl'
       }`}
@@ -547,12 +559,7 @@ export const Home: React.FC = () => {
   const [activeLoanIndex, setActiveLoanIndex] = useState(0);
 
   const handleLoanScroll = () => {
-    if (loanSliderRef.current) {
-      const { scrollLeft, clientWidth } = loanSliderRef.current;
-      const cardWidth = clientWidth * 0.78;
-      const index = Math.round(scrollLeft / cardWidth);
-      setActiveLoanIndex(Math.min(Math.max(index, 0), 4));
-    }
+    setActiveLoanIndex(getActiveSliderIndex(loanSliderRef.current));
   };
 
   const scrollToLoanCard = (idx: number) => {
@@ -569,35 +576,30 @@ export const Home: React.FC = () => {
     {
       id: 'loan-zero-down',
       title: 'Zero Rupees Down Payment With Genie',
-      subtitle: 'Hassle-Free Holidays Begin with Here',
       badge: '₹0 Down Payment',
       img: 'https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=600&q=80'
     },
     {
       id: 'loan-zero-interest',
       title: 'Zero Rupees Intrest With Genie',
-      subtitle: 'Hassle-Free Holidays Begin with Here',
       badge: '0% Interest Rate',
       img: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=600&q=80'
     },
     {
       id: 'loan-zero-fee',
       title: 'Zero Processing FEE With Genie',
-      subtitle: 'Hassle-Free Holidays Begin with Here',
       badge: 'Zero Hidden Fees',
       img: 'https://images.unsplash.com/photo-1539635278303-d4002c07eae3?auto=format&fit=crop&w=600&q=80'
     },
     {
       id: 'loan-6-months',
       title: '6 Months Easy Vacations With Genie',
-      subtitle: 'Hassle-Free Holidays Begin with Here',
       badge: '6 Months Tenor',
       img: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=600&q=80'
     },
     {
       id: 'loan-no-cost-emi',
       title: 'No Cost EMI Vacations With Genie',
-      subtitle: 'Hassle-Free Holidays Begin with Here',
       badge: 'Instant Approval',
       img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80'
     }
@@ -641,14 +643,10 @@ export const Home: React.FC = () => {
       </div>
 
       {/* Card Text Content with Brand Theme Color */}
-      <div className="p-3.5 sm:p-4 flex-1 flex flex-col justify-center text-center relative z-10 space-y-1 bg-[#082C43]">
+      <div className="p-3.5 sm:p-4 flex-1 flex flex-col justify-center text-center relative z-10 bg-[#082C43]">
         <h3 className="text-sm sm:text-[15px] font-bold font-display leading-tight tracking-tight text-white group-hover:text-[#55C9BD] transition-colors">
           {loanCard.title}
         </h3>
-        
-        <p className="text-[11px] font-normal text-white/75 leading-tight">
-          {loanCard.subtitle}
-        </p>
       </div>
     </div>
   );
@@ -962,12 +960,12 @@ export const Home: React.FC = () => {
 
             {/* Region Filter Dropdown - Right-aligned on mobile & desktop */}
             <div className="flex justify-end w-full sm:w-auto shrink-0 pt-0.5 sm:pt-0">
-              <div className="relative w-auto min-w-[150px] max-w-[240px] sm:min-w-[240px]">
+              <div className="relative w-[150px] sm:w-[240px]">
                 <select
                   value={selectedRegion}
                   onChange={(e) => setSelectedRegion(e.target.value)}
                   aria-label="Filter destinations by region"
-                  className="w-full appearance-none bg-white hover:bg-[#F8FAFC] border border-[#E2E8F0] text-[#082C43] text-xs font-bold py-2 pl-3.5 pr-8 sm:py-2.5 sm:pl-4 sm:pr-10 rounded-xl sm:rounded-2xl shadow-xs hover:border-[#082C43] focus:outline-none focus:ring-2 focus:ring-[#082C43]/20 focus:border-[#082C43] cursor-pointer transition-all"
+                  className="w-full appearance-none bg-white hover:bg-[#F8FAFC] border border-[#E2E8F0] text-[#082C43] text-xs font-bold py-2 pl-3.5 pr-8 sm:py-2.5 sm:pl-4 sm:pr-10 rounded-xl sm:rounded-2xl shadow-xs hover:border-[#082C43] focus:outline-none focus:ring-2 focus:ring-[#082C43]/20 focus:border-[#082C43] cursor-pointer transition-all truncate"
                 >
                   {[
                     { id: 'all', label: 'All Destinations' },
@@ -1022,12 +1020,12 @@ export const Home: React.FC = () => {
 
             {/* Category Filter Dropdown - Right-aligned on mobile & desktop */}
             <div className="flex justify-end w-full sm:w-auto shrink-0 pt-0.5 sm:pt-0">
-              <div className="relative w-auto min-w-[170px] max-w-[260px] sm:min-w-[260px]">
+              <div className="relative w-[150px] sm:w-[240px]">
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
                   aria-label="Filter holiday packages by category"
-                  className="w-full appearance-none bg-white hover:bg-[#F8FAFC] border border-[#E2E8F0] text-[#082C43] text-xs font-bold py-2 pl-3.5 pr-8 sm:py-2.5 sm:pl-4 sm:pr-10 rounded-xl sm:rounded-2xl shadow-xs hover:border-[#FF795C] focus:outline-none focus:ring-2 focus:ring-[#FF795C]/20 focus:border-[#FF795C] cursor-pointer transition-all"
+                  className="w-full appearance-none bg-white hover:bg-[#F8FAFC] border border-[#E2E8F0] text-[#082C43] text-xs font-bold py-2 pl-3.5 pr-8 sm:py-2.5 sm:pl-4 sm:pr-10 rounded-xl sm:rounded-2xl shadow-xs hover:border-[#FF795C] focus:outline-none focus:ring-2 focus:ring-[#FF795C]/20 focus:border-[#FF795C] cursor-pointer transition-all truncate"
                 >
                   {categoriesList.map((cat) => (
                     <option key={cat} value={cat} className="text-[#082C43] font-medium py-1">
@@ -1045,7 +1043,7 @@ export const Home: React.FC = () => {
             <div
               ref={packagesSliderRef}
               onScroll={handlePackagesScroll}
-              className="flex gap-3 overflow-x-auto snap-x snap-mandatory scroll-smooth py-3 px-2 scrollbar-none select-none"
+              className="flex gap-3 overflow-x-auto snap-x snap-mandatory scroll-smooth py-3 px-[7vw] scrollbar-none select-none"
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
               {displayedPackages.map((pkg, idx) => {
@@ -1054,7 +1052,7 @@ export const Home: React.FC = () => {
                   <div
                     key={pkg.id}
                     className={`shrink-0 snap-center w-[86vw] max-w-[340px] transition-all duration-300 ${
-                      isActive ? 'scale-100 shadow-xl opacity-100' : 'scale-[0.93] shadow-xs opacity-75'
+                      isActive ? 'scale-100 shadow-xl opacity-100 ring-1 ring-[#FF795C]/20' : 'scale-[0.94] shadow-md opacity-85'
                     }`}
                   >
                     <PackageCard
@@ -1142,7 +1140,7 @@ export const Home: React.FC = () => {
               <div
                 ref={groupToursSliderRef}
                 onScroll={handleGroupToursScroll}
-                className="flex gap-3 overflow-x-auto snap-x snap-mandatory scroll-smooth py-3 px-2 scrollbar-none select-none"
+                className="flex gap-3 overflow-x-auto snap-x snap-mandatory scroll-smooth py-3 px-[7vw] scrollbar-none select-none"
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
                 {upcomingGroupTours.map((tour, idx) => (
@@ -1215,7 +1213,7 @@ export const Home: React.FC = () => {
             <div 
               ref={miceSliderRef}
               onScroll={handleMiceScroll}
-              className="flex gap-3 overflow-x-auto snap-x snap-mandatory scroll-smooth py-3 px-2 scrollbar-none select-none"
+              className="flex gap-3 overflow-x-auto snap-x snap-mandatory scroll-smooth py-3 px-[7vw] scrollbar-none select-none"
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
               {micePillars.map((pillar, idx) => (
@@ -1325,7 +1323,7 @@ export const Home: React.FC = () => {
             <div
               ref={loanSliderRef}
               onScroll={handleLoanScroll}
-              className="flex gap-3 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-3 px-1 scrollbar-none"
+              className="flex gap-3 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-3 px-[11vw] scrollbar-none"
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
               {loanCards.map((card) => renderLoanCard(card, true))}
