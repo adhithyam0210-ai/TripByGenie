@@ -338,7 +338,7 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
             {/* 1. Home */}
             <Link
               to="/"
-              className={`px-4.5 py-1.5 2xl:px-5 2xl:py-2 rounded-full text-sm font-semibold transition-all shadow-xs flex items-center justify-center ${
+              className={`px-4.5 py-2 2xl:px-5.5 2xl:py-2.5 rounded-full text-sm 2xl:text-base font-bold tracking-tight transition-all shadow-sm flex items-center justify-center whitespace-nowrap ${
                 location.pathname === '/'
                   ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-md'
                   : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
@@ -350,7 +350,7 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
             {/* 2. About Us */}
             <Link
               to="/about"
-              className={`px-4.5 py-1.5 2xl:px-5 2xl:py-2 rounded-full text-sm font-semibold transition-all shadow-xs flex items-center justify-center ${
+              className={`px-4.5 py-2 2xl:px-5.5 2xl:py-2.5 rounded-full text-sm 2xl:text-base font-bold tracking-tight transition-all shadow-sm flex items-center justify-center whitespace-nowrap ${
                 location.pathname === '/about'
                   ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-md'
                   : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
@@ -364,14 +364,14 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
               <button
                 type="button"
                 onClick={() => setActiveDropdown(activeDropdown === 'packages' ? null : 'packages')}
-                className={`px-4.5 py-1.5 2xl:px-5 2xl:py-2 rounded-full text-sm font-semibold transition-all shadow-xs flex items-center gap-1.5 justify-center ${
+                className={`px-4.5 py-2 2xl:px-5.5 2xl:py-2.5 rounded-full text-sm 2xl:text-base font-bold tracking-tight transition-all shadow-sm flex items-center gap-1.5 justify-center whitespace-nowrap ${
                   location.pathname === '/packages' || activeDropdown === 'packages'
                     ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-md'
                     : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
                 }`}
               >
                 <span>Packages</span>
-                <span className="text-[10px] transform translate-y-[0.5px]">▼</span>
+                <span className="text-xs transform translate-y-[0.5px]">▼</span>
               </button>
 
               {/* Mega Dropdown Box */}
@@ -448,14 +448,14 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
               <button
                 type="button"
                 onClick={() => setActiveDropdown(activeDropdown === 'india' ? null : 'india')}
-                className={`px-4.5 py-1.5 2xl:px-5 2xl:py-2 rounded-full text-sm font-semibold transition-all shadow-xs flex items-center gap-1.5 justify-center ${
+                className={`px-4.5 py-2 2xl:px-5.5 2xl:py-2.5 rounded-full text-sm 2xl:text-base font-bold tracking-tight transition-all shadow-sm flex items-center gap-1.5 justify-center whitespace-nowrap ${
                   location.pathname === '/destinations' || activeDropdown === 'india'
                     ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-md'
                     : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
                 }`}
               >
                 <span>India</span>
-                <span className="text-[10px] transform translate-y-[0.5px]">▼</span>
+                <span className="text-xs transform translate-y-[0.5px]">▼</span>
               </button>
 
               {/* India Mega Dropdown Box */}
@@ -529,14 +529,14 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
               <button
                 type="button"
                 onClick={() => setActiveDropdown(activeDropdown === 'honeymoon' ? null : 'honeymoon')}
-                className={`px-4.5 py-1.5 2xl:px-5 2xl:py-2 rounded-full text-sm font-semibold transition-all shadow-xs flex items-center gap-1.5 justify-center ${
+                className={`px-4.5 py-2 2xl:px-5.5 2xl:py-2.5 rounded-full text-sm 2xl:text-base font-bold tracking-tight transition-all shadow-sm flex items-center gap-1.5 justify-center whitespace-nowrap ${
                   location.pathname === '/honeymoon' || activeDropdown === 'honeymoon'
                     ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-md'
                     : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
                 }`}
               >
                 <span>Honeymoon</span>
-                <span className="text-[10px] transform translate-y-[0.5px]">▼</span>
+                <span className="text-xs transform translate-y-[0.5px]">▼</span>
               </button>
 
               {activeDropdown === 'honeymoon' && (
@@ -588,11 +588,24 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
               )}
             </div>
 
-            {/* 6. Tickets Bookings (Direct link button, no dropdown) */}
+            {/* 6. Group Tours (Direct link to dedicated /group-tours page) */}
+            <Link
+              to="/group-tours"
+              onClick={() => setActiveDropdown(null)}
+              className={`px-4.5 py-2 2xl:px-5.5 2xl:py-2.5 rounded-full text-sm 2xl:text-base font-bold tracking-tight transition-all shadow-sm flex items-center justify-center whitespace-nowrap ${
+                location.pathname === '/group-tours'
+                  ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-md'
+                  : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
+              }`}
+            >
+              Group Tours
+            </Link>
+
+            {/* 7. Tickets Bookings (Direct link button, no dropdown) */}
             <Link
               to="/services"
               onClick={() => setActiveDropdown(null)}
-              className={`px-4.5 py-1.5 2xl:px-5 2xl:py-2 rounded-full text-sm font-semibold transition-all shadow-xs flex items-center justify-center whitespace-nowrap ${
+              className={`px-4.5 py-2 2xl:px-5.5 2xl:py-2.5 rounded-full text-sm 2xl:text-base font-bold tracking-tight transition-all shadow-sm flex items-center justify-center whitespace-nowrap ${
                 location.pathname === '/services'
                   ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-md'
                   : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
@@ -601,10 +614,10 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
               Tickets Bookings
             </Link>
 
-            {/* 7. Contact Us */}
+            {/* 8. Contact Us */}
             <Link
               to="/contact"
-              className={`px-4.5 py-1.5 2xl:px-5 2xl:py-2 rounded-full text-sm font-semibold transition-all shadow-xs flex items-center justify-center ${
+              className={`px-4.5 py-2 2xl:px-5.5 2xl:py-2.5 rounded-full text-sm 2xl:text-base font-bold tracking-tight transition-all shadow-sm flex items-center justify-center whitespace-nowrap ${
                 location.pathname === '/contact'
                   ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-md'
                   : 'bg-[#004c8f] hover:bg-[#003d73] text-white'

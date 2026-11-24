@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import {
   Layers,
   Plus,
@@ -37,17 +38,36 @@ interface EditableDay {
   activities?: string;
 }
 
-export const AdminPackages: React.FC = () => {
+interface AdminPackagesProps {
+  initialViewMode?: 'all' | 'featured' | 'group';
+}
+
+export const AdminPackages: React.FC<AdminPackagesProps> = ({ initialViewMode }) => {
   const { success, error } = useToast();
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
+
+  const isGroupInit =
+    initialViewMode === 'group' ||
+    location.pathname.includes('group-tours') ||
+    searchParams.get('tab') === 'group';
+
   const [packages, setPackages] = useState<Package[]>([]);
   const [destinations, setDestinations] = useState<Destination[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   // Search & Filter State
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedCategory, setSelectedCategory] = useState(isGroupInit ? 'Group Tours' : 'all');
   const [selectedStatus, setSelectedStatus] = useState('all');
-  const [viewMode, setViewMode] = useState<'all' | 'featured' | 'group'>('all');
+  const [viewMode, setViewMode] = useState<'all' | 'featured' | 'group'>(isGroupInit ? 'group' : 'all');
+
+  useEffect(() => {
+    if (location.pathname.includes('group-tours') || searchParams.get('tab') === 'group' || initialViewMode === 'group') {
+      setViewMode('group');
+      setSelectedCategory('all');
+    }
+  }, [location.pathname, searchParams, initialViewMode]);
 
   // Create / Edit Modal
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -411,27 +431,31 @@ export const AdminPackages: React.FC = () => {
 
   return (
     <DashboardLayout
-      title="Tour Package & Itinerary Management"
-      subtitle="Complete catalog management, guaranteed group tours, authentic day-by-day itineraries, and B2B wholesale margins."
+      title={viewMode === 'group' ? "Group Tours & Fixed Departures (CRUD)" : "Tour Package & Itinerary Management"}
+      subtitle={viewMode === 'group'
+        ? "Create, edit, schedule, delete and manage fixed-departure group tours, delegate seat blocks, upcoming dates, and itineraries."
+        : "Complete catalog management, guaranteed group tours, authentic day-by-day itineraries, and B2B wholesale margins."}
       actions={
         <div className="flex items-center gap-2">
           <Button
-            variant="outline"
+            variant={viewMode === 'group' ? 'primary' : 'outline'}
             size="sm"
             onClick={handleOpenCreateGroupTour}
-            className="border-[#55C9BD] text-[#082C43] hover:bg-[#55C9BD]/15 font-bold"
-            leftIcon={<Users className="w-4 h-4 text-[#00A854]" />}
+            className={viewMode === 'group' ? "font-bold shadow-md bg-[#00A854] hover:bg-[#008f47]" : "border-[#55C9BD] text-[#082C43] hover:bg-[#55C9BD]/15 font-bold"}
+            leftIcon={<Users className="w-4 h-4 text-white" />}
           >
             + Create Group Tour
           </Button>
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={handleOpenCreate}
-            leftIcon={<Plus className="w-4 h-4" />}
-          >
-            Create New Package
-          </Button>
+          {viewMode !== 'group' && (
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={handleOpenCreate}
+              leftIcon={<Plus className="w-4 h-4" />}
+            >
+              Create New Package
+            </Button>
+          )}
         </div>
       }
     >

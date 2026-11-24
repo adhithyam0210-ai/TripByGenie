@@ -10,7 +10,13 @@ import { Link } from 'react-router-dom';
 
 export const GroupTours: React.FC = () => {
   const [tours, setTours] = useState<Package[]>(() =>
-    fallbackData.packages.filter(p => p.category === 'Group Tours' || (p.available_seats && p.available_seats > 0))
+    (fallbackData.packages || [])
+      .filter((p: any) => p.category === 'Group Tours' || p.is_group_tour)
+      .sort((a, b) => {
+        const dateA = a.upcoming_date ? new Date(a.upcoming_date).getTime() : Infinity;
+        const dateB = b.upcoming_date ? new Date(b.upcoming_date).getTime() : Infinity;
+        return dateA - dateB;
+      })
   );
   const [isTripModalOpen, setIsTripModalOpen] = useState(false);
   const [selectedTour, setSelectedTour] = useState<Package | null>(null);
@@ -22,7 +28,14 @@ export const GroupTours: React.FC = () => {
   const loadGroupTours = async () => {
     try {
       const data = await api.getGroupTours();
-      setTours(data);
+      if (Array.isArray(data) && data.length > 0) {
+        const sorted = [...data].sort((a, b) => {
+          const dateA = a.upcoming_date ? new Date(a.upcoming_date).getTime() : Infinity;
+          const dateB = b.upcoming_date ? new Date(b.upcoming_date).getTime() : Infinity;
+          return dateA - dateB;
+        });
+        setTours(sorted);
+      }
     } catch (e) {
       console.error(e);
     }
@@ -128,7 +141,7 @@ export const GroupTours: React.FC = () => {
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <Link to={`/packages/${tour.slug}`} className="flex-1">
+                    <Link to={`/packages/${tour.slug || tour.id}`} className="flex-1">
                       <Button variant="outline" size="sm" className="w-full">
                         Itinerary
                       </Button>

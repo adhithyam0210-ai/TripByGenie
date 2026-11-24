@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { 
   Building2, 
   Save, 
@@ -10,7 +11,8 @@ import {
   MapPin, 
   FileText, 
   CheckCircle,
-  AlertCircle
+  AlertCircle,
+  Users
 } from 'lucide-react';
 import { api } from '../../services/api';
 import { Button } from '../../components/common/Button';
@@ -111,6 +113,38 @@ export const AdminSettings: React.FC = () => {
             <p className="font-semibold text-white">Agency Data Isolation Mode</p>
             <p className="text-brand-cream/80">Strict tenant segregation active. Staff & packages are scoped exclusively to this agency.</p>
           </div>
+        </div>
+      </div>
+
+      {/* Website CMS & Group Tours Operations Card */}
+      <div className="bg-white p-5 rounded-2xl border border-[#EFE7DA] shadow-xs">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <Users className="w-5 h-5 text-[#00A854]" />
+              <h3 className="font-bold text-sm text-[#082C43]">Guaranteed Group Tours (CRUD Management)</h3>
+              <span className="text-[10px] bg-[#55C9BD]/20 text-[#041D30] font-bold px-2 py-0.5 rounded-full">
+                Fixed Departures
+              </span>
+            </div>
+            <p className="text-xs text-slate-500">
+              Create, edit, schedule, delete and manage seat capacity on scheduled group departure packages.
+            </p>
+          </div>
+          <Link
+            to={location.pathname.startsWith('/manager') ? '/manager/group-tours' : '/admin/group-tours'}
+            className="shrink-0"
+          >
+            <Button
+              type="button"
+              variant="primary"
+              size="sm"
+              className="font-bold text-xs bg-[#00A854] hover:bg-[#008f47] shadow-sm"
+              leftIcon={<Users className="w-4 h-4" />}
+            >
+              Open Group Tours CRUD
+            </Button>
+          </Link>
         </div>
       </div>
 

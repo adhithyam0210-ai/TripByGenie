@@ -166,99 +166,61 @@ export const MICE: React.FC = () => {
       {/* ======================================================== */}
       {/* 1. HERO SECTION                                          */}
       {/* ======================================================== */}
-      <section className="relative py-16 sm:py-24 bg-[#082C43] text-white overflow-hidden">
+      <section className="relative pt-10 sm:pt-14 pb-8 sm:pb-10 bg-[#082C43] text-white overflow-hidden">
         <TravelPatternBg variant="navy" opacity={0.08} />
         
         {/* Background ambient accents */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-[#17648A]/20 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#FF795C]/15 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="relative max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            
-            {/* Left Column: Heading and Value Proposition */}
-            <div className="lg:col-span-7 space-y-6">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-[#55C9BD] text-xs font-bold tracking-wider uppercase">
-                <Sparkles className="w-3.5 h-3.5 text-[#FF795C]" />
-                <span>MICE & Corporate Travel Specialist • South India & Global</span>
-              </div>
+        <div className="relative max-w-4xl w-full mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="space-y-4 sm:space-y-5">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold font-display leading-[1.15] text-white">
+              Meetings, Incentives, Conferences & <span className="text-[#55C9BD]">Corporate Offsites</span>
+            </h1>
 
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold font-display leading-[1.15] text-white">
-                Meetings, Incentives, Conferences & <span className="text-[#55C9BD]">Corporate Offsites</span>
-              </h1>
+            <p className="text-sm sm:text-base text-white/85 max-w-2xl mx-auto leading-relaxed">
+              Elevate your corporate culture with world-class events. Trip by Genie handles complete end-to-end logistics: group flight bookings, verified 5-star venue blocks, luxury AC coach fleets, stage AV setups, and memorable team galas.
+            </p>
 
-              <p className="text-sm sm:text-base text-white/85 max-w-2xl leading-relaxed">
-                Elevate your corporate culture with world-class events. Trip by Genie handles complete end-to-end logistics: group flight bookings, verified 5-star venue blocks, luxury AC coach fleets, stage AV setups, and memorable team galas.
-              </p>
-
-              {/* Badges / Highlights */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5 pt-2">
-                <div className="p-3 rounded-2xl bg-white/10 border border-white/10 flex items-center gap-2.5">
+            {/* Badges / Bullet Points */}
+            <div className="pt-1 flex justify-center">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-center gap-2 sm:gap-6 text-white/90">
+                <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-[#55C9BD] shrink-0" />
-                  <span className="text-xs font-semibold text-white">100% GST Invoicing</span>
+                  <span className="text-xs sm:text-sm font-medium">100% GST Invoicing</span>
                 </div>
-                <div className="p-3 rounded-2xl bg-white/10 border border-white/10 flex items-center gap-2.5">
+                <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-[#55C9BD] shrink-0" />
-                  <span className="text-xs font-semibold text-white">Dedicated On-Site Desk</span>
+                  <span className="text-xs sm:text-sm font-medium">Dedicated On-Site Desk</span>
                 </div>
-                <div className="p-3 rounded-2xl bg-white/10 border border-white/10 flex items-center gap-2.5">
+                <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-[#55C9BD] shrink-0" />
-                  <span className="text-xs font-semibold text-white">Bulk Airfare Discounts</span>
+                  <span className="text-xs sm:text-sm font-medium">Bulk Airfare Discounts</span>
                 </div>
               </div>
+            </div>
 
-              {/* Action Buttons */}
-              <div className="pt-4 flex flex-wrap items-center gap-4">
-                <a href="#corporate-rfp" className="inline-block">
-                  <Button variant="primary" size="lg" className="shadow-xl font-bold text-xs sm:text-sm">
-                    <Send className="w-4 h-4 mr-2" />
-                    Request Corporate Proposal (RFP)
-                  </Button>
-                </a>
-                <button
-                  type="button"
-                  onClick={handleWhatsAppDirect}
-                  className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs sm:text-sm font-bold shadow-lg transition-all cursor-pointer"
+            {/* Action Buttons */}
+            <div className="pt-2 sm:pt-3 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-xl mx-auto w-full">
+              <a href="#corporate-rfp" className="w-full sm:w-1/2">
+                <Button
+                  variant="primary"
+                  className="w-full justify-center text-xs sm:text-sm font-bold py-3 px-5 rounded-xl shadow-lg"
+                  leftIcon={<Send className="w-4 h-4" />}
                 >
-                  <PhoneCall className="w-4 h-4" />
-                  <span>Direct Corporate WhatsApp</span>
-                </button>
-              </div>
+                  Request Corporate Proposal (RFP)
+                </Button>
+              </a>
+              <button
+                type="button"
+                onClick={handleWhatsAppDirect}
+                className="w-full sm:w-1/2 inline-flex items-center justify-center gap-2 py-3 px-5 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs sm:text-sm font-bold shadow-lg transition-all cursor-pointer select-none active:scale-[0.98]"
+              >
+                <PhoneCall className="w-4 h-4 shrink-0" />
+                <span>Direct Corporate WhatsApp</span>
+              </button>
             </div>
-
-            {/* Right Column: Hero Visual Showcase */}
-            <div className="lg:col-span-5 relative">
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-white/15 bg-white/5 backdrop-blur-xs p-3">
-                <img
-                  src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1000&q=80"
-                  alt="Corporate Conference & Summit"
-                  className="w-full h-80 sm:h-96 object-cover rounded-2xl"
-                />
-                
-                {/* Floating Metric Pill 1 */}
-                <div className="absolute top-6 left-6 bg-[#082C43]/90 backdrop-blur-md border border-white/20 p-3.5 rounded-2xl shadow-xl text-white flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-[#55C9BD]/20 flex items-center justify-center text-[#55C9BD]">
-                    <Users2 className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <p className="text-base font-extrabold font-display">15,000+ Delegates</p>
-                    <p className="text-[10px] text-white/70">Seamlessly Curated Across India & Abroad</p>
-                  </div>
-                </div>
-
-                {/* Floating Metric Pill 2 */}
-                <div className="absolute bottom-6 right-6 bg-white/95 backdrop-blur-md p-3.5 rounded-2xl shadow-xl text-[#082C43] flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-[#FF795C]/20 flex items-center justify-center text-[#FF795C]">
-                    <ShieldCheck className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-extrabold font-display">IATA & Govt. Accredited</p>
-                    <p className="text-[10px] text-[#173247]/75">Verified Hotels & Licensed Ground Fleet</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
           </div>
         </div>
       </section>
@@ -266,8 +228,8 @@ export const MICE: React.FC = () => {
       {/* ======================================================== */}
       {/* 2. THE FOUR PILLARS OF MICE                               */}
       {/* ======================================================== */}
-      <section className="py-16 sm:py-20 max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
-        <div className="text-center max-w-3xl mx-auto space-y-3 mb-12">
+      <section className="py-8 sm:py-10 max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
+        <div className="text-center max-w-3xl mx-auto space-y-2 mb-6 sm:mb-8">
           <span className="text-xs font-bold uppercase tracking-widest text-[#FF795C] block">
             Complete Corporate Spectrum
           </span>
@@ -335,9 +297,9 @@ export const MICE: React.FC = () => {
       {/* ======================================================== */}
       {/* 3. END-TO-END CORPORATE SERVICES & CAPABILITIES           */}
       {/* ======================================================== */}
-      <section className="py-14 sm:py-16 bg-[#F8F1E7]/60 border-y border-[#EFE7DA]">
+      <section className="py-8 sm:py-10 bg-[#F8F1E7]/60 border-y border-[#EFE7DA]">
         <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
-          <div className="text-center max-w-2xl mx-auto space-y-2 mb-10">
+          <div className="text-center max-w-2xl mx-auto space-y-2 mb-6 sm:mb-8">
             <span className="text-xs font-bold uppercase tracking-widest text-[#55C9BD] block">
               Seamless Execution
             </span>
@@ -373,8 +335,8 @@ export const MICE: React.FC = () => {
       {/* ======================================================== */}
       {/* 4. POPULAR MICE DESTINATIONS                              */}
       {/* ======================================================== */}
-      <section className="py-16 sm:py-20 max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+      <section className="py-8 sm:py-10 max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 sm:mb-8">
           <div>
             <span className="text-xs font-bold uppercase tracking-widest text-[#FF795C] block">
               Curated Offsite Venues
@@ -446,11 +408,11 @@ export const MICE: React.FC = () => {
       {/* ======================================================== */}
       {/* 5. CORPORATE RFP INQUIRY FORM                             */}
       {/* ======================================================== */}
-      <section id="corporate-rfp" className="py-16 sm:py-20 bg-[#082C43] text-white relative">
+      <section id="corporate-rfp" className="py-8 sm:py-12 bg-[#082C43] text-white relative">
         <TravelPatternBg variant="navy" opacity={0.07} />
         
         <div className="relative max-w-4xl w-full mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center space-y-3 mb-10">
+          <div className="text-center space-y-2 mb-6 sm:mb-8">
             <span className="text-xs font-bold uppercase tracking-widest text-[#55C9BD] block">
               Direct Corporate Helpdesk
             </span>

@@ -7,7 +7,6 @@ import {
   Star,
   Users,
   Award,
-  Globe2,
   PhoneCall,
   CheckCircle2,
   Calendar,
@@ -51,8 +50,19 @@ export const Home: React.FC = () => {
   const [packages, setPackages] = useState<Package[]>((fallbackData.packages || []) as any);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [groupTours, setGroupTours] = useState<Package[]>(
-    ((fallbackData.packages || []).filter((p: any) => p.category === 'Group Tours')) as any
+    ((fallbackData.packages || []).filter((p: any) => p.category === 'Group Tours' || p.is_group_tour)) as any
   );
+
+  // 3 latest upcoming group tour packages sorted by departure date
+  const upcomingGroupTours = useMemo(() => {
+    return [...groupTours]
+      .sort((a, b) => {
+        const dateA = a.upcoming_date ? new Date(a.upcoming_date).getTime() : Infinity;
+        const dateB = b.upcoming_date ? new Date(b.upcoming_date).getTime() : Infinity;
+        return dateA - dateB;
+      })
+      .slice(0, 3);
+  }, [groupTours]);
   const [services, setServices] = useState<TravelService[]>((fallbackData.travel_services || []) as any);
   const [testimonials, setTestimonials] = useState<Testimonial[]>((fallbackData.testimonials || []) as any);
   const [selectedStory, setSelectedStory] = useState<Testimonial | null>(null);
@@ -910,7 +920,7 @@ export const Home: React.FC = () => {
       {/* ======================================================== */}
       {/* SECTION 5: GUARANTEED GROUP TOURS                        */}
       {/* ======================================================== */}
-      {groupTours.length > 0 && (
+      {upcomingGroupTours.length > 0 && (
         <section className="py-6 sm:py-8 relative bg-[#082C43] text-white overflow-hidden">
           <TravelPatternBg variant="navy" opacity={0.06} />
 
@@ -933,7 +943,7 @@ export const Home: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {groupTours.slice(0, 3).map((tour) => (
+              {upcomingGroupTours.map((tour) => (
                 <div
                   key={tour.id}
                   className="rounded-3xl bg-white/10 backdrop-blur-md border border-white/20 p-6 flex flex-col justify-between hover:bg-white/15 transition-all shadow-xl"
@@ -1065,45 +1075,6 @@ export const Home: React.FC = () => {
           <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {micePillars.map((pillar) => renderMiceCard(pillar, false, true))}
           </div>
-
-          {/* Corporate Support Bar */}
-          <div className="mt-6 sm:mt-8 p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-[#082C43] text-white flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 sm:gap-6 shadow-xl">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
-              <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-white/10 flex items-center justify-center shrink-0 text-[#55C9BD]">
-                <Globe2 className="w-4 h-4 sm:w-6 sm:h-6" />
-              </div>
-              <div>
-                <h4 className="text-xs sm:text-base font-bold font-display text-white leading-tight">
-                  Corporate GST Invoicing • Group Flight Desks • 24/7 On-Site Coordinator
-                </h4>
-                <p className="text-[11px] sm:text-xs text-white/75 mt-0.5">
-                  Popular offsite destinations: Goa, Kerala, Bali, Dubai, Thailand, Singapore, and Rajasthan.
-                </p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-row sm:items-center sm:gap-3 w-full lg:w-auto">
-              <Link to="/mice" className="w-full sm:w-auto">
-                <Button
-                  variant="primary"
-                  size="sm"
-                  className="w-full sm:w-auto font-bold text-[11px] sm:text-xs py-1.5 sm:py-2.5 px-2.5 sm:px-4 rounded-lg sm:rounded-xl shadow-xs justify-center"
-                >
-                  Request MICE Proposal
-                </Button>
-              </Link>
-              <a
-                href="https://wa.me/919940463566?text=Hi%20TripbyGenie,%20I%20would%20like%20to%20inquire%20about%20Corporate%20MICE%20and%20Offsite%20packages%20for%20our%20company"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-1 sm:gap-1.5 px-2.5 sm:px-4 py-1.5 sm:py-2.5 rounded-lg sm:rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white text-[11px] sm:text-xs font-bold shadow-xs transition-colors w-full sm:w-auto"
-              >
-                <PhoneCall className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
-                <span>Corporate WhatsApp</span>
-              </a>
-            </div>
-          </div>
-
         </div>
       </section>
 

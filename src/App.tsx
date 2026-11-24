@@ -433,6 +433,14 @@ export const App: React.FC = () => {
         }
       />
       <Route
+        path="/admin/group-tours"
+        element={
+          <ProtectedRoute allowedRoles={['admin', 'manager']}>
+            <AdminPackages initialViewMode="group" />
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/admin/destinations"
         element={
           <ProtectedRoute allowedRoles={['admin', 'manager']}>
@@ -528,6 +536,14 @@ export const App: React.FC = () => {
         element={
           <ProtectedRoute allowedRoles={['manager', 'admin']}>
             <AdminPackages />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/manager/group-tours"
+        element={
+          <ProtectedRoute allowedRoles={['manager', 'admin']}>
+            <AdminPackages initialViewMode="group" />
           </ProtectedRoute>
         }
       />

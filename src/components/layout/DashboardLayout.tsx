@@ -111,6 +111,7 @@ const getManagementGroups = (prefix: string): NavGroup[] => [
     items: [
       { name: 'Hero Banners', path: `${prefix}/banners`, icon: Image },
       { name: 'Holiday Packages', path: `${prefix}/packages`, icon: Layers },
+      { name: 'Group Tours (CRUD)', path: `${prefix}/group-tours`, icon: Users, badge: 'Fixed' },
       { name: 'Destinations Catalog', path: `${prefix}/destinations`, icon: MapPin },
       { name: 'Agency Settings', path: `${prefix}/settings`, icon: Settings },
       { name: 'View Live Website', path: '/', icon: ExternalLink }
@@ -304,6 +305,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         { name: 'Leads & Enquiries', path: '/manager/leads', icon: Users, badge: 'Assign' },
         { name: 'Staff Management', path: '/manager/staff', icon: UserCheck },
         { name: 'Holiday Packages', path: '/manager/packages', icon: Layers },
+        { name: 'Group Tours', path: '/manager/group-tours', icon: Users, badge: 'Fixed' },
         { name: 'Destinations', path: '/manager/destinations', icon: MapPin },
         { name: 'Hero Banners', path: '/manager/banners', icon: Image },
         { name: 'Bookings & Execution', path: '/manager/bookings', icon: CalendarCheck },
