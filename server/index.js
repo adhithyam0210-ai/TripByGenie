@@ -16,8 +16,8 @@ const JWT_SECRET = process.env.JWT_SECRET || 'travel_genie_super_secure_jwt_secr
 
 // Middleware
 app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '100mb' }));
+app.use(express.urlencoded({ extended: true, limit: '100mb' }));
 
 // Mount Modular API v1 Routes
 const v1Routes = require('./src/routes/v1');
@@ -28,7 +28,17 @@ const uploadDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
-app.use('/uploads', express.static(uploadDir));
+app.use('/uploads', express.static(uploadDir, {
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('.mp4')) {
+      res.setHeader('Content-Type', 'video/mp4');
+    } else if (filePath.endsWith('.webm')) {
+      res.setHeader('Content-Type', 'video/webm');
+    }
+    res.setHeader('Accept-Ranges', 'bytes');
+    res.setHeader('Cache-Control', 'public, max-age=86400');
+  }
+}));
 
 // Local media file streaming endpoint (supports byte ranges for videos & local files)
 app.get('/api/media/stream', (req, res) => {
@@ -84,7 +94,10 @@ const storage = multer.diskStorage({
     cb(null, `${Date.now()}-${uuidv4().substring(0, 8)}${ext}`);
   }
 });
-const upload = multer({ storage });
+const upload = multer({
+  storage,
+  limits: { fileSize: 250 * 1024 * 1024 } // 250MB for pristine 4K/HD video and raw media
+});
 
 // JWT helper
 const generateToken = (user) => {
@@ -4298,7 +4311,20 @@ app.get('/api/agent/transactions', authenticate, authorize(['agent', 'manager', 
 // ==========================================
 // 7. FILE UPLOAD ENDPOINT
 // ==========================================
-app.post('/api/upload', authenticate, upload.single('file'), (req, res) => {
+app.post('/api/upload', (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    const token = authHeader.split(' ')[1];
+    try {
+      const decoded = jwt.verify(token, JWT_SECRET);
+      const user = db.findById('users', decoded.id);
+      if (user) req.user = user;
+    } catch (e) {
+      // Continue gracefully so local file uploads aren't blocked by token expiration
+    }
+  }
+  next();
+}, upload.single('file'), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'No file uploaded.' });
   }

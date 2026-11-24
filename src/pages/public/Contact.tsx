@@ -27,7 +27,7 @@ export const Contact: React.FC = () => {
   const whatsappLink = `https://wa.me/${whatsappNumber}?text=Hi%20TripbyGenie,%20I%20would%20like%20to%20enquire%20about%20a%20tour%20package`;
   const primaryEmail = 'info@tripbygenie.in';
   const secondaryEmail = 'info@tripbygenie.com';
-  const officeAddress = 'A, E, Trip By Genie, 31, W Jones Rd, Periyapet, Saidapet, Chennai, Tamil Nadu 600015';
+  const officeAddress = 'Trip By Genie, 31, West Jones Rd, Periyapet, Saidapet, Chennai, Tamil Nadu 600015';
   const mapsLink = 'https://www.google.com/maps/place/Trip+By+Genie/@13.0252636,80.22315,17z/data=!3m1!4b1!4m6!3m5!1s0x3a5267f9e4481ac9:0x55e6d69a7d4a8e3!8m2!3d13.0252636!4d80.2257249!16s%2Fg%2F11l2bvylrx?entry=ttu';
 
   const handleSubmit = async (e: React.FormEvent) => {

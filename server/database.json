@@ -8,7 +8,7 @@
       "email": "info@tripbygenie.com",
       "phone": "+91 (44) 46071374",
       "whatsapp": "+91 98765 43210",
-      "address": "A, E, Trip By Genie, 31, W Jones Rd, Periyapet, Saidapet, Chennai, Tamil Nadu 600015",
+      "address": "Trip By Genie, 31, West Jones Rd, Periyapet, Saidapet, Chennai, Tamil Nadu 600015",
       "currency": "INR",
       "currency_symbol": "₹",
       "logo": "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=200&q=80",
@@ -1186,9 +1186,10 @@
       "cta_link": "/packages?category=International%20Holiday%20Packages",
       "secondary_cta_text": "Custom Itinerary",
       "secondary_cta_link": "/#custom-trip",
-      "display_order": 2,
+      "display_order": 4,
       "is_active": true,
-      "updated_at": "2026-11-24T03:06:05.140Z"
+      "updated_at": "2026-11-24T11:31:43.529Z",
+      "video_url": ""
     },
     {
       "id": "banner_3",
@@ -1201,8 +1202,10 @@
       "cta_link": "/honeymoon",
       "secondary_cta_text": "Plan Honeymoon",
       "secondary_cta_link": "/#custom-trip",
-      "display_order": 3,
-      "is_active": true
+      "display_order": 2,
+      "is_active": true,
+      "video_url": "",
+      "updated_at": "2026-11-24T11:30:28.275Z"
     },
     {
       "id": "banner_4",
@@ -1212,11 +1215,13 @@
       "image_desktop": "https://images.unsplash.com/photo-1595815771614-ade9d652a65d?auto=format&fit=crop&w=2560&q=90",
       "image_mobile": "https://images.unsplash.com/photo-1595815771614-ade9d652a65d?auto=format&fit=crop&w=1080&q=85",
       "cta_text": "Explore South India",
-      "cta_link": "/destinations",
+      "cta_link": "/packages?category=South%20India%20Holidays",
       "secondary_cta_text": "Book Cab & Tour",
       "secondary_cta_link": "/services",
-      "display_order": 4,
-      "is_active": true
+      "display_order": 1,
+      "is_active": true,
+      "video_url": "",
+      "updated_at": "2026-11-24T11:30:18.034Z"
     },
     {
       "agency_id": "agency_travel_genie",
@@ -1229,11 +1234,11 @@
       "cta_link": "/packages",
       "secondary_cta_text": "Plan Your Trip",
       "secondary_cta_link": "/#custom-trip",
-      "display_order": 5,
+      "display_order": 3,
       "is_active": true,
       "id": "her_559d2c4f0d",
       "created_at": "2026-11-19T09:51:01.822Z",
-      "updated_at": "2026-11-19T09:51:01.822Z"
+      "updated_at": "2026-11-24T11:31:35.674Z"
     }
   ],
   "destinations": [
@@ -75670,7 +75675,7 @@
       "name": "Chennai Corporate Headquarters (South India)",
       "code": "MAA-HQ",
       "city": "Chennai",
-      "address": "A, E, Trip By Genie, 31, W Jones Rd, Periyapet, Saidapet, Chennai, Tamil Nadu 600015",
+      "address": "Trip By Genie, 31, West Jones Rd, Periyapet, Saidapet, Chennai, Tamil Nadu 600015",
       "manager_name": "Rajesh Kumar",
       "phone": "+91 (44) 46071374",
       "email": "chennai.hq@tripbygenie.in",

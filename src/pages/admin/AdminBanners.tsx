@@ -161,17 +161,15 @@ export const AdminBanners: React.FC = () => {
         video_url: res.url
       }));
       success(`Video "${file.name}" uploaded successfully!`);
-    } catch {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const result = reader.result as string;
-        setFormData(prev => ({
-          ...prev,
-          video_url: result
-        }));
-        success(`Video "${file.name}" loaded!`);
-      };
-      reader.readAsDataURL(file);
+    } catch (uploadErr) {
+      console.warn('Backend file upload fallback:', uploadErr);
+      // Instant native object URL for preview without base64 compression bloat
+      const blobUrl = URL.createObjectURL(file);
+      setFormData(prev => ({
+        ...prev,
+        video_url: blobUrl
+      }));
+      success(`Video "${file.name}" loaded for preview!`);
     }
   };
 

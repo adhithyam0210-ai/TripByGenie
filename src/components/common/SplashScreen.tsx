@@ -12,7 +12,7 @@ const FRAMES = [
   '/splash_frames/frame_8.png'
 ];
 
-// 130ms per frame provides a brisk ~1.17s flight animation
+// 130ms per frame provides a silky ~1.17s flight animation
 const FRAME_DURATION = 130;
 // Maximum 2.5s absolute ceiling (never wait longer than 2.5 seconds)
 const MAX_TIMEOUT_MS = 2500;
@@ -60,26 +60,35 @@ export const SplashScreen: React.FC = () => {
 
     // Prevent background scrolling while splash is active
     const originalOverflow = document.body.style.overflow;
+    const originalTouchAction = document.body.style.touchAction;
     document.body.style.overflow = 'hidden';
+    document.body.style.touchAction = 'none';
 
-    // 1. Eagerly preload all frame images
-    FRAMES.forEach((src) => {
-      const img = new Image();
-      img.src = src;
-    });
+    // 1. Preload background image into memory
+    const bgImg = new Image();
+    bgImg.src = '/splash-bg.jpg';
 
-    // 2. Step through frames 0 -> 8
+    // 2. Hardware-accelerated frame pacing with requestAnimationFrame
+    // Eliminates mobile timer jitter, frame drops, and drift
     let animComplete = false;
-    const frameInterval = setInterval(() => {
-      setFrameIndex((prev) => {
-        if (prev < FRAMES.length - 1) {
-          return prev + 1;
-        }
+    let startTime: number | null = null;
+    let rafId: number;
+
+    const animate = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const elapsed = timestamp - startTime;
+      const currentIdx = Math.min(Math.floor(elapsed / FRAME_DURATION), FRAMES.length - 1);
+
+      setFrameIndex(currentIdx);
+
+      if (currentIdx >= FRAMES.length - 1) {
         animComplete = true;
-        clearInterval(frameInterval);
-        return prev;
-      });
-    }, FRAME_DURATION);
+      } else {
+        rafId = requestAnimationFrame(animate);
+      }
+    };
+
+    rafId = requestAnimationFrame(animate);
 
     // 3. Track page readiness (homepage resources load in background)
     let pageReady = document.readyState === 'complete';
@@ -123,7 +132,8 @@ export const SplashScreen: React.FC = () => {
 
     return () => {
       document.body.style.overflow = originalOverflow;
-      clearInterval(frameInterval);
+      document.body.style.touchAction = originalTouchAction;
+      cancelAnimationFrame(rafId);
       clearInterval(checkInterval);
       clearTimeout(minTimer);
       clearTimeout(maxTimer);
@@ -140,24 +150,33 @@ export const SplashScreen: React.FC = () => {
       aria-modal="true"
       aria-label="Trip By Genie Loading"
       onPointerDown={dismiss}
-      className={`fixed inset-0 z-[9999999] flex items-center justify-center bg-white bg-cover bg-center bg-no-repeat transition-opacity duration-400 ease-out select-none cursor-pointer ${
-        isFading ? 'opacity-0 pointer-events-none' : 'opacity-100'
-      }`}
+      className={`fixed inset-0 z-[9999999] w-screen h-screen h-[100dvh] flex flex-col items-center justify-center bg-white bg-cover bg-center bg-no-repeat transition-opacity duration-400 ease-out select-none cursor-pointer ${isFading ? 'opacity-0 pointer-events-none' : 'opacity-100'
+        }`}
       style={{
         backgroundImage: `url('/splash-bg.jpg')`,
         touchAction: 'none',
         overscrollBehavior: 'contain'
       }}
     >
-      {/* Centered Animation on Travel Pattern Background - Mobile & Desktop responsive */}
-      <div className="relative z-10 w-[280px] sm:w-[340px] md:w-[380px] lg:w-[420px] max-w-[88vw] -translate-y-6 sm:-translate-y-10 lg:-translate-y-12 flex items-center justify-center mx-auto transition-transform pointer-events-none">
-        <img
-          src={FRAMES[frameIndex]}
-          alt={`Trip By Genie Loading Frame ${frameIndex + 1}`}
-          className="w-full h-auto object-contain select-none pointer-events-none"
-          loading="eager"
-          decoding="async"
-        />
+      {/* 
+        Optimal Mobile & Desktop Alignment:
+        - Locked aspect ratio (506/335) completely prevents any layout jitter or image pop-in.
+        - Stacked <img> layers are GPU-composited with will-change-[opacity], running at full 60fps on mobile.
+        - Balanced optical centering (-translate-y-4 on mobile, -translate-y-8 on desktop).
+      */}
+      <div className="relative z-10 w-full max-w-[270px] xs:max-w-[300px] sm:max-w-[360px] md:max-w-[400px] px-4 -translate-y-4 sm:-translate-y-8 flex items-center justify-center mx-auto pointer-events-none">
+        <div className="relative w-full aspect-[506/335]">
+          {FRAMES.map((src, idx) => (
+            <img
+              key={src}
+              src={src}
+              alt=""
+              className={`absolute inset-0 w-full h-full object-contain pointer-events-none will-change-[opacity] ${idx === frameIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
+                }`}
+              loading="eager"
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

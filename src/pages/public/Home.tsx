@@ -11,6 +11,12 @@ import {
   CheckCircle2,
   Calendar,
   Plane,
+  Bus,
+  Car,
+  Ship,
+  Building2,
+  FileCheck,
+  CheckCircle,
   Building,
   Heart,
   ChevronLeft,
@@ -279,6 +285,59 @@ export const Home: React.FC = () => {
     }
   };
 
+  // Featured Packages Mobile Slider with Native Smooth Swipe & Dynamic Bump Effect (like MICE)
+  const packagesSliderRef = useRef<HTMLDivElement>(null);
+  const [activePackageIndex, setActivePackageIndex] = useState(0);
+
+  const handlePackagesScroll = () => {
+    if (packagesSliderRef.current) {
+      const { scrollLeft, clientWidth } = packagesSliderRef.current;
+      const cardWidth = clientWidth * 0.86;
+      const index = Math.round(scrollLeft / cardWidth);
+      setActivePackageIndex(Math.min(Math.max(index, 0), Math.max(0, displayedPackages.length - 1)));
+    }
+  };
+
+  const scrollToPackageCard = (idx: number) => {
+    if (packagesSliderRef.current) {
+      const card = packagesSliderRef.current.children[idx] as HTMLElement;
+      if (card) {
+        card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+      setActivePackageIndex(idx);
+    }
+  };
+
+  useEffect(() => {
+    setActivePackageIndex(0);
+    if (packagesSliderRef.current) {
+      packagesSliderRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+    }
+  }, [selectedCategory]);
+
+  // Guaranteed Group Tours Mobile Slider with Native Smooth Swipe & Dynamic Bump Effect (like MICE)
+  const groupToursSliderRef = useRef<HTMLDivElement>(null);
+  const [activeGroupTourIndex, setActiveGroupTourIndex] = useState(0);
+
+  const handleGroupToursScroll = () => {
+    if (groupToursSliderRef.current) {
+      const { scrollLeft, clientWidth } = groupToursSliderRef.current;
+      const cardWidth = clientWidth * 0.86;
+      const index = Math.round(scrollLeft / cardWidth);
+      setActiveGroupTourIndex(Math.min(Math.max(index, 0), Math.max(0, upcomingGroupTours.length - 1)));
+    }
+  };
+
+  const scrollToGroupTourCard = (idx: number) => {
+    if (groupToursSliderRef.current) {
+      const card = groupToursSliderRef.current.children[idx] as HTMLElement;
+      if (card) {
+        card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+      setActiveGroupTourIndex(idx);
+    }
+  };
+
   const micePillars = [
     {
       letter: 'M',
@@ -380,6 +439,96 @@ export const Home: React.FC = () => {
             ))}
           </div>
         </div>
+      </div>
+    </div>
+  );
+
+  const renderServiceIcon = (srv: TravelService) => {
+    const t = (srv.title || '').toLowerCase();
+    const iconName = ((srv as any).icon || '').toLowerCase();
+
+    if (t.includes('bus') || iconName === 'bus') {
+      return <Bus className="w-5 h-5 text-[#FF795C]" />;
+    }
+    if (t.includes('car') || t.includes('chauffeur') || iconName === 'car') {
+      return <Car className="w-5 h-5 text-[#FF795C]" />;
+    }
+    if (t.includes('cruise') || t.includes('ship') || iconName === 'ship') {
+      return <Ship className="w-5 h-5 text-[#FF795C]" />;
+    }
+    if (t.includes('hotel') || t.includes('resort') || iconName === 'building2' || iconName === 'hotel') {
+      return <Building2 className="w-5 h-5 text-[#FF795C]" />;
+    }
+    if (t.includes('visa') || iconName === 'filecheck') {
+      return <FileCheck className="w-5 h-5 text-[#FF795C]" />;
+    }
+    if (t.includes('insurance') || iconName === 'shieldcheck') {
+      return <ShieldCheck className="w-5 h-5 text-[#FF795C]" />;
+    }
+    if (t.includes('airport') || t.includes('transfer')) {
+      return <MapPin className="w-5 h-5 text-[#FF795C]" />;
+    }
+    if (t.includes('check-in') || t.includes('checkin') || iconName === 'checkcircle') {
+      return <CheckCircle className="w-5 h-5 text-[#FF795C]" />;
+    }
+    if (t.includes('custom') || t.includes('itinerar') || iconName === 'compass') {
+      return <Compass className="w-5 h-5 text-[#FF795C]" />;
+    }
+    return <Plane className="w-5 h-5 text-[#FF795C]" />;
+  };
+
+  const renderGroupTourCard = (tour: any, isCompactMobile = false, isActive = true) => (
+    <div
+      key={tour.id}
+      className={`rounded-3xl bg-white/10 backdrop-blur-md border border-white/20 p-5 sm:p-6 flex flex-col justify-between hover:bg-white/15 transition-all duration-300 h-full ${
+        isCompactMobile
+          ? `w-[86vw] max-w-[340px] shrink-0 snap-center ${
+              isActive ? 'scale-100 shadow-2xl opacity-100 ring-1 ring-[#55C9BD]/40' : 'scale-[0.93] shadow-xs opacity-75'
+            }`
+          : 'shadow-xl'
+      }`}
+    >
+      <div className="space-y-3.5 sm:space-y-4">
+        <div className="flex items-center justify-between">
+          <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-white/20 text-white border border-white/20 backdrop-blur-xs">
+            {tour.upcoming_date ? `Departure: ${tour.upcoming_date}` : 'Upcoming Departure'}
+          </span>
+          <span className="text-xs font-bold text-[#55C9BD] flex items-center gap-1">
+            <Users className="w-3.5 h-3.5" />
+            {tour.available_seats !== undefined ? tour.available_seats : (tour.seats_left || 8)} Seats Left
+          </span>
+        </div>
+
+        <h3 className="text-lg sm:text-xl font-bold font-display text-white line-clamp-2">{tour.title}</h3>
+
+        <div className="flex items-center gap-4 text-xs text-white/80">
+          <span className="flex items-center gap-1">
+            <Calendar className="w-3.5 h-3.5 text-[#55C9BD]" />
+            {tour.duration_days}D / {tour.duration_nights}N
+          </span>
+          <span className="flex items-center gap-1">
+            <MapPin className="w-3.5 h-3.5 text-[#FF795C]" />
+            {tour.destination}
+          </span>
+        </div>
+
+        <p className="text-xs text-white/70 line-clamp-2">
+          {tour.short_description || tour.description}
+        </p>
+      </div>
+
+      <div className="pt-4 sm:pt-6 mt-4 sm:mt-6 border-t border-white/10 flex items-center justify-between">
+        <div>
+          <span className="text-[10px] text-white/60 block">Starting From</span>
+          <span className="text-xl font-extrabold text-[#55C9BD] font-display">
+            ₹{Number(tour.starting_price || tour.public_price || tour.b2c_price || tour.price || 0).toLocaleString('en-IN')}
+          </span>
+        </div>
+        <Link to={`/packages/${tour.slug || tour.id}`}>
+          <Button variant="primary" size="sm" className="text-xs font-bold">
+            Book Seat
+          </Button>
+        </Link>
       </div>
     </div>
   );
@@ -615,14 +764,20 @@ export const Home: React.FC = () => {
           {currentBanner.video_url ? (
             <video
               key={`hero-vid-${currentBanner.video_url}`}
+              src={resolveMediaUrl(currentBanner.video_url)}
               autoPlay
               loop
               muted
               playsInline
               preload="auto"
-              className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+              className="hero-video absolute inset-0 w-full h-full object-cover pointer-events-none"
+              style={{
+                transform: 'translate3d(0, 0, 0)',
+                backfaceVisibility: 'hidden',
+                willChange: 'transform'
+              }}
             >
-              <source src={resolveMediaUrl(currentBanner.video_url)} type="video/mp4" />
+              <source src={resolveMediaUrl(currentBanner.video_url)} type={currentBanner.video_url?.endsWith('.webm') ? 'video/webm' : 'video/mp4'} />
             </video>
           ) : (
             <img
@@ -647,9 +802,15 @@ export const Home: React.FC = () => {
             />
           )}
 
-          {/* Clean legibility scrim: subtle left vignette for white text, 100% natural photo/video clarity */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/25 to-transparent pointer-events-none" />
-          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/30 to-transparent pointer-events-none" />
+          {/* Clean legibility scrim: If video, keep it airy and bright so 100% of the video's original sharpness, vibrancy, and brightness shines through without dark banding */}
+          {currentBanner.video_url ? (
+            <div className="absolute inset-0 bg-gradient-to-r from-black/35 via-black/5 to-transparent pointer-events-none" />
+          ) : (
+            <>
+              <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/25 to-transparent pointer-events-none" />
+              <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/30 to-transparent pointer-events-none" />
+            </>
+          )}
         </div>
 
         {/* Left Navigation Arrow - Hidden on narrow mobile to prevent overlapping banner text */}
@@ -693,11 +854,11 @@ export const Home: React.FC = () => {
         {/* Hero Content Container */}
         <div className="relative z-10 max-w-[1600px] w-full mx-auto px-5 sm:px-8 lg:px-12 2xl:px-16 my-auto py-6 sm:py-8">
           <div className="max-w-4xl space-y-3.5 sm:space-y-6 sm:pl-4 lg:pl-10">
-            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.2] sm:leading-[1.1] font-display drop-shadow-md">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.2] sm:leading-[1.1] font-display drop-shadow-[0_2px_14px_rgba(0,0,0,0.85)]">
               {currentBanner.title}
             </h1>
 
-            <p className="text-xs sm:text-base lg:text-lg text-white/95 max-w-2xl font-medium leading-relaxed drop-shadow-sm">
+            <p className="text-xs sm:text-base lg:text-lg text-white/95 max-w-2xl font-medium leading-relaxed drop-shadow-[0_1px_8px_rgba(0,0,0,0.8)]">
               {currentBanner.subtitle}
             </p>
 
@@ -799,29 +960,31 @@ export const Home: React.FC = () => {
               </p>
             </div>
 
-            {/* Region Filter Tabs */}
-            <div className="flex items-center gap-1.5 overflow-x-auto pb-2 md:pb-0 scrollbar-none">
-              {[
-                { id: 'all', label: 'All Places' },
-                { id: 'south-india', label: 'South India' },
-                { id: 'north-india', label: 'North India' },
-                { id: 'international', label: 'International' },
-                { id: 'Europe', label: 'Europe' },
-                { id: 'Asia', label: 'Asia' },
-                { id: 'Islands', label: 'Islands' }
-              ].map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setSelectedRegion(tab.id)}
-                  className={`px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
-                    selectedRegion === tab.id
-                      ? 'bg-[#082C43] text-white shadow-md'
-                      : 'bg-white/80 text-[#082C43] hover:bg-white border border-[#EFE7DA]'
-                  }`}
+            {/* Region Filter Dropdown - Right-aligned on mobile & desktop */}
+            <div className="flex justify-end w-full sm:w-auto shrink-0 pt-0.5 sm:pt-0">
+              <div className="relative w-auto min-w-[150px] max-w-[240px] sm:min-w-[240px]">
+                <select
+                  value={selectedRegion}
+                  onChange={(e) => setSelectedRegion(e.target.value)}
+                  aria-label="Filter destinations by region"
+                  className="w-full appearance-none bg-white hover:bg-[#F8FAFC] border border-[#E2E8F0] text-[#082C43] text-xs font-bold py-2 pl-3.5 pr-8 sm:py-2.5 sm:pl-4 sm:pr-10 rounded-xl sm:rounded-2xl shadow-xs hover:border-[#082C43] focus:outline-none focus:ring-2 focus:ring-[#082C43]/20 focus:border-[#082C43] cursor-pointer transition-all"
                 >
-                  {tab.label}
-                </button>
-              ))}
+                  {[
+                    { id: 'all', label: 'All Destinations' },
+                    { id: 'south-india', label: 'South India' },
+                    { id: 'north-india', label: 'North India' },
+                    { id: 'international', label: 'International' },
+                    { id: 'Europe', label: 'Europe' },
+                    { id: 'Asia', label: 'Asia' },
+                    { id: 'Islands', label: 'Islands' }
+                  ].map((tab) => (
+                    <option key={tab.id} value={tab.id} className="text-[#082C43] font-medium py-1">
+                      {tab.label}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#082C43] absolute right-2.5 sm:right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              </div>
             </div>
           </div>
 
@@ -857,42 +1020,74 @@ export const Home: React.FC = () => {
               </p>
             </div>
 
-            {/* Mobile: Category Dropdown */}
-            <div className="md:hidden relative w-full">
-              <select
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full appearance-none bg-[#F8F1E7] border border-[#EFE7DA] text-[#082C43] text-xs font-bold py-2.5 pl-4 pr-9 rounded-xl focus:outline-none focus:border-[#FF795C] cursor-pointer shadow-xs"
-              >
-                {categoriesList.map((cat) => (
-                  <option key={cat} value={cat}>
-                    {cat}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown className="w-4 h-4 text-[#082C43] absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-            </div>
-
-            {/* Desktop: Category pills */}
-            <div className="hidden md:flex items-center gap-1.5 flex-wrap">
-              {categoriesList.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setSelectedCategory(cat)}
-                  className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
-                    selectedCategory === cat
-                      ? 'bg-[#FF795C] text-white shadow-sm'
-                      : 'bg-[#F8F1E7] text-[#082C43] hover:bg-white border border-[#EFE7DA]'
-                  }`}
+            {/* Category Filter Dropdown - Right-aligned on mobile & desktop */}
+            <div className="flex justify-end w-full sm:w-auto shrink-0 pt-0.5 sm:pt-0">
+              <div className="relative w-auto min-w-[170px] max-w-[260px] sm:min-w-[260px]">
+                <select
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                  aria-label="Filter holiday packages by category"
+                  className="w-full appearance-none bg-white hover:bg-[#F8FAFC] border border-[#E2E8F0] text-[#082C43] text-xs font-bold py-2 pl-3.5 pr-8 sm:py-2.5 sm:pl-4 sm:pr-10 rounded-xl sm:rounded-2xl shadow-xs hover:border-[#FF795C] focus:outline-none focus:ring-2 focus:ring-[#FF795C]/20 focus:border-[#FF795C] cursor-pointer transition-all"
                 >
-                  {cat}
-                </button>
-              ))}
+                  {categoriesList.map((cat) => (
+                    <option key={cat} value={cat} className="text-[#082C43] font-medium py-1">
+                      {cat}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#082C43] absolute right-2.5 sm:right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              </div>
             </div>
           </div>
 
-          {/* Packages Grid - Exactly 9 Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          {/* Mobile View: High-Performance Smooth Swipe like MICE */}
+          <div className="block sm:hidden">
+            <div
+              ref={packagesSliderRef}
+              onScroll={handlePackagesScroll}
+              className="flex gap-3 overflow-x-auto snap-x snap-mandatory scroll-smooth py-3 px-2 scrollbar-none select-none"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              {displayedPackages.map((pkg, idx) => {
+                const isActive = idx === activePackageIndex;
+                return (
+                  <div
+                    key={pkg.id}
+                    className={`shrink-0 snap-center w-[86vw] max-w-[340px] transition-all duration-300 ${
+                      isActive ? 'scale-100 shadow-xl opacity-100' : 'scale-[0.93] shadow-xs opacity-75'
+                    }`}
+                  >
+                    <PackageCard
+                      packageData={pkg}
+                      onEnquire={() => handleOpenTripModal()}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Clean, Responsive Progress Dots */}
+            {displayedPackages.length > 1 && (
+              <div className="flex items-center justify-center gap-1.5 mt-2">
+                {displayedPackages.map((_, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => scrollToPackageCard(idx)}
+                    aria-label={`Go to package slide ${idx + 1}`}
+                    className={`transition-all duration-300 rounded-full h-1.5 cursor-pointer ${
+                      activePackageIndex === idx
+                        ? 'w-6 bg-[#FF795C]'
+                        : 'w-1.5 bg-[#082C43]/20 hover:bg-[#082C43]/40'
+                    }`}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Desktop & Tablet View: Grid - Exactly 9 Cards */}
+          <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {displayedPackages.map((pkg) => (
               <PackageCard
                 key={pkg.id}
@@ -942,56 +1137,44 @@ export const Home: React.FC = () => {
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {upcomingGroupTours.map((tour) => (
-                <div
-                  key={tour.id}
-                  className="rounded-3xl bg-white/10 backdrop-blur-md border border-white/20 p-6 flex flex-col justify-between hover:bg-white/15 transition-all shadow-xl"
-                >
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-white/20 text-white border border-white/20 backdrop-blur-xs">
-                        {tour.upcoming_date ? `Departure: ${tour.upcoming_date}` : 'Upcoming Departure'}
-                      </span>
-                      <span className="text-xs font-bold text-[#55C9BD] flex items-center gap-1">
-                        <Users className="w-3.5 h-3.5" />
-                        {tour.available_seats !== undefined ? tour.available_seats : (tour.seats_left || 8)} Seats Left
-                      </span>
-                    </div>
-
-                    <h3 className="text-xl font-bold font-display text-white">{tour.title}</h3>
-
-                    <div className="flex items-center gap-4 text-xs text-white/80">
-                      <span className="flex items-center gap-1">
-                        <Calendar className="w-3.5 h-3.5 text-[#55C9BD]" />
-                        {tour.duration_days}D / {tour.duration_nights}N
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <MapPin className="w-3.5 h-3.5 text-[#FF795C]" />
-                        {tour.destination}
-                      </span>
-                    </div>
-
-                    <p className="text-xs text-white/70 line-clamp-2">
-                      {tour.short_description || tour.description}
-                    </p>
+            {/* Mobile View: High-Performance Smooth Swipe like MICE */}
+            <div className="block sm:hidden">
+              <div
+                ref={groupToursSliderRef}
+                onScroll={handleGroupToursScroll}
+                className="flex gap-3 overflow-x-auto snap-x snap-mandatory scroll-smooth py-3 px-2 scrollbar-none select-none"
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              >
+                {upcomingGroupTours.map((tour, idx) => (
+                  <div key={tour.id} className="shrink-0 snap-center">
+                    {renderGroupTourCard(tour, true, idx === activeGroupTourIndex)}
                   </div>
+                ))}
+              </div>
 
-                  <div className="pt-6 mt-6 border-t border-white/10 flex items-center justify-between">
-                    <div>
-                      <span className="text-[10px] text-white/60 block">Starting From</span>
-                      <span className="text-xl font-extrabold text-[#55C9BD] font-display">
-                        ₹{Number(tour.starting_price || tour.public_price || tour.b2c_price || tour.price || 0).toLocaleString('en-IN')}
-                      </span>
-                    </div>
-                    <Link to={`/packages/${tour.slug || tour.id}`}>
-                      <Button variant="primary" size="sm" className="text-xs font-bold">
-                        Book Seat
-                      </Button>
-                    </Link>
-                  </div>
+              {/* Clean, Responsive Progress Dots */}
+              {upcomingGroupTours.length > 1 && (
+                <div className="flex items-center justify-center gap-1.5 mt-2">
+                  {upcomingGroupTours.map((_, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => scrollToGroupTourCard(idx)}
+                      aria-label={`Go to group tour slide ${idx + 1}`}
+                      className={`transition-all duration-300 rounded-full h-1.5 cursor-pointer ${
+                        activeGroupTourIndex === idx
+                          ? 'w-6 bg-[#55C9BD]'
+                          : 'w-1.5 bg-white/20 hover:bg-white/40'
+                      }`}
+                    />
+                  ))}
                 </div>
-              ))}
+              )}
+            </div>
+
+            {/* Desktop & Tablet View: 3-Column Grid */}
+            <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {upcomingGroupTours.map((tour) => renderGroupTourCard(tour, false, true))}
             </div>
           </div>
         </section>
@@ -1099,8 +1282,8 @@ export const Home: React.FC = () => {
                 className="p-5 rounded-2xl bg-white border border-[#EFE7DA] shadow-xs hover:shadow-md hover:border-[#55C9BD]/50 transition-all flex flex-col justify-between"
               >
                 <div>
-                  <div className="w-10 h-10 rounded-xl bg-[#082C43]/5 flex items-center justify-center text-[#17648A] mb-3">
-                    <Plane className="w-5 h-5 text-[#FF795C]" />
+                  <div className="w-10 h-10 rounded-xl bg-[#082C43]/5 flex items-center justify-center text-[#17648A] mb-3 group-hover:scale-105 transition-transform">
+                    {renderServiceIcon(srv)}
                   </div>
                   <h3 className="text-sm font-bold text-[#082C43]">{srv.title}</h3>
                   <p className="text-xs text-gray-500 mt-1 line-clamp-3 leading-relaxed">
@@ -1373,7 +1556,7 @@ export const Home: React.FC = () => {
                         <button
                           type="button"
                           onClick={() => setSelectedStory(test)}
-                          className="shrink-0 text-xs font-bold text-[#FF795C] hover:text-white bg-[#FF795C]/10 hover:bg-[#FF795C] px-3 py-1.5 rounded-full transition-all cursor-pointer flex items-center gap-1 shadow-2xs"
+                          className="shrink-0 text-xs font-bold text-[#FF795C] hover:text-white bg-[#FF795C]/10 hover:bg-[#FF795C] px-3 py-1.5 rounded-full transition-all cursor-pointer flex items-center gap-1 shadow-none border border-[#FF795C]/25"
                         >
                           Read Story
                         </button>

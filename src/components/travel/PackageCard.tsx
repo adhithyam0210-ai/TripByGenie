@@ -118,10 +118,10 @@ export const PackageCard: React.FC<PackageCardProps> = ({
               {isAgentView ? 'Agent Net B2B' : 'Starting From'}
             </div>
             <div className="flex items-baseline gap-1">
-              <span className="text-base sm:text-lg font-black text-[#082C43]">
+              <span className="text-lg sm:text-xl font-black text-[#082C43] tracking-tight">
                 ₹{pkgPrice.toLocaleString('en-IN')}
               </span>
-              <span className="text-[10px] text-[#173247]/60">/person</span>
+              <span className="text-[11px] font-medium text-[#173247]/70">/person</span>
             </div>
           </div>
 

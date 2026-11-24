@@ -209,7 +209,7 @@ export const api = {
     try {
       const data = await request<any[]>(`/public/banners${agency_id ? `?agency_id=${agency_id}` : ''}`);
       if (Array.isArray(data) && data.length > 0) {
-        try { localStorage.setItem('tg_banners_store', JSON.stringify(data)); } catch {}
+        try { localStorage.setItem('tg_banners_store', JSON.stringify(data)); } catch { }
         return data;
       }
       const stored = localStorage.getItem('tg_banners_store');
@@ -219,7 +219,7 @@ export const api = {
       try {
         const stored = localStorage.getItem('tg_banners_store');
         if (stored) return JSON.parse(stored);
-      } catch {}
+      } catch { }
       return fallbackData.hero_banners;
     }
   },
@@ -250,14 +250,14 @@ export const api = {
       return await request<{ destination: any; packages: any[] }>(`/public/destinations/${slug}`);
     } catch {
       const q = (slug || '').toLowerCase().trim();
-      const dest = fallbackData.destinations.find((d: any) => 
-        (d.slug && d.slug.toLowerCase() === q) || 
-        (d.id && d.id.toLowerCase() === q) || 
+      const dest = fallbackData.destinations.find((d: any) =>
+        (d.slug && d.slug.toLowerCase() === q) ||
+        (d.id && d.id.toLowerCase() === q) ||
         (d.name && d.name.toLowerCase() === q) ||
         (d.name && d.name.toLowerCase().replace(/\s+/g, '-') === q)
       ) || fallbackData.destinations[0];
-      const pkgs = fallbackData.packages.filter((p: any) => 
-        p.destination_id === dest.id || 
+      const pkgs = fallbackData.packages.filter((p: any) =>
+        p.destination_id === dest.id ||
         (p.title && dest.name && p.title.toLowerCase().includes(dest.name.toLowerCase()))
       );
       return { destination: dest, packages: pkgs };
@@ -283,7 +283,7 @@ export const api = {
           const parsed = JSON.parse(stored);
           if (Array.isArray(parsed) && parsed.length > 0) list = parsed;
         }
-      } catch {}
+      } catch { }
 
       if (params?.category && params.category !== 'all' && params.category !== 'All Packages') {
         list = list.filter((p: any) => p.category?.toLowerCase() === params.category?.toLowerCase());
@@ -677,7 +677,7 @@ export const api = {
           const parsed = JSON.parse(stored);
           if (Array.isArray(parsed) && parsed.length > 0) return parsed;
         }
-      } catch {}
+      } catch { }
       return fallbackData.packages;
     }
   },
@@ -704,7 +704,7 @@ export const api = {
           const parsed = JSON.parse(stored);
           if (Array.isArray(parsed) && parsed.length > 0) currentPackages = parsed;
         }
-      } catch {}
+      } catch { }
 
       const newPkg = {
         id: `pkg_${Date.now()}`,
@@ -718,7 +718,7 @@ export const api = {
       fallbackData.packages = currentPackages;
       try {
         localStorage.setItem('tg_packages_store', JSON.stringify(currentPackages));
-      } catch {}
+      } catch { }
 
       if (Array.isArray(data.itineraries)) {
         data.itineraries.forEach((it: any, idx: number) => {
@@ -751,7 +751,7 @@ export const api = {
           const parsed = JSON.parse(stored);
           if (Array.isArray(parsed) && parsed.length > 0) currentPackages = parsed;
         }
-      } catch {}
+      } catch { }
 
       const pIdx = currentPackages.findIndex((p: any) => p.id === id);
       if (pIdx !== -1) {
@@ -760,7 +760,7 @@ export const api = {
       fallbackData.packages = currentPackages;
       try {
         localStorage.setItem('tg_packages_store', JSON.stringify(currentPackages));
-      } catch {}
+      } catch { }
 
       if (Array.isArray(data.itineraries)) {
         fallbackData.package_itineraries = (fallbackData.package_itineraries || []).filter(
@@ -792,12 +792,12 @@ export const api = {
           const parsed = JSON.parse(stored);
           if (Array.isArray(parsed) && parsed.length > 0) currentPackages = parsed;
         }
-      } catch {}
+      } catch { }
       currentPackages = currentPackages.filter((p: any) => p.id !== id);
       fallbackData.packages = currentPackages;
       try {
         localStorage.setItem('tg_packages_store', JSON.stringify(currentPackages));
-      } catch {}
+      } catch { }
       return { success: true };
     }
   },
@@ -826,7 +826,7 @@ export const api = {
     try {
       const data = await request<any[]>('/admin/banners');
       if (Array.isArray(data) && data.length > 0) {
-        try { localStorage.setItem('tg_banners_store', JSON.stringify(data)); } catch {}
+        try { localStorage.setItem('tg_banners_store', JSON.stringify(data)); } catch { }
         return data;
       }
       const stored = localStorage.getItem('tg_banners_store');
@@ -836,7 +836,7 @@ export const api = {
       try {
         const stored = localStorage.getItem('tg_banners_store');
         if (stored) return JSON.parse(stored);
-      } catch {}
+      } catch { }
       return fallbackData.hero_banners;
     }
   },
@@ -855,7 +855,7 @@ export const api = {
     try {
       const stored = localStorage.getItem('tg_banners_store');
       if (stored) current = JSON.parse(stored);
-    } catch {}
+    } catch { }
 
     if (!newBanner) {
       newBanner = {
@@ -869,7 +869,7 @@ export const api = {
 
     current = [...current.filter((b: any) => b.id !== newBanner.id), newBanner];
     fallbackData.hero_banners = current;
-    try { localStorage.setItem('tg_banners_store', JSON.stringify(current)); } catch {}
+    try { localStorage.setItem('tg_banners_store', JSON.stringify(current)); } catch { }
     return newBanner;
   },
   updateAdminBanner: async (id: string, data: any) => {
@@ -887,7 +887,7 @@ export const api = {
     try {
       const stored = localStorage.getItem('tg_banners_store');
       if (stored) current = JSON.parse(stored);
-    } catch {}
+    } catch { }
 
     const idx = current.findIndex((b: any) => String(b.id) === String(id));
     if (idx !== -1) {
@@ -899,7 +899,7 @@ export const api = {
     }
 
     fallbackData.hero_banners = current;
-    try { localStorage.setItem('tg_banners_store', JSON.stringify(current)); } catch {}
+    try { localStorage.setItem('tg_banners_store', JSON.stringify(current)); } catch { }
     return updated;
   },
   deleteAdminBanner: async (id: string) => {
@@ -913,11 +913,11 @@ export const api = {
     try {
       const stored = localStorage.getItem('tg_banners_store');
       if (stored) current = JSON.parse(stored);
-    } catch {}
+    } catch { }
 
     current = current.filter((b: any) => String(b.id) !== String(id));
     fallbackData.hero_banners = current;
-    try { localStorage.setItem('tg_banners_store', JSON.stringify(current)); } catch {}
+    try { localStorage.setItem('tg_banners_store', JSON.stringify(current)); } catch { }
     return { success: true };
   },
 

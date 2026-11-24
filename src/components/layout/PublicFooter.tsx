@@ -30,27 +30,27 @@ export const PublicFooter: React.FC = () => {
   const { currentAgency } = useAuth();
 
   return (
-    <footer className="relative bg-[#041D30] text-white pt-16 pb-12 overflow-hidden border-t border-white/10">
+    <footer className="relative bg-[#041D30] text-white pt-10 sm:pt-12 pb-7 sm:pb-8 overflow-hidden border-t border-white/10">
       {/* Decorative low-opacity travel pattern */}
       <TravelPatternBg variant="navy" opacity={0.04} />
 
       <div className="relative max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-white/10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-10 pb-8 sm:pb-9 border-b border-white/10">
           {/* Brand info */}
-          <div className="lg:col-span-2 space-y-4">
-            <div className="bg-white p-3 rounded-2xl shadow-sm inline-block">
-              <BrandLogo size="lg" to="/" />
+          <div className="lg:col-span-2 space-y-3.5">
+            <div className="bg-white p-2.5 sm:p-3 rounded-2xl shadow-sm inline-block">
+              <BrandLogo size="md" to="/" />
             </div>
 
-            <p className="text-sm text-white/70 max-w-sm leading-relaxed">
+            <p className="text-xs sm:text-sm text-white/70 max-w-sm leading-relaxed">
               Crafting Journeys, Creating Memories! Specializing in personalized holiday packages, luxury honeymoons, South India temple & hill station tours, and international adventures for discerning travelers.
             </p>
 
-            <div className="pt-2 space-y-2 text-xs text-white/80">
+            <div className="pt-1 space-y-2.5 text-xs text-white/80">
               <div className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-[#FF795C] shrink-0 mt-0.5" />
                 <div className="text-xs text-white/80 leading-relaxed">
-                  <p>A, E, Trip By Genie, 31, W Jones Rd, Periyapet, Saidapet, Chennai, Tamil Nadu 600015</p>
+                  <p>Trip By Genie, 31, West Jones Rd, Periyapet, Saidapet, Chennai, Tamil Nadu 600015</p>
                   <div className="mt-1">
                     <a
                       href="https://www.google.com/maps/place/Trip+By+Genie/@13.0252636,80.22315,17z/data=!3m1!4b1!4m6!3m5!1s0x3a5267f9e4481ac9:0x55e6d69a7d4a8e3!8m2!3d13.0252636!4d80.2257249!16s%2Fg%2F11l2bvylrx?entry=ttu"
@@ -64,37 +64,50 @@ export const PublicFooter: React.FC = () => {
                   </div>
                 </div>
               </div>
-              <div className="flex items-center gap-2.5">
-                <Phone className="w-4 h-4 text-[#55C9BD] shrink-0" />
-                <span>
-                  Direct Call:{' '}
-                  <a href="tel:+914446071374" className="font-bold text-white hover:text-[#55C9BD] hover:underline">
-                    +91 (44) 46071374
-                  </a>
-                  {' '}/ WhatsApp:{' '}
-                  <a
-                    href="https://wa.me/919940463566?text=Hi%20TripbyGenie,%20I%20would%20like%20to%20enquire%20about%20a%20tour%20package"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-bold text-[#55C9BD] hover:text-white hover:underline"
-                  >
-                    +91 99404 63566
-                  </a>
-                </span>
+
+              <div className="flex items-start sm:items-center gap-2.5">
+                <Phone className="w-4 h-4 text-[#55C9BD] shrink-0 mt-0.5 sm:mt-0" />
+                <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-xs">
+                  <div className="whitespace-nowrap">
+                    <span className="text-white/80">Direct Call: </span>
+                    <a href="tel:+914446071374" className="font-bold text-white hover:text-[#55C9BD] hover:underline">
+                      +91 (44) 46071374
+                    </a>
+                  </div>
+                  <span className="hidden sm:inline text-white/40">/</span>
+                  <div className="whitespace-nowrap">
+                    <span className="text-white/80">WhatsApp: </span>
+                    <a
+                      href="https://wa.me/919940463566?text=Hi%20TripbyGenie,%20I%20would%20like%20to%20enquire%20about%20a%20tour%20package"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-bold text-[#55C9BD] hover:text-white hover:underline"
+                    >
+                      +91 99404 63566
+                    </a>
+                  </div>
+                </div>
               </div>
-              <div className="flex items-center gap-2.5">
-                <Mail className="w-4 h-4 text-[#FF795C] shrink-0" />
-                <a href="mailto:info@tripbygenie.in" className="hover:text-white hover:underline">
-                  info@tripbygenie.in
-                </a>
-                <span className="text-white/40">/</span>
-                <a href="mailto:info@tripbygenie.com" className="hover:text-white hover:underline">
-                  info@tripbygenie.com
-                </a>
+
+              <div className="flex items-start sm:items-center gap-2.5">
+                <Mail className="w-4 h-4 text-[#FF795C] shrink-0 mt-0.5 sm:mt-0" />
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs">
+                  <a href="mailto:info@tripbygenie.in" className="hover:text-white hover:underline whitespace-nowrap">
+                    info@tripbygenie.in
+                  </a>
+                  <span className="text-white/40">/</span>
+                  <a href="mailto:info@tripbygenie.com" className="hover:text-white hover:underline whitespace-nowrap">
+                    info@tripbygenie.com
+                  </a>
+                </div>
               </div>
-              <div className="flex items-center gap-2.5 text-white/60">
-                <Clock className="w-4 h-4 text-[#55C9BD] shrink-0" />
-                <span>Operational Hours: Monday – Saturday, 9:00 AM – 8:30 PM</span>
+
+              <div className="flex items-start sm:items-center gap-2.5 text-white/70">
+                <Clock className="w-4 h-4 text-[#55C9BD] shrink-0 mt-0.5 sm:mt-0" />
+                <div className="flex flex-col sm:flex-row sm:items-center gap-0.5 sm:gap-1.5 text-xs leading-snug">
+                  <span className="text-white/60 font-medium">Operational Hours:</span>
+                  <span className="whitespace-nowrap text-white/85">Monday – Saturday, 9:00 AM – 8:30 PM</span>
+                </div>
               </div>
 
               {/* Official Social Media Channels (Instagram, YouTube, Facebook) */}
@@ -235,7 +248,7 @@ export const PublicFooter: React.FC = () => {
         </div>
 
         {/* Bottom copyright and accreditation */}
-        <div className="pt-8 flex flex-col md:flex-row items-center justify-between text-xs text-white/60 gap-4">
+        <div className="pt-5 sm:pt-6 flex flex-col md:flex-row items-center justify-between text-xs text-white/60 gap-4">
           <div className="flex items-center gap-2">
             <ShieldCheck className="w-4 h-4 text-[#55C9BD]" />
             <span>© {new Date().getFullYear()} Trip by Genie. Best Travel Agency in South India for Dream Getaways. All rights reserved.</span>

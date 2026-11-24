@@ -11,7 +11,7 @@ export const DestinationCard: React.FC<DestinationCardProps> = ({ destination })
   return (
     <Link
       to={`/destinations/${destination.slug}`}
-      className="group relative rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 block h-80 bg-slate-900 border border-[#EFE7DA]"
+      className="group relative rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 block h-80 bg-slate-900 border-0"
     >
       {/* Background Image */}
       <img
@@ -26,8 +26,8 @@ export const DestinationCard: React.FC<DestinationCardProps> = ({ destination })
         }}
       />
 
-      {/* Multi-gradient overlay for readability */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#041D30] via-[#041D30]/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
+      {/* Multi-gradient overlay for readability - optimized for photographic brightness & clarity */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#041D30]/95 via-[#041D30]/25 to-transparent opacity-75 group-hover:opacity-65 transition-opacity" />
 
       {/* Region Badge */}
       <div className="absolute top-4 left-4">

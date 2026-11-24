@@ -4,14 +4,14 @@
   --color-navy: #082C43;
   --color-deep-navy: #041D30;
   --color-ocean: #17648A;
-  --color-cream: #F8F1E7;
-  --color-ivory: #FFFDF8;
-  --color-beige: #EFE7DA;
+  --color-cream: #F8FAFC;
+  --color-ivory: #FFFFFF;
+  --color-beige: #E2E8F0;
   --color-coral: #FF795C;
   --color-coral-dark: #E66346;
   --color-turquoise: #55C9BD;
   --color-turquoise-dark: #40B5A9;
-  --color-brand-text: #173247;
+  --color-brand-text: #0F2231;
 
   --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --font-serif: 'Playfair Display', Georgia, serif;
@@ -22,23 +22,113 @@
   --color-primary-navy: #082C43;
   --color-deep-navy: #041D30;
   --color-ocean-blue: #17648A;
-  --color-warm-cream: #F8F1E7;
-  --color-ivory: #FFFDF8;
+  --color-warm-cream: #F8FAFC;
+  --color-ivory: #FFFFFF;
   --color-coral: #FF795C;
   --color-turquoise: #55C9BD;
-  --color-text: #173247;
+  --color-text: #0F2231;
 }
 
 html {
   scroll-behavior: smooth;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
   font-family: var(--font-sans);
-  color: #173247;
-  background-color: #FFFDF8;
+  color: #0F2231;
+  background-color: #FFFFFF;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
+
+/* Global utility enhancements: clean crisp background & razor-sharp hairline borders */
+[class*="bg-[#FFFDF8]"] {
+  background-color: #FFFFFF !important;
+}
+
+[class*="bg-[#F8F1E7]"] {
+  background-color: #F8FAFC !important;
+}
+
+[class*="border-[#EFE7DA]"] {
+  border-color: #E2E8F0 !important;
+}
+
+/* Razor-sharp image rendering and color richness */
+img {
+  image-rendering: -webkit-optimize-contrast;
+  text-rendering: optimizeLegibility;
+}
+
+/* Pristine Ultra-HD Video Rendering: Force GPU hardware compositing, native dynamic range, and prevent blur */
+video.hero-video,
+video {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: high-quality;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  filter: contrast(105%) saturate(110%) brightness(101%);
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Card and media imagery: rich saturation, high-definition clarity, and punchy micro-contrast */
+.group img,
+[class*="card"] img,
+[class*="Card"] img,
+.package-card img,
+.destination-card img,
+.hero-slider img,
+figure img,
+article img {
+  filter: contrast(105%) saturate(114%) brightness(101%);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+}
+
+.group:hover img {
+  filter: contrast(107%) saturate(118%) brightness(102%);
+}
+
+/* Multi-layer luxury ambient elevation */
+.shadow-xs {
+  box-shadow: 0 1px 2px 0 rgba(8, 44, 67, 0.05) !important;
+}
+
+.shadow-sm {
+  box-shadow: 0 2px 4px 0 rgba(8, 44, 67, 0.06), 0 1px 2px 0 rgba(8, 44, 67, 0.03) !important;
+}
+
+.shadow-md {
+  box-shadow: 0 4px 16px -2px rgba(8, 44, 67, 0.07), 0 2px 4px -1px rgba(8, 44, 67, 0.04) !important;
+}
+
+.shadow-lg {
+  box-shadow: 0 10px 25px -4px rgba(8, 44, 67, 0.09), 0 4px 8px -2px rgba(8, 44, 67, 0.04) !important;
+}
+
+.shadow-xl {
+  box-shadow: 0 16px 32px -6px rgba(8, 44, 67, 0.12), 0 6px 12px -3px rgba(8, 44, 67, 0.05) !important;
+}
+
+.shadow-2xl {
+  box-shadow: 0 24px 48px -12px rgba(8, 44, 67, 0.16), 0 8px 16px -4px rgba(8, 44, 67, 0.06) !important;
+}
+
+/* Add subtle specular highlight to top navigation & primary CTA buttons for rich physical depth */
+nav a[class*="bg-[#004c8f]"],
+nav a[class*="bg-[#003b73]"],
+button[class*="bg-[#004c8f]"],
+button[class*="bg-[#003b73]"] {
+  box-shadow: 0 2px 8px -1px rgba(0, 59, 115, 0.35), inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+}
+
 
 /* Eliminate Chain Scrolling / Scroll Leaks on all nested scroll areas */
 .overscroll-contain,
