@@ -8,6 +8,39 @@ import { HeroBanner } from '../../types';
 import { useToast } from '../../context/ToastContext';
 import { resolveMediaUrl } from '../../utils/mediaUrl';
 
+export const computeAutoCtaLink = (title?: string, ctaText?: string): string => {
+  const combined = `${ctaText || ''} ${title || ''}`.toLowerCase().trim();
+  
+  if (combined.includes('honeymoon') || combined.includes('romantic') || combined.includes('couples')) {
+    return '/honeymoon';
+  }
+  if (combined.includes('international') || combined.includes('swiss') || combined.includes('europe') || combined.includes('paris') || combined.includes('globe') || combined.includes('worldwide')) {
+    return '/packages?category=International%20Holiday%20Packages';
+  }
+  if (combined.includes('south india') || combined.includes('kerala') || combined.includes('munnar') || combined.includes('alleppey') || combined.includes('wayanad')) {
+    return '/packages?category=South%20India%20Holidays';
+  }
+  if (combined.includes('group') || combined.includes('fixed departure') || combined.includes('family tour')) {
+    return '/group-tours';
+  }
+  if (combined.includes('mice') || combined.includes('corporate') || combined.includes('conference') || combined.includes('summit') || combined.includes('event')) {
+    return '/mice';
+  }
+  if (combined.includes('destination') || combined.includes('places') || combined.includes('discover') || combined.includes('cities')) {
+    return '/destinations';
+  }
+  if (combined.includes('service') || combined.includes('visa') || combined.includes('flight') || combined.includes('insurance')) {
+    return '/services';
+  }
+  if (combined.includes('contact') || combined.includes('inquire') || combined.includes('enquiry') || combined.includes('touch') || combined.includes('reach')) {
+    return '/contact';
+  }
+  if (combined.includes('about') || combined.includes('who we are') || combined.includes('story')) {
+    return '/about';
+  }
+  return '/packages';
+};
+
 export const AdminBanners: React.FC = () => {
   const { success, error } = useToast();
   const [banners, setBanners] = useState<HeroBanner[]>([]);
@@ -73,7 +106,7 @@ export const AdminBanners: React.FC = () => {
       image_mobile: b.image_mobile || b.image_desktop || '',
       video_url: b.video_url || '',
       cta_text: b.cta_text,
-      cta_link: b.cta_link,
+      cta_link: b.cta_link || computeAutoCtaLink(b.title, b.cta_text),
       display_order: b.display_order,
       is_active: b.is_active
     });
@@ -151,8 +184,10 @@ export const AdminBanners: React.FC = () => {
       return;
     }
 
+    const finalCtaLink = computeAutoCtaLink(formData.title, formData.cta_text);
     const payload = {
       ...formData,
+      cta_link: finalCtaLink,
       image_desktop: cleanQuotes(formData.image_desktop),
       image_mobile: cleanQuotes(formData.image_mobile),
       video_url: cleanQuotes(formData.video_url)
@@ -326,7 +361,14 @@ export const AdminBanners: React.FC = () => {
                 required
                 placeholder="e.g. Experience Unforgettable Journeys Across The Globe"
                 value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                onChange={(e) => {
+                  const newTitle = e.target.value;
+                  setFormData(prev => ({
+                    ...prev,
+                    title: newTitle,
+                    cta_link: computeAutoCtaLink(newTitle, prev.cta_text)
+                  }));
+                }}
                 className="w-full p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8]"
               />
             </div>
@@ -537,33 +579,39 @@ export const AdminBanners: React.FC = () => {
               )}
             </div>
 
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="font-bold text-[#082C43] block mb-1">CTA Button Text</label>
                 <input
                   type="text"
+                  placeholder="e.g. Explore Packages"
                   value={formData.cta_text}
-                  onChange={(e) => setFormData({ ...formData, cta_text: e.target.value })}
-                  className="w-full p-2 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8]"
+                  onChange={(e) => {
+                    const newCta = e.target.value;
+                    setFormData(prev => ({
+                      ...prev,
+                      cta_text: newCta,
+                      cta_link: computeAutoCtaLink(prev.title, newCta)
+                    }));
+                  }}
+                  className="w-full p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8]"
                 />
-              </div>
-              <div>
-                <label className="font-bold text-[#082C43] block mb-1">CTA Destination Link</label>
-                <input
-                  type="text"
-                  value={formData.cta_link}
-                  onChange={(e) => setFormData({ ...formData, cta_link: e.target.value })}
-                  className="w-full p-2 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8]"
-                />
+                <span className="text-[10px] text-slate-500 mt-1 block">
+                  Auto Destination: <strong className="text-[#17648A]">{formData.cta_link || computeAutoCtaLink(formData.title, formData.cta_text)}</strong> (automatically routed)
+                </span>
               </div>
               <div>
                 <label className="font-bold text-[#082C43] block mb-1">Display Order</label>
                 <input
                   type="number"
+                  min="1"
                   value={formData.display_order}
                   onChange={(e) => setFormData({ ...formData, display_order: Number(e.target.value) })}
-                  className="w-full p-2 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8]"
+                  className="w-full p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8]"
                 />
+                <span className="text-[10px] text-slate-400 mt-1 block">
+                  Priority sequence in the cinematic homepage slider.
+                </span>
               </div>
             </div>
 

@@ -208,9 +208,18 @@ export const api = {
   getBanners: async (agency_id?: string) => {
     try {
       const data = await request<any[]>(`/public/banners${agency_id ? `?agency_id=${agency_id}` : ''}`);
-      if (Array.isArray(data) && data.length > 0) return data;
+      if (Array.isArray(data) && data.length > 0) {
+        try { localStorage.setItem('tg_banners_store', JSON.stringify(data)); } catch {}
+        return data;
+      }
+      const stored = localStorage.getItem('tg_banners_store');
+      if (stored) return JSON.parse(stored);
       return fallbackData.hero_banners;
     } catch {
+      try {
+        const stored = localStorage.getItem('tg_banners_store');
+        if (stored) return JSON.parse(stored);
+      } catch {}
       return fallbackData.hero_banners;
     }
   },
@@ -815,23 +824,102 @@ export const api = {
 
   getAdminBanners: async () => {
     try {
-      return await request<any[]>('/admin/banners');
+      const data = await request<any[]>('/admin/banners');
+      if (Array.isArray(data) && data.length > 0) {
+        try { localStorage.setItem('tg_banners_store', JSON.stringify(data)); } catch {}
+        return data;
+      }
+      const stored = localStorage.getItem('tg_banners_store');
+      if (stored) return JSON.parse(stored);
+      return fallbackData.hero_banners;
     } catch {
+      try {
+        const stored = localStorage.getItem('tg_banners_store');
+        if (stored) return JSON.parse(stored);
+      } catch {}
       return fallbackData.hero_banners;
     }
   },
-  createAdminBanner: (data: any) =>
-    request<any>('/admin/banners', {
-      method: 'POST',
-      body: JSON.stringify(data)
-    }),
-  updateAdminBanner: (id: string, data: any) =>
-    request<any>(`/admin/banners/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify(data)
-    }),
-  deleteAdminBanner: (id: string) =>
-    request<any>(`/admin/banners/${id}`, { method: 'DELETE' }),
+  createAdminBanner: async (data: any) => {
+    let newBanner: any = null;
+    try {
+      newBanner = await request<any>('/admin/banners', {
+        method: 'POST',
+        body: JSON.stringify(data)
+      });
+    } catch (err) {
+      console.warn('Backend banners endpoint error, falling back to local store:', err);
+    }
+
+    let current = fallbackData.hero_banners || [];
+    try {
+      const stored = localStorage.getItem('tg_banners_store');
+      if (stored) current = JSON.parse(stored);
+    } catch {}
+
+    if (!newBanner) {
+      newBanner = {
+        id: `banner_${Date.now()}`,
+        agency_id: 'agency_travel_genie',
+        ...data,
+        display_order: Number(data.display_order) || current.length + 1,
+        is_active: data.is_active !== undefined ? !!data.is_active : true
+      };
+    }
+
+    current = [...current.filter((b: any) => b.id !== newBanner.id), newBanner];
+    fallbackData.hero_banners = current;
+    try { localStorage.setItem('tg_banners_store', JSON.stringify(current)); } catch {}
+    return newBanner;
+  },
+  updateAdminBanner: async (id: string, data: any) => {
+    let updated: any = null;
+    try {
+      updated = await request<any>(`/admin/banners/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data)
+      });
+    } catch (err) {
+      console.warn('Backend update banner error, falling back to local store:', err);
+    }
+
+    let current = fallbackData.hero_banners || [];
+    try {
+      const stored = localStorage.getItem('tg_banners_store');
+      if (stored) current = JSON.parse(stored);
+    } catch {}
+
+    const idx = current.findIndex((b: any) => String(b.id) === String(id));
+    if (idx !== -1) {
+      current[idx] = { ...current[idx], ...data, ...(updated || {}) };
+      updated = current[idx];
+    } else if (!updated) {
+      updated = { id, ...data };
+      current.push(updated);
+    }
+
+    fallbackData.hero_banners = current;
+    try { localStorage.setItem('tg_banners_store', JSON.stringify(current)); } catch {}
+    return updated;
+  },
+  deleteAdminBanner: async (id: string) => {
+    try {
+      await request<any>(`/admin/banners/${id}`, { method: 'DELETE' });
+    } catch (err) {
+      console.warn('Backend delete banner error, updating local store:', err);
+    }
+
+    let current = fallbackData.hero_banners || [];
+    try {
+      const stored = localStorage.getItem('tg_banners_store');
+      if (stored) current = JSON.parse(stored);
+    } catch {}
+
+    current = current.filter((b: any) => String(b.id) !== String(id));
+    fallbackData.hero_banners = current;
+    try { localStorage.setItem('tg_banners_store', JSON.stringify(current)); } catch {}
+    return { success: true };
+  },
 
   getAdminBookings: async () => {
     try {

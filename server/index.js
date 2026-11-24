@@ -2282,14 +2282,15 @@ app.get('/api/admin/packages/:id/itineraries', authenticate, authorize(['admin',
 app.put('/api/admin/packages/:id', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const pkg = db.findById('packages', req.params.id);
   if (!pkg) {
+    const cleanId = (req.params.id || '').toLowerCase().trim();
     const dest = db.findOne('destinations', (d) => {
       if (!d) return false;
       const dSlug = (d.slug || '').toLowerCase().trim();
       const dId = (d.id || '').toLowerCase().trim();
-      return dSlug === cleanSlug || dId === cleanSlug || dId === `dest_${cleanSlug.replace(/-/g, '_')}`;
+      return dSlug === cleanId || dId === cleanId || dId === `dest_${cleanId.replace(/-/g, '_')}`;
     });
     if (dest) {
-      return res.json({ is_destination: true, destination_slug: dest.slug || cleanSlug });
+      return res.json({ is_destination: true, destination_slug: dest.slug || cleanId });
     }
     return res.status(404).json({ error: 'Package not found.' });
   }
@@ -2370,35 +2371,38 @@ app.post('/api/admin/destinations', authenticate, authorize(['admin', 'manager']
 });
 
 app.put('/api/admin/destinations/:id', authenticate, authorize(['admin', 'manager']), (req, res) => {
-  const dest = db.findById('destinations', req.params.id);
-  if (!dest || dest.agency_id !== req.user.agency_id) {
+  const dest = db.findById('destinations', req.params.id) || db.findOne('destinations', (d) => String(d.id) === String(req.params.id));
+  if (!dest) {
     return res.status(404).json({ error: 'Destination not found.' });
   }
 
-  const updated = db.update('destinations', dest.id, req.body);
+  const updated = db.update('destinations', dest.id, {
+    ...req.body,
+    agency_id: dest.agency_id || req.user.agency_id || 'agency_travel_genie'
+  });
   res.json(updated);
 });
 
 app.delete('/api/admin/destinations/:id', authenticate, authorize(['admin', 'manager']), (req, res) => {
-  const dest = db.findById('destinations', req.params.id);
-  if (!dest || dest.agency_id !== req.user.agency_id) {
+  const dest = db.findById('destinations', req.params.id) || db.findOne('destinations', (d) => String(d.id) === String(req.params.id));
+  if (!dest) {
     return res.status(404).json({ error: 'Destination not found.' });
   }
 
-  db.delete('destinations', req.params.id);
+  db.delete('destinations', dest.id);
   res.json({ success: true, message: 'Destination deleted.' });
 });
 
 // Admin Hero Banner Management
 app.get('/api/admin/banners', authenticate, authorize(['admin', 'manager']), (req, res) => {
-  const agencyId = req.user.agency_id;
-  const banners = db.findAll('hero_banners', (b) => b.agency_id === agencyId);
+  const agencyId = req.user.agency_id || 'agency_travel_genie';
+  const banners = db.findAll('hero_banners', (b) => !b.agency_id || b.agency_id === agencyId || req.user.role === 'admin');
   banners.sort((a, b) => a.display_order - b.display_order);
   res.json(banners);
 });
 
 app.post('/api/admin/banners', authenticate, authorize(['admin', 'manager']), (req, res) => {
-  const agencyId = req.user.agency_id;
+  const agencyId = req.user.agency_id || 'agency_travel_genie';
   const { title, subtitle, image_desktop, image_mobile, video_url, cta_text, cta_link, display_order, is_active } = req.body;
 
   if (!title || (!image_desktop && !video_url)) {
@@ -2422,22 +2426,34 @@ app.post('/api/admin/banners', authenticate, authorize(['admin', 'manager']), (r
 });
 
 app.put('/api/admin/banners/:id', authenticate, authorize(['admin', 'manager']), (req, res) => {
-  const banner = db.findById('hero_banners', req.params.id);
-  if (!banner || banner.agency_id !== req.user.agency_id) {
+  let banner = db.findById('hero_banners', req.params.id) || db.findOne('hero_banners', (b) => String(b.id) === String(req.params.id));
+  if (!banner) {
     return res.status(404).json({ error: 'Banner not found.' });
   }
 
-  const updated = db.update('hero_banners', banner.id, req.body);
+  const { title, subtitle, image_desktop, image_mobile, video_url, cta_text, cta_link, display_order, is_active } = req.body;
+  const updated = db.update('hero_banners', banner.id, {
+    title: title !== undefined ? title : banner.title,
+    subtitle: subtitle !== undefined ? subtitle : banner.subtitle,
+    image_desktop: image_desktop !== undefined ? image_desktop : banner.image_desktop,
+    image_mobile: image_mobile !== undefined ? image_mobile : banner.image_mobile,
+    video_url: video_url !== undefined ? video_url : banner.video_url,
+    cta_text: cta_text !== undefined ? cta_text : banner.cta_text,
+    cta_link: cta_link !== undefined ? cta_link : banner.cta_link,
+    display_order: display_order !== undefined ? Number(display_order) : banner.display_order,
+    is_active: is_active !== undefined ? !!is_active : banner.is_active,
+    agency_id: banner.agency_id || req.user.agency_id || 'agency_travel_genie'
+  });
   res.json(updated);
 });
 
 app.delete('/api/admin/banners/:id', authenticate, authorize(['admin', 'manager']), (req, res) => {
-  const banner = db.findById('hero_banners', req.params.id);
-  if (!banner || banner.agency_id !== req.user.agency_id) {
+  let banner = db.findById('hero_banners', req.params.id) || db.findOne('hero_banners', (b) => String(b.id) === String(req.params.id));
+  if (!banner) {
     return res.status(404).json({ error: 'Banner not found.' });
   }
 
-  db.delete('hero_banners', req.params.id);
+  db.delete('hero_banners', banner.id);
   res.json({ success: true, message: 'Banner deleted.' });
 });
 
@@ -3336,11 +3352,16 @@ app.post('/api/staff/leads/:id/convert', authenticate, authorize(['staff']), (re
 });
 
 // Staff Follow-ups Agenda
-app.get('/api/staff/follow-ups', authenticate, authorize(['staff']), (req, res) => {
+app.get('/api/staff/follow-ups', authenticate, authorize(['staff', 'sales', 'manager', 'admin']), (req, res) => {
   const staffId = req.user.id;
   const agencyId = req.user.agency_id;
 
-  const leads = db.findAll('leads', (l) => l.agency_id === agencyId && l.assigned_staff_id === staffId && l.follow_up_date);
+  let leads;
+  if (req.user.role === 'manager' || req.user.role === 'admin') {
+    leads = db.findAll('leads', (l) => l.agency_id === agencyId && l.follow_up_date);
+  } else {
+    leads = db.findAll('leads', (l) => l.agency_id === agencyId && l.assigned_staff_id === staffId && l.follow_up_date);
+  }
   leads.sort((a, b) => new Date(a.follow_up_date) - new Date(b.follow_up_date));
   res.json(leads);
 });
@@ -4126,7 +4147,7 @@ app.get('/api/agent/dashboard', authenticate, authorize(['agent']), (req, res) =
 });
 
 // Agent Wholesale Marketplace (Displays wholesale purchase price vs public selling price)
-app.get('/api/agent/marketplace', authenticate, authorize(['agent']), (req, res) => {
+app.get('/api/agent/marketplace', authenticate, authorize(['agent', 'manager', 'admin']), (req, res) => {
   const agencyId = req.user.agency_id;
   const profile = db.findOne('agent_profiles', (ap) => ap.user_id === req.user.id);
   const discountPct = profile ? profile.wholesale_discount_pct : 12;
@@ -4247,17 +4268,29 @@ app.post('/api/agent/purchase', authenticate, authorize(['agent']), (req, res) =
 });
 
 // Agent Purchases List
-app.get('/api/agent/purchases', authenticate, authorize(['agent']), (req, res) => {
+app.get('/api/agent/purchases', authenticate, authorize(['agent', 'manager', 'admin']), (req, res) => {
   const agentId = req.user.id;
-  const purchases = db.findAll('agent_purchases', (ap) => ap.agent_id === agentId);
+  const agencyId = req.user.agency_id;
+  let purchases;
+  if (req.user.role === 'manager' || req.user.role === 'admin') {
+    purchases = db.findAll('agent_purchases', (ap) => ap.agency_id === agencyId || !ap.agency_id);
+  } else {
+    purchases = db.findAll('agent_purchases', (ap) => ap.agent_id === agentId);
+  }
   purchases.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
   res.json(purchases);
 });
 
 // Agent Transactions / Ledger
-app.get('/api/agent/transactions', authenticate, authorize(['agent']), (req, res) => {
+app.get('/api/agent/transactions', authenticate, authorize(['agent', 'manager', 'admin']), (req, res) => {
   const agentId = req.user.id;
-  const transactions = db.findAll('agent_transactions', (tx) => tx.agent_id === agentId);
+  const agencyId = req.user.agency_id;
+  let transactions;
+  if (req.user.role === 'manager' || req.user.role === 'admin') {
+    transactions = db.findAll('agent_transactions', (tx) => tx.agency_id === agencyId || !tx.agency_id);
+  } else {
+    transactions = db.findAll('agent_transactions', (tx) => tx.agent_id === agentId);
+  }
   transactions.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
   res.json(transactions);
 });

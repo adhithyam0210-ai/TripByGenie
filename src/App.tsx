@@ -277,7 +277,7 @@ export const App: React.FC = () => {
       <Route
         path="/staff/leads"
         element={
-          <ProtectedRoute allowedRoles={['staff']}>
+          <ProtectedRoute allowedRoles={['staff', 'sales', 'manager', 'admin']}>
             <StaffLeads />
           </ProtectedRoute>
         }
@@ -285,7 +285,7 @@ export const App: React.FC = () => {
       <Route
         path="/staff/follow-ups"
         element={
-          <ProtectedRoute allowedRoles={['staff']}>
+          <ProtectedRoute allowedRoles={['staff', 'sales', 'manager', 'admin']}>
             <StaffFollowUps />
           </ProtectedRoute>
         }
@@ -293,7 +293,7 @@ export const App: React.FC = () => {
       <Route
         path="/staff/bookings"
         element={
-          <ProtectedRoute allowedRoles={['staff']}>
+          <ProtectedRoute allowedRoles={['staff', 'sales', 'manager', 'admin']}>
             <StaffBookings />
           </ProtectedRoute>
         }
@@ -320,7 +320,7 @@ export const App: React.FC = () => {
       <Route
         path="/agent/marketplace"
         element={
-          <ProtectedRoute allowedRoles={['agent']}>
+          <ProtectedRoute allowedRoles={['agent', 'manager', 'admin']}>
             <AgentMarketplace />
           </ProtectedRoute>
         }
@@ -328,7 +328,7 @@ export const App: React.FC = () => {
       <Route
         path="/agent/purchases"
         element={
-          <ProtectedRoute allowedRoles={['agent']}>
+          <ProtectedRoute allowedRoles={['agent', 'manager', 'admin']}>
             <AgentPurchases />
           </ProtectedRoute>
         }
@@ -336,7 +336,7 @@ export const App: React.FC = () => {
       <Route
         path="/agent/bookings"
         element={
-          <ProtectedRoute allowedRoles={['agent']}>
+          <ProtectedRoute allowedRoles={['agent', 'manager', 'admin']}>
             <AgentBookings />
           </ProtectedRoute>
         }
@@ -344,7 +344,7 @@ export const App: React.FC = () => {
       <Route
         path="/agent/transactions"
         element={
-          <ProtectedRoute allowedRoles={['agent']}>
+          <ProtectedRoute allowedRoles={['agent', 'manager', 'admin']}>
             <AgentTransactions />
           </ProtectedRoute>
         }

@@ -70,7 +70,6 @@ const getManagementGroups = (prefix: string): NavGroup[] => [
     badgeColor: 'bg-[#55C9BD]/20 text-[#55C9BD]',
     items: [
       { name: 'Staff Roster & Allocation', path: `${prefix}/staff`, icon: UserCheck },
-      { name: 'Assigned Leads & Queue', path: `${prefix}/leads`, icon: Users, badge: 'Assign' },
       { name: 'Follow-ups Agenda', path: '/staff/follow-ups', icon: Clock }
     ]
   },
@@ -98,8 +97,8 @@ const getManagementGroups = (prefix: string): NavGroup[] => [
     items: [
       { name: 'Customer Directory', path: `${prefix}/customers`, icon: Users },
       { name: 'Create Paid Customer ID', path: `${prefix}/customers?action=create-paid`, icon: KeyRound, badge: 'New ID' },
-      { name: 'Client Bookings & Trips', path: `${prefix}/bookings`, icon: CalendarCheck },
-      { name: 'Payment Receipts', path: `${prefix}/payments`, icon: CreditCard }
+      { name: 'Digital Document Vault', path: '/customer/documents', icon: FileText, badge: 'Vault' },
+      { name: 'Customer Support Desk', path: '/customer/support', icon: FileText }
     ]
   },
   {
@@ -209,7 +208,14 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       const groups = getManagementGroups(prefix);
 
       for (const group of groups) {
-        if (group.items.some((i) => i.path === full || i.path === p || (i.path !== '/' && p.startsWith(i.path)))) {
+        if (
+          group.items.some((i) => {
+            if (i.path.includes('?')) {
+              return full === i.path;
+            }
+            return p === i.path || (i.path !== '/' && p.startsWith(i.path));
+          })
+        ) {
           setManagementDropdowns((prev) => ({
             ...prev,
             [group.id]: true
@@ -489,7 +495,12 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 {managementGroups.map((sec) => {
                   const isOpen = managementDropdowns[sec.id];
                   const SectionIcon = sec.icon;
-                  const isAnyChildActive = sec.items.some((i) => location.pathname === i.path || (i.path.includes('?') && location.pathname + location.search === i.path));
+                  const isAnyChildActive = sec.items.some((i) => {
+                    if (i.path.includes('?')) {
+                      return location.pathname + location.search === i.path;
+                    }
+                    return location.pathname === i.path || (i.path !== '/' && location.pathname.startsWith(i.path));
+                  });
 
                   if (isSidebarCollapsed) {
                     return (
@@ -544,7 +555,9 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                       {isOpen && (
                         <div className="p-1 space-y-0.5 bg-[#343B49]/80 border-t border-white/10">
                           {sec.items.map((sub) => {
-                            const isSubActive = location.pathname === sub.path || (sub.path.includes('?') && location.pathname + location.search === sub.path);
+                            const isSubActive = sub.path.includes('?')
+                              ? location.pathname + location.search === sub.path
+                              : location.pathname === sub.path && !location.search;
                             const SubIcon = sub.icon;
                             return (
                               <Link
@@ -1140,7 +1153,12 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                     {managementGroups.map((sec) => {
                       const isOpen = managementDropdowns[sec.id];
                       const SectionIcon = sec.icon;
-                      const isAnyChildActive = sec.items.some((i) => location.pathname === i.path || (i.path.includes('?') && location.pathname + location.search === i.path));
+                      const isAnyChildActive = sec.items.some((i) => {
+                        if (i.path.includes('?')) {
+                          return location.pathname + location.search === i.path;
+                        }
+                        return location.pathname === i.path || (i.path !== '/' && location.pathname.startsWith(i.path));
+                      });
 
                       return (
                         <div key={sec.id} className="rounded-xl overflow-hidden bg-[#3B4353]/60 border border-white/10">
@@ -1166,7 +1184,9 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                           {isOpen && (
                             <div className="p-1 space-y-0.5 bg-[#343B49]/80 border-t border-white/10">
                               {sec.items.map((sub) => {
-                                const isSubActive = location.pathname === sub.path || (sub.path.includes('?') && location.pathname + location.search === sub.path);
+                                const isSubActive = sub.path.includes('?')
+                                  ? location.pathname + location.search === sub.path
+                                  : location.pathname === sub.path && !location.search;
                                 const SubIcon = sub.icon;
                                 return (
                                   <Link
