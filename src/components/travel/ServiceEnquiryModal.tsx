@@ -266,7 +266,7 @@ export const ServiceEnquiryModal: React.FC<ServiceEnquiryModalProps> = ({
 
       switch (category) {
         case 'flight':
-          interestedDestination = `Flight: ${flightFrom || 'Origin'} ➔ ${flightTo || 'Destination'} (${flightTripType})`;
+          interestedDestination = `Flight: ${flightFrom || 'Origin'} → ${flightTo || 'Destination'} (${flightTripType})`;
           travelDate = flightDepartDate ? `${flightDepartDate}${flightTripType === 'Round Trip' && flightReturnDate ? ' to ' + flightReturnDate : ''}` : '';
           paxCount = Number(flightAdults) + Number(flightChildren) + Number(flightInfants);
           budgetVal = flightClass;
@@ -285,7 +285,7 @@ export const ServiceEnquiryModal: React.FC<ServiceEnquiryModalProps> = ({
           break;
 
         case 'bus':
-          interestedDestination = `Bus: ${busFrom || 'Boarding'} ➔ ${busTo || 'Destination'} (${busTripType})`;
+          interestedDestination = `Bus: ${busFrom || 'Boarding'} → ${busTo || 'Destination'} (${busTripType})`;
           travelDate = busDepartDate ? `${busDepartDate}${busTripType === 'Round Trip' && busReturnDate ? ' to ' + busReturnDate : ''}` : '';
           paxCount = Number(busSeats) || 2;
           budgetVal = busType;
@@ -304,7 +304,7 @@ export const ServiceEnquiryModal: React.FC<ServiceEnquiryModalProps> = ({
           break;
 
         case 'car':
-          interestedDestination = `Car Rental: ${carPickupCity || 'Origin'} ➔ ${carDropCity || 'Drop'} (${carServiceType})`;
+          interestedDestination = `Car Rental: ${carPickupCity || 'Origin'} → ${carDropCity || 'Drop'} (${carServiceType})`;
           travelDate = carPickupDate ? `${carPickupDate}${carReturnDate ? ' to ' + carReturnDate : ''}` : '';
           paxCount = Number(carPassengers) || 4;
           budgetVal = carVehicle;
@@ -1020,9 +1020,9 @@ export const ServiceEnquiryModal: React.FC<ServiceEnquiryModalProps> = ({
                   onChange={(e) => setCruiseLine(e.target.value)}
                   className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none font-medium"
                 >
-                  <option value="Cordelia Cruises (Mumbai - Goa - Lakshadweep)">Cordelia Cruises: Mumbai ➔ Goa ➔ Lakshadweep</option>
-                  <option value="Cordelia Cruises (Chennai - Sri Lanka)">Cordelia Cruises: Chennai ➔ Hambantota / Trincomalee</option>
-                  <option value="Royal Caribbean (Singapore - Malaysia - Thailand)">Royal Caribbean: Singapore ➔ Penang ➔ Phuket</option>
+                  <option value="Cordelia Cruises (Mumbai - Goa - Lakshadweep)">Cordelia Cruises: Mumbai → Goa → Lakshadweep</option>
+                  <option value="Cordelia Cruises (Chennai - Sri Lanka)">Cordelia Cruises: Chennai → Hambantota / Trincomalee</option>
+                  <option value="Royal Caribbean (Singapore - Malaysia - Thailand)">Royal Caribbean: Singapore → Penang → Phuket</option>
                   <option value="European Mediterranean Ocean Cruise">European Mediterranean (Spain, France, Italy)</option>
                   <option value="Dubai & Arabian Gulf Cruise">Dubai & Arabian Gulf Cruise (Oman, Abu Dhabi)</option>
                   <option value="European River Cruise (Rhine / Danube)">European River Cruise (Rhine / Danube Luxury River)</option>

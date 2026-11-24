@@ -20,7 +20,6 @@ import {
   ChevronDown,
   ArrowRight,
   CheckCircle2,
-  Sparkles,
   User,
   Check
 } from 'lucide-react';
@@ -497,7 +496,6 @@ export const AdminDashboard: React.FC = () => {
             <div>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-[#082C43] font-display tracking-tight flex items-center gap-2">
                 <span>Welcome back, {user?.name ? user.name.split(' ')[0] : 'Admin'}!</span>
-                <span className="inline-block animate-bounce duration-1000">👋</span>
               </h2>
               <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
                 Here's what's happening with your travel business today.

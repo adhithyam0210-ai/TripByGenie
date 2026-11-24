@@ -17,7 +17,6 @@ import {
   Phone,
   Mail,
   User as UserIcon,
-  Sparkles,
   ChevronDown,
   Filter
 } from 'lucide-react';

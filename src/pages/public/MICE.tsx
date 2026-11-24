@@ -7,7 +7,7 @@ import {
   Calendar, 
   MapPin, 
   CheckCircle2, 
-  Sparkles, 
+  Video, 
   Send, 
   PhoneCall, 
   Mail, 
@@ -230,9 +230,6 @@ export const MICE: React.FC = () => {
       {/* ======================================================== */}
       <section className="py-8 sm:py-10 max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
         <div className="text-center max-w-3xl mx-auto space-y-2 mb-6 sm:mb-8">
-          <span className="text-xs font-bold uppercase tracking-widest text-[#FF795C] block">
-            Complete Corporate Spectrum
-          </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-[#082C43] font-display">
             The 4 Pillars of Trip by Genie MICE
           </h2>
@@ -300,9 +297,6 @@ export const MICE: React.FC = () => {
       <section className="py-8 sm:py-10 bg-[#F8F1E7]/60 border-y border-[#EFE7DA]">
         <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
           <div className="text-center max-w-2xl mx-auto space-y-2 mb-6 sm:mb-8">
-            <span className="text-xs font-bold uppercase tracking-widest text-[#55C9BD] block">
-              Seamless Execution
-            </span>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-[#082C43] font-display">
               End-to-End Corporate Capabilities
             </h2>
@@ -316,7 +310,7 @@ export const MICE: React.FC = () => {
               { title: 'Bulk Flight Group Fares', desc: 'Pre-blocked seats & flexible naming', icon: <Plane className="w-5 h-5 text-[#17648A]" /> },
               { title: '5-Star Hotel Room Blocks', desc: 'Negotiated corporate rates & perks', icon: <Building2 className="w-5 h-5 text-[#FF795C]" /> },
               { title: 'Luxury Ground Coaches', desc: 'AC Volvo & executive tempo travellers', icon: <Compass className="w-5 h-5 text-[#55C9BD]" /> },
-              { title: 'Stage, AV & LED Video', desc: 'Professional audio-visual & acoustics', icon: <Sparkles className="w-5 h-5 text-[#17648A]" /> },
+              { title: 'Stage, AV & LED Video', desc: 'Professional audio-visual & acoustics', icon: <Video className="w-5 h-5 text-[#17648A]" /> },
               { title: 'Gala & Theme Nights', desc: 'Bespoke dinners, live artists & emcees', icon: <Coffee className="w-5 h-5 text-[#FF795C]" /> },
               { title: 'GST Billing & Credit Desk', desc: 'Clean corporate compliance & statements', icon: <FileCheck2 className="w-5 h-5 text-[#55C9BD]" /> }
             ].map((srv) => (
@@ -338,9 +332,6 @@ export const MICE: React.FC = () => {
       <section className="py-8 sm:py-10 max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 sm:mb-8">
           <div>
-            <span className="text-xs font-bold uppercase tracking-widest text-[#FF795C] block">
-              Curated Offsite Venues
-            </span>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-[#082C43] font-display mt-1">
               Top Corporate Destinations
             </h2>
@@ -413,9 +404,6 @@ export const MICE: React.FC = () => {
         
         <div className="relative max-w-4xl w-full mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-2 mb-6 sm:mb-8">
-            <span className="text-xs font-bold uppercase tracking-widest text-[#55C9BD] block">
-              Direct Corporate Helpdesk
-            </span>
             <h2 className="text-3xl sm:text-4xl font-extrabold font-display">
               Request a Corporate MICE Proposal
             </h2>

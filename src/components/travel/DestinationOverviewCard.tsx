@@ -103,7 +103,7 @@ export const DestinationOverviewCard: React.FC<DestinationOverviewCardProps> = (
               <ul className="space-y-2 text-xs sm:text-[13px] text-slate-700">
                 {tips.map((tip, idx) => (
                   <li key={idx} className="flex items-start gap-2">
-                    <span className="text-[#082C43] font-bold shrink-0 mt-0.5">➔</span>
+                    <span className="text-[#082C43] font-bold shrink-0 mt-0.5">•</span>
                     <span className="leading-snug">{tip}</span>
                   </li>
                 ))}

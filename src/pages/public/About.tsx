@@ -9,9 +9,6 @@ export const About: React.FC = () => {
       <section className="relative py-16 bg-[#082C43] text-white">
         <TravelPatternBg variant="navy" opacity={0.06} />
         <div className="relative max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 text-center space-y-3">
-          <span className="text-xs font-bold uppercase tracking-widest text-[#55C9BD] block">
-            Our Story & Legacy
-          </span>
           <h1 className="text-3xl sm:text-5xl font-extrabold font-display">
             About Travel Genie
           </h1>
@@ -25,9 +22,6 @@ export const About: React.FC = () => {
         {/* Story Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
           <div className="space-y-4">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#FF795C]">
-              Founded On Excellence
-            </span>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-[#082C43] font-display">
               Where True Craftsmanship Meets Modern Travel Technology
             </h2>

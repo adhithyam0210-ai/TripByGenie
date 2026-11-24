@@ -8,7 +8,6 @@ import {
   Calendar,
   ArrowRight,
   CheckCircle2,
-  Sparkles,
   ShieldCheck,
   Building2,
   Percent
@@ -167,7 +166,7 @@ export const AgentMarketplace: React.FC = () => {
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 text-xs font-bold mb-2 border border-amber-400/30">
-                <Sparkles className="w-4 h-4" />
+                <Percent className="w-4 h-4" />
                 <span>Automated Wholesale Pricing Engine Active</span>
               </div>
               <h2 className="text-xl sm:text-2xl font-bold font-display">

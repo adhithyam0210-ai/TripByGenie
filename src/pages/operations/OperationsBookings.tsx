@@ -14,7 +14,7 @@ import {
   ExternalLink,
   ChevronDown,
   Layers,
-  Sparkles,
+  FileCheck,
   ArrowRight
 } from 'lucide-react';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
@@ -710,7 +710,7 @@ export const OperationsBookings: React.FC = () => {
                       disabled={isSubmitting}
                       className="flex items-center gap-1.5 bg-[#FF795C]"
                     >
-                      <Sparkles className="w-3.5 h-3.5" />
+                      <FileCheck className="w-3.5 h-3.5" />
                       <span>Compile Consolidated Travel Dossier</span>
                     </Button>
                   </div>

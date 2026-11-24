@@ -59,9 +59,6 @@ export const Services: React.FC = () => {
       <section className="relative py-16 bg-[#082C43] text-white">
         <TravelPatternBg variant="navy" opacity={0.06} />
         <div className="relative max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 text-center space-y-3">
-          <span className="text-xs font-bold uppercase tracking-widest text-[#55C9BD] block">
-            End-to-End Hospitality & Operations
-          </span>
           <h1 className="text-3xl sm:text-5xl font-extrabold font-display">
             Travel Services & Ground Assistance
           </h1>

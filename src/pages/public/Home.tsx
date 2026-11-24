@@ -759,7 +759,7 @@ export const Home: React.FC = () => {
                     }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#082C43]/90 via-[#082C43]/30 to-transparent" />
-                  <span className="absolute top-4 right-4 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[#FF795C] text-white shadow-sm">
+                  <span className="absolute top-4 right-4 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[#082C43]/85 text-white shadow-sm border border-white/20 backdrop-blur-xs">
                     {cat.tag}
                   </span>
                 </div>
@@ -950,7 +950,7 @@ export const Home: React.FC = () => {
                 >
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-[#FF795C] text-white">
+                      <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-white/20 text-white border border-white/20 backdrop-blur-xs">
                         {tour.upcoming_date ? `Departure: ${tour.upcoming_date}` : 'Upcoming Departure'}
                       </span>
                       <span className="text-xs font-bold text-[#55C9BD] flex items-center gap-1">
