@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import {
   Briefcase,
   Users,
@@ -56,6 +56,8 @@ type DateRangeOption = 'Last 7 Days' | 'Last 30 Days' | 'This Month' | 'This Yea
 
 export const AdminDashboard: React.FC = () => {
   const { agency, user } = useAuth();
+  const location = useLocation();
+  const isManager = user?.role === 'manager' || location.pathname.startsWith('/manager');
   const [data, setData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -473,8 +475,8 @@ export const AdminDashboard: React.FC = () => {
 
   return (
     <DashboardLayout
-      title="Super Admin Dashboard"
-      subtitle={`Enterprise CRM & Multi-Agency Governance • ${agency?.name || 'Trip by Genie'}`}
+      title={isManager ? "Operations Manager Dashboard" : "Super Admin Dashboard"}
+      subtitle={isManager ? `Operations & Lead Governance • ${agency?.name || 'Trip by Genie'}` : `Enterprise CRM & Multi-Agency Governance • ${agency?.name || 'Trip by Genie'}`}
     >
       <div className="space-y-6">
         {/* ======================================================== */}

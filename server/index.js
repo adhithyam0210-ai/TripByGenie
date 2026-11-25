@@ -227,8 +227,8 @@ app.post('/api/auth/demo-login', (req, res) => {
   const requestedRole = (role || 'admin').toLowerCase();
   const roleAliases = requestedRole === 'sales' ? ['sales', 'staff'] : [requestedRole];
 
-  let user = db.findOne('users', (u) => 
-    (u.agency_id === targetAgency.id || u.role === 'admin' || u.role === 'manager') && 
+  let user = db.findOne('users', (u) =>
+    (u.agency_id === targetAgency.id || u.role === 'admin' || u.role === 'manager') &&
     roleAliases.includes(u.role.toLowerCase())
   );
   if (!user) {
@@ -435,9 +435,9 @@ app.get('/api/public/destinations', (req, res) => {
 app.get('/api/public/destinations/:slug', (req, res) => {
   const { slug } = req.params;
   const cleanSlug = (slug || '').toLowerCase().trim();
-  const destination = db.findOne('destinations', (d) => 
-    (d.slug && d.slug.toLowerCase() === cleanSlug) || 
-    (d.id && d.id.toLowerCase() === cleanSlug) || 
+  const destination = db.findOne('destinations', (d) =>
+    (d.slug && d.slug.toLowerCase() === cleanSlug) ||
+    (d.id && d.id.toLowerCase() === cleanSlug) ||
     (d.name && d.name.toLowerCase() === cleanSlug) ||
     (d.name && d.name.toLowerCase().replace(/\s+/g, '-') === cleanSlug)
   );
@@ -895,7 +895,7 @@ app.get('/api/customer/enquiries', authenticate, authorize(['customer']), (req, 
   const userEmail = req.user.email.toLowerCase();
 
   const enquiries = db.findAll('leads', (l) => l.customer_id === userId || (l.customer_email && l.customer_email.toLowerCase() === userEmail));
-  
+
   // Attach quotations if any
   const enriched = enquiries.map((lead) => {
     const quotations = db.findAll('quotations', (q) => q.lead_id === lead.id);
@@ -911,7 +911,7 @@ app.get('/api/customer/bookings', authenticate, authorize(['customer']), (req, r
   const userEmail = req.user.email.toLowerCase();
 
   const bookings = db.findAll('bookings', (b) => b.customer_id === userId || (b.customer_email && b.customer_email.toLowerCase() === userEmail));
-  
+
   const enriched = bookings.map((b) => {
     const travellers = db.findAll('booking_travellers', (t) => t.booking_id === b.id);
     const payments = db.findAll('payments', (p) => p.booking_id === b.id);
@@ -1306,7 +1306,7 @@ app.get('/api/admin/leads', authenticate, authorize(['admin', 'manager']), (req,
   const agencyId = req.user.agency_id;
   const { status, staff_id, source, search, page = 1, limit = 20 } = req.query;
 
-  let allLeads = db.findAll('leads', (l) => l.agency_id === agencyId);
+  let allLeads = db.findAll('leads', (l) => !l.agency_id || l.agency_id === agencyId || l.agency_id === 'agency_travel_genie');
 
   // Status Filter with case-insensitivity and special unassigned/assigned support
   if (status && status !== 'all') {
@@ -1582,17 +1582,27 @@ app.post('/api/admin/leads/assign', authenticate, authorize(['admin', 'manager']
 // Admin Delete Lead
 app.delete('/api/admin/leads/:id', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const lead = db.findById('leads', req.params.id);
-  if (!lead || lead.agency_id !== req.user.agency_id) {
+  if (!lead || (lead.agency_id && lead.agency_id !== req.user.agency_id)) {
     return res.status(404).json({ error: 'Lead not found.' });
   }
   db.delete('leads', req.params.id);
   res.json({ success: true, message: 'Lead deleted successfully.' });
 });
 
+// Admin Flush Test Leads (Clean reset of lead database)
+app.post('/api/admin/leads/flush', authenticate, authorize(['admin', 'manager']), (req, res) => {
+  const agencyId = req.user.agency_id;
+  // Keep empty or only flush agency leads
+  const remainingLeads = db.findAll('leads', (l) => l.agency_id && l.agency_id !== agencyId && l.agency_id !== 'agency_travel_genie');
+  db.data.leads = remainingLeads;
+  db.save();
+  res.json({ success: true, message: 'All fake and test leads have been completely flushed.' });
+});
+
 // Admin Staff Management (CRUD)
 app.get('/api/admin/staff', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const agencyId = req.user.agency_id;
-  const staffUsers = db.findAll('users', (u) => u.agency_id === agencyId && u.role === 'staff');
+  const staffUsers = db.findAll('users', (u) => (u.agency_id === agencyId || !u.agency_id) && (u.role === 'staff' || u.role === 'sales'));
 
   const enrichedStaff = staffUsers.map((staff) => {
     const profile = db.findOne('staff_profiles', (sp) => sp.user_id === staff.id) || {};
@@ -2473,9 +2483,22 @@ app.delete('/api/admin/banners/:id', authenticate, authorize(['admin', 'manager'
 // Admin Bookings & Booking Status Workflow
 app.get('/api/admin/bookings', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const agencyId = req.user.agency_id;
-  const bookings = db.findAll('bookings', (b) => b.agency_id === agencyId);
+  const bookings = db.findAll('bookings', (b) => !b.agency_id || b.agency_id === agencyId || b.agency_id === 'agency_travel_genie');
   bookings.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
   res.json(bookings);
+});
+
+// Admin Flush Bookings & Execution Records (Clean reset)
+app.post('/api/admin/bookings/flush', authenticate, authorize(['admin', 'manager']), (req, res) => {
+  db.data.bookings = [];
+  db.data.payments = [];
+  db.data.invoices = [];
+  db.data.operations_arrangements = [];
+  db.data.operations_tasks = [];
+  db.data.booking_status_history = [];
+  db.data.customer_account_invitations = [];
+  db.save();
+  res.json({ success: true, message: 'All booking and execution test data has been completely flushed.' });
 });
 
 app.put('/api/admin/bookings/:id', authenticate, authorize(['admin', 'manager']), (req, res) => {
@@ -2662,11 +2685,14 @@ app.put('/api/admin/settings', authenticate, authorize(['admin', 'manager']), (r
 // ==========================================
 
 // Staff Dashboard
-app.get('/api/staff/dashboard', authenticate, authorize(['staff']), (req, res) => {
+app.get('/api/staff/dashboard', authenticate, authorize(['staff', 'sales', 'manager', 'admin']), (req, res) => {
   const staffId = req.user.id;
   const agencyId = req.user.agency_id;
+  const isManagerOrAdmin = ['admin', 'manager'].includes(req.user.role);
 
-  const assignedLeads = db.findAll('leads', (l) => l.agency_id === agencyId && l.assigned_staff_id === staffId);
+  const assignedLeads = isManagerOrAdmin
+    ? db.findAll('leads', (l) => !l.agency_id || l.agency_id === agencyId || l.agency_id === 'agency_travel_genie')
+    : db.findAll('leads', (l) => (!l.agency_id || l.agency_id === agencyId || l.agency_id === 'agency_travel_genie') && l.assigned_staff_id === staffId);
   const newLeads = assignedLeads.filter((l) => l.status === 'Assigned' || l.status === 'New');
   const quotationsSent = assignedLeads.filter((l) => l.status === 'Quotation Sent');
   const convertedLeads = assignedLeads.filter((l) => l.status === 'Converted');
@@ -2676,7 +2702,7 @@ app.get('/api/staff/dashboard', authenticate, authorize(['staff']), (req, res) =
     return l.follow_up_date.startsWith(today);
   });
 
-  const quotations = db.findAll('quotations', (q) => q.staff_id === staffId);
+  const quotations = isManagerOrAdmin ? db.findAll('quotations') : db.findAll('quotations', (q) => q.staff_id === staffId);
 
   res.json({
     stats: {
@@ -2692,13 +2718,16 @@ app.get('/api/staff/dashboard', authenticate, authorize(['staff']), (req, res) =
   });
 });
 
-// Staff Assigned Leads (Strict isolation: only leads assigned to this staff)
-app.get('/api/staff/leads', authenticate, authorize(['staff']), (req, res) => {
+// Staff Assigned Leads (Strict isolation: only leads assigned to this staff, or all for admin/manager)
+app.get('/api/staff/leads', authenticate, authorize(['staff', 'sales', 'manager', 'admin']), (req, res) => {
   const staffId = req.user.id;
   const agencyId = req.user.agency_id;
   const { status, search } = req.query;
+  const isManagerOrAdmin = ['admin', 'manager'].includes(req.user.role);
 
-  let leads = db.findAll('leads', (l) => l.agency_id === agencyId && l.assigned_staff_id === staffId);
+  let leads = isManagerOrAdmin
+    ? db.findAll('leads', (l) => !l.agency_id || l.agency_id === agencyId || l.agency_id === 'agency_travel_genie')
+    : db.findAll('leads', (l) => (!l.agency_id || l.agency_id === agencyId || l.agency_id === 'agency_travel_genie') && l.assigned_staff_id === staffId);
 
   if (status && status !== 'all') {
     leads = leads.filter((l) => l.status === status);
@@ -2719,11 +2748,12 @@ app.get('/api/staff/leads', authenticate, authorize(['staff']), (req, res) => {
 });
 
 // Staff Lead Detail & Timeline
-app.get('/api/staff/leads/:id', authenticate, authorize(['staff']), (req, res) => {
+app.get('/api/staff/leads/:id', authenticate, authorize(['staff', 'sales', 'manager', 'admin']), (req, res) => {
   const staffId = req.user.id;
   const lead = db.findById('leads', req.params.id);
+  const isManagerOrAdmin = ['admin', 'manager'].includes(req.user.role);
 
-  if (!lead || lead.assigned_staff_id !== staffId) {
+  if (!lead || (!isManagerOrAdmin && lead.assigned_staff_id !== staffId)) {
     return res.status(403).json({ error: 'Access denied. You can only view leads assigned to you.' });
   }
 
@@ -2737,11 +2767,12 @@ app.get('/api/staff/leads/:id', authenticate, authorize(['staff']), (req, res) =
 });
 
 // Staff Update Lead Status, Notes & Follow-up
-app.put('/api/staff/leads/:id/status', authenticate, authorize(['staff']), (req, res) => {
+app.put('/api/staff/leads/:id/status', authenticate, authorize(['staff', 'sales', 'manager', 'admin']), (req, res) => {
   const staffId = req.user.id;
   const lead = db.findById('leads', req.params.id);
+  const isManagerOrAdmin = ['admin', 'manager'].includes(req.user.role);
 
-  if (!lead || lead.assigned_staff_id !== staffId) {
+  if (!lead || (!isManagerOrAdmin && lead.assigned_staff_id !== staffId)) {
     return res.status(403).json({ error: 'Access denied.' });
   }
 
@@ -2772,12 +2803,13 @@ app.put('/api/staff/leads/:id/status', authenticate, authorize(['staff']), (req,
 });
 
 // Staff Log Customer Interaction (Call notes, preferences, WhatsApp, Meetings)
-app.post('/api/staff/leads/:id/interactions', authenticate, authorize(['staff']), (req, res) => {
+app.post('/api/staff/leads/:id/interactions', authenticate, authorize(['staff', 'sales', 'manager', 'admin']), (req, res) => {
   const staffId = req.user.id;
   const agencyId = req.user.agency_id;
   const lead = db.findById('leads', req.params.id);
+  const isManagerOrAdmin = ['admin', 'manager'].includes(req.user.role);
 
-  if (!lead || lead.assigned_staff_id !== staffId) {
+  if (!lead || (!isManagerOrAdmin && lead.assigned_staff_id !== staffId)) {
     return res.status(403).json({ error: 'Access denied.' });
   }
 
@@ -3224,16 +3256,17 @@ app.post('/api/payments/verify-advance', async (req, res) => {
 });
 
 // Staff Convert Lead to Confirmed Booking
-app.post('/api/staff/leads/:id/convert', authenticate, authorize(['staff']), (req, res) => {
+app.post('/api/staff/leads/:id/convert', authenticate, authorize(['staff', 'sales', 'manager', 'admin']), (req, res) => {
   const staffId = req.user.id;
   const agencyId = req.user.agency_id;
   const lead = db.findById('leads', req.params.id);
+  const isManagerOrAdmin = ['admin', 'manager'].includes(req.user.role);
 
-  if (!lead || lead.assigned_staff_id !== staffId) {
+  if (!lead || (!isManagerOrAdmin && lead.assigned_staff_id !== staffId)) {
     return res.status(403).json({ error: 'Access denied.' });
   }
 
-  const { total_amount, advance_amount, travel_start_date, travel_end_date, special_requests } = req.body;
+  const { total_amount, advance_amount, payment_method, payment_proof, travel_start_date, travel_end_date, special_requests } = req.body;
   const tot = Number(total_amount);
   const adv = Number(advance_amount) || 0;
   const bal = Math.max(0, tot - adv);
@@ -3243,9 +3276,11 @@ app.post('/api/staff/leads/:id/convert', authenticate, authorize(['staff']), (re
   const newBooking = db.insert('bookings', {
     agency_id: agencyId,
     booking_number: bookingNum,
+    lead_id: lead.id,
     customer_id: lead.customer_id,
     customer_name: lead.customer_name,
     customer_email: lead.customer_email,
+    customer_phone: lead.customer_phone,
     agent_id: null,
     package_id: lead.interested_package_id,
     package_title: lead.interested_destination,
@@ -3255,6 +3290,8 @@ app.post('/api/staff/leads/:id/convert', authenticate, authorize(['staff']), (re
     total_amount: tot,
     advance_amount: adv,
     balance_amount: bal,
+    payment_method: payment_method || 'UPI',
+    payment_proof: payment_proof || '',
     payment_status: bal === 0 ? 'Paid' : (adv > 0 ? 'Partial' : 'Pending'),
     booking_status: 'Confirmed',
     special_requests: special_requests || lead.notes,
@@ -3268,10 +3305,11 @@ app.post('/api/staff/leads/:id/convert', authenticate, authorize(['staff']), (re
       booking_id: newBooking.id,
       amount: adv,
       payment_type: 'Advance',
-      payment_method: 'UPI',
-      transaction_reference: `CONV-PAY-${Date.now()}`,
+      payment_method: payment_method || 'UPI',
+      transaction_reference: payment_proof || `CONV-PAY-${Date.now()}`,
+      payment_proof: payment_proof || '',
       payment_date: new Date().toISOString(),
-      notes: 'Initial booking deposit recorded during lead conversion.',
+      notes: `Advance payment recorded during lead conversion. Proof/Ref: ${payment_proof || 'Verified by Sales'}`,
       status: 'Completed'
     });
 
@@ -3386,18 +3424,18 @@ app.get('/api/staff/follow-ups', authenticate, authorize(['staff', 'sales', 'man
 // Manager Create Customer Login (Strict Eligibility: Verified Email + Confirmed Booking + Verified Advance Payment)
 app.post('/api/admin/customers/create-login', authenticate, authorize(['admin', 'manager']), async (req, res) => {
   const agencyId = req.user.agency_id;
-  const { booking_id } = req.body;
+  const { booking_id, email, temp_password, name } = req.body;
 
   if (!booking_id) {
     return res.status(400).json({ error: 'Booking ID is required to create a customer account.' });
   }
 
   const booking = db.findById('bookings', booking_id);
-  if (!booking || booking.agency_id !== agencyId) {
+  if (!booking || (booking.agency_id && booking.agency_id !== agencyId && booking.agency_id !== 'agency_travel_genie')) {
     return res.status(404).json({ error: 'Booking record not found.' });
   }
 
-  const customerEmail = (booking.customer_email || '').trim().toLowerCase();
+  const customerEmail = ((email || booking.customer_email) || '').trim().toLowerCase();
   if (!customerEmail || !customerEmail.includes('@')) {
     return res.status(400).json({ error: 'A valid customer email address is required on the booking.' });
   }
@@ -3405,10 +3443,10 @@ app.post('/api/admin/customers/create-login', authenticate, authorize(['admin', 
   // 1. Mandatory Business Rule: Booking must be confirmed and have verified advance payment
   const isConfirmed = booking.booking_status === 'BOOKING_CONFIRMED' || booking.booking_status === 'Confirmed';
   const hasAdvance = (Number(booking.advance_amount) || 0) > 0 ||
-                     booking.payment_status === 'PARTIALLY_PAID' ||
-                     booking.payment_status === 'PAID' ||
-                     booking.payment_status === 'Partial' ||
-                     booking.payment_status === 'Paid';
+    booking.payment_status === 'PARTIALLY_PAID' ||
+    booking.payment_status === 'PAID' ||
+    booking.payment_status === 'Partial' ||
+    booking.payment_status === 'Paid';
 
   if (!isConfirmed || !hasAdvance) {
     return res.status(400).json({
@@ -3416,10 +3454,20 @@ app.post('/api/admin/customers/create-login', authenticate, authorize(['admin', 
     });
   }
 
+  const finalTempPassword = (temp_password || '').trim() || `Genie@${Math.floor(1000 + Math.random() * 9000)}`;
+  const passwordHash = bcrypt.hashSync(finalTempPassword, 10);
+  const appUrl = req.headers.origin || 'http://localhost:3000';
+
   // 2. Check if an active customer account already exists with this email (Reuse existing identity)
   const existingUser = db.findOne('users', (u) => u.email.toLowerCase() === customerEmail);
-  if (existingUser && existingUser.status === 'active' && existingUser.password_hash) {
-    // Associate booking with existing customer account without duplicating
+  if (existingUser) {
+    db.update('users', existingUser.id, {
+      password_hash: passwordHash,
+      temp_password: finalTempPassword,
+      status: 'active',
+      account_status: 'ACTIVE'
+    });
+
     db.update('bookings', booking.id, {
       customer_id: existingUser.id,
       customer_code: existingUser.customer_code || existingUser.id,
@@ -3431,11 +3479,16 @@ app.post('/api/admin/customers/create-login', authenticate, authorize(['admin', 
       email: customerEmail
     });
 
+    const loginUrl = `${appUrl}/login?email=${encodeURIComponent(customerEmail)}`;
     return res.status(200).json({
       success: true,
       already_exists: true,
-      message: `Customer account already exists for ${customerEmail}. Booking #${booking.booking_number} has been linked to their existing portal.`,
+      message: `Customer account updated with credentials for ${customerEmail}.`,
       customer_id: existingUser.customer_code || existingUser.id,
+      email: customerEmail,
+      temp_password: finalTempPassword,
+      login_url: loginUrl,
+      activation_link: loginUrl,
       account_status: 'ACTIVE'
     });
   }
@@ -3443,29 +3496,21 @@ app.post('/api/admin/customers/create-login', authenticate, authorize(['admin', 
   // 3. Generate Unique Customer ID (e.g. CUS-2026-0001)
   const customerCode = db.generateUniqueCode('users', 'CUS', true);
 
-  // 4. Create or update user with pending activation status
-  let userRecord = existingUser;
-  if (!userRecord) {
-    userRecord = db.insert('users', {
-      agency_id: agencyId,
-      role: 'customer',
-      customer_code: customerCode,
-      name: booking.customer_name,
-      email: customerEmail,
-      phone: booking.customer_phone || '',
-      password_hash: '', // No plaintext or permanent password
-      status: 'pending_activation',
-      account_status: 'INVITATION_SENT',
-      activation_status: 'INVITATION_SENT',
-      created_at: new Date().toISOString()
-    });
-  } else {
-    userRecord = db.update('users', userRecord.id, {
-      customer_code: userRecord.customer_code || customerCode,
-      account_status: 'INVITATION_SENT',
-      activation_status: 'INVITATION_SENT'
-    });
-  }
+  // 4. Create user with temporary password and active status
+  let userRecord = db.insert('users', {
+    agency_id: agencyId,
+    role: 'customer',
+    customer_code: customerCode,
+    name: name || booking.customer_name,
+    email: customerEmail,
+    phone: booking.customer_phone || '',
+    password_hash: passwordHash,
+    temp_password: finalTempPassword,
+    status: 'active',
+    account_status: 'ACTIVE',
+    activation_status: 'ACTIVATED',
+    created_at: new Date().toISOString()
+  });
 
   // 5. Ensure customer profile exists
   let custProfile = db.findOne('customer_profiles', (cp) => cp.user_id === userRecord.id);
@@ -3474,7 +3519,7 @@ app.post('/api/admin/customers/create-login', authenticate, authorize(['admin', 
       user_id: userRecord.id,
       customer_code: customerCode,
       agency_id: agencyId,
-      name: booking.customer_name,
+      name: name || booking.customer_name,
       email: customerEmail,
       phone: booking.customer_phone || '',
       preferred_currency: 'INR'
@@ -3489,15 +3534,15 @@ app.post('/api/admin/customers/create-login', authenticate, authorize(['admin', 
       customer_code: customerCode,
       user_id: userRecord.id,
       agency_id: agencyId,
-      name: booking.customer_name,
+      name: name || booking.customer_name,
       email: customerEmail,
       phone: booking.customer_phone || '',
-      status: 'INVITATION_SENT',
+      status: 'ACTIVE',
       created_at: new Date().toISOString()
     });
   } else {
     db.update('customers', customerDir.id, {
-      status: 'INVITATION_SENT',
+      status: 'ACTIVE',
       customer_code: customerCode
     });
   }
@@ -3531,7 +3576,7 @@ app.post('/api/admin/customers/create-login', authenticate, authorize(['admin', 
   db.update('bookings', booking.id, {
     customer_id: userRecord.id,
     customer_code: customerCode,
-    customer_account_status: 'INVITATION_SENT',
+    customer_account_status: 'ACTIVE',
     invitation_sent_at: new Date().toISOString()
   });
 
@@ -3542,9 +3587,9 @@ app.post('/api/admin/customers/create-login', authenticate, authorize(['admin', 
     customer_id: customerCode,
     booking_id: booking.id,
     from_status: 'NOT_CREATED',
-    to_status: 'INVITATION_SENT',
+    to_status: 'ACTIVE',
     changed_by: req.user.id,
-    notes: `Manager ${req.user.name} initiated secure customer login invitation.`,
+    notes: `Manager ${req.user.name} generated customer login ID and temporary password.`,
     created_at: new Date().toISOString()
   });
 
@@ -3565,21 +3610,28 @@ app.post('/api/admin/customers/create-login', authenticate, authorize(['admin', 
       customer_id: customerCode,
       booking_id: booking.booking_number,
       activation_token: activationToken,
-      app_url: req.headers.origin || 'http://localhost:3000'
+      app_url: appUrl
     });
   } catch (mailErr) {
     console.error('Failed to send onboarding email:', mailErr);
   }
 
+  const loginUrl = `${appUrl}/login?email=${encodeURIComponent(customerEmail)}`;
+  const activationLink = emailResult?.activation_link || `${appUrl}/activate?token=${activationToken}&email=${encodeURIComponent(customerEmail)}`;
+
   res.status(201).json({
     success: true,
-    message: `Customer login account created successfully! Onboarding invitation dispatched to ${customerEmail}.`,
+    message: `Customer login account created successfully! Credentials ready.`,
     customer_id: customerCode,
     email: customerEmail,
+    temp_password: finalTempPassword,
+    login_url: loginUrl,
+    activation_link: activationLink,
     booking_id: booking.booking_number,
-    account_status: 'INVITATION_SENT',
-    activation_link: emailResult?.activation_link || undefined
+    account_status: 'ACTIVE'
   });
+  activation_link: emailResult?.activation_link || undefined
+});
 });
 
 // Manager Create Paid Customer Account & Generate Customer ID

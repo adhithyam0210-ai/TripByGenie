@@ -52,6 +52,8 @@ export const StaffLeads: React.FC = () => {
   const [convertForm, setConvertForm] = useState({
     total_amount: 120000,
     advance_amount: 40000,
+    payment_method: 'UPI',
+    payment_proof: '',
     travel_start_date: '',
     special_requests: ''
   });
@@ -134,9 +136,19 @@ export const StaffLeads: React.FC = () => {
     e.preventDefault();
     if (!selectedLead) return;
 
+    if (!convertForm.advance_amount || convertForm.advance_amount <= 0) {
+      error('Please enter the advance payment amount received.');
+      return;
+    }
+
+    if (!convertForm.payment_proof.trim()) {
+      error('Please enter payment proof reference / UTR number.');
+      return;
+    }
+
     try {
       await api.convertLeadToBooking(selectedLead.id, convertForm);
-      success(`Lead converted! Confirmed booking has been registered.`);
+      success(`Lead converted! Confirmed booking has been registered with payment proof recorded.`);
       setIsConvertModalOpen(false);
       loadLeads();
       handleSelectLead({ ...selectedLead, status: 'Converted' });
@@ -527,17 +539,49 @@ export const StaffLeads: React.FC = () => {
                 <input
                   type="number"
                   required
+                  min={1}
                   value={convertForm.total_amount}
                   onChange={(e) => setConvertForm({ ...convertForm, total_amount: Number(e.target.value) })}
                   className="w-full p-2 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8]"
                 />
               </div>
               <div>
-                <label className="font-bold text-[#082C43] block mb-1">Advance Received (₹)</label>
+                <label className="font-bold text-[#082C43] block mb-1">Advance Received (Partial ₹) *</label>
                 <input
                   type="number"
+                  required
+                  min={1}
                   value={convertForm.advance_amount}
                   onChange={(e) => setConvertForm({ ...convertForm, advance_amount: Number(e.target.value) })}
+                  className="w-full p-2 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8]"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="font-bold text-[#082C43] block mb-1">Payment Method *</label>
+                <select
+                  required
+                  value={convertForm.payment_method}
+                  onChange={(e) => setConvertForm({ ...convertForm, payment_method: e.target.value })}
+                  className="w-full p-2 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8]"
+                >
+                  <option value="UPI">UPI (GPay / PhonePe / Paytm)</option>
+                  <option value="Bank Transfer">Bank Transfer (NEFT / IMPS / RTGS)</option>
+                  <option value="Credit / Debit Card">Credit / Debit Card</option>
+                  <option value="Net Banking">Net Banking</option>
+                  <option value="Cash">Cash Deposit</option>
+                </select>
+              </div>
+              <div>
+                <label className="font-bold text-[#082C43] block mb-1">Payment Proof / UTR Reference *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. UPI Ref #4892719283 / Txn ID"
+                  value={convertForm.payment_proof}
+                  onChange={(e) => setConvertForm({ ...convertForm, payment_proof: e.target.value })}
                   className="w-full p-2 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8]"
                 />
               </div>

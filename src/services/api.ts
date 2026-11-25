@@ -494,9 +494,23 @@ export const api = {
           if (v !== undefined && v !== null && v !== '') q.append(k, String(v));
         }
       }
-      return await request<any>(`/admin/leads?${q.toString()}`);
+      const res = await request<any>(`/admin/leads?${q.toString()}`);
+      if (res && res.data && !res.leads) {
+        res.leads = res.data;
+      }
+      return res;
     } catch {
-      return { leads: fallbackData.leads, total: fallbackData.leads.length };
+      const localLeads = JSON.parse(localStorage.getItem('tg_local_leads') || '[]');
+      const combined = [...localLeads, ...fallbackData.leads];
+      return { data: combined, leads: combined, total: combined.length, totalPages: 1 };
+    }
+  },
+  flushLeads: async () => {
+    localStorage.removeItem('tg_local_leads');
+    try {
+      return await request<any>('/admin/leads/flush', { method: 'POST' });
+    } catch {
+      return { success: true, message: 'Local leads cleared.' };
     }
   },
   createAdminLead: (data: any) =>
@@ -616,7 +630,7 @@ export const api = {
     }
   },
 
-  createCustomerAccount: (data: { booking_id: string }) =>
+  createCustomerAccount: (data: { booking_id: string; email?: string; temp_password?: string; name?: string }) =>
     request<any>('/admin/customers/create-login', {
       method: 'POST',
       body: JSON.stringify(data)
@@ -926,6 +940,14 @@ export const api = {
       return await request<any[]>('/admin/bookings');
     } catch {
       return fallbackData.bookings;
+    }
+  },
+  flushBookings: async () => {
+    localStorage.removeItem('tg_local_bookings');
+    try {
+      return await request<any>('/admin/bookings/flush', { method: 'POST' });
+    } catch {
+      return { success: true, message: 'Local bookings cleared.' };
     }
   },
   updateAdminBooking: (id: string, data: any) =>

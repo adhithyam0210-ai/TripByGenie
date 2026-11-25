@@ -90,9 +90,10 @@ export const AdminLeads: React.FC = () => {
         source: sourceFilter,
         search
       });
-      setLeads(res.data || []);
-      setTotalPages(res.totalPages || 1);
-      setTotalLeads(res.total || 0);
+      const leadsList = res.data || res.leads || (Array.isArray(res) ? res : []);
+      setLeads(leadsList);
+      setTotalPages(res.totalPages || Math.ceil(leadsList.length / 15) || 1);
+      setTotalLeads(res.total ?? leadsList.length);
     } catch (e) {
       console.error(e);
     } finally {
@@ -194,6 +195,19 @@ export const AdminLeads: React.FC = () => {
     }
   };
 
+  const handleFlushLeads = async () => {
+    if (!confirm('Are you sure you want to flush all test leads? This will reset the leads pipeline cleanly.')) return;
+    try {
+      await api.flushLeads();
+      success('All test leads have been flushed clean.');
+      setSelectedLead(null);
+      setSelectedLeadIds([]);
+      loadLeads();
+    } catch (err: any) {
+      error(err.message || 'Failed to flush leads.');
+    }
+  };
+
   return (
     <DashboardLayout
       title="Lead & Inquiry Management"
@@ -210,6 +224,15 @@ export const AdminLeads: React.FC = () => {
               Assign Selected ({selectedLeadIds.length})
             </Button>
           )}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleFlushLeads}
+            className="text-rose-600 border-rose-200 hover:bg-rose-50"
+            leftIcon={<Trash2 className="w-3.5 h-3.5 text-rose-500" />}
+          >
+            Flush Leads
+          </Button>
           <Button
             variant="primary"
             size="sm"
@@ -400,6 +423,17 @@ export const AdminLeads: React.FC = () => {
                             </td>
                             <td className="py-3 px-3 text-right">
                               <div className="flex items-center justify-end gap-1.5">
+                                <Button
+                                  variant="outline"
+                                  size="xs"
+                                  className="text-xs text-[#17648A] border-[#17648A]/30 hover:bg-[#17648A]/10 font-bold"
+                                  onClick={() => {
+                                    setSelectedLeadIds([l.id]);
+                                    setIsAssignModalOpen(true);
+                                  }}
+                                >
+                                  Assign
+                                </Button>
                                 <Button
                                   variant="ghost"
                                   size="sm"
