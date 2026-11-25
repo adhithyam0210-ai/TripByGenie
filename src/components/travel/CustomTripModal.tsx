@@ -19,39 +19,43 @@ export const CustomTripModal: React.FC<CustomTripModalProps> = ({
   initialDestination = '',
   initialPackageId = ''
 }) => {
-  const { user, agency } = useAuth();
+  const { agency } = useAuth();
   const { success, error } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [countryCode, setCountryCode] = useState('+91');
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  const [formData, setFormData] = useState({
-    name: user?.name || '',
-    email: user?.email || '',
+  const getBlankFormData = (dest = '') => ({
+    name: '',
+    email: '',
     phone: '',
-    destination: initialDestination || '',
+    destination: dest || '',
     departure_city: '',
     travel_date: '',
     adults: '2',
     children: '0',
-    budget: '₹50,000 - ₹1,00,000',
+    budget: 'Comfort',
     hotel_preference: '4-Star Premium Hotel',
     travel_preference: 'Couples / Romantic',
     additional_requirements: ''
   });
 
+  const [formData, setFormData] = useState(() => getBlankFormData(initialDestination));
+
   useEffect(() => {
     if (isOpen) {
       setErrors({});
-      setFormData((prev) => ({
-        ...prev,
-        destination: initialDestination || prev.destination,
-        name: user?.name || prev.name,
-        email: user?.email || prev.email,
-        phone: user?.phone ? user.phone.replace(/^\+\d+\s*/, '') : prev.phone
-      }));
+      setFormData(getBlankFormData(initialDestination));
+      setCountryCode('+91');
     }
-  }, [isOpen, initialDestination, user]);
+  }, [isOpen, initialDestination]);
+
+  const handleClose = () => {
+    setFormData(getBlankFormData(initialDestination));
+    setErrors({});
+    setCountryCode('+91');
+    onClose();
+  };
 
   const validateField = (field: string, value: string): string => {
     let err = '';
@@ -174,6 +178,8 @@ export const CustomTripModal: React.FC<CustomTripModalProps> = ({
       });
 
       success('Trip enquiry submitted! Our travel consultant will contact you with a customized quote shortly.');
+      setFormData(getBlankFormData(initialDestination));
+      setErrors({});
       onClose();
     } catch (err: any) {
       error(err.message || 'Failed to submit enquiry. Please try again.');
@@ -187,7 +193,7 @@ export const CustomTripModal: React.FC<CustomTripModalProps> = ({
   return (
     <Modal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleClose}
       title="Plan Your Dream Custom Trip"
       subtitle="Tell us your preferences and our travel designers will tailor an unforgettable itinerary."
       maxWidth="3xl"
@@ -394,14 +400,14 @@ export const CustomTripModal: React.FC<CustomTripModalProps> = ({
           </div>
         </div>
 
-        {/* Travelers, Budget & Hotel */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        {/* Travelers & Travel Style */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
           <div>
             <label className="text-xs font-bold text-[#082C43] mb-1 block">Adults (12+ yrs)</label>
             <select
               value={formData.adults}
               onChange={(e) => setFormData({ ...formData, adults: e.target.value })}
-              className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"
+              className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none cursor-pointer"
             >
               {[1, 2, 3, 4, 5, 6, 8, 10, '12+'].map((num) => (
                 <option key={num} value={num}>
@@ -415,7 +421,7 @@ export const CustomTripModal: React.FC<CustomTripModalProps> = ({
             <select
               value={formData.children}
               onChange={(e) => setFormData({ ...formData, children: e.target.value })}
-              className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"
+              className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none cursor-pointer"
             >
               {[0, 1, 2, 3, 4, '5+'].map((num) => (
                 <option key={num} value={num}>
@@ -424,17 +430,41 @@ export const CustomTripModal: React.FC<CustomTripModalProps> = ({
               ))}
             </select>
           </div>
+          <div className="col-span-2 md:col-span-1">
+            <label className="text-xs font-bold text-[#082C43] mb-1 block">Travel Preference</label>
+            <div className="relative">
+              <select
+                value={formData.travel_preference}
+                onChange={(e) => setFormData({ ...formData, travel_preference: e.target.value })}
+                className="w-full text-xs p-2.5 pr-8 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] text-[#082C43] focus:border-[#FF795C] focus:outline-none appearance-none cursor-pointer"
+              >
+                <option value="Couples / Romantic">Couples / Romantic</option>
+                <option value="Family Vacation">Family Vacation</option>
+                <option value="Friends & Adventure">Friends & Adventure</option>
+                <option value="Relaxation & Spa">Relaxation & Spa</option>
+                <option value="Solo Exploration">Solo Exploration</option>
+                <option value="Senior Citizen Special">Senior Citizen Special</option>
+                <option value="Corporate / Group Retreat">Corporate / Group Retreat</option>
+              </select>
+              <ChevronDown className="w-3.5 h-3.5 text-[#082C43] absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+            </div>
+          </div>
+        </div>
+
+        {/* Comfort Level & Stay Preference */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <div>
-            <label className="text-xs font-bold text-[#082C43] mb-1 block">Budget (per person)</label>
+            <label className="text-xs font-bold text-[#082C43] mb-1 block">Comfort Level</label>
             <select
               value={formData.budget}
               onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-              className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"
+              className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none cursor-pointer"
             >
-              <option value="₹25,000 - ₹50,000">₹25k - ₹50k (Economy)</option>
-              <option value="₹50,000 - ₹1,00,000">₹50k - ₹1 Lakh (Comfort)</option>
-              <option value="₹1,00,000 - ₹2,00,000">₹1 Lakh - ₹2 Lakhs (Premium)</option>
-              <option value="₹2,00,000+">₹2 Lakhs+ (Ultra Luxury)</option>
+              <option value="Economy">Economy</option>
+              <option value="Comfort">Comfort</option>
+              <option value="Premium">Premium</option>
+              <option value="Luxury">Luxury</option>
+              <option value="Super Luxury">Super Luxury</option>
             </select>
           </div>
           <div>
@@ -442,7 +472,7 @@ export const CustomTripModal: React.FC<CustomTripModalProps> = ({
             <select
               value={formData.hotel_preference}
               onChange={(e) => setFormData({ ...formData, hotel_preference: e.target.value })}
-              className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"
+              className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none cursor-pointer"
             >
               <option value="3-Star Cozy Hotel">3-Star Cozy</option>
               <option value="4-Star Premium Hotel">4-Star Premium</option>
@@ -450,27 +480,6 @@ export const CustomTripModal: React.FC<CustomTripModalProps> = ({
               <option value="Private Pool Villa">Private Villa</option>
               <option value="Heritage Palaces / Houseboat">Heritage / Houseboat</option>
             </select>
-          </div>
-        </div>
-
-        {/* Travel Style: Converted to Dropdown */}
-        <div>
-          <label className="text-xs font-bold text-[#082C43] mb-1 block">Travel Preference</label>
-          <div className="relative">
-            <select
-              value={formData.travel_preference}
-              onChange={(e) => setFormData({ ...formData, travel_preference: e.target.value })}
-              className="w-full text-xs p-2.5 pr-8 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] text-[#082C43] font-medium focus:border-[#FF795C] focus:outline-none appearance-none cursor-pointer"
-            >
-              <option value="Couples / Romantic">Couples / Romantic</option>
-              <option value="Family Vacation">Family Vacation</option>
-              <option value="Friends & Adventure">Friends & Adventure</option>
-              <option value="Relaxation & Spa">Relaxation & Spa</option>
-              <option value="Solo Exploration">Solo Exploration</option>
-              <option value="Senior Citizen Special">Senior Citizen Special</option>
-              <option value="Corporate / Group Retreat">Corporate / Group Retreat</option>
-            </select>
-            <ChevronDown className="w-3.5 h-3.5 text-[#082C43] absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
           </div>
         </div>
 
@@ -490,7 +499,7 @@ export const CustomTripModal: React.FC<CustomTripModalProps> = ({
 
         {/* Submit Button */}
         <div className="pt-2 flex justify-end gap-3">
-          <Button type="button" variant="ghost" onClick={onClose}>
+          <Button type="button" variant="ghost" onClick={handleClose}>
             Cancel
           </Button>
           <Button

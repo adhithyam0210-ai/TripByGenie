@@ -41,9 +41,9 @@ export const PackageDetail: React.FC = () => {
 
   // Fast booking box form
   const [bookingForm, setBookingForm] = useState({
-    name: user?.name || '',
-    email: user?.email || '',
-    phone: user?.phone || '',
+    name: '',
+    email: '',
+    phone: '',
     travelDate: '',
     travelers: '2'
   });

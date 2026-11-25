@@ -1368,12 +1368,12 @@ export const Home: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 w-full sm:w-auto">
+            <div className="flex flex-row flex-wrap sm:flex-nowrap items-center gap-2 sm:gap-2.5 w-full sm:w-auto">
               <Button
                 variant="primary"
                 size="sm"
                 onClick={handleOpenTripModal}
-                className="w-full sm:w-auto font-bold text-xs shadow-xs justify-center"
+                className="flex-1 sm:flex-initial h-8 px-3 text-[11px] sm:text-xs font-bold rounded-lg shadow-xs justify-center whitespace-nowrap"
               >
                 Apply for 0% EMI Trip
               </Button>
@@ -1381,9 +1381,9 @@ export const Home: React.FC = () => {
                 href="https://wa.me/919940463566?text=Hi%20TripbyGenie,%20I%20would%20like%20to%20know%20more%20about%20Zero%20Rupees%20Down%20Payment%20and%20No%20Cost%20EMI%20holiday%20plans"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-bold shadow-xs transition-colors shrink-0"
+                className="flex-1 sm:flex-initial h-8 inline-flex items-center justify-center gap-1.5 px-3 rounded-lg bg-[#25D366] hover:bg-[#20bd5a] text-white text-[11px] sm:text-xs font-bold shadow-xs transition-colors shrink-0 whitespace-nowrap"
               >
-                <PhoneCall className="w-3.5 h-3.5" />
+                <PhoneCall className="w-3 h-3 shrink-0" />
                 <span>WhatsApp EMI Desk</span>
               </a>
             </div>

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
 
 const FRAMES = [
   '/splash_frames/frame_0.png',
@@ -17,21 +16,41 @@ const FRAMES = [
 const FRAME_DURATION = 130;
 // Maximum 6.5s absolute ceiling (safety in case a remote image connection hangs)
 const MAX_TIMEOUT_MS = 6500;
+// Splash screen appears ONLY if page load takes longer than 500ms
+const APPEAR_DELAY_MS = 500;
 
 export const SplashScreen: React.FC = () => {
-  const location = useLocation();
-
-  // Show splash on load until images of cards and structure are completely loaded
-  const [isVisible, setIsVisible] = useState<boolean>(() => {
-    if (typeof window === 'undefined') return false;
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('nosplash') === '1') return false;
-    return true;
-  });
-
+  // Initially false: only appears if the page load takes longer than 500ms
+  const [isVisible, setIsVisible] = useState(false);
   const [frameIndex, setFrameIndex] = useState(0);
   const [isFading, setIsFading] = useState(false);
   const dismissedRef = useRef(false);
+  const pageReadyRef = useRef(false);
+
+  // Helper to check if page structure and card images are completely loaded and visible
+  const checkPageReady = (): boolean => {
+    if (typeof document === 'undefined') return false;
+
+    // Structure check: main content or root container mounted
+    const main = document.querySelector('main') || document.getElementById('root');
+    if (!main) return false;
+
+    // Query all content images excluding splash screen itself
+    const imgs = Array.from(document.querySelectorAll('img')).filter((img) => {
+      return !img.closest('[role="dialog"]') && !img.src.includes('splash');
+    });
+
+    // If there are content images, verify critical visible cards have loaded
+    if (imgs.length > 0) {
+      const criticalCards = imgs.slice(0, 10);
+      const allLoaded = criticalCards.every((img) => {
+        return img.complete && (img.naturalWidth > 0 || img.naturalHeight > 0);
+      });
+      return allLoaded;
+    }
+
+    return true;
+  };
 
   const dismiss = () => {
     if (dismissedRef.current) return;
@@ -43,8 +62,50 @@ export const SplashScreen: React.FC = () => {
     }, 400);
   };
 
+  // Phase 1: Check page readiness and only trigger splash if page load exceeds 500ms
   useEffect(() => {
-    if (!isVisible) return;
+    if (typeof window === 'undefined') return;
+
+    // Allow manual bypass via URL parameter
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('nosplash') === '1') {
+      dismissedRef.current = true;
+      return;
+    }
+
+    // Preload background image into memory early so if splash appears, it renders instantly
+    const bgImg = new Image();
+    bgImg.src = '/splash-bg.jpg';
+
+    // Monitor page readiness early
+    const earlyCheckInterval = setInterval(() => {
+      if (checkPageReady()) {
+        pageReadyRef.current = true;
+      }
+    }, 50);
+
+    // Only appear if the page load takes longer than 500ms
+    const appearTimer = setTimeout(() => {
+      clearInterval(earlyCheckInterval);
+      // If page is already completely loaded within 500ms, do NOT show splash
+      if (checkPageReady() || pageReadyRef.current) {
+        dismissedRef.current = true;
+        return;
+      }
+
+      // Page load took longer than 500ms -> show the splash screen
+      setIsVisible(true);
+    }, APPEAR_DELAY_MS);
+
+    return () => {
+      clearTimeout(appearTimer);
+      clearInterval(earlyCheckInterval);
+    };
+  }, []);
+
+  // Phase 2: Active splash screen lifecycle (runs only when isVisible is true)
+  useEffect(() => {
+    if (!isVisible || dismissedRef.current) return;
 
     // Prevent background scrolling while splash is active
     const originalOverflow = document.body.style.overflow;
@@ -52,11 +113,7 @@ export const SplashScreen: React.FC = () => {
     document.body.style.overflow = 'hidden';
     document.body.style.touchAction = 'none';
 
-    // 1. Preload background image into memory
-    const bgImg = new Image();
-    bgImg.src = '/splash-bg.jpg';
-
-    // 2. Hardware-accelerated continuous frame pacing with requestAnimationFrame
+    // Hardware-accelerated continuous frame pacing with requestAnimationFrame
     // Loops continuously until cards, images, and structure are completely loaded
     let animCompletedOnce = false;
     let startTime: number | null = null;
@@ -83,31 +140,7 @@ export const SplashScreen: React.FC = () => {
 
     rafId = requestAnimationFrame(animate);
 
-    // 3. True Page & Card Images Readiness Checker
-    // Ensures the DOM structure is mounted and the visible card images are loaded and visible
-    const checkPageReady = (): boolean => {
-      // Structure check: main content or root container mounted
-      const main = document.querySelector('main') || document.getElementById('root');
-      if (!main) return false;
-
-      // Query all content images excluding splash screen itself
-      const imgs = Array.from(document.querySelectorAll('img')).filter((img) => {
-        return !img.closest('[role="dialog"]') && !img.src.includes('splash');
-      });
-
-      // If React has not yet rendered card images, structure is still loading
-      if (imgs.length < 3) return false;
-
-      // Check critical visible card images (hero banner, destination cards, package cards)
-      const criticalCards = imgs.slice(0, 10);
-      const allLoaded = criticalCards.every((img) => {
-        return img.complete && (img.naturalWidth > 0 || img.naturalHeight > 0);
-      });
-
-      return allLoaded;
-    };
-
-    // 4. Poll readiness: once animation has completed at least one full cycle AND cards/images are completely loaded, dismiss
+    // Poll readiness: once animation has completed at least one full cycle AND cards/images are loaded, dismiss
     const checkInterval = setInterval(() => {
       if (animCompletedOnce && checkPageReady()) {
         clearInterval(checkInterval);
@@ -115,12 +148,12 @@ export const SplashScreen: React.FC = () => {
       }
     }, 60);
 
-    // 5. Absolute safety cap (max 6.5s in case a remote image connection hangs)
+    // Absolute safety cap (max 6.5s in case a remote image connection hangs)
     const maxTimer = setTimeout(() => {
       dismiss();
     }, MAX_TIMEOUT_MS);
 
-    // 6. Allow instant bypass via tap/click or any keypress
+    // Allow instant bypass via tap/click or any keypress
     const handleKeyDown = () => dismiss();
     window.addEventListener('keydown', handleKeyDown);
 
@@ -142,7 +175,7 @@ export const SplashScreen: React.FC = () => {
       aria-modal="true"
       aria-label="Trip By Genie Loading"
       onPointerDown={dismiss}
-      className={`fixed inset-0 z-[9999999] w-screen h-screen h-[100dvh] flex flex-col items-center justify-center bg-white bg-cover bg-center bg-no-repeat transition-opacity duration-400 ease-out select-none cursor-pointer ${
+      className={`fixed inset-0 z-[9999999] w-screen h-screen h-[100dvh] flex flex-col items-center justify-center bg-white bg-cover bg-center bg-no-repeat transition-opacity duration-400 ease-out animate-in fade-in select-none cursor-pointer ${
         isFading ? 'opacity-0 pointer-events-none' : 'opacity-100'
       }`}
       style={{

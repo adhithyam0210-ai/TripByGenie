@@ -41,7 +41,7 @@ export const ServiceEnquiryModal: React.FC<ServiceEnquiryModalProps> = ({
   onClose,
   service
 }) => {
-  const { user, agency } = useAuth();
+  const { agency } = useAuth();
   const { success, error } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -145,16 +145,60 @@ export const ServiceEnquiryModal: React.FC<ServiceEnquiryModalProps> = ({
   const [genDepartCity, setGenDepartCity] = useState('');
   const [genDate, setGenDate] = useState('');
   const [genPax, setGenPax] = useState('2');
-  const [genBudget, setGenBudget] = useState('₹50,000 - ₹1,00,000');
+  const [genBudget, setGenBudget] = useState('Comfort');
 
-  // Initialize contact details from logged-in user
+  const resetAllFields = () => {
+    setName('');
+    setEmail('');
+    setPhone('');
+    setAdditionalNotes('');
+    setFlightFrom('');
+    setFlightTo('');
+    setFlightDepartDate('');
+    setFlightReturnDate('');
+    setFlightAirline('');
+    setBusFrom('');
+    setBusTo('');
+    setBusDepartDate('');
+    setBusReturnDate('');
+    setBusBoardingPoint('');
+    setCarPickupCity('');
+    setCarDropCity('');
+    setCarPickupDate('');
+    setCarReturnDate('');
+    setCruiseDate('');
+    setHotelCity('');
+    setHotelCheckIn('');
+    setHotelCheckOut('');
+    setVisaTravelDate('');
+    setTransferAirport('');
+    setTransferAddress('');
+    setTransferFlightNo('');
+    setTransferDate('');
+    setTransferSignName('');
+    setInsurStartDate('');
+    setInsurEndDate('');
+    setCheckinPnr('');
+    setCheckinFlightNo('');
+    setCheckinDate('');
+    setGenDestination('');
+    setGenDepartCity('');
+    setGenDate('');
+    setGenPax('2');
+    setGenBudget('Comfort');
+  };
+
+  // Reset all fields when modal opens or closes
   useEffect(() => {
-    if (user) {
-      if (user.name) setName(user.name);
-      if (user.email) setEmail(user.email);
-      if (user.phone) setPhone(user.phone);
+    if (isOpen) {
+      resetAllFields();
     }
-  }, [user, isOpen]);
+  }, [isOpen]);
+
+  const handleClose = () => {
+    resetAllFields();
+    onClose();
+  };
 
   // Determine category of service
   const getCategory = (): 'flight' | 'bus' | 'car' | 'cruise' | 'hotel' | 'visa' | 'transfer' | 'insurance' | 'webcheckin' | 'general' => {
@@ -452,6 +496,7 @@ export const ServiceEnquiryModal: React.FC<ServiceEnquiryModalProps> = ({
       });
 
       success(`Your ${service?.title || 'service'} enquiry has been submitted! Our travel desk will contact you via WhatsApp/call shortly.`);
+      resetAllFields();
       onClose();
     } catch (err: any) {
       error(err.message || 'Failed to submit enquiry. Please try again.');
@@ -463,7 +508,7 @@ export const ServiceEnquiryModal: React.FC<ServiceEnquiryModalProps> = ({
   return (
     <Modal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleClose}
       title={title}
       subtitle={subtitle}
       maxWidth="3xl"
@@ -1675,17 +1720,18 @@ export const ServiceEnquiryModal: React.FC<ServiceEnquiryModalProps> = ({
 
               <div>
                 <label className="text-xs font-bold text-[#082C43] mb-1 block">
-                  Budget (Per Person)
+                  Comfort Level
                 </label>
                 <select
                   value={genBudget}
                   onChange={(e) => setGenBudget(e.target.value)}
-                  className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"
+                  className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none cursor-pointer"
                 >
-                  <option value="₹25,000 - ₹50,000">₹25,000 - ₹50,000</option>
-                  <option value="₹50,000 - ₹1,00,000">₹50,000 - ₹1,00,000</option>
-                  <option value="₹1,00,000 - ₹2,50,000">₹1,00,000 - ₹2,50,000</option>
-                  <option value="₹2,50,000+ Luxury">₹2,50,000+ Luxury</option>
+                  <option value="Economy">Economy</option>
+                  <option value="Comfort">Comfort</option>
+                  <option value="Premium">Premium</option>
+                  <option value="Luxury">Luxury</option>
+                  <option value="Super Luxury">Super Luxury</option>
                 </select>
               </div>
             </div>
@@ -1761,7 +1807,7 @@ export const ServiceEnquiryModal: React.FC<ServiceEnquiryModalProps> = ({
         <div className="flex items-center justify-between pt-2 border-t border-gray-100">
           <button
             type="button"
-            onClick={onClose}
+            onClick={handleClose}
             className="text-xs font-semibold text-gray-500 hover:text-gray-800 px-4 py-2"
           >
             Cancel
