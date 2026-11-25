@@ -517,7 +517,7 @@ export const Home: React.FC = () => {
   const renderLoanCard = (loanCard: typeof loanCards[0], isMobile = false) => (
     <div
       key={loanCard.id}
-      className={`group relative rounded-2xl overflow-hidden bg-[#044A9C] text-white shadow-md hover:shadow-2xl transition-all duration-300 ease-out transform hover:-translate-y-2.5 hover:scale-[1.03] cursor-pointer will-change-transform flex flex-col ${isMobile ? 'w-[78vw] max-w-[270px] shrink-0 snap-center' : ''
+      className={`group relative rounded-2xl overflow-hidden bg-[#044A9C] text-white shadow-md hover:shadow-2xl transition-all duration-300 ease-out transform hover:-translate-y-2.5 hover:scale-[1.03] cursor-pointer will-change-transform flex flex-col select-none ${isMobile ? 'w-[78vw] max-w-[270px] shrink-0 snap-center' : ''
         }`}
     >
       {/* Top Graphic Section from tripbygenie.in */}
@@ -1208,7 +1208,7 @@ export const Home: React.FC = () => {
             <div
               ref={loanSliderRef}
               onScroll={handleLoanScroll}
-              className="flex gap-3 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-3 px-[11vw] scrollbar-none"
+              className="flex gap-3 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-3 px-[11vw] scrollbar-none select-none"
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
               {loanCards.map((card) => renderLoanCard(card, true))}

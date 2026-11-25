@@ -69,7 +69,7 @@ export const DestinationCard: React.FC<DestinationCardProps> = ({ destination })
   return (
     <Link
       to={`/destinations/${destination.slug}`}
-      className="group destination-card relative rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 block h-80 bg-slate-900 border-0"
+      className="group destination-card relative rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 block h-80 bg-slate-900 border-0 select-none"
     >
       {/* Background Image with High-DPI Retina Resolution */}
       <img

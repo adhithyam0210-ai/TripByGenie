@@ -95,7 +95,7 @@ export const PackageCard: React.FC<PackageCardProps> = ({
   const pkgNights = Number(data.duration_nights || Math.max(1, pkgDays - 1));
 
   return (
-    <div className="group rounded-2xl bg-white border border-[#EFE7DA] shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col h-full">
+    <div className="group rounded-2xl bg-white border border-[#EFE7DA] shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col h-full select-none">
       {/* Clean Package Cover Image with High-DPI Crisp Rendering */}
       <div className="relative h-48 sm:h-56 overflow-hidden bg-slate-100">
         <img

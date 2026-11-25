@@ -149,23 +149,45 @@ dialog {
   -webkit-overflow-scrolling: touch;
 }
 
-/* iOS WebKit Touch & Heading Scrolling Fix:
-   Prevents iOS Safari text selection / 3D Touch Callout from hijacking or locking vertical scrolling */
+/* Multi-directional Touch Scrolling & Card Sliding Fix:
+   Permits unrestricted multi-directional touch gesture panning (both vertical page scroll AND horizontal card sliding)
+   while preventing iOS Safari text selection / 3D Touch Callout from freezing touch interactions */
 h1, h2, h3, h4, h5, h6,
 .font-display,
 [class*="font-display"],
+.font-bold,
+.font-extrabold,
+.font-black,
+.font-semibold,
 section h1,
 section h2,
 section h3,
+section h4,
 section p {
   -webkit-touch-callout: none;
-  touch-action: pan-y;
+  touch-action: pan-x pan-y;
 }
 
-h1, h2, h3, .font-display {
+h1, h2, h3, h4, h5, h6,
+.font-display,
+[class*="font-display"] {
   font-family: var(--font-display);
   -webkit-user-select: none;
   user-select: none;
+}
+
+/* Horizontal sliders, snap carousels, cards, and all their child headings/fonts:
+   Guarantee unobstructed horizontal card sliding and vertical page scrolling */
+.overflow-x-auto,
+.overflow-x-auto *,
+[class*="snap-x"],
+[class*="snap-x"] *,
+.snap-center,
+.snap-center *,
+[class*="card"],
+[class*="card"] * {
+  touch-action: pan-x pan-y;
+  -webkit-touch-callout: none;
 }
 
 .font-serif-luxury {
