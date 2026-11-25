@@ -46,6 +46,26 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
   return response.json();
 }
 
+export const matchPackageToDestination = (pkg: any, dest: any) => {
+  if (!pkg || pkg.is_published === false) return false;
+  const dId = (dest?.id || '').toLowerCase().trim();
+  const dName = (dest?.name || '').toLowerCase().trim();
+  const dSlug = (dest?.slug || '').toLowerCase().trim();
+  const pDestId = (pkg?.destination_id || '').toLowerCase().trim();
+  const pDest = (pkg?.destination || '').toLowerCase().trim();
+  const pTitle = (pkg?.title || '').toLowerCase().trim();
+
+  if (pDestId && pDestId === dId) return true;
+  if (pDest && (pDest === dName || pDest === dSlug)) return true;
+  if (dName && (pTitle.includes(dName) || pDest.includes(dName))) return true;
+
+  if (dName === 'kashmir' && (pDestId === 'dest_jammu_and_kashmir' || pTitle.includes('kashmir') || pTitle.includes('srinagar') || pTitle.includes('gulmarg'))) return true;
+  if (dName.includes('andaman') && (pDestId === 'dest_andaman' || pTitle.includes('andaman') || pTitle.includes('havelock') || pTitle.includes('port blair'))) return true;
+  if (dName === 'goa' && (pDestId === 'dest_goa' || pTitle.includes('goa'))) return true;
+
+  return false;
+};
+
 export const api = {
   // ==========================================
   // Auth & Session
@@ -232,17 +252,20 @@ export const api = {
       if (params?.agency_id) q.append('agency_id', params.agency_id);
       const data = await request<any[]>(`/public/destinations?${q.toString()}`);
       if (Array.isArray(data) && data.length > 0) return data;
-      return fallbackData.destinations;
-    } catch {
-      let list = fallbackData.destinations;
-      if (params?.region && params.region !== 'all') {
-        list = list.filter((d: any) => d.region?.toLowerCase() === params.region?.toLowerCase());
-      }
-      if (params?.featured) {
-        list = list.filter((d: any) => d.is_featured);
-      }
-      return list;
+    } catch { }
+
+    let list = fallbackData.destinations;
+    if (params?.region && params.region !== 'all') {
+      list = list.filter((d: any) => d.region?.toLowerCase() === params.region?.toLowerCase());
     }
+    if (params?.featured) {
+      list = list.filter((d: any) => d.is_featured);
+    }
+    const allPkgs = fallbackData.packages;
+    return list.map((d: any) => ({
+      ...d,
+      package_count: allPkgs.filter((p: any) => matchPackageToDestination(p, d)).length
+    }));
   },
 
   getDestinationBySlug: async (slug: string) => {
@@ -256,11 +279,8 @@ export const api = {
         (d.name && d.name.toLowerCase() === q) ||
         (d.name && d.name.toLowerCase().replace(/\s+/g, '-') === q)
       ) || fallbackData.destinations[0];
-      const pkgs = fallbackData.packages.filter((p: any) =>
-        p.destination_id === dest.id ||
-        (p.title && dest.name && p.title.toLowerCase().includes(dest.name.toLowerCase()))
-      );
-      return { destination: dest, packages: pkgs };
+      const pkgs = fallbackData.packages.filter((p: any) => matchPackageToDestination(p, dest));
+      return { destination: { ...dest, package_count: pkgs.length }, packages: pkgs };
     }
   },
 
@@ -274,16 +294,16 @@ export const api = {
       }
       const data = await request<any[]>(`/public/packages?${q.toString()}`);
       if (Array.isArray(data) && data.length > 0) return data;
-      return fallbackData.packages;
-    } catch {
-      let list = fallbackData.packages;
-      try {
-        const stored = localStorage.getItem('tg_packages_store');
-        if (stored) {
-          const parsed = JSON.parse(stored);
-          if (Array.isArray(parsed) && parsed.length > 0) list = parsed;
-        }
-      } catch { }
+    } catch { }
+
+    let list = fallbackData.packages;
+    try {
+      const stored = localStorage.getItem('tg_packages_store');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length >= fallbackData.packages.length) list = parsed;
+      }
+    } catch { }
 
       if (params?.category && params.category !== 'all' && params.category !== 'All Packages') {
         list = list.filter((p: any) => p.category?.toLowerCase() === params.category?.toLowerCase());
@@ -298,11 +318,10 @@ export const api = {
       if (params?.featured) {
         list = list.filter((p: any) => p.is_featured);
       }
-      if (params?.limit) {
-        list = list.slice(0, Number(params.limit));
-      }
-      return list;
+    if (params?.limit) {
+      list = list.slice(0, Number(params.limit));
     }
+    return list;
   },
 
   getPackageBySlug: async (slug: string) => {
@@ -873,7 +892,7 @@ export const api = {
         const stored = localStorage.getItem('tg_packages_store');
         if (stored) {
           const parsed = JSON.parse(stored);
-          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+          if (Array.isArray(parsed) && parsed.length >= fallbackData.packages.length) return parsed;
         }
       } catch { }
       return fallbackData.packages;
@@ -900,7 +919,7 @@ export const api = {
         const stored = localStorage.getItem('tg_packages_store');
         if (stored) {
           const parsed = JSON.parse(stored);
-          if (Array.isArray(parsed) && parsed.length > 0) currentPackages = parsed;
+          if (Array.isArray(parsed) && parsed.length >= fallbackData.packages.length) currentPackages = parsed;
         }
       } catch { }
 
@@ -947,7 +966,7 @@ export const api = {
         const stored = localStorage.getItem('tg_packages_store');
         if (stored) {
           const parsed = JSON.parse(stored);
-          if (Array.isArray(parsed) && parsed.length > 0) currentPackages = parsed;
+          if (Array.isArray(parsed) && parsed.length >= fallbackData.packages.length) currentPackages = parsed;
         }
       } catch { }
 
@@ -988,7 +1007,7 @@ export const api = {
         const stored = localStorage.getItem('tg_packages_store');
         if (stored) {
           const parsed = JSON.parse(stored);
-          if (Array.isArray(parsed) && parsed.length > 0) currentPackages = parsed;
+          if (Array.isArray(parsed) && parsed.length >= fallbackData.packages.length) currentPackages = parsed;
         }
       } catch { }
       currentPackages = currentPackages.filter((p: any) => p.id !== id);

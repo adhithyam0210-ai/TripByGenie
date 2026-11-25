@@ -166,7 +166,7 @@ export const Home: React.FC = () => {
       const [bannersData, destsData, pkgsData, toursData, srvsData, testsData] = await Promise.all([
         api.getBanners().catch(() => fallbackData.hero_banners),
         api.getDestinations().catch(() => fallbackData.destinations),
-        api.getPackages({ limit: 100 }).catch(() => fallbackData.packages),
+        api.getPackages().catch(() => fallbackData.packages),
         api.getGroupTours().catch(() => (fallbackData.packages || []).filter((p: any) => p.category === 'Group Tours')),
         api.getServices().catch(() => fallbackData.travel_services),
         api.getTestimonials().catch(() => fallbackData.testimonials)

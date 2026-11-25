@@ -1,4 +1,4 @@
-export const fallbackData: any = {
+export const fallbackData = {
   "agencies": [
     {
       "id": "agency_travel_genie",
@@ -67,17 +67,17 @@ export const fallbackData: any = {
   ],
   "users": [
     {
-          "id": "usr_operations_karthik",
-          "display_id": "OPS-2002",
-          "agency_id": "agency_travel_genie",
-          "role": "operations",
-          "name": "Karthik Raman",
-          "email": "operations@travelgenie.com",
-          "phone": "+91 99404 63567",
-          "password_hash": "$2b$10$r8kcNz760iwwx.OwfE4f0emcHJd1yHRDtqEboXVUTWPKLC0FAUu5u",
-          "status": "active",
-          "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
-          "created_at": "2026-01-15T09:00:00Z"
+      "id": "usr_operations_karthik",
+      "display_id": "OPS-2002",
+      "agency_id": "agency_travel_genie",
+      "role": "operations",
+      "name": "Karthik Raman",
+      "email": "operations@travelgenie.com",
+      "phone": "+91 99404 63567",
+      "password_hash": "$2b$10$r8kcNz760iwwx.OwfE4f0emcHJd1yHRDtqEboXVUTWPKLC0FAUu5u",
+      "status": "active",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
+      "created_at": "2026-01-15T09:00:00Z"
     },
     {
       "id": "usr_admin_genie",
@@ -533,7 +533,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_goa",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Goa",
       "slug": "goa",
       "country": "India",
@@ -592,7 +592,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_bali",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Bali",
       "slug": "bali",
       "country": "Indonesia",
@@ -656,7 +656,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_dubai",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Dubai",
       "slug": "dubai",
       "country": "United Arab Emirates",
@@ -724,7 +724,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_maldives",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Maldives",
       "slug": "maldives",
       "country": "Maldives",
@@ -750,7 +750,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_manali",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Manali",
       "slug": "manali",
       "country": "India",
@@ -817,7 +817,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_kerala",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Kerala",
       "slug": "kerala",
       "country": "India",
@@ -907,7 +907,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_switzerland",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Switzerland",
       "slug": "switzerland",
       "country": "Switzerland",
@@ -983,7 +983,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_singapore",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Singapore",
       "slug": "singapore",
       "country": "Singapore",
@@ -1059,7 +1059,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_vietnam",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Vietnam",
       "slug": "vietnam",
       "country": "Vietnam",
@@ -1122,7 +1122,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_seychelles",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Seychelles",
       "slug": "seychelles",
       "country": "Seychelles",
@@ -1193,7 +1193,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_morocco",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Morocco",
       "slug": "morocco",
       "country": "Morocco",
@@ -1264,7 +1264,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_zimbabwe",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Zimbabwe",
       "slug": "zimbabwe",
       "country": "Zimbabwe",
@@ -1340,7 +1340,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_south_africa",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "South Africa",
       "slug": "south-africa",
       "country": "South Africa",
@@ -1420,7 +1420,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_alaska_tour_packages",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Alaska",
       "slug": "alaska",
       "country": "United States",
@@ -1492,7 +1492,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_kenya",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Kenya",
       "slug": "kenya",
       "country": "Kenya",
@@ -1567,7 +1567,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_africa",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Africa",
       "slug": "africa",
       "country": "Africa",
@@ -1642,7 +1642,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_south_america",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "South America",
       "slug": "south-america",
       "country": "South",
@@ -1706,7 +1706,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_canada",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Canada",
       "slug": "canada",
       "country": "Canada",
@@ -1781,7 +1781,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_central_america",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Central America",
       "slug": "central-america",
       "country": "Central",
@@ -1848,7 +1848,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_fiji",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Fiji",
       "slug": "fiji",
       "country": "Fiji",
@@ -1927,7 +1927,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_america",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "America",
       "slug": "america",
       "country": "America",
@@ -1991,7 +1991,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_australia",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Australia",
       "slug": "australia",
       "country": "Australia",
@@ -2051,7 +2051,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_new_zealand",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "New Zealand",
       "slug": "new-zealand",
       "country": "New Zealand",
@@ -2119,7 +2119,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_pacific",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Pacific",
       "slug": "pacific",
       "country": "Pacific",
@@ -2174,7 +2174,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_japan",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Japan",
       "slug": "japan",
       "country": "Japan",
@@ -2253,7 +2253,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_hong_kong",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Hong Kong",
       "slug": "hong-kong",
       "country": "Hong",
@@ -2317,7 +2317,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_china",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "China",
       "slug": "china",
       "country": "China",
@@ -2392,7 +2392,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_cambodia",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Cambodia",
       "slug": "cambodia",
       "country": "Cambodia",
@@ -2475,7 +2475,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_kazakhstan",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Kazakhstan",
       "slug": "kazakhstan",
       "country": "Kazakhstan",
@@ -2554,7 +2554,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_indonesia",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Indonesia",
       "slug": "indonesia",
       "country": "Indonesia",
@@ -2610,7 +2610,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_russia",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Russia",
       "slug": "russia",
       "country": "Russia",
@@ -2689,7 +2689,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_south_korea",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "South Korea",
       "slug": "south-korea",
       "country": "South",
@@ -2757,7 +2757,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_philippines",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Philippines",
       "slug": "philippines",
       "country": "Philippines",
@@ -2821,7 +2821,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_taiwan",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Taiwan",
       "slug": "taiwan",
       "country": "Taiwan",
@@ -2896,7 +2896,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_thailand",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Thailand",
       "slug": "thailand",
       "country": "Thailand",
@@ -2967,7 +2967,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_belgium",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Belgium",
       "slug": "belgium",
       "country": "Belgium",
@@ -3038,7 +3038,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_malaysia",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Malaysia",
       "slug": "malaysia",
       "country": "Malaysia",
@@ -3110,7 +3110,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_austria",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Austria",
       "slug": "austria",
       "country": "Austria",
@@ -3185,7 +3185,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_uzbekistan",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Uzbekistan",
       "slug": "uzbekistan",
       "country": "Uzbekistan",
@@ -3264,7 +3264,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_bulgaria",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Bulgaria",
       "slug": "bulgaria",
       "country": "Bulgaria",
@@ -3340,7 +3340,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_denmark_republic",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Denmark Republic",
       "slug": "denmark-republic",
       "country": "Denmark",
@@ -3419,7 +3419,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_czech_republic",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Czech Republic",
       "slug": "czech-republic",
       "country": "Czech",
@@ -3498,7 +3498,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_croatia",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Croatia",
       "slug": "croatia",
       "country": "Croatia",
@@ -3573,7 +3573,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_finland_republic",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Finland Republic",
       "slug": "finland-republic",
       "country": "Finland",
@@ -3648,7 +3648,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_france",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "France",
       "slug": "france",
       "country": "France",
@@ -3727,7 +3727,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_hungary",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Hungary",
       "slug": "hungary",
       "country": "Hungary",
@@ -3803,7 +3803,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_greenland",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Greenland",
       "slug": "greenland",
       "country": "Greenland",
@@ -3879,7 +3879,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_germany",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Germany",
       "slug": "germany",
       "country": "Germany",
@@ -3958,7 +3958,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_greece",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Greece",
       "slug": "greece",
       "country": "Greece",
@@ -4029,7 +4029,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_iceland",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Iceland",
       "slug": "iceland",
       "country": "Iceland",
@@ -4104,7 +4104,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_ireland",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Ireland",
       "slug": "ireland",
       "country": "Ireland",
@@ -4179,7 +4179,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_italy",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Italy",
       "slug": "italy",
       "country": "Italy",
@@ -4258,7 +4258,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_norway",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Norway",
       "slug": "norway",
       "country": "Norway",
@@ -4337,7 +4337,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_london",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "London",
       "slug": "london",
       "country": "United Kingdom",
@@ -4400,7 +4400,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_netherlands",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Netherlands",
       "slug": "netherlands",
       "country": "Netherlands",
@@ -4476,7 +4476,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_portugal",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Portugal",
       "slug": "portugal",
       "country": "Portugal",
@@ -4543,7 +4543,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_romania",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Romania",
       "slug": "romania",
       "country": "Romania",
@@ -4623,7 +4623,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_sweden",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Sweden",
       "slug": "sweden",
       "country": "Sweden",
@@ -4702,7 +4702,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_united_kingdom",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "United Kingdom",
       "slug": "united-kingdom",
       "country": "United Kingdom",
@@ -4765,7 +4765,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_madagascar",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Madagascar",
       "slug": "madagascar",
       "country": "Madagascar",
@@ -4841,7 +4841,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_turkey",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Turkey",
       "slug": "turkey",
       "country": "Turkey",
@@ -4920,7 +4920,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_slovakia",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Slovakia",
       "slug": "slovakia",
       "country": "Slovakia",
@@ -4996,7 +4996,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_sri_lanka",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Sri Lanka",
       "slug": "sri-lanka",
       "country": "Sri Lanka",
@@ -5068,7 +5068,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_jordan",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Jordan",
       "slug": "jordan",
       "country": "Jordan",
@@ -5143,7 +5143,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_israel",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Israel",
       "slug": "israel",
       "country": "Israel",
@@ -5219,7 +5219,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_reunion",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Reunion",
       "slug": "reunion",
       "country": "Reunion",
@@ -5298,7 +5298,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_mauritius",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Mauritius",
       "slug": "mauritius",
       "country": "Mauritius",
@@ -5366,7 +5366,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_uae",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "UAE",
       "slug": "uae",
       "country": "United Arab Emirates",
@@ -5441,7 +5441,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_oman",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Oman",
       "slug": "oman",
       "country": "Oman",
@@ -5521,7 +5521,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_qatar",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Qatar",
       "slug": "qatar",
       "country": "Qatar",
@@ -5600,7 +5600,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_egypt",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Egypt",
       "slug": "egypt",
       "country": "Egypt",
@@ -5668,7 +5668,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_tanzania",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Tanzania",
       "slug": "tanzania",
       "country": "Tanzania",
@@ -5739,7 +5739,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_delhi",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Delhi",
       "slug": "delhi",
       "country": "India",
@@ -5814,7 +5814,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_Israel",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Israel",
       "slug": "Israel",
       "country": "Israel",
@@ -5840,7 +5840,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_agra_tour_package",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Agra",
       "slug": "agra",
       "country": "India",
@@ -5915,7 +5915,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_ladakh",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Ladakh",
       "slug": "ladakh",
       "country": "India",
@@ -5994,7 +5994,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_shimla",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Shimla",
       "slug": "shimla",
       "country": "India",
@@ -6061,7 +6061,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_jaipur",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Jaipur",
       "slug": "jaipur",
       "country": "India",
@@ -6136,7 +6136,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_united_states",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "United States",
       "slug": "united-states",
       "country": "United States",
@@ -6219,7 +6219,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_jammu_and_kashmir",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Jammu and Kashmir",
       "slug": "jammu-and-kashmir",
       "country": "India",
@@ -6298,7 +6298,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_gangtok",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Gangtok",
       "slug": "gangtok",
       "country": "India",
@@ -6381,7 +6381,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_pelling",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Pelling",
       "slug": "pelling",
       "country": "India",
@@ -6456,7 +6456,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_darjeeling",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Darjeeling",
       "slug": "darjeeling",
       "country": "India",
@@ -6531,7 +6531,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_bangalore",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Bangalore",
       "slug": "bangalore",
       "country": "India",
@@ -6602,7 +6602,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_west_bengal",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "West Bengal",
       "slug": "west-bengal",
       "country": "India",
@@ -6677,7 +6677,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_pune",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Pune",
       "slug": "pune",
       "country": "India",
@@ -6752,7 +6752,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_arunachal_pradesh",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Arunachal Pradesh",
       "slug": "arunachal-pradesh",
       "country": "India",
@@ -6827,7 +6827,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_mysore",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Mysore",
       "slug": "mysore",
       "country": "India",
@@ -6890,7 +6890,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_kochi",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Kochi",
       "slug": "kochi",
       "country": "India",
@@ -6961,7 +6961,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_mumbai",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Mumbai",
       "slug": "mumbai",
       "country": "India",
@@ -7036,7 +7036,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_maharashtra",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Maharashtra",
       "slug": "maharashtra",
       "country": "India",
@@ -7115,7 +7115,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_hyderabad",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Hyderabad",
       "slug": "hyderabad",
       "country": "India",
@@ -7186,7 +7186,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_karnataka",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Karnataka",
       "slug": "karnataka",
       "country": "India",
@@ -7257,7 +7257,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_explore_spiritual_haridwar_rishikesh_trip_package",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Haridwar & Rishikesh",
       "slug": "haridwar-rishikesh",
       "country": "India",
@@ -7283,7 +7283,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_explore_keralas_scenic_beauty_with_the_munnar_tour_package_for_nature_lovers",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Munnar",
       "slug": "munnar",
       "country": "India",
@@ -7309,7 +7309,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_tamil_nadu",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Tamil Nadu",
       "slug": "tamil-nadu",
       "country": "India",
@@ -7384,7 +7384,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_spain",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Spain",
       "slug": "spain",
       "country": "Spain",
@@ -7410,7 +7410,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_ayodhya",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Ayodhya",
       "slug": "ayodhya",
       "country": "India",
@@ -7436,7 +7436,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_tirupati",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Tirupati",
       "slug": "tirupati",
       "country": "India",
@@ -7462,7 +7462,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_ooty",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Ooty",
       "slug": "ooty",
       "country": "India",
@@ -7488,7 +7488,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_kodaikanal",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Kodaikanal",
       "slug": "kodaikanal",
       "country": "India",
@@ -7514,7 +7514,7 @@ export const fallbackData: any = {
     },
     {
       "id": "dest_coorg",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "name": "Coorg",
       "slug": "coorg",
       "country": "India",
@@ -7597,7 +7597,8 @@ export const fallbackData: any = {
         }
       ],
       "is_featured": false,
-      "created_at": "2026-11-20T17:09:30.110Z"
+      "created_at": "2026-11-20T17:09:30.110Z",
+      "package_count": 0
     },
     {
       "id": "dest_uttarakhand",
@@ -7658,7 +7659,8 @@ export const fallbackData: any = {
         }
       ],
       "is_featured": false,
-      "created_at": "2026-11-20T17:09:30.112Z"
+      "created_at": "2026-11-20T17:09:30.112Z",
+      "package_count": 0
     },
     {
       "id": "dest_south_india",
@@ -7715,7 +7717,8 @@ export const fallbackData: any = {
         }
       ],
       "is_featured": false,
-      "created_at": "2026-11-20T17:09:30.114Z"
+      "created_at": "2026-11-20T17:09:30.114Z",
+      "package_count": 1
     },
     {
       "id": "dest_west_india",
@@ -7752,7 +7755,8 @@ export const fallbackData: any = {
         }
       ],
       "is_featured": false,
-      "created_at": "2026-11-20T17:09:30.118Z"
+      "created_at": "2026-11-20T17:09:30.118Z",
+      "package_count": 0
     },
     {
       "id": "dest_east_india",
@@ -7793,7 +7797,8 @@ export const fallbackData: any = {
         }
       ],
       "is_featured": false,
-      "created_at": "2026-11-20T17:09:30.121Z"
+      "created_at": "2026-11-20T17:09:30.121Z",
+      "package_count": 3
     },
     {
       "id": "dest_north_east",
@@ -7838,7 +7843,8 @@ export const fallbackData: any = {
         }
       ],
       "is_featured": false,
-      "created_at": "2026-11-20T17:09:30.122Z"
+      "created_at": "2026-11-20T17:09:30.122Z",
+      "package_count": 0
     },
     {
       "id": "dest_north_india",
@@ -7879,7 +7885,8 @@ export const fallbackData: any = {
         }
       ],
       "is_featured": false,
-      "created_at": "2026-11-20T17:09:30.125Z"
+      "created_at": "2026-11-20T17:09:30.125Z",
+      "package_count": 1
     },
     {
       "id": "dest_honeymoon",
@@ -7904,7 +7911,8 @@ export const fallbackData: any = {
         }
       ],
       "is_featured": false,
-      "created_at": "2026-11-20T17:09:30.126Z"
+      "created_at": "2026-11-20T17:09:30.126Z",
+      "package_count": 31
     },
     {
       "id": "dest_middle_east",
@@ -7961,7 +7969,8 @@ export const fallbackData: any = {
         }
       ],
       "is_featured": false,
-      "created_at": "2026-11-20T17:09:30.127Z"
+      "created_at": "2026-11-20T17:09:30.127Z",
+      "package_count": 0
     },
     {
       "id": "dest_island",
@@ -7990,7 +7999,8 @@ export const fallbackData: any = {
         }
       ],
       "is_featured": false,
-      "created_at": "2026-11-20T17:09:30.127Z"
+      "created_at": "2026-11-20T17:09:30.127Z",
+      "package_count": 40
     },
     {
       "id": "dest_europe",
@@ -8047,7 +8057,8 @@ export const fallbackData: any = {
         }
       ],
       "is_featured": false,
-      "created_at": "2026-11-20T17:09:30.131Z"
+      "created_at": "2026-11-20T17:09:30.131Z",
+      "package_count": 9
     },
     {
       "id": "dest_asia",
@@ -8092,7 +8103,8 @@ export const fallbackData: any = {
         }
       ],
       "is_featured": false,
-      "created_at": "2026-11-20T17:09:30.134Z"
+      "created_at": "2026-11-20T17:09:30.134Z",
+      "package_count": 1
     }
   ],
   "packages": [
@@ -8607,11 +8619,12 @@ export const fallbackData: any = {
         "Scenic Sightseeing",
         "Luxury Hotel Stay",
         "Airport Transfers"
-      ]
+      ],
+      "agency_id": "agency_travel_genie"
     },
     {
       "id": "pkg_zimbabwe_unveiled_harare_to_victoria_falls_jo_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Zimbabwe Unveiled: Harare to Victoria Falls Journey",
       "slug": "zimbabwe-unveiled-harare-to-victoria-falls-journey",
       "destination_id": "dest_zimbabwe",
@@ -8666,7 +8679,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_journey_through_imperial_morocco_casablanca_t_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Journey Through Imperial Morocco: Casablanca to Marrakech in 8 Days",
       "slug": "journey-through-imperial-morocco-casablanca-to-marrakech-in-8-days",
       "destination_id": "dest_morocco",
@@ -8723,7 +8736,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_morocco_magic_an_immersive_12_days_experience_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Morocco Magic: An Immersive 12-Days Experience from Casablanca to Marrakech",
       "slug": "morocco-magic-an-immersive-12-days-experience-from-casablanca-to-marrakech",
       "destination_id": "dest_morocco",
@@ -8780,7 +8793,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_escape_to_morocco_a_honeymoon_of_passion_wond_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Escape to Morocco: A Honeymoon of Passion &amp; Wonder",
       "slug": "escape-to-morocco-a-honeymoon-of-passion-wonder",
       "destination_id": "dest_morocco",
@@ -8837,7 +8850,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_slice_of_paradise_jewels_of_mahe_in_seychel_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Slice of Paradise: Jewels of Mahe in Seychelles",
       "slug": "a-slice-of-paradise-jewels-of-mahe-in-seychelles",
       "destination_id": "dest_seychelles",
@@ -8892,7 +8905,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_where_paradise_begins_mahe_island_holiday_pac_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Where Paradise Begins: Mahe Island Holiday Packages",
       "slug": "where-paradise-begins-mahe-island-holiday-packages",
       "destination_id": "dest_seychelles",
@@ -8948,7 +8961,7 @@ export const fallbackData: any = {
     {
       "id": "pkg_a_tropical_family_getaway_in_the_heart_of_sey_2",
       "upcoming_date": "2027-02-04",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Tropical Family Getaway in the Heart of Seychelles",
       "slug": "a-tropical-family-getaway-in-the-heart-of-seychelles",
       "destination_id": "dest_seychelles",
@@ -9003,7 +9016,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_signature_journey_through_south_africas_spl_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Signature Journey Through South Africa’s Splendours",
       "slug": "a-signature-journey-through-south-africas-splendours",
       "destination_id": "dest_south_africa",
@@ -9058,7 +9071,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_the_magic_of_south_africa_exclusive_h_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore the Magic of South Africa: Exclusive Holiday Packages Await!",
       "slug": "explore-the-magic-of-south-africa-exclusive-holiday-packages-await",
       "destination_id": "dest_south_africa",
@@ -9113,7 +9126,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_amazing_south_africa_tours_with_victoria_fall_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Amazing South Africa Tours with Victoria Falls Delight",
       "slug": "amazing-south-africa-tours-with-victoria-falls-delight",
       "destination_id": "dest_south_africa",
@@ -9165,7 +9178,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_south_african_grand_tour_with_south_africa_kn_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "South African  Grand Tour with South Africa, Knysna &amp; Johannesburg",
       "slug": "south-african-grand-tour-with-south-africa-knysna-johannesburg",
       "destination_id": "dest_south_africa",
@@ -9220,7 +9233,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_quick_escape_to_kruger_3_day_safari_package_4",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Quick Escape to Kruger: 3-Day Safari Package",
       "slug": "quick-escape-to-kruger-3-day-safari-package",
       "destination_id": "dest_south_africa",
@@ -9273,7 +9286,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_south_africa_with_kenya_tour_package_5",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Where Adventure Begins With South Africa &amp; Kenya",
       "slug": "south-africa-with-kenya-tour-package",
       "destination_id": "dest_south_africa",
@@ -9331,7 +9344,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_journey_through_south_africa_a_wonder_filled__6",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Journey Through South Africa: A Wonder Filled Holiday Package",
       "slug": "journey-through-south-africa-a-wonder-filled-holiday-package",
       "destination_id": "dest_south_africa",
@@ -9386,7 +9399,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_journey_through_south_africas_wonders_7",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Journey Through South Africa’s Wonders",
       "slug": "journey-through-south-africas-wonders",
       "destination_id": "dest_south_africa",
@@ -9441,7 +9454,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_cape_town_to_knysna_a_south_african_coastal_d_8",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Cape Town to Knysna: A South African Coastal Dream",
       "slug": "cape-town-to-knysna-a-south-african-coastal-dream",
       "destination_id": "dest_south_africa",
@@ -9494,7 +9507,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_durban_delights_the_heart_of_south_african_ad_9",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Durban Delights: The Heart of South African Adventure",
       "slug": "durban-delights-the-heart-of-south-african-adventure",
       "destination_id": "dest_south_africa",
@@ -9547,7 +9560,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_kenyas_beauty_with_nairobi_safari_to_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover Kenya’s Beauty with Nairobi Safari tour Package",
       "slug": "discover-kenyas-beauty-with-nairobi-safari-tour-package",
       "destination_id": "dest_kenya",
@@ -9602,7 +9615,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_great_migration_safari_kenya_tour_adventure_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Great Migration Safari: Kenya Tour Adventure",
       "slug": "great-migration-safari-kenya-tour-adventure",
       "destination_id": "dest_kenya",
@@ -9657,7 +9670,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_classic_kenya_tour_packages_7_day_safari_thro_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Classic Kenya Tour Packages: 7-Day Safari Through Nairobi",
       "slug": "classic-kenya-tour-packages-7-day-safari-through-nairobi",
       "destination_id": "dest_kenya",
@@ -9712,7 +9725,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_kenyas_finest_mid_luxury_safari_from__3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Kenya’s Finest: Mid-Luxury Safari from Masai Mara to Nakuru",
       "slug": "explore-kenyas-finest-mid-luxury-safari-from-masai-mara-to-nakuru",
       "destination_id": "dest_kenya",
@@ -9767,7 +9780,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_classic_kenya_a_safari_youll_never_f_4",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover Classic Kenya: A Safari You’ll Never Forget",
       "slug": "discover-classic-kenya-a-safari-youll-never-forget",
       "destination_id": "dest_kenya",
@@ -9822,7 +9835,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_the_wild_kenya_safari_from_nairobi_to_5",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore the Wild: Kenya Safari from Nairobi to Mara",
       "slug": "explore-the-wild-kenya-safari-from-nairobi-to-mara",
       "destination_id": "dest_kenya",
@@ -9877,7 +9890,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_samburu_awaits_your_gateway_to_kenyas_wildlif_6",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Samburu Awaits: Your Gateway to Kenya’s Wildlife Wonders",
       "slug": "samburu-awaits-your-gateway-to-kenyas-wildlife-wonders",
       "destination_id": "dest_kenya",
@@ -9932,7 +9945,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_tanzania_uncovered_7_day_safari_from_arusha_t_17",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Tanzania Uncovered: 7-Day Safari from Arusha to Tarangire",
       "slug": "tanzania-uncovered-7-day-safari-from-arusha-to-tarangire",
       "destination_id": "dest_africa",
@@ -9986,7 +9999,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_escape_to_alaskas_adventure_with_a_mckinley_h_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Escape to Alaska's Adventure with a McKinley Holiday Package Delight",
       "slug": "escape-to-alaskas-adventure-with-a-mckinley-holiday-package-delight",
       "destination_id": "dest_alaska_tour_packages",
@@ -10043,7 +10056,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_anchorage_to_denali_tour_package_for_nature_l_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Anchorage to Denali Tour Package for Nature Lovers",
       "slug": "anchorage-to-denali-tour-package-for-nature-lovers",
       "destination_id": "dest_alaska_tour_packages",
@@ -10099,7 +10112,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_twin_island_magic_trinidad_and_tobag_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover Twin-Island Magic Trinidad and Tobago Tour Package",
       "slug": "discover-twin-island-magic-trinidad-and-tobago-tour-package",
       "destination_id": "dest_south_america",
@@ -10150,7 +10163,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_south_america_travel_packages_for_the_soulful_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "South America Travel Packages for the Soulful Wanderer",
       "slug": "south-america-travel-packages-for-the-soulful-wanderer",
       "destination_id": "dest_south_america",
@@ -10201,7 +10214,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_ultimate_6_day_rio_de_janeiro_tour_package_ig_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Ultimate 6-Day Rio De Janeiro Tour Package &amp; Iguazu Escape",
       "slug": "ultimate-6-day-rio-de-janeiro-tour-package-iguazu-escape",
       "destination_id": "dest_south_america",
@@ -10252,7 +10265,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_unveil_ancient_wonders_with_a_classic_peru_to_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Unveil Ancient Wonders with a Classic Peru Tour Package",
       "slug": "unveil-ancient-wonders-with-a-classic-peru-tour-package",
       "destination_id": "dest_south_america",
@@ -10303,7 +10316,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_brazil_tour_packages_featuring_the_magic_of_r_4",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Brazil Tour Packages Featuring the Magic of Rio De Janerio and Vibrance of Sao Paulo",
       "slug": "brazil-tour-packages-featuring-the-magic-of-rio-de-janerio-and-vibrance-of-sao-paulo",
       "destination_id": "dest_america",
@@ -10354,7 +10367,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_argentina_tour_packages_9_days_of_scenic_beau_5",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Argentina Tour Packages: 9 Days of Scenic Beauty and Local Charm",
       "slug": "argentina-tour-packages-9-days-of-scenic-beauty-and-local-charm",
       "destination_id": "dest_south_america",
@@ -10405,7 +10418,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_south_america_tour_package_for_authen_6",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore South America Tour Package for Authentic Experiences",
       "slug": "explore-south-america-tour-package-for-authentic-experiences",
       "destination_id": "dest_south_america",
@@ -10456,7 +10469,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_beaches_culture_with_turks_and_caicos_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Beaches &amp; Culture with Turks and Caicos Tour Package",
       "slug": "explore-beaches-culture-with-turks-and-caicos-tour-package",
       "destination_id": "dest_central_america",
@@ -10507,7 +10520,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_13_day_western_discovery_tour_package_from_va_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "13-Day Western Discovery Tour Package from Vancouver to Calgary",
       "slug": "13-day-western-discovery-tour-package-from-vancouver-to-calgary",
       "destination_id": "dest_canada",
@@ -10561,7 +10574,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_canada_adventure_tour_package_self_drive_thro_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Canada Adventure Tour Package: Self-Drive Through the Rockies",
       "slug": "canada-adventure-tour-package-self-drive-through-the-rockies",
       "destination_id": "dest_canada",
@@ -10612,7 +10625,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_snowy_magic_with_a_whistler_vancouve_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover Snowy Magic with a Whistler &amp; Vancouver Tour Package",
       "slug": "discover-snowy-magic-with-a-whistler-vancouver-tour-package",
       "destination_id": "dest_canada",
@@ -10663,7 +10676,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_banff_lake_louise_with_rockies_sample_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Banff &amp; Lake Louise with Rockies Sampler Tour Package",
       "slug": "explore-banff-lake-louise-with-rockies-sampler-tour-package",
       "destination_id": "dest_canada",
@@ -10713,7 +10726,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_breathtaking_west_coast_in_vancouver_tour_pac_4",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Breathtaking West Coast in Vancouver Tour Package",
       "slug": "breathtaking-west-coast-in-vancouver-tour-package",
       "destination_id": "dest_canada",
@@ -10764,7 +10777,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_experience_nature_culture_with_maple_explorer_5",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Experience Nature &amp; Culture with Maple Explorer Tour Packages",
       "slug": "experience-nature-culture-with-maple-explorer-tour-packages",
       "destination_id": "dest_canada",
@@ -10815,7 +10828,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_rocky_mountaineer_holiday_package_for_scenic__6",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Rocky Mountaineer Holiday Package for Scenic Mountain Escapes",
       "slug": "rocky-mountaineer-holiday-package-for-scenic-mountain-escapes",
       "destination_id": "dest_canada",
@@ -10866,7 +10879,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_quebec_tour_package_meets_the_majesty_of_the__7",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Quebec Tour Package Meets the Majesty of the Canadian Rockies",
       "slug": "quebec-tour-package-meets-the-majesty-of-the-canadian-rockies",
       "destination_id": "dest_canada",
@@ -10917,7 +10930,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_usa_tour_packages_itinerary_for_your_perfect__1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "USA Tour Packages Itinerary for Your Perfect Getaway",
       "slug": "usa-tour-packages-itinerary-for-your-perfect-getaway",
       "destination_id": "dest_america",
@@ -10968,7 +10981,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_puerto_rico_tour_packages_for_san_juan_street_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Puerto Rico Tour Packages for San Juan Streets and Vieques Beaches",
       "slug": "puerto-rico-tour-packages-for-san-juan-streets-and-vieques-beaches",
       "destination_id": "dest_america",
@@ -11019,7 +11032,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_unwind_with_jamaica_tour_packages_on_a_6_day__5",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Unwind with Jamaica Tour Packages on a 6-Day Island Escape",
       "slug": "unwind-with-jamaica-tour-packages-on-a-6-day-island-escape",
       "destination_id": "dest_america",
@@ -11070,7 +11083,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_american_wonders_with_the_ultimate_u_8",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover American Wonders with the Ultimate USA Tour Package",
       "slug": "discover-american-wonders-with-the-ultimate-usa-tour-package",
       "destination_id": "dest_america",
@@ -11121,7 +11134,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_hawaii_tour_package_with_iconic_pearl_harbor__10",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Hawaii Tour Package with Iconic Pearl Harbor &amp; Maui Views",
       "slug": "hawaii-tour-package-with-iconic-pearl-harbor-maui-views",
       "destination_id": "dest_america",
@@ -11172,7 +11185,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_eastern_explorer_tour_packages_for_a_journey__14",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Eastern Explorer Tour Packages for a Journey of Wonders",
       "slug": "eastern-explorer-tour-packages-for-a-journey-of-wonders",
       "destination_id": "dest_america",
@@ -11223,7 +11236,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_affordable_west_coast_and_hawaii_tour_package_15",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Affordable West Coast and Hawaii Tour Package Adventures",
       "slug": "affordable-west-coast-and-hawaii-tour-package-adventures",
       "destination_id": "dest_america",
@@ -11274,7 +11287,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_plan_your_dream_trip_with_a_yellowstone_usa_t_17",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Plan Your Dream Trip with a Yellowstone USA Tour Package",
       "slug": "plan-your-dream-trip-with-a-yellowstone-usa-tour-package",
       "destination_id": "dest_america",
@@ -11325,7 +11338,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_ultimate_12_day_american_getaway_with_a_splen_18",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Ultimate 12-Day American Getaway with a Splendid USA Tour Package",
       "slug": "ultimate-12-day-american-getaway-with-a-splendid-usa-tour-package",
       "destination_id": "dest_america",
@@ -11376,7 +11389,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_exciting_east_usa_tour_packages_for_iconic_am_20",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Exciting East USA Tour Packages for Iconic American Adventures",
       "slug": "exciting-east-usa-tour-packages-for-iconic-american-adventures",
       "destination_id": "dest_america",
@@ -11427,7 +11440,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_grand_usa_trip_package_with_ny_washington_buf_22",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Grand USA Trip Package with NY, Washington &amp; Buffalo",
       "slug": "grand-usa-trip-package-with-ny-washington-buffalo",
       "destination_id": "dest_america",
@@ -11478,7 +11491,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_dreamy_western_explorer_tour_package_includ_25",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Dreamy Western Explorer Tour Package Includes Lights of Vegas, Views of San Francisco &amp; More",
       "slug": "a-dreamy-western-explorer-tour-package-includes-lights-of-vegas-views-of-san-francisco-more",
       "destination_id": "dest_america",
@@ -11528,7 +11541,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_experience_disney_dreams_with_an_orlando_tour_27",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Experience Disney Dreams with an Orlando Tour Package",
       "slug": "experience-disney-dreams-with-an-orlando-tour-package",
       "destination_id": "dest_america",
@@ -11579,7 +11592,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_whistling_west_coast_tour_package_for_the_ult_30",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Whistling West Coast Tour Package for the Ultimate California Escape",
       "slug": "whistling-west-coast-tour-package-for-the-ultimate-california-escape",
       "destination_id": "dest_america",
@@ -11630,7 +11643,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_the_charm_of_south_australia_with_ade_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore the Charm of South Australia with Adelaide holiday package",
       "slug": "explore-the-charm-of-south-australia-with-adelaide-holiday-package",
       "destination_id": "dest_australia",
@@ -11683,7 +11696,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_hobart_holiday_package_for_culture_and_nature_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Hobart Holiday Package for Culture and Nature Lovers",
       "slug": "hobart-holiday-package-for-culture-and-nature-lovers",
       "destination_id": "dest_australia",
@@ -11737,7 +11750,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_every_corner_with_this_15_day_austra_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover Every Corner with This 15-Day Australia Tour Package",
       "slug": "discover-every-corner-with-this-15-day-australia-tour-package",
       "destination_id": "dest_australia",
@@ -11795,7 +11808,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_alice_springs_tour_package_with_ayer_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover Alice Springs Tour package with Ayers Rock on an Aussie Adventure",
       "slug": "discover-alice-springs-tour-package-with-ayers-rock-on-an-aussie-adventure",
       "destination_id": "dest_australia",
@@ -11845,7 +11858,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_australia_holiday_package_14_days_of_iconic_a_4",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Australia Holiday Package: 14 Days of Iconic Adventures",
       "slug": "australia-holiday-package-14-days-of-iconic-adventures",
       "destination_id": "dest_australia",
@@ -11902,7 +11915,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_hamilton_island_tour_packages_with_4_day_reef_5",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Hamilton Island Tour Packages with 4-Day Reef Cruise",
       "slug": "hamilton-island-tour-packages-with-4-day-reef-cruise",
       "destination_id": "dest_australia",
@@ -11952,7 +11965,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_attractive_australian_getaway_itinerary_for_t_6",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Attractive Australian Getaway Itinerary for the Perfect Australia trip package",
       "slug": "attractive-australian-getaway-itinerary-for-the-perfect-australia-trip-package",
       "destination_id": "dest_australia",
@@ -12008,7 +12021,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_enjoy_the_wildlife_and_charm_of_kangaroo_isla_7",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Enjoy the Wildlife and Charm of Kangaroo Island holiday package",
       "slug": "enjoy-the-wildlife-and-charm-of-kangaroo-island-holiday-package",
       "destination_id": "dest_australia",
@@ -12062,7 +12075,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_perth_holiday_package_with_margaret_river_won_8",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Perth Holiday Package with Margaret River Wonders",
       "slug": "perth-holiday-package-with-margaret-river-wonders",
       "destination_id": "dest_australia",
@@ -12117,7 +12130,7 @@ export const fallbackData: any = {
     {
       "id": "pkg_melbourne_tour_package_7_day_australia_duo_ex_9",
       "upcoming_date": "2027-08-03",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Melbourne Tour Package: 7-Day Australia Duo Exploration",
       "slug": "melbourne-tour-package-7-day-australia-duo-exploration",
       "destination_id": "dest_australia",
@@ -12172,7 +12185,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_embark_on_an_epic_13_day_australia_travel_pac_10",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Embark on an Epic 13-Day Australia travel package Vacation",
       "slug": "embark-on-an-epic-13-day-australia-travel-package-vacation",
       "destination_id": "dest_australia",
@@ -12230,7 +12243,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_scenic_tasmania_through_curated_hobart_tour_p_11",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Scenic Tasmania Through Curated Hobart Tour Packages",
       "slug": "scenic-tasmania-through-curated-hobart-tour-packages",
       "destination_id": "dest_australia",
@@ -12284,7 +12297,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_memorable_6_day_vacation_with_perth_tour_pa_12",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Memorable 6-Day Vacation with Perth tour package",
       "slug": "a-memorable-6-day-vacation-with-perth-tour-package",
       "destination_id": "dest_australia",
@@ -12330,7 +12343,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_dreamy_11_day_australia_honeymoon_package_13",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Dreamy 11-Day Australia Honeymoon Package",
       "slug": "a-dreamy-11-day-australia-honeymoon-package",
       "destination_id": "dest_australia",
@@ -12379,7 +12392,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_amazing_bali_tour_package_with_beaches_and_cu_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Amazing Bali Tour Package with Beaches and Cultural Sights",
       "slug": "amazing-bali-tour-package-with-beaches-and-cultural-sights",
       "destination_id": "dest_bali",
@@ -12433,7 +12446,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_volcano_views_and_city_lights_in_bali_with_ja_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Volcano Views and City Lights in Bali with Jakarta Tour Package",
       "slug": "volcano-views-and-city-lights-in-bali-with-jakarta-tour-package",
       "destination_id": "dest_bali",
@@ -12488,7 +12501,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_exploring_villages_and_volcanoes_on_a_bali_bl_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Exploring Villages and Volcanoes on a Bali Bliss Tour Package",
       "slug": "exploring-villages-and-volcanoes-on-a-bali-bliss-tour-package",
       "destination_id": "dest_bali",
@@ -12542,7 +12555,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_trekking_and_snorkelling_on_bali_with_komodo__3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Trekking and Snorkelling on Bali with Komodo Island Tour Package",
       "slug": "trekking-and-snorkelling-on-bali-with-komodo-island-tour-package",
       "destination_id": "dest_bali",
@@ -12598,7 +12611,7 @@ export const fallbackData: any = {
     {
       "id": "pkg_bali_family_fun_tour_package_with_wildlife_an_4",
       "upcoming_date": "2027-08-30",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Bali Family Fun Tour Package with Wildlife and Water Parks",
       "slug": "bali-family-fun-tour-package-with-wildlife-and-water-parks",
       "destination_id": "dest_bali",
@@ -12653,7 +12666,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_adventure_activities_in_the_bali_with_lombok__5",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Adventure Activities in the Bali with Lombok Island Tour Package",
       "slug": "adventure-activities-in-the-bali-with-lombok-island-tour-package",
       "destination_id": "dest_bali",
@@ -12709,7 +12722,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_cultural_tours_included_in_bali_with_gili_tra_6",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Cultural Tours Included in Bali with Gili Trawangan Tour Package",
       "slug": "cultural-tours-included-in-bali-with-gili-trawangan-tour-package",
       "destination_id": "dest_bali",
@@ -12764,7 +12777,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_nusa_lembongan_tour_package_itinerary_for_bea_7",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Nusa Lembongan Tour Package Itinerary for Beach Lovers",
       "slug": "nusa-lembongan-tour-package-itinerary-for-beach-lovers",
       "destination_id": "dest_bali",
@@ -12817,7 +12830,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_great_fiji_holiday_tour_package_for_a_5_day_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Great Fiji Holiday Tour Package for a 5-Day Retreat",
       "slug": "a-great-fiji-holiday-tour-package-for-a-5-day-retreat",
       "destination_id": "dest_fiji",
@@ -12865,7 +12878,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_peaceful_paradise_with_matamanoa_island_vac_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Peaceful Paradise with Matamanoa Island Vacation Package",
       "slug": "a-peaceful-paradise-with-matamanoa-island-vacation-package",
       "destination_id": "dest_fiji",
@@ -12913,7 +12926,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_enjoy_tropical_vibes_with_a_fiji_holiday_pack_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Enjoy Tropical Vibes with a Fiji holiday package to Singapore",
       "slug": "enjoy-tropical-vibes-with-a-fiji-holiday-package-to-singapore",
       "destination_id": "dest_fiji",
@@ -12968,7 +12981,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_relax_in_luxury_with_fiji_island_tour_package_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Relax in Luxury with Fiji Island tour package for 6 Nights",
       "slug": "relax-in-luxury-with-fiji-island-tour-package-for-6-nights",
       "destination_id": "dest_fiji",
@@ -13022,7 +13035,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_blissful_escapes_at_mercure_nadi_and_lomani_i_4",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Blissful Escapes at Mercure Nadi and Lomani Island Holiday Package",
       "slug": "blissful-escapes-at-mercure-nadi-and-lomani-island-holiday-package",
       "destination_id": "dest_fiji",
@@ -13076,7 +13089,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_experience_castaway_island_holiday_package_in_5",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Experience Castaway Island Holiday Package in Fijian Paradise",
       "slug": "experience-castaway-island-holiday-package-in-fijian-paradise",
       "destination_id": "dest_fiji",
@@ -13130,7 +13143,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_fiji_tokoriki_island_resort_packages_5_days_o_6",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Fiji Tokoriki Island Resort Packages | 5 Days of Tropical Luxury",
       "slug": "fiji-tokoriki-island-resort-packages-5-days-of-tropical-luxury",
       "destination_id": "dest_fiji",
@@ -13184,7 +13197,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_enjoy_the_island_luxury_with_likuliku_lagoon__7",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Enjoy The Island Luxury with Likuliku Lagoon Resort Holiday Package",
       "slug": "enjoy-the-island-luxury-with-likuliku-lagoon-resort-holiday-package",
       "destination_id": "dest_fiji",
@@ -13238,7 +13251,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_the_charm_of_fiji_with_a_nadi_tour_pa_8",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore the Charm of Fiji with a Nadi Tour Package",
       "slug": "explore-the-charm-of-fiji-with-a-nadi-tour-package",
       "destination_id": "dest_fiji",
@@ -13292,7 +13305,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_dream_escapes_to_namale_sheraton_with_fiji_va_9",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Dream Escapes to Namale &amp; Sheraton with Fiji Vacation Packages",
       "slug": "dream-escapes-to-namale-sheraton-with-fiji-vacation-packages",
       "destination_id": "dest_fiji",
@@ -13347,7 +13360,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_captivating_5_day_fiji_travel_package_from__10",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Captivating 5-Day Fiji Travel Package from Nadi to Denarau",
       "slug": "a-captivating-5-day-fiji-travel-package-from-nadi-to-denarau",
       "destination_id": "dest_pacific",
@@ -13394,7 +13407,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_tropical_coral_coast_tour_package_to_unwind_i_11",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Tropical Coral Coast Tour Package to Unwind in Paradise",
       "slug": "tropical-coral-coast-tour-package-to-unwind-in-paradise",
       "destination_id": "dest_fiji",
@@ -13448,7 +13461,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_romantic_escape_with_new_zealand_honeymoon__0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Romantic Escape with New Zealand Honeymoon Package",
       "slug": "a-romantic-escape-with-new-zealand-honeymoon-package",
       "destination_id": "dest_new_zealand",
@@ -13500,7 +13513,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_romantic_escape_discover_new_zealand_tour_pac_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Romantic Escape: Discover New Zealand Tour Package for Couples",
       "slug": "romantic-escape-discover-new-zealand-tour-package-for-couples",
       "destination_id": "dest_new_zealand",
@@ -13554,7 +13567,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_perfect_getaway_with_auckland_tour_packages_5_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Perfect Getaway with Auckland tour packages 5-Days Itinerary Plan",
       "slug": "perfect-getaway-with-auckland-tour-packages-5-days-itinerary-plan",
       "destination_id": "dest_new_zealand",
@@ -13608,7 +13621,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_ultimate_new_zealand_holiday_deals_with_11_ni_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Ultimate New Zealand holiday deals with 11-Night Kiwi Itinerary",
       "slug": "ultimate-new-zealand-holiday-deals-with-11-night-kiwi-itinerary",
       "destination_id": "dest_pacific",
@@ -13663,7 +13676,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_scenic_lakes_glaciers_in_new_zealand_with_que_4",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Scenic Lakes &amp; Glaciers in New Zealand with Queenstown tour package",
       "slug": "scenic-lakes-glaciers-in-new-zealand-with-queenstown-tour-package",
       "destination_id": "dest_new_zealand",
@@ -13718,7 +13731,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_experience_scenic_splendor_with_a_new_zealand_5",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Experience Scenic Splendor with a New Zealand luxury tour package",
       "slug": "experience-scenic-splendor-with-a-new-zealand-luxury-tour-package",
       "destination_id": "dest_new_zealand",
@@ -13774,7 +13787,7 @@ export const fallbackData: any = {
     {
       "id": "pkg_discover_together_auckland_to_wellington_road_6",
       "upcoming_date": "2027-11-04",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover Together Auckland to Wellington Road Tour with New Zealand Group Tour Packages",
       "slug": "discover-together-auckland-to-wellington-road-tour-with-new-zealand-group-tour-packages",
       "destination_id": "dest_new_zealand",
@@ -13829,7 +13842,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_dive_into_natural_beauty_with_15_day_new_zeal_7",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Dive into Natural Beauty with 15-Day New Zealand travel packages",
       "slug": "dive-into-natural-beauty-with-15-day-new-zealand-travel-packages",
       "destination_id": "dest_new_zealand",
@@ -13884,7 +13897,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_journey_through_nz_with_this_spectacular_auck_8",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Journey Through NZ with This Spectacular Auckland Tour Package",
       "slug": "journey-through-nz-with-this-spectacular-auckland-tour-package",
       "destination_id": "dest_new_zealand",
@@ -13939,7 +13952,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_icy_wonders_lake_views_a_scenic_new_zealand_v_9",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Icy Wonders &amp; Lake Views: A Scenic New Zealand Vacation Package from Christchurch to Queenstown",
       "slug": "icy-wonders-lake-views-a-scenic-new-zealand-vacation-package-from-christchurch-to-queenstown",
       "destination_id": "dest_new_zealand",
@@ -13993,7 +14006,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_an_ultimate_journey_awaits_with_new_zealand_a_10",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "An Ultimate Journey Awaits with New Zealand Adventure Tour",
       "slug": "an-ultimate-journey-awaits-with-new-zealand-adventure-tour",
       "destination_id": "dest_new_zealand",
@@ -14048,7 +14061,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_wellington_tour_packages_for_nature_and_urban_11",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Wellington Tour Packages for Nature and Urban Enthusiasts",
       "slug": "wellington-tour-packages-for-nature-and-urban-enthusiasts",
       "destination_id": "dest_new_zealand",
@@ -14103,7 +14116,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_natural_gems_unveiled_a_northern_splendour_to_12",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Natural Gems Unveiled: A Northern Splendour Tour Package Itinerary From Auckland to Wellington",
       "slug": "natural-gems-unveiled-a-northern-splendour-tour-package-itinerary-from-auckland-to-wellington",
       "destination_id": "dest_new_zealand",
@@ -14157,7 +14170,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_and_admire_a_journey_through_new_zeal_30",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore and Admire: A Journey Through New Zealand Trip Packages",
       "slug": "explore-and-admire-a-journey-through-new-zealand-trip-packages",
       "destination_id": "dest_pacific",
@@ -14212,7 +14225,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_5_day_vietnam_and_cambodia_holiday_package_fo_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "5-Day Vietnam and Cambodia Holiday Package for an Exotic Escape",
       "slug": "5-day-vietnam-and-cambodia-holiday-package-for-an-exotic-escape",
       "destination_id": "dest_vietnam",
@@ -14262,7 +14275,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_7_day_cambodia_tour_package_featuring_vietnam_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "7-Day Cambodia Tour Package Featuring Vietnam’s Top Attractions",
       "slug": "7-day-cambodia-tour-package-featuring-vietnams-top-attractions",
       "destination_id": "dest_vietnam",
@@ -14313,7 +14326,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_experience_the_culture_beach_bliss_with_sihan_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Experience the Culture &amp; Beach Bliss with Sihanoukville Tour Package",
       "slug": "experience-the-culture-beach-bliss-with-sihanoukville-tour-package",
       "destination_id": "dest_cambodia",
@@ -14368,7 +14381,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_journey_through_time_and_temples_with_cambo_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Journey Through Time and Temples with Cambodia Holiday Tour Package",
       "slug": "a-journey-through-time-and-temples-with-cambodia-holiday-tour-package",
       "destination_id": "dest_cambodia",
@@ -14416,7 +14429,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_cambodia_and_vietnam_tour_packages_for_cultur_4",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Cambodia and Vietnam Tour Packages for Cultural Enthusiasts",
       "slug": "cambodia-and-vietnam-tour-packages-for-cultural-enthusiasts",
       "destination_id": "dest_vietnam",
@@ -14472,7 +14485,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_temples_with_siem_reap_tour_package__5",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover Temples with Siem Reap Tour Package Experience",
       "slug": "discover-temples-with-siem-reap-tour-package-experience",
       "destination_id": "dest_cambodia",
@@ -14525,7 +14538,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_experience_culture_history_with_best_of_cambo_6",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Experience Culture &amp; History with Best of Cambodia Tour Package",
       "slug": "experience-culture-history-with-best-of-cambodia-tour-package",
       "destination_id": "dest_cambodia",
@@ -14580,7 +14593,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_cambodia_travel_package_featuring_phnom_penh__7",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Cambodia Travel Package Featuring Phnom Penh City Sights",
       "slug": "cambodia-travel-package-featuring-phnom-penh-city-sights",
       "destination_id": "dest_cambodia",
@@ -14632,7 +14645,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_5_day_cultural_journey_through_splendid_vietn_8",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "5-Day Cultural Journey through Splendid Vietnam and Cambodia Tour Package",
       "slug": "5-day-cultural-journey-through-splendid-vietnam-and-cambodia-tour-package",
       "destination_id": "dest_cambodia",
@@ -14681,7 +14694,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_vietnam_and_cambodia_tour_package_for_histori_9",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Vietnam and Cambodia Tour Package for  Historic Cities &amp; Scenic Views",
       "slug": "vietnam-and-cambodia-tour-package-for-historic-cities-scenic-views",
       "destination_id": "dest_cambodia",
@@ -14739,7 +14752,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_relax_explore_with_angkor_wat_travel_package__10",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Relax &amp; Explore with Angkor Wat Travel Package in Siem Reap",
       "slug": "relax-explore-with-angkor-wat-travel-package-in-siem-reap",
       "destination_id": "dest_cambodia",
@@ -14792,7 +14805,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_the_wonders_of_beijing_xian_and_shan_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover the Wonders of Beijing, Xian, and Shanghai with a China Travel Package",
       "slug": "discover-the-wonders-of-beijing-xian-and-shanghai-with-a-china-travel-package",
       "destination_id": "dest_china",
@@ -14843,7 +14856,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_cultural_and_scenic_journey_on_the_essentia_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Cultural and Scenic Journey on the Essential China Tour Package",
       "slug": "a-cultural-and-scenic-journey-on-the-essential-china-tour-package",
       "destination_id": "dest_china",
@@ -14891,7 +14904,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_complete_journey_through_the_citys_charms_w_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Complete Journey Through the City’s Charms With Hong Kong Travel Package",
       "slug": "a-complete-journey-through-the-citys-charms-with-hong-kong-travel-package",
       "destination_id": "dest_china",
@@ -14939,7 +14952,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_capture_the_essence_of_china_with_the_beijing_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Capture the Essence of China with the Beijing -Shanghai tour package",
       "slug": "capture-the-essence-of-china-with-the-beijing-shanghai-tour-package",
       "destination_id": "dest_china",
@@ -14990,7 +15003,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_the_skyline_and_markets_with_the_hong_4",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore the Skyline and Markets with the Hong Kong Travel Package",
       "slug": "explore-the-skyline-and-markets-with-the-hong-kong-travel-package",
       "destination_id": "dest_china",
@@ -15040,7 +15053,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_perfect_pairs_escape_with_our_macau_hong_ko_5",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Perfect Pair’s Escape with Our Macau Hong Kong Couple Package",
       "slug": "a-perfect-pairs-escape-with-our-macau-hong-kong-couple-package",
       "destination_id": "dest_china",
@@ -15087,7 +15100,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_experience_culture_and_modernity_on_the_beiji_6",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Experience Culture and Modernity on the Beijing Tour Package",
       "slug": "experience-culture-and-modernity-on-the-beijing-tour-package",
       "destination_id": "dest_china",
@@ -15137,7 +15150,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_start_a_memorable_trip_with_the_amazing_china_7",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Start a Memorable Trip with the Amazing China Tour Package",
       "slug": "start-a-memorable-trip-with-the-amazing-china-tour-package",
       "destination_id": "dest_china",
@@ -15188,7 +15201,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_city_vibes_island_charms_in_our_hong__8",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore City Vibes &amp; Island Charms in Our Hong Kong Vacation Package",
       "slug": "explore-city-vibes-island-charms-in-our-hong-kong-vacation-package",
       "destination_id": "dest_china",
@@ -15239,7 +15252,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_perfect_blend_of_culture_on_the_enchanting__9",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Perfect Blend of Culture on the Enchanting China Tour Package",
       "slug": "a-perfect-blend-of-culture-on-the-enchanting-china-tour-package",
       "destination_id": "dest_china",
@@ -15287,7 +15300,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_scenic_adventure_awaits_with_the_charming_c_10",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Scenic Adventure Awaits with the Charming China Tour Package",
       "slug": "a-scenic-adventure-awaits-with-the-charming-china-tour-package",
       "destination_id": "dest_china",
@@ -15335,7 +15348,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_blend_of_culture_entertainment_with_our_hon_11",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Blend of Culture &amp; Entertainment with Our Hong Kong and Macau Tour Package",
       "slug": "a-blend-of-culture-entertainment-with-our-hong-kong-and-macau-tour-package",
       "destination_id": "dest_china",
@@ -15382,7 +15395,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_experience_tradition_and_modernity_wonders_wi_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Experience Tradition and Modernity Wonders with Japan Hakone Tour Package",
       "slug": "experience-tradition-and-modernity-wonders-with-japan-hakone-tour-package",
       "destination_id": "dest_japan",
@@ -15439,7 +15452,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_stunning_japanese_journey_with_tokyo_tour_p_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Stunning Japanese Journey with Tokyo Tour Package",
       "slug": "a-stunning-japanese-journey-with-tokyo-tour-package",
       "destination_id": "dest_japan",
@@ -15495,7 +15508,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_6_day_captivating_journey_with_japan_tour_p_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A 6-Day Captivating Journey with Japan Tour Package",
       "slug": "a-6-day-captivating-journey-with-japan-tour-package",
       "destination_id": "dest_japan",
@@ -15544,7 +15557,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_the_golden_route_in_7_days_with_japan_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore the Golden Route in 7 Days with Japan Holiday Package",
       "slug": "explore-the-golden-route-in-7-days-with-japan-holiday-package",
       "destination_id": "dest_japan",
@@ -15601,7 +15614,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_temples_and_technology_with_enchantin_4",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Temples and Technology with Enchanting Japan Tour Package",
       "slug": "explore-temples-and-technology-with-enchanting-japan-tour-package",
       "destination_id": "dest_japan",
@@ -15659,7 +15672,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_splendid_9_day_plan_with_tokyo_hiroshima_to_5",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Splendid 9-Day Plan with Tokyo Hiroshima Tour Package",
       "slug": "a-splendid-9-day-plan-with-tokyo-hiroshima-tour-package",
       "destination_id": "dest_japan",
@@ -15718,7 +15731,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_enjoy_9_days_of_travel_with_mesmerising_japan_6",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Enjoy 9 Days of Travel with Mesmerising Japan Tour Package",
       "slug": "enjoy-9-days-of-travel-with-mesmerising-japan-tour-package",
       "destination_id": "dest_japan",
@@ -15776,7 +15789,7 @@ export const fallbackData: any = {
     {
       "id": "pkg_complete_hong_kong_family_tour_package_itiner_0",
       "upcoming_date": "2028-02-26",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Complete Hong Kong Family Tour Package Itinerary with Disney Magic",
       "slug": "complete-hong-kong-family-tour-package-itinerary-with-disney-magic",
       "destination_id": "dest_hong_kong",
@@ -15827,7 +15840,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_magical_macau_disneyland_tour_package_with_ho_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Magical Macau Disneyland Tour Package with Hong Kong Highlights",
       "slug": "magical-macau-disneyland-tour-package-with-hong-kong-highlights",
       "destination_id": "dest_hong_kong",
@@ -15878,7 +15891,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_enjoy_city_lights_theme_parks_with_a_hong_kon_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Enjoy city lights &amp; theme parks with a Hong Kong Disneyland Macau Holiday Package",
       "slug": "enjoy-city-lights-theme-parks-with-a-hong-kong-disneyland-macau-holiday-package",
       "destination_id": "dest_hong_kong",
@@ -15929,7 +15942,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_hong_kong_ocean_park_tour_package_with_shoppi_4",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Hong Kong Ocean Park Tour Package with Shopping &amp; Sightseeing",
       "slug": "hong-kong-ocean-park-tour-package-with-shopping-sightseeing",
       "destination_id": "dest_hong_kong",
@@ -15980,7 +15993,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_macau_vacation_package_with_nightlife_5",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Macau Vacation Package with Nightlife &amp; Attractions",
       "slug": "explore-macau-vacation-package-with-nightlife-attractions",
       "destination_id": "dest_hong_kong",
@@ -16031,7 +16044,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_7_day_hong_kong_macau_tour_package_for_advent_6",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "7-Day Hong Kong &amp; Macau Tour Package for Adventure Seekers",
       "slug": "7-day-hong-kong-macau-tour-package-for-adventure-seekers",
       "destination_id": "dest_hong_kong",
@@ -16078,7 +16091,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_vibrant_streets_and_nightlife_with_a_7",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover vibrant streets and nightlife with a Macau couple package",
       "slug": "discover-vibrant-streets-and-nightlife-with-a-macau-couple-package",
       "destination_id": "dest_hong_kong",
@@ -16129,7 +16142,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_memorable_hong_kong_city_tour_package_with_si_10",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Memorable Hong Kong City Tour Package with Sightseeing &amp; Fun",
       "slug": "memorable-hong-kong-city-tour-package-with-sightseeing-fun",
       "destination_id": "dest_hong_kong",
@@ -16181,7 +16194,7 @@ export const fallbackData: any = {
     {
       "id": "pkg_exciting_hong_kong_disneyland_family_tour_pac_11",
       "upcoming_date": "2028-03-21",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Exciting Hong Kong Disneyland Family Tour Package with Adventure",
       "slug": "exciting-hong-kong-disneyland-family-tour-package-with-adventure",
       "destination_id": "dest_hong_kong",
@@ -16231,7 +16244,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_6_day_hong_kong_holiday_package_with_jeju_nat_13",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "6-Day Hong Kong Holiday Package with Jeju Natural Beauty",
       "slug": "6-day-hong-kong-holiday-package-with-jeju-natural-beauty",
       "destination_id": "dest_hong_kong",
@@ -16278,7 +16291,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_chimbulak_almaty_city_highlights_with_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Chimbulak &amp; Almaty City Highlights With Almaty Tour Package itinerary",
       "slug": "explore-chimbulak-almaty-city-highlights-with-almaty-tour-package-itinerary",
       "destination_id": "dest_kazakhstan",
@@ -16329,7 +16342,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_enjoy_beaches_and_adventure_in_bali_with_nusa_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Enjoy Beaches and Adventure in Bali with Nusa Penida Tour Package for a Tropical Escape",
       "slug": "enjoy-beaches-and-adventure-in-bali-with-nusa-penida-tour-package-for-a-tropical-escape",
       "destination_id": "dest_indonesia",
@@ -16382,7 +16395,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_beaches_to_fall_in_love_with_on_mesmerizing_b_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Beaches to Fall in Love With on Mesmerizing Bali Tour Packages",
       "slug": "beaches-to-fall-in-love-with-on-mesmerizing-bali-tour-packages",
       "destination_id": "dest_indonesia",
@@ -16437,7 +16450,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_uncover_ancient_wonders_with_a_bali_with_yogy_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Uncover Ancient Wonders with a Bali with Yogyakarta Tour Package for History Lovers",
       "slug": "uncover-ancient-wonders-with-a-bali-with-yogyakarta-tour-package-for-history-lovers",
       "destination_id": "dest_indonesia",
@@ -16492,7 +16505,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_singapore_and_bali_tour_packages_stunning_bea_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Singapore and Bali Tour Packages: Stunning Beaches &amp; Iconic Skylines",
       "slug": "singapore-and-bali-tour-packages-stunning-beaches-iconic-skylines",
       "destination_id": "dest_indonesia",
@@ -16548,7 +16561,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_the_perfect_city_and_island_mix_awaits_with_a_4",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "The Perfect City and Island Mix Awaits with a Bali and Jakarta Tour Package",
       "slug": "the-perfect-city-and-island-mix-awaits-with-a-bali-and-jakarta-tour-package",
       "destination_id": "dest_indonesia",
@@ -16603,7 +16616,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_adventure_with_an_exciting_singapore_5",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover Adventure with an Exciting Singapore with Bintan Tour Package",
       "slug": "discover-adventure-with-an-exciting-singapore-with-bintan-tour-package",
       "destination_id": "dest_indonesia",
@@ -16657,7 +16670,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_unforgettable_cultural_experiences_to_enjoy_w_6",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Unforgettable Cultural Experiences to Enjoy with Bali Holiday Packages for Every Traveler",
       "slug": "unforgettable-cultural-experiences-to-enjoy-with-bali-holiday-packages-for-every-traveler",
       "destination_id": "dest_indonesia",
@@ -16710,7 +16723,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_golden_beaches_sacred_temples_with_sp_7",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Golden Beaches &amp; Sacred Temples with Splendid Bali Tour Packages",
       "slug": "explore-golden-beaches-sacred-temples-with-splendid-bali-tour-packages",
       "destination_id": "dest_indonesia",
@@ -16764,7 +16777,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_experience_iconic_landmarks_of_russia_through_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Experience Iconic Landmarks of Russia Through a Russia holiday package Journey",
       "slug": "experience-iconic-landmarks-of-russia-through-a-russia-holiday-package-journey",
       "destination_id": "dest_russia",
@@ -16815,7 +16828,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_russias_grandeur_with_a_fascinating_r_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Russia’s Grandeur with a Fascinating Russia travel package",
       "slug": "explore-russias-grandeur-with-a-fascinating-russia-travel-package",
       "destination_id": "dest_russia",
@@ -16866,7 +16879,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_the_capitals_best_sights_with_our_mos_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore the Capital’s Best Sights with Our Moscow tour package Itinerary",
       "slug": "explore-the-capitals-best-sights-with-our-moscow-tour-package-itinerary",
       "destination_id": "dest_russia",
@@ -16917,7 +16930,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_the_soul_of_russia_with_our_special__3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover the Soul of Russia with Our Special Russia trip package",
       "slug": "discover-the-soul-of-russia-with-our-special-russia-trip-package",
       "destination_id": "dest_russia",
@@ -16968,7 +16981,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_enjoy_seoul_busan_highlights_with_the_dynamic_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Enjoy Seoul &amp; Busan Highlights with the Dynamic South Korea Tour Package",
       "slug": "enjoy-seoul-busan-highlights-with-the-dynamic-south-korea-tour-package",
       "destination_id": "dest_south_korea",
@@ -17019,7 +17032,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_korean_heritage_and_fun_parks_on_the__2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Korean Heritage and Fun Parks on the Korea Seol Tour Package",
       "slug": "explore-korean-heritage-and-fun-parks-on-the-korea-seol-tour-package",
       "destination_id": "dest_south_korea",
@@ -17069,7 +17082,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_romantic_6_day_journey_awaits_with_the_kore_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Romantic 6-Day Journey Awaits with the Korea Tour Package For Couples",
       "slug": "a-romantic-6-day-journey-awaits-with-the-korea-tour-package-for-couples",
       "destination_id": "dest_south_korea",
@@ -17116,7 +17129,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_7_day_journey_of_culture_and_fun_south_kore_4",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A 7-Day Journey of Culture and Fun – South Korea Holiday Package Plan",
       "slug": "a-7-day-journey-of-culture-and-fun-south-korea-holiday-package-plan",
       "destination_id": "dest_south_korea",
@@ -17164,7 +17177,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_4_days_of_fun_discovery_with_the_seoul_tour_p_6",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "4 Days of Fun &amp; Discovery with the Seoul Tour Package Itinerary",
       "slug": "4-days-of-fun-discovery-with-the-seoul-tour-package-itinerary",
       "destination_id": "dest_south_korea",
@@ -17210,7 +17223,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_9_days_boracay_honeymoon_package_with_hawaii__0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "9 Days Boracay Honeymoon Package with Hawaii Adventure",
       "slug": "9-days-boracay-honeymoon-package-with-hawaii-adventure",
       "destination_id": "dest_philippines",
@@ -17258,7 +17271,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_boracay_manila_with_beautiful_philipp_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Boracay &amp; Manila with Beautiful Philippines Tour Package",
       "slug": "explore-boracay-manila-with-beautiful-philippines-tour-package",
       "destination_id": "dest_philippines",
@@ -17309,7 +17322,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_5_days_philippines_holiday_package_with_manil_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "5 Days Philippines Holiday Package with Manila &amp; Coron Island",
       "slug": "5-days-philippines-holiday-package-with-manila-coron-island",
       "destination_id": "dest_philippines",
@@ -17356,7 +17369,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_manila_bohol_with_philippines_tour_p_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover Manila &amp; Bohol with Philippines Tour Package for Couples",
       "slug": "discover-manila-bohol-with-philippines-tour-package-for-couples",
       "destination_id": "dest_philippines",
@@ -17407,7 +17420,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_5_days_scenic_cebu_tour_with_philippines_trav_4",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "5 Days Scenic Cebu Tour with Philippines Travel Package",
       "slug": "5-days-scenic-cebu-tour-with-philippines-travel-package",
       "destination_id": "dest_philippines",
@@ -17454,7 +17467,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_temples_museums_natural_wonders_with__0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Temples, Museums &amp; Natural Wonders With Taipei Tour Package",
       "slug": "explore-temples-museums-natural-wonders-with-taipei-tour-package",
       "destination_id": "dest_taiwan",
@@ -17504,7 +17517,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_taiwan_holiday_package_with_taipei_kaohsiung__1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Taiwan Holiday Package with Taipei, Kaohsiung &amp; Scenic Coastlines",
       "slug": "taiwan-holiday-package-with-taipei-kaohsiung-scenic-coastlines",
       "destination_id": "dest_taiwan",
@@ -17555,7 +17568,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_experience_taipei_kaohsiung_taroko_with_taiwa_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Experience Taipei, Kaohsiung &amp; Taroko With Taiwan Travel Package",
       "slug": "experience-taipei-kaohsiung-taroko-with-taiwan-travel-package",
       "destination_id": "dest_taiwan",
@@ -17606,7 +17619,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_short_3_day_journey_through_taipei_with_tai_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Short 3-Day Journey Through Taipei With Taipei Holiday Package",
       "slug": "a-short-3-day-journey-through-taipei-with-taipei-holiday-package",
       "destination_id": "dest_taiwan",
@@ -17652,7 +17665,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_iconic_merlion_park_singapore_zoo_ex_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover Iconic Merlion Park &amp; Singapore Zoo Experience with Singapore Tour Packages",
       "slug": "discover-iconic-merlion-park-singapore-zoo-experience-with-singapore-tour-packages",
       "destination_id": "dest_singapore",
@@ -17705,7 +17718,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_enjoy_underwater_world_and_song_of_the_sea_li_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Enjoy Underwater World and Song of the Sea Light Show During a Kuala Lumpur Tour Package",
       "slug": "enjoy-underwater-world-and-song-of-the-sea-light-show-during-a-kuala-lumpur-tour-package",
       "destination_id": "dest_singapore",
@@ -17760,7 +17773,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_two_vibrant_cities_with_singapore_wit_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Two Vibrant Cities with Singapore with Kuala Lumpur tour package",
       "slug": "explore-two-vibrant-cities-with-singapore-with-kuala-lumpur-tour-package",
       "destination_id": "dest_malaysia",
@@ -17816,7 +17829,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_enjoy_serenity_at_st_andrews_cathedral_with_e_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Enjoy Serenity at St. Andrew’s Cathedral with Exciting Singapore Tour Package",
       "slug": "enjoy-serenity-at-st-andrews-cathedral-with-exciting-singapore-tour-package",
       "destination_id": "dest_singapore",
@@ -17870,7 +17883,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_the_perfect_twin_city_escape_with_singapore_k_4",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "The Perfect Twin-City Escape with Singapore Kuala Kuala Lumpur Travel Package",
       "slug": "the-perfect-twin-city-escape-with-singapore-kuala-kuala-lumpur-travel-package",
       "destination_id": "dest_singapore",
@@ -17926,7 +17939,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_beaches_skyscrapers_with_singapore_la_5",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Beaches &amp; Skyscrapers with Singapore – Langkawi tour package",
       "slug": "explore-beaches-skyscrapers-with-singapore-langkawi-tour-package",
       "destination_id": "dest_malaysia",
@@ -17982,7 +17995,7 @@ export const fallbackData: any = {
     {
       "id": "pkg_experience_thrill_with_skyline_luge_and_skyri_6",
       "upcoming_date": "2028-07-04",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Experience Thrill with Skyline Luge and Skyride in Singapore Group Tour Package",
       "slug": "experience-thrill-with-skyline-luge-and-skyride-in-singapore-group-tour-package",
       "destination_id": "dest_singapore",
@@ -18035,7 +18048,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_experience_sentosa_island_adventures_and_dolp_7",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Experience Sentosa Island Adventures and Dolphin Island Visits on Singapore Delight Tour Package Itinerary",
       "slug": "experience-sentosa-island-adventures-and-dolphin-island-visits-on-singapore-delight-tour-package-itinerary",
       "destination_id": "dest_singapore",
@@ -18089,7 +18102,7 @@ export const fallbackData: any = {
     {
       "id": "pkg_experience_a_luxury_star_virgo_cruise_penang__8",
       "upcoming_date": "2028-07-10",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Experience a Luxury Star Virgo Cruise, Penang Sightseeing and Kek Lok Si Temple on Singapore Family Tour Package",
       "slug": "experience-a-luxury-star-virgo-cruise-penang-sightseeing-and-kek-lok-si-temple-on-singapore-family-tour-package",
       "destination_id": "dest_singapore",
@@ -18146,7 +18159,7 @@ export const fallbackData: any = {
     {
       "id": "pkg_enjoy_beaches_or_swim_with_dolphins_at_sentos_9",
       "upcoming_date": "2028-07-13",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Enjoy Beaches or Swim with Dolphins at Sentosa Island in Singapore Family Fun Package",
       "slug": "enjoy-beaches-or-swim-with-dolphins-at-sentosa-island-in-singapore-family-fun-package",
       "destination_id": "dest_singapore",
@@ -18200,7 +18213,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_romantic_adventurous_escapade_in_sarawak_with_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Romantic &amp; Adventurous Escapade in Sarawak with a Malaysia tour package for couples",
       "slug": "romantic-adventurous-escapade-in-sarawak-with-a-malaysia-tour-package-for-couples",
       "destination_id": "dest_malaysia",
@@ -18250,7 +18263,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_experience_jungle_treks_city_charm_with_kuala_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Experience Jungle Treks &amp; City Charm with Kuala Lumpur Taman Negara Holidays",
       "slug": "experience-jungle-treks-city-charm-with-kuala-lumpur-taman-negara-holidays",
       "destination_id": "dest_malaysia",
@@ -18305,7 +18318,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_highland_island_getaways_combined_with_came_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Highland &amp; Island Getaways Combined with Cameron Highlands tour packages",
       "slug": "a-highland-island-getaways-combined-with-cameron-highlands-tour-packages",
       "destination_id": "dest_malaysia",
@@ -18354,7 +18367,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_relaxing_island_bliss_urban_fun_with_a_kual_4",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Relaxing Island Bliss &amp; Urban Fun with a Kuala Lumpur Langkawi tour package",
       "slug": "a-relaxing-island-bliss-urban-fun-with-a-kuala-lumpur-langkawi-tour-package",
       "destination_id": "dest_malaysia",
@@ -18401,7 +18414,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_kota_kinabalu_tour_packages_for_wildlife_and__6",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Kota Kinabalu tour packages for Wildlife and River Safari Lovers",
       "slug": "kota-kinabalu-tour-packages-for-wildlife-and-river-safari-lovers",
       "destination_id": "dest_malaysia",
@@ -18454,7 +18467,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_enjoy_play_heritage_with_legoland_and_melaka__7",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Enjoy Play &amp; Heritage with Legoland and Melaka tour package",
       "slug": "enjoy-play-heritage-with-legoland-and-melaka-tour-package",
       "destination_id": "dest_malaysia",
@@ -18508,7 +18521,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_scenic_vacations_with_malaysia_couple_packa_8",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Scenic Vacations with Malaysia couple package to Langkawi &amp; Kuala Lumpur",
       "slug": "a-scenic-vacations-with-malaysia-couple-package-to-langkawi-kuala-lumpur",
       "destination_id": "dest_malaysia",
@@ -18555,7 +18568,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_cultural_natural_journey_with_kuala_lumpur__9",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Cultural &amp; Natural Journey with Kuala Lumpur Kota Kinabalu Holiday packages",
       "slug": "a-cultural-natural-journey-with-kuala-lumpur-kota-kinabalu-holiday-packages",
       "destination_id": "dest_malaysia",
@@ -18602,7 +18615,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_classic_thailand_tour_package_for_6_days_of_u_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Classic Thailand Tour Package for 6 Days of Unforgettable Travel",
       "slug": "classic-thailand-tour-package-for-6-days-of-unforgettable-travel",
       "destination_id": "dest_thailand",
@@ -18657,7 +18670,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_bangkok_and_chiangmai_tour_package_for_a_perf_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Bangkok and Chiangmai Tour Package for a Perfect Thai Escape",
       "slug": "bangkok-and-chiangmai-tour-package-for-a-perfect-thai-escape",
       "destination_id": "dest_thailand",
@@ -18713,7 +18726,7 @@ export const fallbackData: any = {
     {
       "id": "pkg_adventure_awaits_with_this_7_day_thailand_gro_2",
       "upcoming_date": "2028-08-15",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Adventure Awaits with This 7-Day Thailand Group Tour Package",
       "slug": "adventure-awaits-with-this-7-day-thailand-group-tour-package",
       "destination_id": "dest_thailand",
@@ -18770,7 +18783,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_ultimate_coral_island_fun_with_pattaya_bangko_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Ultimate Coral Island Fun with Pattaya Bangkok Tour Package",
       "slug": "ultimate-coral-island-fun-with-pattaya-bangkok-tour-package",
       "destination_id": "dest_thailand",
@@ -18824,7 +18837,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_phi_phi_island_bangkok_beauty_with_me_4",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Phi Phi Island &amp; Bangkok Beauty with Mesmerising Thailand Tour Package",
       "slug": "explore-phi-phi-island-bangkok-beauty-with-mesmerising-thailand-tour-package",
       "destination_id": "dest_thailand",
@@ -18880,7 +18893,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_asias_dual_delight_in_singapore_with__5",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Asia’s Dual Delight in Singapore with Thailand Tour Package",
       "slug": "explore-asias-dual-delight-in-singapore-with-thailand-tour-package",
       "destination_id": "dest_thailand",
@@ -18936,7 +18949,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_thailand_pattaya_tour_package_with_bangkok_ex_6",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Thailand Pattaya Tour Package with Bangkok Exploration",
       "slug": "thailand-pattaya-tour-package-with-bangkok-exploration",
       "destination_id": "dest_thailand",
@@ -18990,7 +19003,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_amazing_city_sights_of_bangkok_with_hua_hin_b_7",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Amazing City Sights of Bangkok with Hua Hin Bangkok Tour Package",
       "slug": "amazing-city-sights-of-bangkok-with-hua-hin-bangkok-tour-package",
       "destination_id": "dest_thailand",
@@ -19043,7 +19056,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_experience_vibrant_city_life_with_bangkok_hol_8",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Experience Vibrant City Life with Bangkok Holiday Package",
       "slug": "experience-vibrant-city-life-with-bangkok-holiday-package",
       "destination_id": "dest_thailand",
@@ -19099,7 +19112,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_bangkok_holiday_package_with_peaceful_chiang__9",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Bangkok Holiday Package with Peaceful Chiang Mai Escape",
       "slug": "bangkok-holiday-package-with-peaceful-chiang-mai-escape",
       "destination_id": "dest_thailand",
@@ -19154,7 +19167,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_affordable_thailand_holiday_package_fun_fille_10",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Affordable Thailand Holiday Package: Fun-Filled Adventure Awaits",
       "slug": "affordable-thailand-holiday-package-fun-filled-adventure-awaits",
       "destination_id": "dest_thailand",
@@ -19201,7 +19214,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_the_ideal_phuket_tour_package_with_bangkok_es_11",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "The Ideal Phuket Tour Package with Bangkok Escapade",
       "slug": "the-ideal-phuket-tour-package-with-bangkok-escapade",
       "destination_id": "dest_thailand",
@@ -19258,7 +19271,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_sizzling_thailand_with_phuket_tour_pa_12",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Sizzling Thailand with Phuket Tour Package",
       "slug": "explore-sizzling-thailand-with-phuket-tour-package",
       "destination_id": "dest_thailand",
@@ -19315,7 +19328,7 @@ export const fallbackData: any = {
     {
       "id": "pkg_discover_wonders_in_thailand_group_tour_packa_13",
       "upcoming_date": "2028-09-17",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover Wonders in Thailand Group Tour Package",
       "slug": "discover-wonders-in-thailand-group-tour-package",
       "destination_id": "dest_thailand",
@@ -19370,7 +19383,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_quick_glimpse_of_wonders_5_day_thailand_tri_14",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Quick Glimpse of Wonders 5-Day Thailand Trip Package Itinerary",
       "slug": "a-quick-glimpse-of-wonders-5-day-thailand-trip-package-itinerary",
       "destination_id": "dest_thailand",
@@ -19420,7 +19433,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_thailand_tour_package_for_couples_a_beautiful_15",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Thailand Tour Package For Couples: A Beautiful 5-Day Gateway",
       "slug": "thailand-tour-package-for-couples-a-beautiful-5-day-gateway",
       "destination_id": "dest_thailand",
@@ -19475,7 +19488,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_bangkok_travel_package_with_exciting_4_day_it_16",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Bangkok Travel Package with Exciting 4-Day Itinerary",
       "slug": "bangkok-travel-package-with-exciting-4-day-itinerary",
       "destination_id": "dest_thailand",
@@ -19528,7 +19541,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_short_yet_sweet_thailand_trip_package_for_5_17",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Short Yet Sweet Thailand Trip Package for 5 Days",
       "slug": "a-short-yet-sweet-thailand-trip-package-for-5-days",
       "destination_id": "dest_thailand",
@@ -19583,7 +19596,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_phuket_and_samui_with_thailand_holida_18",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Phuket and Samui with Thailand Holiday Package",
       "slug": "explore-phuket-and-samui-with-thailand-holiday-package",
       "destination_id": "dest_thailand",
@@ -19640,7 +19653,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_experience_the_spectacular_krabi_phi_phi_isla_19",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Experience the Spectacular Krabi Phi Phi Island Tour Package",
       "slug": "experience-the-spectacular-krabi-phi-phi-island-tour-package",
       "destination_id": "dest_thailand",
@@ -19696,7 +19709,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_scenic_getaway_4_day_bond_island_tour_packa_20",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Scenic Getaway: 4-Day Bond Island Tour Package with Bangkok",
       "slug": "a-scenic-getaway-4-day-bond-island-tour-package-with-bangkok",
       "destination_id": "dest_thailand",
@@ -19743,7 +19756,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_bangkok_tour_package_featuring_pattayas_beach_21",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Bangkok Tour Package Featuring Pattaya’s Beaches and Buzz",
       "slug": "bangkok-tour-package-featuring-pattayas-beaches-and-buzz",
       "destination_id": "dest_thailand",
@@ -19798,7 +19811,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_exotic_beauty_with_9_day_thailand_tr_22",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover Exotic Beauty with 9-Day Thailand Travel Package",
       "slug": "discover-exotic-beauty-with-9-day-thailand-travel-package",
       "destination_id": "dest_thailand",
@@ -19856,7 +19869,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_relax_in_paradise_with_koh_samui_tour_package_23",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Relax in Paradise with Koh Samui Tour Package",
       "slug": "relax-in-paradise-with-koh-samui-tour-package",
       "destination_id": "dest_thailand",
@@ -19911,7 +19924,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_bangkok_koh_samui_serenity_with_sceni_24",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Bangkok &amp; Koh Samui Serenity with Scenic Thailand Tour Package",
       "slug": "explore-bangkok-koh-samui-serenity-with-scenic-thailand-tour-package",
       "destination_id": "dest_thailand",
@@ -19966,7 +19979,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_5_day_bangkok_safari_tour_package_with_stunni_25",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "5-Day Bangkok Safari Tour Package with Stunning Adventures",
       "slug": "5-day-bangkok-safari-tour-package-with-stunning-adventures",
       "destination_id": "dest_thailand",
@@ -20014,7 +20027,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_4_days_of_cu_chi_tunnels_mekong_heritage_trip_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "4-Days of Cu Chi Tunnels &amp; Mekong Heritage Trip with Stunning Vietnam Tour Packages",
       "slug": "4-days-of-cu-chi-tunnels-mekong-heritage-trip-with-stunning-vietnam-tour-packages",
       "destination_id": "dest_vietnam",
@@ -20061,7 +20074,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_unveiling_the_ancient_capital_with_vietnam_ho_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Unveiling the Ancient Capital with Vietnam Holiday Packages",
       "slug": "unveiling-the-ancient-capital-with-vietnam-holiday-packages",
       "destination_id": "dest_vietnam",
@@ -20115,7 +20128,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_wonderfull_luon_cave_grotto_in_hanoi_halong_b_5",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Wonderfull Luon Cave &amp; Grotto in Hanoi Halong Bay Tour Package",
       "slug": "wonderfull-luon-cave-grotto-in-hanoi-halong-bay-tour-package",
       "destination_id": "dest_vietnam",
@@ -20170,7 +20183,7 @@ export const fallbackData: any = {
     {
       "id": "pkg_a_memorable_7_day_journey_in_vietnam_group_to_7",
       "upcoming_date": "2028-11-04",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Memorable 7-Day Journey in Vietnam Group Tour Package",
       "slug": "a-memorable-7-day-journey-in-vietnam-group-tour-package",
       "destination_id": "dest_vietnam",
@@ -20221,7 +20234,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_9_day_dynamic_vietnam_tour_package_for_herita_8",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "9-Day Dynamic Vietnam Tour Package for Heritage and Beaches",
       "slug": "9-day-dynamic-vietnam-tour-package-for-heritage-and-beaches",
       "destination_id": "dest_vietnam",
@@ -20273,7 +20286,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_experience_the_best_of_belgium_with_a_brussel_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Experience the Best of Belgium with a Brussels tour package 3-Days Gateway",
       "slug": "experience-the-best-of-belgium-with-a-brussels-tour-package-3-days-gateway",
       "destination_id": "dest_belgium",
@@ -20325,7 +20338,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_4_days_memorable_uzbekistan_tashkent_tour_pac_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "4-Days Memorable Uzbekistan Tashkent Tour Package with City &amp; Mountain Views",
       "slug": "4-days-memorable-uzbekistan-tashkent-tour-package-with-city-mountain-views",
       "destination_id": "dest_uzbekistan",
@@ -20372,7 +20385,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_the_legacy_of_uzbekistan_on_a_tashke_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover the Legacy of Uzbekistan on a Tashkent Samarkand Tour Package",
       "slug": "discover-the-legacy-of-uzbekistan-on-a-tashkent-samarkand-tour-package",
       "destination_id": "dest_uzbekistan",
@@ -20423,7 +20436,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_classic_9_day_journey_with_culture_and_adve_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Classic 9-Day Journey with Culture and Adventure with Eastern Europe Tour Package",
       "slug": "a-classic-9-day-journey-with-culture-and-adventure-with-eastern-europe-tour-package",
       "destination_id": "dest_austria",
@@ -20472,7 +20485,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_experience_the_alps_and_cities_with_the_austr_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Experience the Alps and Cities with the Austria Holiday Package",
       "slug": "experience-the-alps-and-cities-with-the-austria-holiday-package",
       "destination_id": "dest_austria",
@@ -20526,7 +20539,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_swarovski_old_town_charm_with_innsbr_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover Swarovski &amp; Old Town Charm with Innsbruck Tour Package",
       "slug": "discover-swarovski-old-town-charm-with-innsbruck-tour-package",
       "destination_id": "dest_austria",
@@ -20575,7 +20588,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_uncover_viennas_charm_with_a_quick_vienna_tou_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Uncover Vienna’s Charm with a Quick Vienna Tour Package",
       "slug": "uncover-viennas-charm-with-a-quick-vienna-tour-package",
       "destination_id": "dest_austria",
@@ -20627,7 +20640,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_the_charm_of_the_sunny_city_in_a_sof_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover the charm of the sunny city in a Sofia tour package itinerary",
       "slug": "discover-the-charm-of-the-sunny-city-in-a-sofia-tour-package-itinerary",
       "destination_id": "dest_bulgaria",
@@ -20676,7 +20689,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_uncover_the_magic_of_croatia_with_a_7_day_cro_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Uncover the Magic of Croatia with a 7-Day Croatia Holiday Package",
       "slug": "uncover-the-magic-of-croatia-with-a-7-day-croatia-holiday-package",
       "destination_id": "dest_croatia",
@@ -20727,7 +20740,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_denmark_holiday_package_with_aarhus_and_odens_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Denmark Holiday Package with Aarhus and Odense Exploration",
       "slug": "denmark-holiday-package-with-aarhus-and-odense-exploration",
       "destination_id": "dest_denmark_republic",
@@ -20781,7 +20794,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_copenhagen_tour_package_with_nyhavn_a_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Copenhagen Tour Package with Nyhavn and Little Mermaid Itinerary",
       "slug": "explore-copenhagen-tour-package-with-nyhavn-and-little-mermaid-itinerary",
       "destination_id": "dest_denmark_republic",
@@ -20833,7 +20846,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_9_days_of_coastal_beauty_with_croatia_and_mon_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "9 Days of Coastal Beauty with Croatia and Montenegro Tour Package",
       "slug": "9-days-of-coastal-beauty-with-croatia-and-montenegro-tour-package",
       "destination_id": "dest_croatia",
@@ -20884,7 +20897,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_experience_romantic_plitvice_dubrovnik_in_cro_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Experience Romantic Plitvice &amp; Dubrovnik in Croatia Tour Package for Couples",
       "slug": "experience-romantic-plitvice-dubrovnik-in-croatia-tour-package-for-couples",
       "destination_id": "dest_croatia",
@@ -20935,7 +20948,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_croatian_delight_with_this_6_day_croa_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Croatian Delight with This 6-Day Croatia Travel Packages",
       "slug": "explore-croatian-delight-with-this-6-day-croatia-travel-packages",
       "destination_id": "dest_croatia",
@@ -20986,7 +20999,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_croatias_capital_delightful_zagreb_to_4",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Croatia’s Capital Delightful Zagreb Tour Package Experience",
       "slug": "explore-croatias-capital-delightful-zagreb-tour-package-experience",
       "destination_id": "dest_croatia",
@@ -21036,7 +21049,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_historic_scenic_croatia_with_adriati_5",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover Historic &amp; Scenic Croatia with Adriatic Croatia Tour Package",
       "slug": "discover-historic-scenic-croatia-with-adriatic-croatia-tour-package",
       "destination_id": "dest_croatia",
@@ -21087,7 +21100,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_the_citys_landmarks_with_beautiful_he_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore the City’s Landmarks with Beautiful Helsinki Tour package Itinerary",
       "slug": "explore-the-citys-landmarks-with-beautiful-helsinki-tour-package-itinerary",
       "destination_id": "dest_finland_republic",
@@ -21139,7 +21152,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_4_days_santa_claus_adventure_like_snow_fun_ar_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "4 Days Santa Claus Adventure Like Snow Fun &amp; Arctic Starry Skies in Rovaniemi Tour Package",
       "slug": "4-days-santa-claus-adventure-like-snow-fun-arctic-starry-skies-in-rovaniemi-tour-package",
       "destination_id": "dest_finland_republic",
@@ -21185,7 +21198,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_finland_5_days_journey_at_your_own_pa_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Finland 5 Days Journey at Your Own Pace with Helsinki Holiday Packages",
       "slug": "explore-finland-5-days-journey-at-your-own-pace-with-helsinki-holiday-packages",
       "destination_id": "dest_finland_republic",
@@ -21239,7 +21252,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_7_days_scandinavia_holiday_package_itinerary__3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "7 Days Scandinavian Holiday Package Itinerary  Cruise &amp; City Tours",
       "slug": "7-days-scandinavia-holiday-package-itinerary-cruise-city-tours",
       "destination_id": "dest_finland_republic",
@@ -21288,7 +21301,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_6_days_exploration_with_lakes_parks_castles_i_4",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "6 Days Exploration with Lakes, Parks &amp; Castles in Finland Travel Package",
       "slug": "6-days-exploration-with-lakes-parks-castles-in-finland-travel-package",
       "destination_id": "dest_finland_republic",
@@ -21340,7 +21353,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_scandinavian_tour_package_oslo_city__5",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover Scandinavian Tour Package Oslo City &amp; Norway Rail Journey",
       "slug": "discover-scandinavian-tour-package-oslo-city-norway-rail-journey",
       "destination_id": "dest_finland_republic",
@@ -21397,7 +21410,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_santa_claus_village_with_rovaniemi_tr_6",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Santa Claus Village with Rovaniemi Travel Package",
       "slug": "explore-santa-claus-village-with-rovaniemi-travel-package",
       "destination_id": "dest_finland_republic",
@@ -21451,7 +21464,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_bora_bora_couples_vacation_with_beaches_safar_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Bora Bora Couples Vacation with Beaches, Safaris &amp; Marine Adventures",
       "slug": "bora-bora-couples-vacation-with-beaches-safaris-marine-adventures",
       "destination_id": "dest_france",
@@ -21502,7 +21515,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_paris_travel_package_itinerary_with_eiffel_to_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Paris Travel Package Itinerary with Eiffel Tower &amp; Seine Cruise",
       "slug": "paris-travel-package-itinerary-with-eiffel-tower-seine-cruise",
       "destination_id": "dest_france",
@@ -21554,7 +21567,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_cannes_and_provence_tour_package_with_french__2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Cannes and Provence Tour Package with French Riviera Highlights",
       "slug": "cannes-and-provence-tour-package-with-french-riviera-highlights",
       "destination_id": "dest_france",
@@ -21603,7 +21616,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_complete_europe_trip_package_plan_with_river__3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Complete Europe Trip Package Plan with River Cruises &amp; Alpine Views",
       "slug": "complete-europe-trip-package-plan-with-river-cruises-alpine-views",
       "destination_id": "dest_france",
@@ -21663,7 +21676,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_relaxing_nice_tour_package_itinerary_with_sea_4",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Relaxing Nice Tour Package Itinerary with Seaside Promenade",
       "slug": "relaxing-nice-tour-package-itinerary-with-seaside-promenade",
       "destination_id": "dest_france",
@@ -21712,7 +21725,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_the_beauty_of_the_arctic_with_our_gre_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore the Beauty of the Arctic with Our Greenland Holiday Package",
       "slug": "explore-the-beauty-of-the-arctic-with-our-greenland-holiday-package",
       "destination_id": "dest_greenland",
@@ -21763,7 +21776,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_the_magic_of_hungary_with_our_budape_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover the Magic of Hungary with Our Budapest Tour Package",
       "slug": "discover-the-magic-of-hungary-with-our-budapest-tour-package",
       "destination_id": "dest_hungary",
@@ -21815,7 +21828,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_germanys_cultural_gem_with_our_dusse_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover Germany’s cultural gem with our Dusseldorf tour package itinerary",
       "slug": "discover-germanys-cultural-gem-with-our-dusseldorf-tour-package-itinerary",
       "destination_id": "dest_germany",
@@ -21864,7 +21877,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_enjoy_bavarian_charm_and_landmarks_with_our_m_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Enjoy Bavarian charm and landmarks with our Munich tour package",
       "slug": "enjoy-bavarian-charm-and-landmarks-with-our-munich-tour-package",
       "destination_id": "dest_germany",
@@ -21916,7 +21929,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_experience_history_and_skyline_views_with_our_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Experience history and skyline views with our Frankfurt tour package",
       "slug": "experience-history-and-skyline-views-with-our-frankfurt-tour-package",
       "destination_id": "dest_germany",
@@ -21968,7 +21981,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_castles_and_alpine_beauty_with_our_au_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore castles and alpine beauty with our Austria holiday package",
       "slug": "explore-castles-and-alpine-beauty-with-our-austria-holiday-package",
       "destination_id": "dest_germany",
@@ -22023,7 +22036,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_uncover_cities_and_landscapes_with_our_german_4",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Uncover cities and landscapes with our Germany travel package",
       "slug": "uncover-cities-and-landscapes-with-our-germany-travel-package",
       "destination_id": "dest_germany",
@@ -22077,7 +22090,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_the_cradle_of_western_civilization_w_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover the Cradle of Western Civilization with Athens Holiday Package",
       "slug": "discover-the-cradle-of-western-civilization-with-athens-holiday-package",
       "destination_id": "dest_greece",
@@ -22130,7 +22143,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_7_days_athens_trip_package_with_naxos_and_san_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "7 Days Athens Trip Package with Naxos and Santorini",
       "slug": "7-days-athens-trip-package-with-naxos-and-santorini",
       "destination_id": "dest_greece",
@@ -22178,7 +22191,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_exploring_beaches_and_nightlife_via_greece_tr_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Exploring Beaches and Nightlife via Greece Trip Package Itinerary",
       "slug": "exploring-beaches-and-nightlife-via-greece-trip-package-itinerary",
       "destination_id": "dest_greece",
@@ -22234,7 +22247,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_argolis_sightseeing_with_olympia_travel_packa_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Argolis Sightseeing with Olympia Travel Package Itinerary",
       "slug": "argolis-sightseeing-with-olympia-travel-package-itinerary",
       "destination_id": "dest_greece",
@@ -22289,7 +22302,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_7_days_athens_greece_tour_package_with_histor_4",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "7 Days Athens-Greece Tour Package with Historical Attractions",
       "slug": "7-days-athens-greece-tour-package-with-historical-attractions",
       "destination_id": "dest_greece",
@@ -22337,7 +22350,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_archaeological_treasures_with_greece__5",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Archaeological Treasures with Greece Holiday Package Itinerary",
       "slug": "explore-archaeological-treasures-with-greece-holiday-package-itinerary",
       "destination_id": "dest_greece",
@@ -22392,7 +22405,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_theopetra_cave_on_greece_vacation_pa_6",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover Theopetra Cave on Greece Vacation Package Itinerary",
       "slug": "discover-theopetra-cave-on-greece-vacation-package-itinerary",
       "destination_id": "dest_greece",
@@ -22446,7 +22459,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_romantic_escapes_in_greece_with_mykonos_santo_7",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Romantic Escapes in Greece with Mykonos Santorini Honeymoon Package",
       "slug": "romantic-escapes-in-greece-with-mykonos-santorini-honeymoon-package",
       "destination_id": "dest_greece",
@@ -22502,7 +22515,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_minoan_civilization_with_heraklion_to_8",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Minoan Civilization with Heraklion Tour Package Itinerary",
       "slug": "explore-minoan-civilization-with-heraklion-tour-package-itinerary",
       "destination_id": "dest_greece",
@@ -22556,7 +22569,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_romantic_experiences_with_greece_honeymoon_pa_9",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Romantic Experiences with Greece Honeymoon Package Itinerary",
       "slug": "romantic-experiences-with-greece-honeymoon-package-itinerary",
       "destination_id": "dest_greece",
@@ -22611,7 +22624,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_religious_monuments_in_mykonos_tour_package_i_10",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Religious Monuments in Mykonos Tour Package Itinerary",
       "slug": "religious-monuments-in-mykonos-tour-package-itinerary",
       "destination_id": "dest_greece",
@@ -22663,7 +22676,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_complete_athens_travel_package_itinerary_for__11",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Complete Athens Travel Package Itinerary for Europe Holidays",
       "slug": "complete-athens-travel-package-itinerary-for-europe-holidays",
       "destination_id": "dest_greece",
@@ -22717,7 +22730,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_exploring_the_acropolis_with_our_greece_tour__12",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Exploring the Acropolis with our Greece Tour Package for Couple",
       "slug": "exploring-the-acropolis-with-our-greece-tour-package-for-couple",
       "destination_id": "dest_greece",
@@ -22772,7 +22785,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_exploring_argolis_corinth_canal_views_with_ol_13",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Exploring Argolis Corinth Canal Views with Olympia Tour Package Itinerary",
       "slug": "exploring-argolis-corinth-canal-views-with-olympia-tour-package-itinerary",
       "destination_id": "dest_greece",
@@ -22827,7 +22840,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_experience_hot_springs_and_glaciers_on_an_mem_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Experience Hot Springs and Glaciers on an Memorable Iceland Tour Package",
       "slug": "experience-hot-springs-and-glaciers-on-an-memorable-iceland-tour-package",
       "destination_id": "dest_iceland",
@@ -22879,7 +22892,7 @@ export const fallbackData: any = {
     {
       "id": "pkg_discover_dublin_group_tour_package_with_belfa_0",
       "upcoming_date": "2029-04-09",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover Dublin group tour package with Belfast City Excursions",
       "slug": "discover-dublin-group-tour-package-with-belfast-city-excursions",
       "destination_id": "dest_ireland",
@@ -22930,7 +22943,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_experience_the_ireland_tour_packages_with_gal_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Experience the Ireland tour packages with Galway and Dublin Highlights",
       "slug": "experience-the-ireland-tour-packages-with-galway-and-dublin-highlights",
       "destination_id": "dest_ireland",
@@ -22981,7 +22994,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_dublin_holiday_package_for_an_authentic_irish_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Dublin holiday package for an Authentic Irish Experience",
       "slug": "dublin-holiday-package-for-an-authentic-irish-experience",
       "destination_id": "dest_ireland",
@@ -23030,7 +23043,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_scenic_countryside_journeys_in_dublin_tour__3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Scenic Countryside Journeys in Dublin tour packages",
       "slug": "a-scenic-countryside-journeys-in-dublin-tour-packages",
       "destination_id": "dest_ireland",
@@ -23078,7 +23091,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_complete_dublin_travel_package_with_castles_a_4",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Complete Dublin travel package with Castles and Cathedrals",
       "slug": "complete-dublin-travel-package-with-castles-and-cathedrals",
       "destination_id": "dest_ireland",
@@ -23128,7 +23141,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_best_florence_tour_package_with_statue_of_dav_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Best Florence Tour Package with Statue of David &amp; Boboli Gardens",
       "slug": "best-florence-tour-package-with-statue-of-david-boboli-gardens",
       "destination_id": "dest_italy",
@@ -23180,7 +23193,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_rome_tour_package_including_spanish_steps_pia_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Rome Tour Package Including Spanish Steps &amp; Piazza Navona",
       "slug": "rome-tour-package-including-spanish-steps-piazza-navona",
       "destination_id": "dest_italy",
@@ -23232,7 +23245,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_luxury_italy_holiday_package_covering_major_c_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Luxury Italy Holiday Package Covering Major Cities",
       "slug": "luxury-italy-holiday-package-covering-major-cities",
       "destination_id": "dest_italy",
@@ -23289,7 +23302,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_italy_vacation_package_including_florence_art_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Italy Vacation Package Including Florence Art Galleries",
       "slug": "italy-vacation-package-including-florence-art-galleries",
       "destination_id": "dest_italy",
@@ -23345,7 +23358,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_science_technology_museum_with_milan__4",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Science &amp; Technology Museum with Milan Tour Package",
       "slug": "explore-science-technology-museum-with-milan-tour-package",
       "destination_id": "dest_italy",
@@ -23397,7 +23410,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_venice_tour_package_with_grand_canal_explorat_5",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Venice Tour Package with Grand Canal Exploration",
       "slug": "venice-tour-package-with-grand-canal-exploration",
       "destination_id": "dest_italy",
@@ -23449,7 +23462,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_rome_venice_tour_package_with_florence_pisa_v_6",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Rome &amp; Venice Tour Package with Florence Pisa  &amp; Vatican City Highlights",
       "slug": "rome-venice-tour-package-with-florence-pisa-vatican-city-highlights",
       "destination_id": "dest_italy",
@@ -23505,7 +23518,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_the_best_of_britain_with_our_7_day_lo_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore the Best of Britain with Our 7-Day London Tour Package",
       "slug": "explore-the-best-of-britain-with-our-7-day-london-tour-package",
       "destination_id": "dest_united_kingdom",
@@ -23560,7 +23573,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_complete_london_holiday_package_with_iconic_l_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Complete London Holiday Package with Iconic Landmarks and Hidden Gems",
       "slug": "complete-london-holiday-package-with-iconic-landmarks-and-hidden-gems",
       "destination_id": "dest_united_kingdom",
@@ -23614,7 +23627,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_castles_and_lochs_with_a_scotland_and_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Castles and Lochs with a Scotland and Wales Trip Package",
       "slug": "explore-castles-and-lochs-with-a-scotland-and-wales-trip-package",
       "destination_id": "dest_united_kingdom",
@@ -23668,7 +23681,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_romantic_europe_trips_for_couples_featuring_l_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Romantic Europe Trips for Couples Featuring London and Paris",
       "slug": "romantic-europe-trips-for-couples-featuring-london-and-paris",
       "destination_id": "dest_united_kingdom",
@@ -23723,7 +23736,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_london_travel_package_featuring_tower_4",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore London Travel Package Featuring Tower of London and River Cruise",
       "slug": "explore-london-travel-package-featuring-tower-of-london-and-river-cruise",
       "destination_id": "dest_united_kingdom",
@@ -23772,7 +23785,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_three_cities_in_one_tour_london_paris_5",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Three Cities in One Tour London Paris Amsterdam Package",
       "slug": "explore-three-cities-in-one-tour-london-paris-amsterdam-package",
       "destination_id": "dest_united_kingdom",
@@ -23828,7 +23841,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_norways_colorful_wooden_houses_and_fj_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Norway’s Colorful Wooden Houses and Fjord Gateway with Our Bergen Tour Package",
       "slug": "explore-norways-colorful-wooden-houses-and-fjord-gateway-with-our-bergen-tour-package",
       "destination_id": "dest_norway",
@@ -23880,7 +23893,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_experience_viking_culture_and_nature_with_nor_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Experience Viking Culture and Nature with Norway Holiday Package",
       "slug": "experience-viking-culture-and-nature-with-norway-holiday-package",
       "destination_id": "dest_norway",
@@ -23934,7 +23947,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_historic_churches_and_art_museums_wit_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Historic Churches and Art Museums with Oslo Tour Package",
       "slug": "explore-historic-churches-and-art-museums-with-oslo-tour-package",
       "destination_id": "dest_norway",
@@ -23986,7 +23999,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_complete_5_day_amsterdam_brussels_tour_pack_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Complete 5-Day Amsterdam Brussels Tour Package Itinerary",
       "slug": "a-complete-5-day-amsterdam-brussels-tour-package-itinerary",
       "destination_id": "dest_netherlands",
@@ -24034,7 +24047,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_exploring_dutch_heritage_with_an_amsterdam_to_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Exploring Dutch Heritage with an Amsterdam Tour Package",
       "slug": "exploring-dutch-heritage-with-an-amsterdam-tour-package",
       "destination_id": "dest_netherlands",
@@ -24086,7 +24099,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_iconic_destinations_with_our_european_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Iconic Destinations with Our European Holiday Package",
       "slug": "explore-iconic-destinations-with-our-european-holiday-package",
       "destination_id": "dest_netherlands",
@@ -24148,7 +24161,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_belem_tower_jeronimos_monastery_with_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover Belem Tower &amp; Jeronimos Monastery with Our Lisbon Tour Package",
       "slug": "discover-belem-tower-jeronimos-monastery-with-our-lisbon-tour-package",
       "destination_id": "dest_portugal",
@@ -24197,7 +24210,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_portos_cathedral_bridges_beaches_with_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Porto’s Cathedral, Bridges &amp; Beaches with Our Porto Tour Package",
       "slug": "explore-portos-cathedral-bridges-beaches-with-our-porto-tour-package",
       "destination_id": "dest_portugal",
@@ -24246,7 +24259,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_the_charm_of_romania_with_our_buchar_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover the Charm of Romania with Our Bucharest Tour Package",
       "slug": "discover-the-charm-of-romania-with-our-bucharest-tour-package",
       "destination_id": "dest_romania",
@@ -24296,7 +24309,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_best_attractions_covered_in_the_romania_trave_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Best Attractions Covered in the Romania Travel Package For Couples Itinerary",
       "slug": "best-attractions-covered-in-the-romania-travel-package-for-couples-itinerary",
       "destination_id": "dest_romania",
@@ -24347,7 +24360,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_romanias_heritage_with_a_bucovina_tou_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Romania’s Heritage with a Bucovina Tour Package",
       "slug": "explore-romanias-heritage-with-a-bucovina-tour-package",
       "destination_id": "dest_romania",
@@ -24396,7 +24409,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_dracula_inspired_experience_with_the_transy_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Dracula-Inspired Experience with the Transylvania Holiday Package",
       "slug": "a-dracula-inspired-experience-with-the-transylvania-holiday-package",
       "destination_id": "dest_romania",
@@ -24446,7 +24459,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_extend_your_europe_holiday_with_a_romania_tri_4",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Extend Your Europe Holiday with a Romania Trip Package",
       "slug": "extend-your-europe-holiday-with-a-romania-trip-package",
       "destination_id": "dest_romania",
@@ -24497,7 +24510,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_exploring_sibius_beauty_with_the_transylvania_5",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Exploring Sibiu’s Beauty with the Transylvania Tour Package",
       "slug": "exploring-sibius-beauty-with-the-transylvania-tour-package",
       "destination_id": "dest_romania",
@@ -24548,7 +24561,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_best_castles_and_fortresses_in_a_romania_holi_6",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Best Castles and Fortresses in a Romania Holiday Package",
       "slug": "best-castles-and-fortresses-in-a-romania-holiday-package",
       "destination_id": "dest_romania",
@@ -24599,7 +24612,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_exploring_bran_castle_with_the_transylvania_t_7",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Exploring Bran Castle with the Transylvania Travel Package",
       "slug": "exploring-bran-castle-with-the-transylvania-travel-package",
       "destination_id": "dest_romania",
@@ -24650,7 +24663,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_complete_itinerary_for_your_dream_scandinav_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Complete Itinerary for Your Dream Scandinavia tour package",
       "slug": "a-complete-itinerary-for-your-dream-scandinavia-tour-package",
       "destination_id": "dest_sweden",
@@ -24702,7 +24715,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_6_day_scandinavia_trip_package_covering_swe_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A 6-Day Scandinavia trip package Covering Sweden, Denmark, and Norway",
       "slug": "a-6-day-scandinavia-trip-package-covering-sweden-denmark-and-norway",
       "destination_id": "dest_sweden",
@@ -24750,7 +24763,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_castles_and_coastal_towns_on_a_south_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover Castles and Coastal Towns on a Southern Sweden trip package",
       "slug": "discover-castles-and-coastal-towns-on-a-southern-sweden-trip-package",
       "destination_id": "dest_sweden",
@@ -24804,7 +24817,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_museums_and_shopping_streets_with_a_s_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Museums and Shopping Streets with a Stockholm tour package",
       "slug": "explore-museums-and-shopping-streets-with-a-stockholm-tour-package",
       "destination_id": "dest_sweden",
@@ -24856,7 +24869,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_switzerlands_charming_capital_at_leis_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Switzerland’s Charming Capital at Leisure with Bern Tour Package",
       "slug": "explore-switzerlands-charming-capital-at-leisure-with-bern-tour-package",
       "destination_id": "dest_switzerland",
@@ -24905,7 +24918,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_memorable_switzerland_holiday_package_with__1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Memorable Switzerland Holiday Package with Alpine Views &amp; Historic Towns",
       "slug": "a-memorable-switzerland-holiday-package-with-alpine-views-historic-towns",
       "destination_id": "dest_switzerland",
@@ -24952,7 +24965,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_perfect_mix_of_adventure_relaxation_in_swis_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Perfect Mix of Adventure &amp; Relaxation in Swiss Travel Package Itinerary",
       "slug": "a-perfect-mix-of-adventure-relaxation-in-swiss-travel-package-itinerary",
       "destination_id": "dest_switzerland",
@@ -24999,7 +25012,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_journey_of_romance_and_beauty_with_switzerl_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Journey of Romance and Beauty with Switzerland and Paris Holiday Packages",
       "slug": "a-journey-of-romance-and-beauty-with-switzerland-and-paris-holiday-packages",
       "destination_id": "dest_switzerland",
@@ -25046,7 +25059,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_relaxed_escape_with_our_geneva_tour_package_4",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Relaxed Escape with Our Geneva Tour Package Itinerary",
       "slug": "a-relaxed-escape-with-our-geneva-tour-package-itinerary",
       "destination_id": "dest_switzerland",
@@ -25093,7 +25106,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_experience_scenic_lakes_adventure_sports_with_5",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Experience Scenic Lakes &amp; Adventure Sports with Interlaken Vacation Package Itinerary",
       "slug": "experience-scenic-lakes-adventure-sports-with-interlaken-vacation-package-itinerary",
       "destination_id": "dest_switzerland",
@@ -25145,7 +25158,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_blend_of_nature_and_adventure_with_zurich_t_6",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Blend of Nature and Adventure with Zurich Tour Package Itinerary",
       "slug": "a-blend-of-nature-and-adventure-with-zurich-tour-package-itinerary",
       "destination_id": "dest_switzerland",
@@ -25192,7 +25205,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_majestic_peaks_scenic_rail_journey_w_7",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover Majestic Peaks &amp; Scenic Rail Journey with Switzerland Tour Package Itinerary",
       "slug": "discover-majestic-peaks-scenic-rail-journey-with-switzerland-tour-package-itinerary",
       "destination_id": "dest_switzerland",
@@ -25246,7 +25259,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_scenic_boat_ride_on_lake_lucerne_tour_packa_8",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Scenic boat ride on Lake Lucerne tour package itinerary",
       "slug": "a-scenic-boat-ride-on-lake-lucerne-tour-package-itinerary",
       "destination_id": "dest_switzerland",
@@ -25293,7 +25306,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_romantic_switzerland_honeymoon_packa_9",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover Romantic Switzerland Honeymoon Package with Scenic Escapes",
       "slug": "discover-romantic-switzerland-honeymoon-package-with-scenic-escapes",
       "destination_id": "dest_switzerland",
@@ -25350,7 +25363,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_europes_highest_peaks_with_glacier_p_10",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover Europe’s Highest Peaks with Glacier Paradise Vacation Package",
       "slug": "discover-europes-highest-peaks-with-glacier-paradise-vacation-package",
       "destination_id": "dest_switzerland",
@@ -25405,7 +25418,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_experience_the_swiss_culture_and_museums_in_z_11",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Experience the Swiss culture and museums in Zermatt holiday package",
       "slug": "experience-the-swiss-culture-and-museums-in-zermatt-holiday-package",
       "destination_id": "dest_switzerland",
@@ -25461,7 +25474,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_7_day_amazing_turkey_tour_package_itinerary_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "7-Day Amazing Turkey Tour Package Itinerary",
       "slug": "7-day-amazing-turkey-tour-package-itinerary",
       "destination_id": "dest_turkey",
@@ -25509,7 +25522,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_experience_bosphorus_cruise_in_a_turkey_inter_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Experience Bosphorus Cruise in a Turkey international tour package",
       "slug": "experience-bosphorus-cruise-in-a-turkey-international-tour-package",
       "destination_id": "dest_turkey",
@@ -25560,7 +25573,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_turkeys_iconic_sites_with_cappadocia__2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Turkey’s Iconic Sites with Cappadocia Tour Package",
       "slug": "explore-turkeys-iconic-sites-with-cappadocia-tour-package",
       "destination_id": "dest_turkey",
@@ -25611,7 +25624,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_best_time_to_enjoy_the_istanbul_tour_package__3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Best Time to Enjoy the Istanbul tour package with Markets and Bazaars",
       "slug": "best-time-to-enjoy-the-istanbul-tour-package-with-markets-and-bazaars",
       "destination_id": "dest_turkey",
@@ -25661,7 +25674,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_complete_cappadocia_travel_package_with_hot_a_4",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Complete Cappadocia Travel Package with Hot Air Balloon Ride",
       "slug": "complete-cappadocia-travel-package-with-hot-air-balloon-ride",
       "destination_id": "dest_turkey",
@@ -25710,7 +25723,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_experience_the_best_of_istanbul_and_cappadoci_5",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Experience the Best of Istanbul and Cappadocia with Our Turkey travel package",
       "slug": "experience-the-best-of-istanbul-and-cappadocia-with-our-turkey-travel-package",
       "destination_id": "dest_turkey",
@@ -25761,7 +25774,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_7_day_glimpses_of_turkey_holiday_package_itin_6",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "7-Day Glimpses of Turkey Holiday Package Itinerary",
       "slug": "7-day-glimpses-of-turkey-holiday-package-itinerary",
       "destination_id": "dest_turkey",
@@ -25809,7 +25822,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_complete_8_day_itinerary_for_the_spectacular__7",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Complete 8-Day Itinerary for the Spectacular Turkey vacation packages",
       "slug": "complete-8-day-itinerary-for-the-spectacular-turkey-vacation-packages",
       "destination_id": "dest_turkey",
@@ -25860,7 +25873,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_unique_wildlife_with_the_amazing_mada_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Unique Wildlife with the Amazing Madagascar Holiday Package",
       "slug": "explore-unique-wildlife-with-the-amazing-madagascar-holiday-package",
       "destination_id": "dest_madagascar",
@@ -25911,7 +25924,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_experience_forest_walks_on_the_madagascar_tri_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Experience Forest Walks on the Madagascar Trip Package",
       "slug": "experience-forest-walks-on-the-madagascar-trip-package",
       "destination_id": "dest_madagascar",
@@ -25962,7 +25975,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_romantic_candlelight_dinners_on_the_beach_wit_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Romantic Candlelight Dinners on the Beach with Maldives Honeymoon Package",
       "slug": "romantic-candlelight-dinners-on-the-beach-with-maldives-honeymoon-package",
       "destination_id": "dest_maldives",
@@ -26012,7 +26025,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_marine_life_with_south_palm_maldives__1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Marine Life with South Palm Maldives Water Villa Package",
       "slug": "explore-marine-life-with-south-palm-maldives-water-villa-package",
       "destination_id": "dest_maldives",
@@ -26062,7 +26075,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_relaxation_bliss_in_maldives_vacation_package_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Relaxation Bliss in Maldives Vacation Package",
       "slug": "relaxation-bliss-in-maldives-vacation-package",
       "destination_id": "dest_maldives",
@@ -26113,7 +26126,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_romantic_beach_stays_with_maldives_holiday_pa_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Romantic Beach Stays with Maldives Holiday Packages for Couple",
       "slug": "romantic-beach-stays-with-maldives-holiday-packages-for-couple",
       "destination_id": "dest_maldives",
@@ -26163,7 +26176,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_experience_serenity_in_love_with_maldives_hon_4",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Experience Serenity in Love with Maldives Honeymoon Tour Packages",
       "slug": "experience-serenity-in-love-with-maldives-honeymoon-tour-packages",
       "destination_id": "dest_maldives",
@@ -26213,7 +26226,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_exclusive_villas_to_stay_in_meeru_island_reso_5",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Exclusive Villas to Stay in Meeru Island Resort Maldives Packages",
       "slug": "exclusive-villas-to-stay-in-meeru-island-resort-maldives-packages",
       "destination_id": "dest_maldives",
@@ -26263,7 +26276,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_glowing_beach_magic_with_coco_bodu_h_6",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover Glowing Beach Magic with Coco Bodu Hithi Packages",
       "slug": "discover-glowing-beach-magic-with-coco-bodu-hithi-packages",
       "destination_id": "dest_maldives",
@@ -26313,7 +26326,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_diving_adventures_in_cocoon_maldives_packages_7",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Diving Adventures in Cocoon Maldives Packages",
       "slug": "diving-adventures-in-cocoon-maldives-packages",
       "destination_id": "dest_maldives",
@@ -26364,7 +26377,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_marine_life_encounters_in_a_male_maldives_res_8",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Marine Life Encounters in a Male Maldives Resort Package",
       "slug": "marine-life-encounters-in-a-male-maldives-resort-package",
       "destination_id": "dest_maldives",
@@ -26414,7 +26427,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_island_excursions_and_sunset_cruises_with_coc_9",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Island Excursions and Sunset Cruises with Coco Palm Bodu Hithi Packages",
       "slug": "island-excursions-and-sunset-cruises-with-coco-palm-bodu-hithi-packages",
       "destination_id": "dest_maldives",
@@ -26465,7 +26478,7 @@ export const fallbackData: any = {
     {
       "id": "pkg_fun_for_all_ages_in_maldives_family_tour_pack_10",
       "upcoming_date": "2029-11-05",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Fun for All Ages in Maldives Family Tour Package",
       "slug": "fun-for-all-ages-in-maldives-family-tour-package",
       "destination_id": "dest_maldives",
@@ -26515,7 +26528,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_experience_bratislavas_art_and_architecture_w_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Experience Bratislava’s Art and Architecture with this Bratislava Tour Package",
       "slug": "experience-bratislavas-art-and-architecture-with-this-bratislava-tour-package",
       "destination_id": "dest_slovakia",
@@ -26564,7 +26577,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_experience_temples_and_wildlife_with_sri_lank_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Experience Temples and Wildlife with Sri Lanka vacation packages",
       "slug": "experience-temples-and-wildlife-with-sri-lanka-vacation-packages",
       "destination_id": "dest_sri_lanka",
@@ -26615,7 +26628,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_romantic_journeys_with_sri_lanka_honeymoon_to_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Romantic Journeys with Sri Lanka Honeymoon Tour Package",
       "slug": "romantic-journeys-with-sri-lanka-honeymoon-tour-package",
       "destination_id": "dest_sri_lanka",
@@ -26666,7 +26679,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_world_heritage_sites_in_sri_lanka_tri_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore World Heritage Sites in Sri Lanka trip package",
       "slug": "explore-world-heritage-sites-in-sri-lanka-trip-package",
       "destination_id": "dest_sri_lanka",
@@ -26717,7 +26730,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_affordable_getaways_with_india_to_sri_lanka_t_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Affordable Getaways with India to Sri Lanka tour package",
       "slug": "affordable-getaways-with-india-to-sri-lanka-tour-package",
       "destination_id": "dest_sri_lanka",
@@ -26765,7 +26778,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_memorable_getaway_with_colombo_vacation_pac_4",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Memorable Getaway with Colombo vacation package",
       "slug": "a-memorable-getaway-with-colombo-vacation-package",
       "destination_id": "dest_sri_lanka",
@@ -26812,7 +26825,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_kandy_tour_package_with_scenic_hill__5",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover Kandy tour package with Scenic Hill Station Stations",
       "slug": "discover-kandy-tour-package-with-scenic-hill-station-stations",
       "destination_id": "dest_sri_lanka",
@@ -26862,7 +26875,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_complete_sri_lanka_couple_package_for_love__6",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Complete Sri Lanka couple package for Love and Adventure",
       "slug": "a-complete-sri-lanka-couple-package-for-love-and-adventure",
       "destination_id": "dest_sri_lanka",
@@ -26909,7 +26922,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_golden_beaches_with_bentota_tour_pack_7",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Golden Beaches with Bentota tour package",
       "slug": "explore-golden-beaches-with-bentota-tour-package",
       "destination_id": "dest_sri_lanka",
@@ -26959,7 +26972,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_beaches_and_culture_with_colombo_tra_8",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover Beaches and Culture with Colombo travel package",
       "slug": "discover-beaches-and-culture-with-colombo-travel-package",
       "destination_id": "dest_sri_lanka",
@@ -27010,7 +27023,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_experience_the_colombo_tour_package_with_shop_9",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Experience the Colombo tour package with Shopping and Sightseeing",
       "slug": "experience-the-colombo-tour-package-with-shopping-and-sightseeing",
       "destination_id": "dest_sri_lanka",
@@ -27059,7 +27072,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_the_wonders_of_jordan_with_a_tailored_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore the Wonders of Jordan with a Tailored Jordan Vacation package",
       "slug": "explore-the-wonders-of-jordan-with-a-tailored-jordan-vacation-package",
       "destination_id": "dest_jordan",
@@ -27110,7 +27123,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_amman_and_jerash_with_a_premium_jorda_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Amman and Jerash with a Premium Jordan luxury tour package",
       "slug": "explore-amman-and-jerash-with-a-premium-jordan-luxury-tour-package",
       "destination_id": "dest_jordan",
@@ -27161,7 +27174,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_enjoy_the_jordan_travel_package_ideas_for_adv_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Enjoy the Jordan travel package Ideas for Adventure and Outdoor Enthusiasts",
       "slug": "enjoy-the-jordan-travel-package-ideas-for-adventure-and-outdoor-enthusiasts",
       "destination_id": "dest_jordan",
@@ -27212,7 +27225,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_best_historic_wonders_youll_see_in_an_amman_h_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Best Historic Wonders You’ll See in an Amman holiday package Tour",
       "slug": "best-historic-wonders-youll-see-in-an-amman-holiday-package-tour",
       "destination_id": "dest_jordan",
@@ -27264,7 +27277,7 @@ export const fallbackData: any = {
     {
       "id": "pkg_jordan_group_tour_packages_perfect_for_large__4",
       "upcoming_date": "2029-12-23",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Jordan group tour packages Perfect for Large Groups and Families",
       "slug": "jordan-group-tour-packages-perfect-for-large-groups-and-families",
       "destination_id": "dest_jordan",
@@ -27315,7 +27328,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_jordan_petra_and_amman_shine_in_an_am_5",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Jordan Petra and Amman Shine in an Amman travel package",
       "slug": "explore-jordan-petra-and-amman-shine-in-an-amman-travel-package",
       "destination_id": "dest_jordan",
@@ -27365,7 +27378,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_jordan_holiday_package_designed_for_history_6",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Jordan holiday package Designed for History and Heritage Lovers",
       "slug": "a-jordan-holiday-package-designed-for-history-and-heritage-lovers",
       "destination_id": "dest_jordan",
@@ -27413,7 +27426,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_exploring_petra_and_wadi_rum_with_amman_tour__7",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Exploring Petra and Wadi Rum with Amman tour packages",
       "slug": "exploring-petra-and-wadi-rum-with-amman-tour-packages",
       "destination_id": "dest_jordan",
@@ -27464,7 +27477,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_experience_creole_culture_in_reunion_island_t_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Experience Creole Culture in Reunion Island Trip Package",
       "slug": "experience-creole-culture-in-reunion-island-trip-package",
       "destination_id": "dest_reunion",
@@ -27515,7 +27528,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_sainte_marie_salazie_in_reunion_islan_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Sainte Marie &amp; Salazie in Reunion Island Travel Package",
       "slug": "explore-sainte-marie-salazie-in-reunion-island-travel-package",
       "destination_id": "dest_reunion",
@@ -27566,7 +27579,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_scenic_escape_in_reunion_island_holiday_packa_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Scenic Escape in Reunion Island Holiday Package for 4 Days",
       "slug": "scenic-escape-in-reunion-island-holiday-package-for-4-days",
       "destination_id": "dest_reunion",
@@ -27616,7 +27629,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_ancient_egypt_with_a_9_day_nile_cruis_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Ancient Egypt with a 9-Day Nile Cruise Tour Package",
       "slug": "explore-ancient-egypt-with-a-9-day-nile-cruise-tour-package",
       "destination_id": "dest_Israel",
@@ -27670,7 +27683,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_journey_through_nazareth_and_galilee_on_a_bib_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Journey Through Nazareth and Galilee on a Bible Land Tour Package",
       "slug": "journey-through-nazareth-and-galilee-on-a-bible-land-tour-package",
       "destination_id": "dest_Israel",
@@ -27721,7 +27734,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_biblical_cities_with_a_complete_holy__2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Biblical Cities with a Complete Holy Land Tour Package",
       "slug": "explore-biblical-cities-with-a-complete-holy-land-tour-package",
       "destination_id": "dest_Israel",
@@ -27772,7 +27785,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_jerusalem_and_bethlehem_in_an_israel__3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Jerusalem and Bethlehem in an Israel Holiday Package",
       "slug": "explore-jerusalem-and-bethlehem-in-an-israel-holiday-package",
       "destination_id": "dest_Israel",
@@ -27823,7 +27836,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_beaches_leisure_in_mauritius_trip_package_for_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Beaches &amp; Leisure in Mauritius Trip Package for Perfect Vacations",
       "slug": "beaches-leisure-in-mauritius-trip-package-for-perfect-vacations",
       "destination_id": "dest_mauritius",
@@ -27874,7 +27887,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_5_day_plan_for_ille_auz_cerfs_island_tour_pac_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "5-Day Plan for Ille Auz Cerfs Island Tour Package",
       "slug": "5-day-plan-for-ille-auz-cerfs-island-tour-package",
       "destination_id": "dest_mauritius",
@@ -27920,7 +27933,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_beaches_with_exotic_mauritius_tour_pa_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Beaches With Exotic Mauritius Tour package",
       "slug": "explore-beaches-with-exotic-mauritius-tour-package",
       "destination_id": "dest_mauritius",
@@ -27971,7 +27984,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_luxury_water_sports_with_mesmerizing_mauritiu_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Luxury &amp; Water sports with Mesmerizing Mauritius tour packages",
       "slug": "luxury-water-sports-with-mesmerizing-mauritius-tour-packages",
       "destination_id": "dest_mauritius",
@@ -28022,7 +28035,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_mauritius_in_5_days_with_splendid_mau_4",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Mauritius in 5 Days with Splendid Mauritius Holiday Package",
       "slug": "explore-mauritius-in-5-days-with-splendid-mauritius-holiday-package",
       "destination_id": "dest_mauritius",
@@ -28073,7 +28086,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_romantic_escapes_with_nightlife_dining_in_mau_5",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Romantic Escapes with Nightlife &amp; Dining in Mauritius honeymoon package",
       "slug": "romantic-escapes-with-nightlife-dining-in-mauritius-honeymoon-package",
       "destination_id": "dest_mauritius",
@@ -28124,7 +28137,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_the_island_with_fascinating_mauritiu_6",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover the Island with Fascinating Mauritius travel package",
       "slug": "discover-the-island-with-fascinating-mauritius-travel-package",
       "destination_id": "dest_mauritius",
@@ -28175,7 +28188,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_complete_7_day_mauritius_north_island_package_7",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Complete 7-Day Mauritius North Island Package Experiences",
       "slug": "complete-7-day-mauritius-north-island-package-experiences",
       "destination_id": "dest_mauritius",
@@ -28226,7 +28239,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_enjoy_dolphin_watching_and_desert_adventures__0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Enjoy dolphin watching and desert adventures with our Oman holiday package",
       "slug": "enjoy-dolphin-watching-and-desert-adventures-with-our-oman-holiday-package",
       "destination_id": "dest_oman",
@@ -28280,7 +28293,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_omani_culture_and_heritage_through_a_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover Omani culture and heritage through a Muscat tour package",
       "slug": "discover-omani-culture-and-heritage-through-a-muscat-tour-package",
       "destination_id": "dest_oman",
@@ -28333,7 +28346,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_grand_mosque_and_souqs_with_an_oman_t_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Grand Mosque and Souqs with an Oman Trip Package",
       "slug": "explore-grand-mosque-and-souqs-with-an-oman-trip-package",
       "destination_id": "dest_oman",
@@ -28387,7 +28400,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_complete_muscat_travel_package_covering_cit_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Complete Muscat Travel Package Covering City, Desert &amp; Mountains",
       "slug": "a-complete-muscat-travel-package-covering-city-desert-mountains",
       "destination_id": "dest_oman",
@@ -28434,7 +28447,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_the_thrills_of_a_qatar_desert_safari_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover the Thrills of a Qatar Desert Safari Package",
       "slug": "discover-the-thrills-of-a-qatar-desert-safari-package",
       "destination_id": "dest_qatar",
@@ -28487,7 +28500,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_qatar_with_a_memorable_doha_holiday_p_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Qatar with a Memorable Doha holiday package",
       "slug": "explore-qatar-with-a-memorable-doha-holiday-package",
       "destination_id": "dest_qatar",
@@ -28540,7 +28553,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_the_best_abu_dhabi_tour_packages_for__0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore the Best Abu Dhabi Tour Packages for a Perfect Holiday",
       "slug": "explore-the-best-abu-dhabi-tour-packages-for-a-perfect-holiday",
       "destination_id": "dest_uae",
@@ -28593,7 +28606,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_affordable_dubai_trip_packages_for_every_trav_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Affordable Dubai Trip Packages for Every Traveler",
       "slug": "affordable-dubai-trip-packages-for-every-traveler",
       "destination_id": "dest_uae",
@@ -28640,7 +28653,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_dubai_sharjah_tour_package_with_aquarium_expl_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Dubai Sharjah Tour Package with Aquarium Exploration",
       "slug": "dubai-sharjah-tour-package-with-aquarium-exploration",
       "destination_id": "dest_uae",
@@ -28695,7 +28708,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_memorable_dhow_cruise_dinner_with_dubai_vacat_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Memorable Dhow Cruise Dinner with Dubai Vacation Package",
       "slug": "memorable-dhow-cruise-dinner-with-dubai-vacation-package",
       "destination_id": "dest_uae",
@@ -28749,7 +28762,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_complete_dubai_holiday_package_with_dhow_crui_4",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Complete Dubai Holiday Package with Dhow Cruise Dinner and Desert Safari Adventures",
       "slug": "complete-dubai-holiday-package-with-dhow-cruise-dinner-and-desert-safari-adventures",
       "destination_id": "dest_uae",
@@ -28803,7 +28816,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_islamic_heritage_with_sharjah_tour_pa_5",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Islamic Heritage with Sharjah Tour Packages",
       "slug": "explore-islamic-heritage-with-sharjah-tour-packages",
       "destination_id": "dest_uae",
@@ -28857,7 +28870,7 @@ export const fallbackData: any = {
     {
       "id": "pkg_exploring_burj_khalifa_with_a_dubai_group_tou_6",
       "upcoming_date": "2030-03-26",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Exploring Burj Khalifa with a Dubai Group Tour Package",
       "slug": "exploring-burj-khalifa-with-a-dubai-group-tour-package",
       "destination_id": "dest_uae",
@@ -28912,7 +28925,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_romantic_dubai_honeymoon_packages_with_miracl_7",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Romantic Dubai Honeymoon Packages with Miracle Garden Strolls",
       "slug": "romantic-dubai-honeymoon-packages-with-miracle-garden-strolls",
       "destination_id": "dest_uae",
@@ -28966,7 +28979,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_amazing_abu_dhabi_holiday_package_it_8",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover Amazing Abu Dhabi Holiday Package \nItinerary",
       "slug": "discover-amazing-abu-dhabi-holiday-package-itinerary",
       "destination_id": "dest_uae",
@@ -29021,7 +29034,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_abu_dhabi_tour_package_featuring_dubai_creek__9",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Abu Dhabi Tour Package Featuring Dubai Creek Exploration",
       "slug": "abu-dhabi-tour-package-featuring-dubai-creek-exploration",
       "destination_id": "dest_uae",
@@ -29076,7 +29089,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_the_wonders_of_egypt_with_our_cairo__0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover the Wonders of Egypt with Our Cairo tour package",
       "slug": "discover-the-wonders-of-egypt-with-our-cairo-tour-package",
       "destination_id": "dest_egypt",
@@ -29129,7 +29142,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_journey_through_ancient_sites_with_egypt_tr_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Journey through Ancient Sites with Egypt travel package",
       "slug": "a-journey-through-ancient-sites-with-egypt-travel-package",
       "destination_id": "dest_egypt",
@@ -29176,7 +29189,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_exploring_the_great_pyramids_through_a_cairo__2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Exploring the Great Pyramids through a Cairo travel package",
       "slug": "exploring-the-great-pyramids-through-a-cairo-travel-package",
       "destination_id": "dest_egypt",
@@ -29232,7 +29245,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_the_ultimate_egypt_vacation_tour_package_with_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "The Ultimate Egypt vacation tour package with Historical Insights",
       "slug": "the-ultimate-egypt-vacation-tour-package-with-historical-insights",
       "destination_id": "dest_egypt",
@@ -29288,7 +29301,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_egypt_holiday_package_for_the_valley_of_kings_5",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Egypt holiday package for the valley of Kings Excursion",
       "slug": "egypt-holiday-package-for-the-valley-of-kings-excursion",
       "destination_id": "dest_egypt",
@@ -29344,7 +29357,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_egypt_cairo_tour_package_for_history_enthusia_6",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Egypt Cairo tour package for History Enthusiasts",
       "slug": "egypt-cairo-tour-package-for-history-enthusiasts",
       "destination_id": "dest_egypt",
@@ -29399,7 +29412,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_snowy_escapes_in_shimla_manali_tour_package_i_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Snowy Escapes in Shimla Manali Tour Package Itinerary",
       "slug": "snowy-escapes-in-shimla-manali-tour-package-itinerary",
       "destination_id": "dest_explore_spiritual_haridwar_rishikesh_trip_package",
@@ -29457,7 +29470,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_spiritual_haridwar_rishikesh_trip_pac_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Spiritual Haridwar Rishikesh Trip Package",
       "slug": "explore-spiritual-haridwar-rishikesh-trip-package",
       "destination_id": "dest_explore_spiritual_haridwar_rishikesh_trip_package",
@@ -29513,7 +29526,7 @@ export const fallbackData: any = {
     {
       "id": "pkg_delhi_educational_trip_package_for_students_a_2",
       "upcoming_date": "2030-05-01",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Delhi Educational Trip Package for Students and Schools",
       "slug": "delhi-educational-trip-package-for-students-and-schools",
       "destination_id": "dest_explore_spiritual_haridwar_rishikesh_trip_package",
@@ -29572,7 +29585,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_scenic_himachal_trip_package_with_shimla_and__3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Scenic Himachal Trip Package with Shimla and Manali",
       "slug": "scenic-himachal-trip-package-with-shimla-and-manali",
       "destination_id": "dest_explore_spiritual_haridwar_rishikesh_trip_package",
@@ -29629,7 +29642,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_experience_the_rajasthan_travel_package_cover_4",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Experience the Rajasthan Travel Package Covering Jaipur and Agra",
       "slug": "experience-the-rajasthan-travel-package-covering-jaipur-and-agra",
       "destination_id": "dest_explore_spiritual_haridwar_rishikesh_trip_package",
@@ -29687,7 +29700,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_nainital_holiday_package_with_ropeway_and_lak_5",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Nainital Holiday Package with Ropeway and Lakes",
       "slug": "nainital-holiday-package-with-ropeway-and-lakes",
       "destination_id": "dest_explore_spiritual_haridwar_rishikesh_trip_package",
@@ -29741,7 +29754,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_north_indian_holiday_package_with_haridwar_ch_6",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "North Indian Holiday Package with Haridwar &amp; Chandigarh for Adventure Seekers",
       "slug": "north-indian-holiday-package-with-haridwar-chandigarh-for-adventure-seekers",
       "destination_id": "dest_explore_spiritual_haridwar_rishikesh_trip_package",
@@ -29800,7 +29813,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_shimla_honeymoon_tour_package_for_snowy_getaw_7",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Shimla Honeymoon Tour Package for Snowy Getaways",
       "slug": "shimla-honeymoon-tour-package-for-snowy-getaways",
       "destination_id": "dest_explore_spiritual_haridwar_rishikesh_trip_package",
@@ -29855,7 +29868,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_agra_jaipur_travel_package_with_red_fort_sigh_8",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Agra Jaipur Travel Package with Red Fort Sightseeing",
       "slug": "agra-jaipur-travel-package-with-red-fort-sightseeing",
       "destination_id": "dest_explore_spiritual_haridwar_rishikesh_trip_package",
@@ -29903,7 +29916,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_himachal_honeymoon_package_with_manali_and_ku_9",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Himachal Honeymoon Package with Manali and Kullu",
       "slug": "himachal-honeymoon-package-with-manali-and-kullu",
       "destination_id": "dest_explore_spiritual_haridwar_rishikesh_trip_package",
@@ -29960,7 +29973,7 @@ export const fallbackData: any = {
     {
       "id": "pkg_agra_jaipur_educational_tour_package_with_mus_10",
       "upcoming_date": "2030-05-25",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Agra Jaipur Educational Tour Package with Museums",
       "slug": "agra-jaipur-educational-tour-package-with-museums",
       "destination_id": "dest_explore_spiritual_haridwar_rishikesh_trip_package",
@@ -30008,7 +30021,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_jaipur_honeymoon_tour_package_with_romantic_s_11",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Jaipur Honeymoon Tour Package with Romantic Sights",
       "slug": "jaipur-honeymoon-tour-package-with-romantic-sights",
       "destination_id": "dest_explore_spiritual_haridwar_rishikesh_trip_package",
@@ -30065,7 +30078,7 @@ export const fallbackData: any = {
     {
       "id": "pkg_discover_the_history_of_himalayas_with_manali_1",
       "upcoming_date": "2030-05-31",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover the History of Himalayas with Manali Educational Tour Package",
       "slug": "discover-the-history-of-himalayas-with-manali-educational-tour-package",
       "destination_id": "dest_manali",
@@ -30121,7 +30134,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_romantic_heaven_on_earth_with_ladakh_honeymoo_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Romantic Heaven on Earth with Ladakh Honeymoon Tour Package",
       "slug": "romantic-heaven-on-earth-with-ladakh-honeymoon-tour-package",
       "destination_id": "dest_ladakh",
@@ -30176,7 +30189,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_blue_city_pink_city_in_rajasthan_holi_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Blue City &amp; Pink City in Rajasthan Holiday Package",
       "slug": "explore-blue-city-pink-city-in-rajasthan-holiday-package",
       "destination_id": "dest_jaipur",
@@ -30232,7 +30245,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_forts_palaces_in_the_jodhpur_holiday_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover Forts &amp; Palaces in the Jodhpur Holiday Package",
       "slug": "discover-forts-palaces-in-the-jodhpur-holiday-package",
       "destination_id": "dest_jaipur",
@@ -30288,7 +30301,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_a_complete_kashmir_sightseeing_with_gulmarg_t_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "A Complete Kashmir Sightseeing with Gulmarg Travel Package",
       "slug": "a-complete-kashmir-sightseeing-with-gulmarg-travel-package",
       "destination_id": "dest_jammu_and_kashmir",
@@ -30336,7 +30349,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_kashmir_trip_package_with_snowy_adventures_te_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Kashmir Trip Package with Snowy Adventures, Temples and Valleys",
       "slug": "kashmir-trip-package-with-snowy-adventures-temples-and-valleys",
       "destination_id": "dest_jammu_and_kashmir",
@@ -30392,7 +30405,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_romantic_getaway_with_kashmir_honeymoon_tour__2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Romantic Getaway with Kashmir Honeymoon Tour Package",
       "slug": "romantic-getaway-with-kashmir-honeymoon-tour-package",
       "destination_id": "dest_jammu_and_kashmir",
@@ -30448,7 +30461,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_waterfalls_monasteries_and_lakes_in__0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover Waterfalls, Monasteries, and Lakes in the Gangtok Pelling Tour Package",
       "slug": "discover-waterfalls-monasteries-and-lakes-in-the-gangtok-pelling-tour-package",
       "destination_id": "dest_pelling",
@@ -30503,7 +30516,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_tea_gardens_and_mountains_on_a_darjee_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Tea Gardens and Mountains on a Darjeeling Trip Package",
       "slug": "explore-tea-gardens-and-mountains-on-a-darjeeling-trip-package",
       "destination_id": "dest_west_bengal",
@@ -30557,7 +30570,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_the_scenic_beauty_of_sikkim_and_darje_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore the Scenic Beauty of Sikkim and Darjeeling on a Himalayan Golden Holiday Package",
       "slug": "explore-the-scenic-beauty-of-sikkim-and-darjeeling-on-a-himalayan-golden-holiday-package",
       "destination_id": "dest_west_bengal",
@@ -30612,7 +30625,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_natures_paradise_with_the_hill_statio_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Nature’s Paradise with the Hill Station Holiday Package",
       "slug": "explore-natures-paradise-with-the-hill-station-holiday-package",
       "destination_id": "dest_west_bengal",
@@ -30667,7 +30680,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_the_wonders_of_east_india_hill_statio_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore the Wonders of East India Hill Station Trip Package",
       "slug": "explore-the-wonders-of-east-india-hill-station-trip-package",
       "destination_id": "dest_west_bengal",
@@ -30722,7 +30735,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_6_day_northeast_india_tour_with_himalayas_tri_4",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "6-Day Northeast India Tour with Himalayas Trip Package",
       "slug": "6-day-northeast-india-tour-with-himalayas-trip-package",
       "destination_id": "dest_west_bengal",
@@ -30770,7 +30783,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_experience_the_beauty_of_sikkim_with_gangtok__5",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Experience the Beauty of Sikkim with Gangtok Trip Package",
       "slug": "experience-the-beauty-of-sikkim-with-gangtok-trip-package",
       "destination_id": "dest_darjeeling",
@@ -30824,7 +30837,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_romantic_getaway_in_the_hills_with_himalayan__6",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Romantic Getaway in the Hills with Himalayan Honeymoon Package",
       "slug": "romantic-getaway-in-the-hills-with-himalayan-honeymoon-package",
       "destination_id": "dest_darjeeling",
@@ -30879,7 +30892,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_romantic_and_serenity_with_darjeeling_honeymo_7",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Romantic and Serenity with Darjeeling Honeymoon Package",
       "slug": "romantic-and-serenity-with-darjeeling-honeymoon-package",
       "destination_id": "dest_darjeeling",
@@ -30934,7 +30947,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_sikkims_beauty_with_our_detailed_gan_5",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover Sikkim’s Beauty with Our Detailed Gangtok Honeymoon Package",
       "slug": "discover-sikkims-beauty-with-our-detailed-gangtok-honeymoon-package",
       "destination_id": "dest_west_bengal",
@@ -30990,7 +31003,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_enjoy_water_sports_and_beaches_with_an_coasta_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Enjoy Water Sports and Beaches with an Coastal Bliss Goa Travel Package",
       "slug": "enjoy-water-sports-and-beaches-with-an-coastal-bliss-goa-travel-package",
       "destination_id": "dest_goa",
@@ -31045,7 +31058,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_romantic_candlelight_dinners_and_beach_walks__1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Romantic Candlelight Dinners and Beach Walks with a Goa Honeymoon Tour Package",
       "slug": "romantic-candlelight-dinners-and-beach-walks-with-a-goa-honeymoon-tour-package",
       "destination_id": "dest_goa",
@@ -31100,7 +31113,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_relaxing_coorg_trip_package_with_hill_views_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Relaxing Coorg Trip Package with Hill Views",
       "slug": "relaxing-coorg-trip-package-with-hill-views",
       "destination_id": "dest_karnataka",
@@ -31154,7 +31167,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_mysore_vacation_package_including_kodaikanal__1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Mysore Vacation Package Including Kodaikanal Hills",
       "slug": "mysore-vacation-package-including-kodaikanal-hills",
       "destination_id": "dest_karnataka",
@@ -31211,7 +31224,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_tirupathi_tour_package_for_spiritual_and_scen_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Tirupathi Tour Package for Spiritual and Scenic Travel",
       "slug": "tirupathi-tour-package-for-spiritual-and-scenic-travel",
       "destination_id": "dest_karnataka",
@@ -31270,7 +31283,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_coorg_honeymoon_tour_package_for_romantic_get_3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Coorg Honeymoon Tour Package for Romantic Getaway",
       "slug": "coorg-honeymoon-tour-package-for-romantic-getaway",
       "destination_id": "dest_karnataka",
@@ -31326,7 +31339,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_4_days_pune_mahabaleshwar_trip_package_itiner_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "4-Days Pune Mahabaleshwar Trip Package Itinerary for a Refreshing Getaway",
       "slug": "4-days-pune-mahabaleshwar-trip-package-itinerary-for-a-refreshing-getaway",
       "destination_id": "dest_maharashtra",
@@ -31373,7 +31386,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_7_day_kochi_honeymoon_tour_package_for_a_perf_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "7-Day Kochi Honeymoon Tour Package for a Perfect Romantic Escape",
       "slug": "7-day-kochi-honeymoon-tour-package-for-a-perfect-romantic-escape",
       "destination_id": "dest_explore_keralas_scenic_beauty_with_the_munnar_tour_package_for_nature_lovers",
@@ -31421,7 +31434,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_kerala_backwater_tour_package_peaceful_and_na_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Kerala Backwater Tour Package Peaceful and Nature Getaways with Houseboat Stay and Backwater Cruise",
       "slug": "kerala-backwater-tour-package-peaceful-and-nature-with-houseboat-stay-and-backwater-cruise",
       "destination_id": "dest_kochi",
@@ -31476,7 +31489,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_keralas_scenic_beauty_with_the_munnar_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Kerala’s Scenic Beauty with the Munnar Tour Package for Nature Lovers",
       "slug": "explore-keralas-scenic-beauty-with-the-munnar-tour-package-for-nature-lovers",
       "destination_id": "dest_kochi",
@@ -31533,7 +31546,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_keralas_backwaters_with_the_alleppey__3",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Kerala’s Backwaters with the Alleppey Tour Package",
       "slug": "explore-keralas-backwaters-with-the-alleppey-tour-package",
       "destination_id": "dest_kochi",
@@ -31588,7 +31601,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_relaxing_and_romantic_munnar_honeymoon_packag_4",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Relaxing and Romantic Munnar Honeymoon Package in Kerala",
       "slug": "relaxing-and-romantic-munnar-honeymoon-package-in-kerala",
       "destination_id": "dest_kochi",
@@ -31644,7 +31657,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_gods_own_country_with_our_kerala_hone_5",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore God’s Own Country with Our Kerala Honeymoon Package",
       "slug": "explore-gods-own-country-with-our-kerala-honeymoon-package",
       "destination_id": "dest_kochi",
@@ -31701,7 +31714,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_keralas_greenery_with_our_thekkady_t_6",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover Kerala’s Greenery with Our Thekkady Tour Package",
       "slug": "discover-keralas-greenery-with-our-thekkady-tour-package",
       "destination_id": "dest_kochi",
@@ -31756,7 +31769,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_beaches_backwaters_and_wildlife_with__7",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Beaches, Backwaters, and Wildlife with Kerala Vacation Package",
       "slug": "explore-beaches-backwaters-and-wildlife-with-kerala-vacation-package",
       "destination_id": "dest_kochi",
@@ -31814,7 +31827,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_5_days_mumbai_vacation_package_with_temple_vi_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "5-Days Mumbai Vacation Package with Temple Visits and Cave Exploration",
       "slug": "5-days-mumbai-vacation-package-with-temple-visits-and-cave-exploration",
       "destination_id": "dest_mumbai",
@@ -31863,7 +31876,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_scenic_and_romantic_thekkady_honeymoon_packag_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Scenic and Romantic Thekkady Honeymoon Package",
       "slug": "scenic-and-romantic-thekkady-honeymoon-package",
       "destination_id": "dest_explore_keralas_scenic_beauty_with_the_munnar_tour_package_for_nature_lovers",
@@ -31918,7 +31931,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_romantic_alleppey_honeymoon_package_with_hous_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Romantic Alleppey Honeymoon Package with Houseboat Experience",
       "slug": "romantic-alleppey-honeymoon-package-with-houseboat-experience",
       "destination_id": "dest_explore_keralas_scenic_beauty_with_the_munnar_tour_package_for_nature_lovers",
@@ -31974,7 +31987,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_keralas_forests_and_hills_with_wayana_9",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore Kerala’s Forests and Hills with Wayanad Tour Package",
       "slug": "explore-keralas-forests-and-hills-with-wayanad-tour-package",
       "destination_id": "dest_explore_keralas_scenic_beauty_with_the_munnar_tour_package_for_nature_lovers",
@@ -32027,7 +32040,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_amazing_4_days_3_nights_hyderabad_trip_packag_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Amazing 4 Days 3 Nights Hyderabad Trip Package",
       "slug": "amazing-4-days-3-nights-hyderabad-trip-package",
       "destination_id": "dest_hyderabad",
@@ -32077,7 +32090,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_discover_south_india_heritage_with_madurai_to_0",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Discover South India Heritage with Madurai Tour Package",
       "slug": "discover-south-india-heritage-with-madurai-tour-package",
       "destination_id": "dest_tamil_nadu",
@@ -32134,7 +32147,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_explore_the_princess_of_hills_stations_with_o_1",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Explore the Princess of Hills Stations with Our Kodaikanal Tour Package",
       "slug": "explore-the-princess-of-hills-stations-with-our-kodaikanal-tour-package",
       "destination_id": "dest_tamil_nadu",
@@ -32188,7 +32201,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_rameshwaram_tour_package_with_spiritual_exper_2",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "title": "Rameshwaram Tour Package with Spiritual Experiences",
       "slug": "rameshwaram-tour-package-with-spiritual-experiences",
       "destination_id": "dest_tamil_nadu",
@@ -32244,7 +32257,7 @@ export const fallbackData: any = {
     },
     {
       "id": "pkg_ayodhya_spiritual_essence",
-      "agency_id": "agency_001",
+      "agency_id": "agency_travel_genie",
       "destination_id": "dest_ayodhya",
       "title": "Experience the Spiritual Essence of India with the Ayodhya Tour Package",
       "slug": "experience-the-spiritual-essence-of-india-with-the-ayodhya-tour-package",
@@ -36730,6 +36743,136 @@ export const fallbackData: any = {
       "starting_location": "Origin City",
       "ending_location": "Origin City",
       "original_source_url": "https://tripbygenie.in/maldives/"
+    },
+    {
+      "id": "pkg_andaman_coral_escape",
+      "agency_id": "agency_travel_genie",
+      "title": "Exotic Andaman: Havelock & Radhanagar Beach Coral Escape",
+      "slug": "exotic-andaman-havelock-radhanagar-beach-coral-escape",
+      "destination_id": "dest_andaman",
+      "destination": "Andaman & Nicobar",
+      "category": "Domestic Holiday Packages",
+      "duration_days": 5,
+      "duration_nights": 4,
+      "public_price": 28500,
+      "wholesale_price": 22800,
+      "cover_image": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1000&q=80",
+      "description": "White sand shores of Radhanagar Beach, crystal-clear waters at Elephant Beach, and historic Cellular Jail in Port Blair.",
+      "highlights": [
+        "Radhanagar Beach Sunset Walk",
+        "Makruzz Catamaran Cruise to Havelock",
+        "Snorkelling at Elephant Beach",
+        "Cellular Jail Sound & Light Show"
+      ],
+      "inclusions": [
+        "4 Nights premium hotel stay",
+        "Daily breakfast & dinner",
+        "Private AC transfers",
+        "Ferry cruise tickets"
+      ],
+      "exclusions": [
+        "Airfare to Port Blair",
+        "Personal expenses",
+        "Scuba diving photography"
+      ],
+      "accommodation": "4-Star Symphony Palms Havelock / SeaShell Port Blair",
+      "transportation": "Private AC vehicle throughout",
+      "is_featured": false,
+      "is_published": true,
+      "is_group_tour": false,
+      "available_seats": 16,
+      "upcoming_date": "2026-12-18",
+      "starting_location": "",
+      "ending_location": "",
+      "destinations_covered": [],
+      "updated_at": "2026-11-23T11:10:26.589Z"
+    },
+    {
+      "id": "pkg_andaman_honeymoon_paradise",
+      "agency_id": "agency_travel_genie",
+      "title": "Romantic Andaman: Private Pool Villa & Island Hopping Getaway",
+      "slug": "romantic-andaman-private-pool-villa-island-hopping",
+      "destination_id": "dest_andaman",
+      "destination": "Andaman & Nicobar",
+      "category": "Honeymoon Packages",
+      "duration_days": 6,
+      "duration_nights": 5,
+      "public_price": 42000,
+      "wholesale_price": 33600,
+      "cover_image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=80",
+      "description": "Candlelight beach dining, private luxury beachfront cabanas on Neil & Havelock Islands, and romantic photography.",
+      "highlights": [
+        "Private Candlelight Beach Dinner",
+        "Neil Island Coral Bridge & Sunset",
+        "Honeymoon Cake & Floral Bed Decor",
+        "Private Speedboat Excursion"
+      ],
+      "inclusions": [
+        "5 Nights luxury resort accommodation",
+        "Daily breakfast & candlelight dinner",
+        "Private AC luxury car",
+        "Complimentary watersports"
+      ],
+      "exclusions": [
+        "Flights",
+        "Personal shopping"
+      ],
+      "accommodation": "Barefoot at Havelock / TSG Blue Resort Neil",
+      "transportation": "Private AC chauffeur vehicle",
+      "is_featured": false,
+      "is_published": true,
+      "is_group_tour": false,
+      "available_seats": 10,
+      "upcoming_date": "2026-12-20",
+      "starting_location": "",
+      "ending_location": "",
+      "destinations_covered": [],
+      "updated_at": "2026-11-23T11:10:16.853Z"
+    },
+    {
+      "id": "pkg_andaman_group_explorer",
+      "agency_id": "agency_travel_genie",
+      "title": "Andaman Island Explorer (Guaranteed Group Departure)",
+      "slug": "andaman-island-explorer-guaranteed-group-departure",
+      "destination_id": "dest_andaman",
+      "destination": "Andaman & Nicobar",
+      "category": "Group Tours",
+      "duration_days": 5,
+      "duration_nights": 4,
+      "public_price": 26000,
+      "wholesale_price": 20800,
+      "cover_image": "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1000&q=80",
+      "description": "Fixed departure group tour with dedicated South Indian tour escort, comfortable AC buses, all meals, and Havelock cruise.",
+      "highlights": [
+        "100% Guaranteed Group Departure",
+        "Pure South Indian & Jain Meals",
+        "Havelock Island AC Ferry",
+        "Dedicated Tour Manager"
+      ],
+      "inclusions": [
+        "4 Nights 4-star stays",
+        "All meals (Breakfast",
+        "Lunch",
+        "Dinner)",
+        "Sightseeing & Ferry tickets",
+        "Tour escort"
+      ],
+      "exclusions": [
+        "Airfare",
+        "Personal watersports"
+      ],
+      "accommodation": "Handpicked 4-star group hotels",
+      "transportation": "Luxury AC Coach / Tempo Traveller",
+      "is_featured": false,
+      "is_published": true,
+      "is_group_tour": true,
+      "available_seats": 12,
+      "total_seats": 24,
+      "upcoming_date": "2026-12-28",
+      "starting_location": "",
+      "ending_location": "",
+      "destinations_covered": [],
+      "updated_at": "2026-11-23T11:10:09.365Z"
     }
   ],
   "package_itineraries": [
@@ -66963,6 +67106,182 @@ export const fallbackData: any = {
       "description": "India and Maldives share a long-standing relationship built on cultural, historical, and geographical ties. Due to its proximity, India has always been one of the Maldives’ strongest partners in trade, tourism, and defense cooperation. Indian travelers form a large part of the Maldives’ tourist population, making it one of the top source markets. Both countries engage in joint security exercises, medical collaborations, and educational exchanges, strengthening their bilateral ties. For Indian tourists, easy flight connectivity and visa-on-arrival facilities make traveling to the Maldives seamless and convenient. The bond between the two nations continues to grow, enhancing tourism opportunities and mutual development.",
       "meals": "Breakfast Included",
       "activities": "Curated Guided Sightseeing"
+    },
+    {
+      "package_id": "pkg_andaman_group_explorer",
+      "day_number": 1,
+      "title": "Day 1: Itinerary Day",
+      "description": "Activities and itinerary details for Day 1.",
+      "meals": "Breakfast Included",
+      "activities": "Sightseeing",
+      "id": "pac_8475a42e97",
+      "created_at": "2026-11-23T11:10:09.589Z",
+      "updated_at": "2026-11-23T11:10:09.589Z"
+    },
+    {
+      "package_id": "pkg_andaman_group_explorer",
+      "day_number": 2,
+      "title": "Day 2: Itinerary Day",
+      "description": "Activities and itinerary details for Day 2.",
+      "meals": "Breakfast Included",
+      "activities": "Sightseeing",
+      "id": "pac_efb6204cea",
+      "created_at": "2026-11-23T11:10:09.764Z",
+      "updated_at": "2026-11-23T11:10:09.764Z"
+    },
+    {
+      "package_id": "pkg_andaman_group_explorer",
+      "day_number": 3,
+      "title": "Day 3: Itinerary Day",
+      "description": "Activities and itinerary details for Day 3.",
+      "meals": "Breakfast Included",
+      "activities": "Sightseeing",
+      "id": "pac_e61b7ef179",
+      "created_at": "2026-11-23T11:10:10.046Z",
+      "updated_at": "2026-11-23T11:10:10.046Z"
+    },
+    {
+      "package_id": "pkg_andaman_group_explorer",
+      "day_number": 4,
+      "title": "Day 4: Itinerary Day",
+      "description": "Activities and itinerary details for Day 4.",
+      "meals": "Breakfast Included",
+      "activities": "Sightseeing",
+      "id": "pac_c6439b434a",
+      "created_at": "2026-11-23T11:10:10.221Z",
+      "updated_at": "2026-11-23T11:10:10.221Z"
+    },
+    {
+      "package_id": "pkg_andaman_group_explorer",
+      "day_number": 5,
+      "title": "Day 5: Itinerary Day",
+      "description": "Activities and itinerary details for Day 5.",
+      "meals": "Breakfast Included",
+      "activities": "Sightseeing",
+      "id": "pac_2dd10e48bb",
+      "created_at": "2026-11-23T11:10:10.428Z",
+      "updated_at": "2026-11-23T11:10:10.428Z"
+    },
+    {
+      "package_id": "pkg_andaman_honeymoon_paradise",
+      "day_number": 1,
+      "title": "Day 1: Itinerary Day",
+      "description": "Activities and itinerary details for Day 1.",
+      "meals": "Breakfast Included",
+      "activities": "Sightseeing",
+      "id": "pac_05ca258933",
+      "created_at": "2026-11-23T11:10:17.096Z",
+      "updated_at": "2026-11-23T11:10:17.096Z"
+    },
+    {
+      "package_id": "pkg_andaman_honeymoon_paradise",
+      "day_number": 2,
+      "title": "Day 2: Itinerary Day",
+      "description": "Activities and itinerary details for Day 2.",
+      "meals": "Breakfast Included",
+      "activities": "Sightseeing",
+      "id": "pac_ccc9589d4d",
+      "created_at": "2026-11-23T11:10:17.287Z",
+      "updated_at": "2026-11-23T11:10:17.287Z"
+    },
+    {
+      "package_id": "pkg_andaman_honeymoon_paradise",
+      "day_number": 3,
+      "title": "Day 3: Itinerary Day",
+      "description": "Activities and itinerary details for Day 3.",
+      "meals": "Breakfast Included",
+      "activities": "Sightseeing",
+      "id": "pac_7eac04e0b3",
+      "created_at": "2026-11-23T11:10:17.464Z",
+      "updated_at": "2026-11-23T11:10:17.464Z"
+    },
+    {
+      "package_id": "pkg_andaman_honeymoon_paradise",
+      "day_number": 4,
+      "title": "Day 4: Itinerary Day",
+      "description": "Activities and itinerary details for Day 4.",
+      "meals": "Breakfast Included",
+      "activities": "Sightseeing",
+      "id": "pac_12d64e97f6",
+      "created_at": "2026-11-23T11:10:17.653Z",
+      "updated_at": "2026-11-23T11:10:17.653Z"
+    },
+    {
+      "package_id": "pkg_andaman_honeymoon_paradise",
+      "day_number": 5,
+      "title": "Day 5: Itinerary Day",
+      "description": "Activities and itinerary details for Day 5.",
+      "meals": "Breakfast Included",
+      "activities": "Sightseeing",
+      "id": "pac_25553062c8",
+      "created_at": "2026-11-23T11:10:17.814Z",
+      "updated_at": "2026-11-23T11:10:17.814Z"
+    },
+    {
+      "package_id": "pkg_andaman_honeymoon_paradise",
+      "day_number": 6,
+      "title": "Day 6: Itinerary Day",
+      "description": "Activities and itinerary details for Day 6.",
+      "meals": "Breakfast Included",
+      "activities": "Sightseeing",
+      "id": "pac_f046f83383",
+      "created_at": "2026-11-23T11:10:18.007Z",
+      "updated_at": "2026-11-23T11:10:18.007Z"
+    },
+    {
+      "package_id": "pkg_andaman_coral_escape",
+      "day_number": 1,
+      "title": "Day 1: Itinerary Day",
+      "description": "Activities and itinerary details for Day 1.",
+      "meals": "Breakfast Included",
+      "activities": "Sightseeing",
+      "id": "pac_b797d2157b",
+      "created_at": "2026-11-23T11:10:26.837Z",
+      "updated_at": "2026-11-23T11:10:26.837Z"
+    },
+    {
+      "package_id": "pkg_andaman_coral_escape",
+      "day_number": 2,
+      "title": "Day 2: Itinerary Day",
+      "description": "Activities and itinerary details for Day 2.",
+      "meals": "Breakfast Included",
+      "activities": "Sightseeing",
+      "id": "pac_1960d89611",
+      "created_at": "2026-11-23T11:10:27.018Z",
+      "updated_at": "2026-11-23T11:10:27.018Z"
+    },
+    {
+      "package_id": "pkg_andaman_coral_escape",
+      "day_number": 3,
+      "title": "Day 3: Itinerary Day",
+      "description": "Activities and itinerary details for Day 3.",
+      "meals": "Breakfast Included",
+      "activities": "Sightseeing",
+      "id": "pac_104c4db83b",
+      "created_at": "2026-11-23T11:10:27.256Z",
+      "updated_at": "2026-11-23T11:10:27.256Z"
+    },
+    {
+      "package_id": "pkg_andaman_coral_escape",
+      "day_number": 4,
+      "title": "Day 4: Itinerary Day",
+      "description": "Activities and itinerary details for Day 4.",
+      "meals": "Breakfast Included",
+      "activities": "Sightseeing",
+      "id": "pac_3fcfd7c178",
+      "created_at": "2026-11-23T11:10:27.465Z",
+      "updated_at": "2026-11-23T11:10:27.465Z"
+    },
+    {
+      "package_id": "pkg_andaman_coral_escape",
+      "day_number": 5,
+      "title": "Day 5: Itinerary Day",
+      "description": "Activities and itinerary details for Day 5.",
+      "meals": "Breakfast Included",
+      "activities": "Sightseeing",
+      "id": "pac_75b586c75a",
+      "created_at": "2026-11-23T11:10:27.702Z",
+      "updated_at": "2026-11-23T11:10:27.702Z"
     }
   ],
   "leads": [],
@@ -67330,222 +67649,222 @@ export const fallbackData: any = {
   ],
   "testimonials": [
     {
-        "id": "test_1",
-        "agency_id": "agency_travel_genie",
-        "customer_name": "Joe Ram",
-        "customer_image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
-        "destination": "Bangkok & Pattaya, Thailand",
-        "rating": 5,
-        "comment": "Our trip to Bangkok and Pattaya was beautifully arranged by the agency. From airport pickup to hotel stays and sightseeing, everything was well planned and smooth. The team was very supportive and quick to respond to our needs.\nWe truly enjoyed the experience - thank you for the great service!",
-        "review_text": "Our trip to Bangkok and Pattaya was beautifully arranged by the agency. From airport pickup to hotel stays and sightseeing, everything was well planned and smooth. The team was very supportive and quick to respond to our needs.\nWe truly enjoyed the experience - thank you for the great service!",
-        "is_published": true,
-        "created_at": "2026-11-23T06:06:20.684Z"
+      "id": "test_1",
+      "agency_id": "agency_travel_genie",
+      "customer_name": "Joe Ram",
+      "customer_image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
+      "destination": "Bangkok & Pattaya, Thailand",
+      "rating": 5,
+      "comment": "Our trip to Bangkok and Pattaya was beautifully arranged by the agency. From airport pickup to hotel stays and sightseeing, everything was well planned and smooth. The team was very supportive and quick to respond to our needs.\nWe truly enjoyed the experience - thank you for the great service!",
+      "review_text": "Our trip to Bangkok and Pattaya was beautifully arranged by the agency. From airport pickup to hotel stays and sightseeing, everything was well planned and smooth. The team was very supportive and quick to respond to our needs.\nWe truly enjoyed the experience - thank you for the great service!",
+      "is_published": true,
+      "created_at": "2026-11-23T06:06:20.684Z"
     },
     {
-        "id": "test_2",
-        "agency_id": "agency_travel_genie",
-        "customer_name": "Jasheena E",
-        "customer_image": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
-        "destination": "Bali, Indonesia",
-        "rating": 5,
-        "comment": "I recently booked my Bali trip with Trip by Genie, and it was an amazing experience! The entire trip was well-organized and truly worth it.\nA special thanks to Mr. Satish, who carefully planned the itinerary based on my preferences, ensuring a perfect balance of sightseeing, relaxation, and adventure. Everything, from the accommodations to the transport arrangements, was smooth and hassle-free.\nI highly recommend Trip by Genie for anyone looking for a well-planned and memorable vacation.",
-        "review_text": "I recently booked my Bali trip with Trip by Genie, and it was an amazing experience! The entire trip was well-organized and truly worth it.\nA special thanks to Mr. Satish, who carefully planned the itinerary based on my preferences, ensuring a perfect balance of sightseeing, relaxation, and adventure. Everything, from the accommodations to the transport arrangements, was smooth and hassle-free.\nI highly recommend Trip by Genie for anyone looking for a well-planned and memorable vacation.",
-        "is_published": true,
-        "created_at": "2026-11-20T06:06:20.686Z"
+      "id": "test_2",
+      "agency_id": "agency_travel_genie",
+      "customer_name": "Jasheena E",
+      "customer_image": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
+      "destination": "Bali, Indonesia",
+      "rating": 5,
+      "comment": "I recently booked my Bali trip with Trip by Genie, and it was an amazing experience! The entire trip was well-organized and truly worth it.\nA special thanks to Mr. Satish, who carefully planned the itinerary based on my preferences, ensuring a perfect balance of sightseeing, relaxation, and adventure. Everything, from the accommodations to the transport arrangements, was smooth and hassle-free.\nI highly recommend Trip by Genie for anyone looking for a well-planned and memorable vacation.",
+      "review_text": "I recently booked my Bali trip with Trip by Genie, and it was an amazing experience! The entire trip was well-organized and truly worth it.\nA special thanks to Mr. Satish, who carefully planned the itinerary based on my preferences, ensuring a perfect balance of sightseeing, relaxation, and adventure. Everything, from the accommodations to the transport arrangements, was smooth and hassle-free.\nI highly recommend Trip by Genie for anyone looking for a well-planned and memorable vacation.",
+      "is_published": true,
+      "created_at": "2026-11-20T06:06:20.686Z"
     },
     {
-        "id": "test_3",
-        "agency_id": "agency_travel_genie",
-        "customer_name": "Ramkumar R A N",
-        "customer_image": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80",
-        "destination": "Andaman & Nicobar Islands",
-        "rating": 5,
-        "comment": "We had been to Andaman trip through Trip by Genie. The experience was really commendable and the itinerary was planned so perfectly to suit our taste. We thoroughly enjoyed the trip. Every details were taken care and they were patient throughout when we made several changes. A premium experience within our budget. We thank Trip by Genie for such a memorable trip. We strongly recommend them for any travel plans. Do try once to get a similar experience....",
-        "review_text": "We had been to Andaman trip through Trip by Genie. The experience was really commendable and the itinerary was planned so perfectly to suit our taste. We thoroughly enjoyed the trip. Every details were taken care and they were patient throughout when we made several changes. A premium experience within our budget. We thank Trip by Genie for such a memorable trip. We strongly recommend them for any travel plans. Do try once to get a similar experience....",
-        "is_published": true,
-        "created_at": "2026-11-17T06:06:20.686Z"
+      "id": "test_3",
+      "agency_id": "agency_travel_genie",
+      "customer_name": "Ramkumar R A N",
+      "customer_image": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80",
+      "destination": "Andaman & Nicobar Islands",
+      "rating": 5,
+      "comment": "We had been to Andaman trip through Trip by Genie. The experience was really commendable and the itinerary was planned so perfectly to suit our taste. We thoroughly enjoyed the trip. Every details were taken care and they were patient throughout when we made several changes. A premium experience within our budget. We thank Trip by Genie for such a memorable trip. We strongly recommend them for any travel plans. Do try once to get a similar experience....",
+      "review_text": "We had been to Andaman trip through Trip by Genie. The experience was really commendable and the itinerary was planned so perfectly to suit our taste. We thoroughly enjoyed the trip. Every details were taken care and they were patient throughout when we made several changes. A premium experience within our budget. We thank Trip by Genie for such a memorable trip. We strongly recommend them for any travel plans. Do try once to get a similar experience....",
+      "is_published": true,
+      "created_at": "2026-11-17T06:06:20.686Z"
     },
     {
-        "id": "test_4",
-        "agency_id": "agency_travel_genie",
-        "customer_name": "Sulthanovic Pes",
-        "customer_image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80",
-        "destination": "Maldives Island Resort",
-        "rating": 5,
-        "comment": "We went to Maldivies through Trip by Genie, they helped me with the scheduling, booking, and follow-ups from the beginning to the end. We got the beach bungalow in the Maldives thanks to Vidhya's fantastic work. I suggest Vidhya if you're organizing your trip because of his extensive knowledge of travel and ability to customize it to fit our budget in the best possible way.",
-        "review_text": "We went to Maldivies through Trip by Genie, they helped me with the scheduling, booking, and follow-ups from the beginning to the end. We got the beach bungalow in the Maldives thanks to Vidhya's fantastic work. I suggest Vidhya if you're organizing your trip because of his extensive knowledge of travel and ability to customize it to fit our budget in the best possible way.",
-        "is_published": true,
-        "created_at": "2026-11-14T06:06:20.686Z"
+      "id": "test_4",
+      "agency_id": "agency_travel_genie",
+      "customer_name": "Sulthanovic Pes",
+      "customer_image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80",
+      "destination": "Maldives Island Resort",
+      "rating": 5,
+      "comment": "We went to Maldivies through Trip by Genie, they helped me with the scheduling, booking, and follow-ups from the beginning to the end. We got the beach bungalow in the Maldives thanks to Vidhya's fantastic work. I suggest Vidhya if you're organizing your trip because of his extensive knowledge of travel and ability to customize it to fit our budget in the best possible way.",
+      "review_text": "We went to Maldivies through Trip by Genie, they helped me with the scheduling, booking, and follow-ups from the beginning to the end. We got the beach bungalow in the Maldives thanks to Vidhya's fantastic work. I suggest Vidhya if you're organizing your trip because of his extensive knowledge of travel and ability to customize it to fit our budget in the best possible way.",
+      "is_published": true,
+      "created_at": "2026-11-14T06:06:20.686Z"
     },
     {
-        "id": "test_5",
-        "agency_id": "agency_travel_genie",
-        "customer_name": "Athira Aathi",
-        "customer_image": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80",
-        "destination": "Malaysia (KL & Langkawi)",
-        "rating": 5,
-        "comment": "This week, we went on a family tour of Malaysia, visiting Kuala Lumpur and Langkawi for a week.\nTrip by Genie created an excellent schedule, and their agent managed the daily itinerary effectively, providing good services in both KL and Langkawi. They provided assistance and guidance regarding local food and needs. Excellent services, just as I anticipated",
-        "review_text": "This week, we went on a family tour of Malaysia, visiting Kuala Lumpur and Langkawi for a week.\nTrip by Genie created an excellent schedule, and their agent managed the daily itinerary effectively, providing good services in both KL and Langkawi. They provided assistance and guidance regarding local food and needs. Excellent services, just as I anticipated",
-        "is_published": true,
-        "created_at": "2026-11-11T06:06:20.686Z"
+      "id": "test_5",
+      "agency_id": "agency_travel_genie",
+      "customer_name": "Athira Aathi",
+      "customer_image": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80",
+      "destination": "Malaysia (KL & Langkawi)",
+      "rating": 5,
+      "comment": "This week, we went on a family tour of Malaysia, visiting Kuala Lumpur and Langkawi for a week.\nTrip by Genie created an excellent schedule, and their agent managed the daily itinerary effectively, providing good services in both KL and Langkawi. They provided assistance and guidance regarding local food and needs. Excellent services, just as I anticipated",
+      "review_text": "This week, we went on a family tour of Malaysia, visiting Kuala Lumpur and Langkawi for a week.\nTrip by Genie created an excellent schedule, and their agent managed the daily itinerary effectively, providing good services in both KL and Langkawi. They provided assistance and guidance regarding local food and needs. Excellent services, just as I anticipated",
+      "is_published": true,
+      "created_at": "2026-11-11T06:06:20.686Z"
     },
     {
-        "id": "test_6",
-        "agency_id": "agency_travel_genie",
-        "customer_name": "Avinash",
-        "customer_image": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80",
-        "destination": "South India Holiday",
-        "rating": 5,
-        "comment": "We truly enjoyed every moment of this trip, and it has given us so many wonderful memories. We are very happy with the service provided by TBG and would definitely recommend them to anyone planning their holidays. Looking forward to our next trip with them! Thanks to Sathish.",
-        "review_text": "We truly enjoyed every moment of this trip, and it has given us so many wonderful memories. We are very happy with the service provided by TBG and would definitely recommend them to anyone planning their holidays. Looking forward to our next trip with them! Thanks to Sathish.",
-        "is_published": true,
-        "created_at": "2026-11-08T06:06:20.686Z"
+      "id": "test_6",
+      "agency_id": "agency_travel_genie",
+      "customer_name": "Avinash",
+      "customer_image": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80",
+      "destination": "South India Holiday",
+      "rating": 5,
+      "comment": "We truly enjoyed every moment of this trip, and it has given us so many wonderful memories. We are very happy with the service provided by TBG and would definitely recommend them to anyone planning their holidays. Looking forward to our next trip with them! Thanks to Sathish.",
+      "review_text": "We truly enjoyed every moment of this trip, and it has given us so many wonderful memories. We are very happy with the service provided by TBG and would definitely recommend them to anyone planning their holidays. Looking forward to our next trip with them! Thanks to Sathish.",
+      "is_published": true,
+      "created_at": "2026-11-08T06:06:20.686Z"
     },
     {
-        "id": "test_7",
-        "agency_id": "agency_travel_genie",
-        "customer_name": "Muhammed Rafi",
-        "customer_image": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=200&q=80",
-        "destination": "Kashmir Paradise Tour",
-        "rating": 5,
-        "comment": "We had a wonderful time in Kashmir, and Trip by Genie provided outstanding service from the time of booking to the end of our trip, with a great driver. Overall, TBG holiday service was excellent",
-        "review_text": "We had a wonderful time in Kashmir, and Trip by Genie provided outstanding service from the time of booking to the end of our trip, with a great driver. Overall, TBG holiday service was excellent",
-        "is_published": true,
-        "created_at": "2026-11-05T06:06:20.686Z"
+      "id": "test_7",
+      "agency_id": "agency_travel_genie",
+      "customer_name": "Muhammed Rafi",
+      "customer_image": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=200&q=80",
+      "destination": "Kashmir Paradise Tour",
+      "rating": 5,
+      "comment": "We had a wonderful time in Kashmir, and Trip by Genie provided outstanding service from the time of booking to the end of our trip, with a great driver. Overall, TBG holiday service was excellent",
+      "review_text": "We had a wonderful time in Kashmir, and Trip by Genie provided outstanding service from the time of booking to the end of our trip, with a great driver. Overall, TBG holiday service was excellent",
+      "is_published": true,
+      "created_at": "2026-11-05T06:06:20.686Z"
     },
     {
-        "id": "test_8",
-        "agency_id": "agency_travel_genie",
-        "customer_name": "Ninaivellam Nithya",
-        "customer_image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80",
-        "destination": "Kullu Manali Vacation",
-        "rating": 5,
-        "comment": "I went kulumanali for a family trip through this company and the service was so nice and the relationship with them was friendly though. I've recommended this company to my fellow mates for a wonderful experience and I'm also planning for a foreign trip with them.",
-        "review_text": "I went kulumanali for a family trip through this company and the service was so nice and the relationship with them was friendly though. I've recommended this company to my fellow mates for a wonderful experience and I'm also planning for a foreign trip with them.",
-        "is_published": true,
-        "created_at": "2026-11-02T06:06:20.686Z"
+      "id": "test_8",
+      "agency_id": "agency_travel_genie",
+      "customer_name": "Ninaivellam Nithya",
+      "customer_image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80",
+      "destination": "Kullu Manali Vacation",
+      "rating": 5,
+      "comment": "I went kulumanali for a family trip through this company and the service was so nice and the relationship with them was friendly though. I've recommended this company to my fellow mates for a wonderful experience and I'm also planning for a foreign trip with them.",
+      "review_text": "I went kulumanali for a family trip through this company and the service was so nice and the relationship with them was friendly though. I've recommended this company to my fellow mates for a wonderful experience and I'm also planning for a foreign trip with them.",
+      "is_published": true,
+      "created_at": "2026-11-02T06:06:20.686Z"
     },
     {
-        "id": "test_9",
-        "agency_id": "agency_travel_genie",
-        "customer_name": "Srinivas Sriram",
-        "customer_image": "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=200&q=80",
-        "destination": "Thailand Getaway",
-        "rating": 5,
-        "comment": "I recently booked a trip to Thailand for a few day the staff were amazing and very skilled in handling situations and we were very pleased with the trip got amazing price deals I would greatly recommend this company if you are planning to go anywhere",
-        "review_text": "I recently booked a trip to Thailand for a few day the staff were amazing and very skilled in handling situations and we were very pleased with the trip got amazing price deals I would greatly recommend this company if you are planning to go anywhere",
-        "is_published": true,
-        "created_at": "2026-10-30T06:06:20.686Z"
+      "id": "test_9",
+      "agency_id": "agency_travel_genie",
+      "customer_name": "Srinivas Sriram",
+      "customer_image": "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=200&q=80",
+      "destination": "Thailand Getaway",
+      "rating": 5,
+      "comment": "I recently booked a trip to Thailand for a few day the staff were amazing and very skilled in handling situations and we were very pleased with the trip got amazing price deals I would greatly recommend this company if you are planning to go anywhere",
+      "review_text": "I recently booked a trip to Thailand for a few day the staff were amazing and very skilled in handling situations and we were very pleased with the trip got amazing price deals I would greatly recommend this company if you are planning to go anywhere",
+      "is_published": true,
+      "created_at": "2026-10-30T06:06:20.686Z"
     },
     {
-        "id": "test_10",
-        "agency_id": "agency_travel_genie",
-        "customer_name": "Shannu Ps",
-        "customer_image": "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=200&q=80",
-        "destination": "Goa Beach Holiday",
-        "rating": 5,
-        "comment": "Last month I went Goa.it's a such a beautiful place we doens't know about this place .this travel agency helped in all ways.an particular spl thanx to mrs. vidya ram ..an we got good experience.an i refered to my friends circle I future we will follow this travel agency marvellous 👍 thank you all",
-        "review_text": "Last month I went Goa.it's a such a beautiful place we doens't know about this place .this travel agency helped in all ways.an particular spl thanx to mrs. vidya ram ..an we got good experience.an i refered to my friends circle I future we will follow this travel agency marvellous 👍 thank you all",
-        "is_published": true,
-        "created_at": "2026-10-27T06:06:20.686Z"
+      "id": "test_10",
+      "agency_id": "agency_travel_genie",
+      "customer_name": "Shannu Ps",
+      "customer_image": "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=200&q=80",
+      "destination": "Goa Beach Holiday",
+      "rating": 5,
+      "comment": "Last month I went Goa.it's a such a beautiful place we doens't know about this place .this travel agency helped in all ways.an particular spl thanx to mrs. vidya ram ..an we got good experience.an i refered to my friends circle I future we will follow this travel agency marvellous 👍 thank you all",
+      "review_text": "Last month I went Goa.it's a such a beautiful place we doens't know about this place .this travel agency helped in all ways.an particular spl thanx to mrs. vidya ram ..an we got good experience.an i refered to my friends circle I future we will follow this travel agency marvellous 👍 thank you all",
+      "is_published": true,
+      "created_at": "2026-10-27T06:06:20.686Z"
     },
     {
-        "id": "test_11",
-        "agency_id": "agency_travel_genie",
-        "customer_name": "Sharon Preethi",
-        "customer_image": "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=200&q=80",
-        "destination": "Vietnam Honeymoon & Da Nang",
-        "rating": 5,
-        "comment": "We had an amazing experience with Trip by Genie for our Vietnam trip! From start to finish, their team made everything smooth, even with our chaotic start of missed and delayed flights. Despite the hiccups, they ensured every detail was taken care of, from airport pickups to accommodations.\n\nThe itinerary was thoughtfully planned. Every place we visited, from the bustling streets of Da Nang to the breathtaking Bana Hills with its alpine coasters, sculptures, and hilltop castles, felt magical. I was especially impressed by how attentive they were to our needs, making our honeymoon truly stress-free and memorable.\n\nHighly recommend Trip by Genie if you want a hassle-free, personalized travel experience in Vietnam.",
-        "review_text": "We had an amazing experience with Trip by Genie for our Vietnam trip! From start to finish, their team made everything smooth, even with our chaotic start of missed and delayed flights. Despite the hiccups, they ensured every detail was taken care of, from airport pickups to accommodations.\n\nThe itinerary was thoughtfully planned. Every place we visited, from the bustling streets of Da Nang to the breathtaking Bana Hills with its alpine coasters, sculptures, and hilltop castles, felt magical. I was especially impressed by how attentive they were to our needs, making our honeymoon truly stress-free and memorable.\n\nHighly recommend Trip by Genie if you want a hassle-free, personalized travel experience in Vietnam.",
-        "is_published": true,
-        "created_at": "2026-10-24T06:06:20.686Z"
+      "id": "test_11",
+      "agency_id": "agency_travel_genie",
+      "customer_name": "Sharon Preethi",
+      "customer_image": "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=200&q=80",
+      "destination": "Vietnam Honeymoon & Da Nang",
+      "rating": 5,
+      "comment": "We had an amazing experience with Trip by Genie for our Vietnam trip! From start to finish, their team made everything smooth, even with our chaotic start of missed and delayed flights. Despite the hiccups, they ensured every detail was taken care of, from airport pickups to accommodations.\n\nThe itinerary was thoughtfully planned. Every place we visited, from the bustling streets of Da Nang to the breathtaking Bana Hills with its alpine coasters, sculptures, and hilltop castles, felt magical. I was especially impressed by how attentive they were to our needs, making our honeymoon truly stress-free and memorable.\n\nHighly recommend Trip by Genie if you want a hassle-free, personalized travel experience in Vietnam.",
+      "review_text": "We had an amazing experience with Trip by Genie for our Vietnam trip! From start to finish, their team made everything smooth, even with our chaotic start of missed and delayed flights. Despite the hiccups, they ensured every detail was taken care of, from airport pickups to accommodations.\n\nThe itinerary was thoughtfully planned. Every place we visited, from the bustling streets of Da Nang to the breathtaking Bana Hills with its alpine coasters, sculptures, and hilltop castles, felt magical. I was especially impressed by how attentive they were to our needs, making our honeymoon truly stress-free and memorable.\n\nHighly recommend Trip by Genie if you want a hassle-free, personalized travel experience in Vietnam.",
+      "is_published": true,
+      "created_at": "2026-10-24T06:06:20.686Z"
     },
     {
-        "id": "test_12",
-        "agency_id": "agency_travel_genie",
-        "customer_name": "N Ajay Bharath",
-        "customer_image": "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=200&q=80",
-        "destination": "Thailand & Malaysia Tour",
-        "rating": 5,
-        "comment": "It’s best to book your trips with trip by genie.Thank you Vidya mam for helping me throughout my trip to Thailand and Malaysia.",
-        "review_text": "It’s best to book your trips with trip by genie.Thank you Vidya mam for helping me throughout my trip to Thailand and Malaysia.",
-        "is_published": true,
-        "created_at": "2026-10-21T06:06:20.686Z"
+      "id": "test_12",
+      "agency_id": "agency_travel_genie",
+      "customer_name": "N Ajay Bharath",
+      "customer_image": "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=200&q=80",
+      "destination": "Thailand & Malaysia Tour",
+      "rating": 5,
+      "comment": "It’s best to book your trips with trip by genie.Thank you Vidya mam for helping me throughout my trip to Thailand and Malaysia.",
+      "review_text": "It’s best to book your trips with trip by genie.Thank you Vidya mam for helping me throughout my trip to Thailand and Malaysia.",
+      "is_published": true,
+      "created_at": "2026-10-21T06:06:20.686Z"
     },
     {
-        "id": "test_13",
-        "agency_id": "agency_travel_genie",
-        "customer_name": "Arun Govind K",
-        "customer_image": "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=200&q=80",
-        "destination": "Family Holiday Tour",
-        "rating": 5,
-        "comment": "Thank you all for your support and coordination. We had a wonderful time, and the trip was well-organized. I appreciate the efforts of everyone involved. We'll definitely consider 'Trip by Genie' for our future travels.",
-        "review_text": "Thank you all for your support and coordination. We had a wonderful time, and the trip was well-organized. I appreciate the efforts of everyone involved. We'll definitely consider 'Trip by Genie' for our future travels.",
-        "is_published": true,
-        "created_at": "2026-10-18T06:06:20.686Z"
+      "id": "test_13",
+      "agency_id": "agency_travel_genie",
+      "customer_name": "Arun Govind K",
+      "customer_image": "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=200&q=80",
+      "destination": "Family Holiday Tour",
+      "rating": 5,
+      "comment": "Thank you all for your support and coordination. We had a wonderful time, and the trip was well-organized. I appreciate the efforts of everyone involved. We'll definitely consider 'Trip by Genie' for our future travels.",
+      "review_text": "Thank you all for your support and coordination. We had a wonderful time, and the trip was well-organized. I appreciate the efforts of everyone involved. We'll definitely consider 'Trip by Genie' for our future travels.",
+      "is_published": true,
+      "created_at": "2026-10-18T06:06:20.686Z"
     },
     {
-        "id": "test_14",
-        "agency_id": "agency_travel_genie",
-        "customer_name": "Prasath Srinivas",
-        "customer_image": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=200&q=80",
-        "destination": "Vietnam Adventure & Da Nang",
-        "rating": 5,
-        "comment": "We had an amazing experience booking our Vietnam trip through Trip by Genie. Everything was handled with so much care and attention to detail, from visa arrangements and hotel bookings to daily planning. Even when our travel schedule got delayed, they went out of their way to adjust our hotel reservations and ensure everything went smoothly.\n\nThey also helped us with currency exchange, which made things so much easier once we arrived. The Indian and Local Vietnam team were always responsive, kind, and genuinely invested in making sure we had the best possible experience.\n\nThank you Ms. Vidhya Ram and Team for your constant support and for turning what could have been a stressful trip into a beautiful and memorable one. Highly recommend them to anyone planning a hassle-free vacation.",
-        "review_text": "We had an amazing experience booking our Vietnam trip through Trip by Genie. Everything was handled with so much care and attention to detail, from visa arrangements and hotel bookings to daily planning. Even when our travel schedule got delayed, they went out of their way to adjust our hotel reservations and ensure everything went smoothly.\n\nThey also helped us with currency exchange, which made things so much easier once we arrived. The Indian and Local Vietnam team were always responsive, kind, and genuinely invested in making sure we had the best possible experience.\n\nThank you Ms. Vidhya Ram and Team for your constant support and for turning what could have been a stressful trip into a beautiful and memorable one. Highly recommend them to anyone planning a hassle-free vacation.",
-        "is_published": true,
-        "created_at": "2026-10-15T06:06:20.686Z"
+      "id": "test_14",
+      "agency_id": "agency_travel_genie",
+      "customer_name": "Prasath Srinivas",
+      "customer_image": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=200&q=80",
+      "destination": "Vietnam Adventure & Da Nang",
+      "rating": 5,
+      "comment": "We had an amazing experience booking our Vietnam trip through Trip by Genie. Everything was handled with so much care and attention to detail, from visa arrangements and hotel bookings to daily planning. Even when our travel schedule got delayed, they went out of their way to adjust our hotel reservations and ensure everything went smoothly.\n\nThey also helped us with currency exchange, which made things so much easier once we arrived. The Indian and Local Vietnam team were always responsive, kind, and genuinely invested in making sure we had the best possible experience.\n\nThank you Ms. Vidhya Ram and Team for your constant support and for turning what could have been a stressful trip into a beautiful and memorable one. Highly recommend them to anyone planning a hassle-free vacation.",
+      "review_text": "We had an amazing experience booking our Vietnam trip through Trip by Genie. Everything was handled with so much care and attention to detail, from visa arrangements and hotel bookings to daily planning. Even when our travel schedule got delayed, they went out of their way to adjust our hotel reservations and ensure everything went smoothly.\n\nThey also helped us with currency exchange, which made things so much easier once we arrived. The Indian and Local Vietnam team were always responsive, kind, and genuinely invested in making sure we had the best possible experience.\n\nThank you Ms. Vidhya Ram and Team for your constant support and for turning what could have been a stressful trip into a beautiful and memorable one. Highly recommend them to anyone planning a hassle-free vacation.",
+      "is_published": true,
+      "created_at": "2026-10-15T06:06:20.686Z"
     },
     {
-        "id": "test_15",
-        "agency_id": "agency_travel_genie",
-        "customer_name": "Prasath",
-        "customer_image": "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80",
-        "destination": "Vietnam Group Tour",
-        "rating": 5,
-        "comment": "We booked our Vietnam trip through Trip by Genie, and I couldn’t be happier with how seamless everything was! From the visa process to hotel bookings and daily itineraries, every detail was handled perfectly. The team was always reachable, patient with our endless questions, and quick to assist whenever we needed support during the trip.\n\nIf you’re looking for a travel agency that genuinely cares about your experience rather than just booking tickets, Trip by Genie is the one. Thank you for making our trip so smooth and memorable! 🌏✈️",
-        "review_text": "We booked our Vietnam trip through Trip by Genie, and I couldn’t be happier with how seamless everything was! From the visa process to hotel bookings and daily itineraries, every detail was handled perfectly. The team was always reachable, patient with our endless questions, and quick to assist whenever we needed support during the trip.\n\nIf you’re looking for a travel agency that genuinely cares about your experience rather than just booking tickets, Trip by Genie is the one. Thank you for making our trip so smooth and memorable! 🌏✈️",
-        "is_published": true,
-        "created_at": "2026-10-12T06:06:20.686Z"
+      "id": "test_15",
+      "agency_id": "agency_travel_genie",
+      "customer_name": "Prasath",
+      "customer_image": "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80",
+      "destination": "Vietnam Group Tour",
+      "rating": 5,
+      "comment": "We booked our Vietnam trip through Trip by Genie, and I couldn’t be happier with how seamless everything was! From the visa process to hotel bookings and daily itineraries, every detail was handled perfectly. The team was always reachable, patient with our endless questions, and quick to assist whenever we needed support during the trip.\n\nIf you’re looking for a travel agency that genuinely cares about your experience rather than just booking tickets, Trip by Genie is the one. Thank you for making our trip so smooth and memorable! 🌏✈️",
+      "review_text": "We booked our Vietnam trip through Trip by Genie, and I couldn’t be happier with how seamless everything was! From the visa process to hotel bookings and daily itineraries, every detail was handled perfectly. The team was always reachable, patient with our endless questions, and quick to assist whenever we needed support during the trip.\n\nIf you’re looking for a travel agency that genuinely cares about your experience rather than just booking tickets, Trip by Genie is the one. Thank you for making our trip so smooth and memorable! 🌏✈️",
+      "is_published": true,
+      "created_at": "2026-10-12T06:06:20.686Z"
     },
     {
-        "id": "test_16",
-        "agency_id": "agency_travel_genie",
-        "customer_name": "Mani Kandan 96",
-        "customer_image": "https://images.unsplash.com/photo-1527980965255-d3b416303d12?auto=format&fit=crop&w=200&q=80",
-        "destination": "South India Customized Trip",
-        "rating": 5,
-        "comment": "It was a beautiful experience. From the start of the trip plan till the end Vidhya ma’am was very friendly and informative. My trip went peacefully. Driver was so nice person his driving was good, punctual, room arrangements were so good, even if had any problems they sorted out immediately. Overall I prefer this travel agency.",
-        "review_text": "It was a beautiful experience. From the start of the trip plan till the end Vidhya ma’am was very friendly and informative. My trip went peacefully. Driver was so nice person his driving was good, punctual, room arrangements were so good, even if had any problems they sorted out immediately. Overall I prefer this travel agency.",
-        "is_published": true,
-        "created_at": "2026-10-09T06:06:20.686Z"
+      "id": "test_16",
+      "agency_id": "agency_travel_genie",
+      "customer_name": "Mani Kandan 96",
+      "customer_image": "https://images.unsplash.com/photo-1527980965255-d3b416303d12?auto=format&fit=crop&w=200&q=80",
+      "destination": "South India Customized Trip",
+      "rating": 5,
+      "comment": "It was a beautiful experience. From the start of the trip plan till the end Vidhya ma’am was very friendly and informative. My trip went peacefully. Driver was so nice person his driving was good, punctual, room arrangements were so good, even if had any problems they sorted out immediately. Overall I prefer this travel agency.",
+      "review_text": "It was a beautiful experience. From the start of the trip plan till the end Vidhya ma’am was very friendly and informative. My trip went peacefully. Driver was so nice person his driving was good, punctual, room arrangements were so good, even if had any problems they sorted out immediately. Overall I prefer this travel agency.",
+      "is_published": true,
+      "created_at": "2026-10-09T06:06:20.686Z"
     },
     {
-        "id": "test_17",
-        "agency_id": "agency_travel_genie",
-        "customer_name": "Ram Sathish",
-        "customer_image": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80",
-        "destination": "Singapore Family Holiday",
-        "rating": 5,
-        "comment": "Excellent service and great planning! Our Singapore family trip was seamless, with well-chosen hotels, clear guidance, and timely support. Truly appreciate the professionalism and commitment shown by Vidhya from Trip Genie. 👍👏",
-        "review_text": "Excellent service and great planning! Our Singapore family trip was seamless, with well-chosen hotels, clear guidance, and timely support. Truly appreciate the professionalism and commitment shown by Vidhya from Trip Genie. 👍👏",
-        "is_published": true,
-        "created_at": "2026-10-06T06:06:20.686Z"
+      "id": "test_17",
+      "agency_id": "agency_travel_genie",
+      "customer_name": "Ram Sathish",
+      "customer_image": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80",
+      "destination": "Singapore Family Holiday",
+      "rating": 5,
+      "comment": "Excellent service and great planning! Our Singapore family trip was seamless, with well-chosen hotels, clear guidance, and timely support. Truly appreciate the professionalism and commitment shown by Vidhya from Trip Genie. 👍👏",
+      "review_text": "Excellent service and great planning! Our Singapore family trip was seamless, with well-chosen hotels, clear guidance, and timely support. Truly appreciate the professionalism and commitment shown by Vidhya from Trip Genie. 👍👏",
+      "is_published": true,
+      "created_at": "2026-10-06T06:06:20.686Z"
     },
     {
-        "id": "test_18",
-        "agency_id": "agency_travel_genie",
-        "customer_name": "Hethi Sandy",
-        "customer_image": "https://tripbygenie.in/wp-content/uploads/2025/06/Website-images-20.png",
-        "destination": "Thailand Special Holiday",
-        "rating": 5,
-        "comment": "We recently went THAILAND TRIP it was so \"Safe travels!\" \"Enjoy!\" Sweet memories for us Trip by genies provided a great service, smooth logistics, or memorable experiences we got a Indian food, friendly guides, all well organised no flow i strongly recommend to all my friends and family in future also i definitely go with them 200% vidhya mam is so helpful for us throughout THANK YOU SO MUCH 😊\nBY\nHEMALATHA CHANDRAN\nSATHISH",
-        "review_text": "We recently went THAILAND TRIP it was so \"Safe travels!\" \"Enjoy!\" Sweet memories for us Trip by genies provided a great service, smooth logistics, or memorable experiences we got a Indian food, friendly guides, all well organised no flow i strongly recommend to all my friends and family in future also i definitely go with them 200% vidhya mam is so helpful for us throughout THANK YOU SO MUCH 😊\nBY\nHEMALATHA CHANDRAN\nSATHISH",
-        "is_published": true,
-        "created_at": "2026-10-03T06:06:20.686Z"
+      "id": "test_18",
+      "agency_id": "agency_travel_genie",
+      "customer_name": "Hethi Sandy",
+      "customer_image": "https://tripbygenie.in/wp-content/uploads/2025/06/Website-images-20.png",
+      "destination": "Thailand Special Holiday",
+      "rating": 5,
+      "comment": "We recently went THAILAND TRIP it was so \"Safe travels!\" \"Enjoy!\" Sweet memories for us Trip by genies provided a great service, smooth logistics, or memorable experiences we got a Indian food, friendly guides, all well organised no flow i strongly recommend to all my friends and family in future also i definitely go with them 200% vidhya mam is so helpful for us throughout THANK YOU SO MUCH 😊\nBY\nHEMALATHA CHANDRAN\nSATHISH",
+      "review_text": "We recently went THAILAND TRIP it was so \"Safe travels!\" \"Enjoy!\" Sweet memories for us Trip by genies provided a great service, smooth logistics, or memorable experiences we got a Indian food, friendly guides, all well organised no flow i strongly recommend to all my friends and family in future also i definitely go with them 200% vidhya mam is so helpful for us throughout THANK YOU SO MUCH 😊\nBY\nHEMALATHA CHANDRAN\nSATHISH",
+      "is_published": true,
+      "created_at": "2026-10-03T06:06:20.686Z"
     }
-],
+  ],
   "notifications": [
     {
       "id": "notif_1",
@@ -67942,409 +68261,408 @@ export const fallbackData: any = {
       "created_at": "2026-11-19T08:12:15.724Z",
       "updated_at": "2026-11-19T08:12:15.724Z"
     }
-  ]
-,
+  ],
   "branches": [
-  {
-    "id": "br_chennai_hq",
-    "agency_id": "agency_travel_genie",
-    "name": "Chennai Corporate Headquarters (South India)",
-    "code": "MAA-HQ",
-    "city": "Chennai",
-    "address": "Trip By Genie, 31, West Jones Rd, Periyapet, Saidapet, Chennai, Tamil Nadu 600015",
-    "manager_name": "Rajesh Kumar",
-    "phone": "+91 (44) 46071374",
-    "email": "chennai.hq@tripbygenie.in",
-    "status": "active"
-  },
-  {
-    "id": "br_bangalore",
-    "agency_id": "agency_travel_genie",
-    "name": "Bengaluru Tech Park Regional Hub",
-    "code": "BLR-01",
-    "city": "Bengaluru",
-    "address": "Level 4, Prestige Meridian, MG Road, Bengaluru, Karnataka 560001",
-    "manager_name": "Sneha Hegde",
-    "phone": "+91 (80) 41238900",
-    "email": "bangalore@tripbygenie.in",
-    "status": "active"
-  },
-  {
-    "id": "br_mumbai",
-    "agency_id": "agency_travel_genie",
-    "name": "Mumbai Western Financial Hub",
-    "code": "BOM-01",
-    "city": "Mumbai",
-    "address": "Unit 502, The Capital, Bandra Kurla Complex (BKC), Mumbai, Maharashtra 400051",
-    "manager_name": "Amitabh Joshi",
-    "phone": "+91 (22) 66782200",
-    "email": "mumbai@tripbygenie.in",
-    "status": "active"
-  },
-  {
-    "id": "br_delhi",
-    "agency_id": "agency_travel_genie",
-    "name": "Delhi NCR Northern Regional Office",
-    "code": "DEL-01",
-    "city": "New Delhi",
-    "address": "Statesman House, Barakhamba Road, Connaught Place, New Delhi 110001",
-    "manager_name": "Virendra Singh",
-    "phone": "+91 (11) 23315600",
-    "email": "delhi@tripbygenie.in",
-    "status": "active"
-  }
-],
+    {
+      "id": "br_chennai_hq",
+      "agency_id": "agency_travel_genie",
+      "name": "Chennai Corporate Headquarters (South India)",
+      "code": "MAA-HQ",
+      "city": "Chennai",
+      "address": "Trip By Genie, 31, West Jones Rd, Periyapet, Saidapet, Chennai, Tamil Nadu 600015",
+      "manager_name": "Rajesh Kumar",
+      "phone": "+91 (44) 46071374",
+      "email": "chennai.hq@tripbygenie.in",
+      "status": "active"
+    },
+    {
+      "id": "br_bangalore",
+      "agency_id": "agency_travel_genie",
+      "name": "Bengaluru Tech Park Regional Hub",
+      "code": "BLR-01",
+      "city": "Bengaluru",
+      "address": "Level 4, Prestige Meridian, MG Road, Bengaluru, Karnataka 560001",
+      "manager_name": "Sneha Hegde",
+      "phone": "+91 (80) 41238900",
+      "email": "bangalore@tripbygenie.in",
+      "status": "active"
+    },
+    {
+      "id": "br_mumbai",
+      "agency_id": "agency_travel_genie",
+      "name": "Mumbai Western Financial Hub",
+      "code": "BOM-01",
+      "city": "Mumbai",
+      "address": "Unit 502, The Capital, Bandra Kurla Complex (BKC), Mumbai, Maharashtra 400051",
+      "manager_name": "Amitabh Joshi",
+      "phone": "+91 (22) 66782200",
+      "email": "mumbai@tripbygenie.in",
+      "status": "active"
+    },
+    {
+      "id": "br_delhi",
+      "agency_id": "agency_travel_genie",
+      "name": "Delhi NCR Northern Regional Office",
+      "code": "DEL-01",
+      "city": "New Delhi",
+      "address": "Statesman House, Barakhamba Road, Connaught Place, New Delhi 110001",
+      "manager_name": "Virendra Singh",
+      "phone": "+91 (11) 23315600",
+      "email": "delhi@tripbygenie.in",
+      "status": "active"
+    }
+  ],
   "travel_documents": [
-  {
-    "id": "doc_bk_01",
-    "agency_id": "agency_travel_genie",
-    "booking_id": "bk_4011",
-    "customer_id": "usr_cust_rohit",
-    "category": "Booking Confirmation",
-    "title": "Official Booking Voucher - Bali Wonders 6D5N",
-    "file_name": "TripByGenie_Booking_Voucher_BK-2026-4011.pdf",
-    "file_url": "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80",
-    "file_size": "245 KB",
-    "file_type": "application/pdf",
-    "status": "available",
-    "uploaded_by_role": "operations",
-    "uploaded_by_name": "Karthik Raman (Operations Executive)",
-    "notes": "Confirmed package voucher with all confirmed inclusions and emergency helpline numbers.",
-    "created_at": "2026-02-10T11:30:00Z"
-  },
-  {
-    "id": "doc_flt_01",
-    "agency_id": "agency_travel_genie",
-    "booking_id": "bk_4011",
-    "customer_id": "usr_cust_rohit",
-    "category": "Flight & Travel Ticket",
-    "title": "E-Tickets: Chennai (MAA) to Denpasar Bali (DPS) Roundtrip",
-    "file_name": "Flight_ETicket_MAA_DPS_Indigo_6E1602.pdf",
-    "file_url": "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&q=80",
-    "file_size": "420 KB",
-    "file_type": "application/pdf",
-    "status": "available",
-    "uploaded_by_role": "operations",
-    "uploaded_by_name": "Karthik Raman (Operations Executive)",
-    "notes": "Includes 25kg checked baggage and reserved standard aisle seats.",
-    "created_at": "2026-02-12T14:15:00Z"
-  },
-  {
-    "id": "doc_htl_01",
-    "agency_id": "agency_travel_genie",
-    "booking_id": "bk_4011",
-    "customer_id": "usr_cust_rohit",
-    "category": "Hotel Voucher",
-    "title": "The Seminyak Beach Resort & Spa Voucher",
-    "file_name": "Hotel_Voucher_Seminyak_OceanVilla.pdf",
-    "file_url": "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80",
-    "file_size": "310 KB",
-    "file_type": "application/pdf",
-    "status": "available",
-    "uploaded_by_role": "operations",
-    "uploaded_by_name": "Karthik Raman (Operations Executive)",
-    "notes": "Confirmation #SMR-8921-ID. Complimentary daily breakfast and welcome tropical fruit basket.",
-    "created_at": "2026-02-12T15:00:00Z"
-  },
-  {
-    "id": "doc_tr_01",
-    "agency_id": "agency_travel_genie",
-    "booking_id": "bk_4011",
-    "customer_id": "usr_cust_rohit",
-    "category": "Transport Voucher",
-    "title": "Private AC Sightseeing & Airport Transfer Pass",
-    "file_name": "Transport_Pass_Toyota_Alphard_Bali.pdf",
-    "file_url": "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80",
-    "file_size": "180 KB",
-    "file_type": "application/pdf",
-    "status": "available",
-    "uploaded_by_role": "operations",
-    "uploaded_by_name": "Karthik Raman (Operations Executive)",
-    "notes": "Assigned Driver: Wayan Sudirta (+62 812-3456-7890). Vehicle: Toyota Alphard VIP AC.",
-    "created_at": "2026-02-13T10:00:00Z"
-  },
-  {
-    "id": "doc_act_01",
-    "agency_id": "agency_travel_genie",
-    "booking_id": "bk_4011",
-    "customer_id": "usr_cust_rohit",
-    "category": "Activity Pass",
-    "title": "Uluwatu Temple Sunset & Kecak Dance VIP Entry Pass",
-    "file_name": "Activity_Pass_Uluwatu_VIP_Tickets.pdf",
-    "file_url": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80",
-    "file_size": "195 KB",
-    "file_type": "application/pdf",
-    "status": "available",
-    "uploaded_by_role": "operations",
-    "uploaded_by_name": "Karthik Raman (Operations Executive)",
-    "notes": "Reserved front-row seating vouchers. Show starts at 18:00 Bali local time.",
-    "created_at": "2026-02-13T12:00:00Z"
-  },
-  {
-    "id": "doc_cst_01",
-    "agency_id": "agency_travel_genie",
-    "booking_id": "bk_4011",
-    "customer_id": "usr_cust_rohit",
-    "category": "Customer-Provided",
-    "title": "Passport Copy - Rohit Kulkarni (Exp 2031)",
-    "file_name": "Passport_Copy_Rohit_Kulkarni.pdf",
-    "file_url": "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80",
-    "file_size": "540 KB",
-    "file_type": "application/pdf",
-    "status": "verified",
-    "uploaded_by_role": "customer",
-    "uploaded_by_name": "Rohit Kulkarni",
-    "expiry_date": "2031-08-15",
-    "notes": "Verified by Operations team for Bali immigration requirements.",
-    "created_at": "2026-02-08T09:30:00Z"
-  },
-  {
-    "id": "doc_cst_02",
-    "agency_id": "agency_travel_genie",
-    "booking_id": "bk_4011",
-    "customer_id": "usr_cust_rohit",
-    "category": "Customer-Provided",
-    "title": "International Travel Insurance Policy Certificate",
-    "file_name": "TataAIG_Travel_Guard_Policy.pdf",
-    "file_url": "https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=800&q=80",
-    "file_size": "620 KB",
-    "file_type": "application/pdf",
-    "status": "verified",
-    "uploaded_by_role": "customer",
-    "uploaded_by_name": "Rohit Kulkarni",
-    "expiry_date": "2026-03-31",
-    "notes": "$100,000 USD emergency medical & baggage cover.",
-    "created_at": "2026-02-09T16:20:00Z"
-  },
-  {
-    "id": "doc_bk_02",
-    "agency_id": "agency_travel_genie",
-    "booking_id": "bk_4012",
-    "customer_id": "usr_cust_ananya",
-    "category": "Booking Confirmation",
-    "title": "Trip Confirmation Voucher - Enchanting Kashmir 6D5N",
-    "file_name": "TripByGenie_Voucher_Kashmir_BK-2026-4012.pdf",
-    "file_url": "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80",
-    "file_size": "260 KB",
-    "file_type": "application/pdf",
-    "status": "available",
-    "uploaded_by_role": "operations",
-    "uploaded_by_name": "Karthik Raman (Operations Executive)",
-    "notes": "Includes houseboat stay at Dal Lake and Gulmarg Gondola Phase 1 & 2 tickets.",
-    "created_at": "2026-02-14T11:00:00Z"
-  },
-  {
-    "id": "doc_htl_02",
-    "agency_id": "agency_travel_genie",
-    "booking_id": "bk_4012",
-    "customer_id": "usr_cust_ananya",
-    "category": "Hotel Voucher",
-    "title": "The Khyber Himalayan Resort & Spa Confirmation",
-    "file_name": "Hotel_Voucher_Khyber_Gulmarg.pdf",
-    "file_url": "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80",
-    "file_size": "280 KB",
-    "file_type": "application/pdf",
-    "status": "available",
-    "uploaded_by_role": "operations",
-    "uploaded_by_name": "Karthik Raman (Operations Executive)",
-    "notes": "Premier Valley View Room with heated indoor pool access.",
-    "created_at": "2026-02-14T12:00:00Z"
-  },
-  {
-    "id": "doc_cst_03",
-    "agency_id": "agency_travel_genie",
-    "booking_id": "bk_4012",
-    "customer_id": "usr_cust_ananya",
-    "category": "Customer-Provided",
-    "title": "Aadhaar Card / Government Photo ID",
-    "file_name": "Govt_ID_Proof_Ananya_Rao.pdf",
-    "file_url": "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80",
-    "file_size": "340 KB",
-    "file_type": "application/pdf",
-    "status": "verified",
-    "uploaded_by_role": "customer",
-    "uploaded_by_name": "Ananya Rao",
-    "notes": "Submitted for Kashmir hotel verification & Gondola passes.",
-    "created_at": "2026-02-14T09:00:00Z"
-  }
-],
+    {
+      "id": "doc_bk_01",
+      "agency_id": "agency_travel_genie",
+      "booking_id": "bk_4011",
+      "customer_id": "usr_cust_rohit",
+      "category": "Booking Confirmation",
+      "title": "Official Booking Voucher - Bali Wonders 6D5N",
+      "file_name": "TripByGenie_Booking_Voucher_BK-2026-4011.pdf",
+      "file_url": "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80",
+      "file_size": "245 KB",
+      "file_type": "application/pdf",
+      "status": "available",
+      "uploaded_by_role": "operations",
+      "uploaded_by_name": "Karthik Raman (Operations Executive)",
+      "notes": "Confirmed package voucher with all confirmed inclusions and emergency helpline numbers.",
+      "created_at": "2026-02-10T11:30:00Z"
+    },
+    {
+      "id": "doc_flt_01",
+      "agency_id": "agency_travel_genie",
+      "booking_id": "bk_4011",
+      "customer_id": "usr_cust_rohit",
+      "category": "Flight & Travel Ticket",
+      "title": "E-Tickets: Chennai (MAA) to Denpasar Bali (DPS) Roundtrip",
+      "file_name": "Flight_ETicket_MAA_DPS_Indigo_6E1602.pdf",
+      "file_url": "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&q=80",
+      "file_size": "420 KB",
+      "file_type": "application/pdf",
+      "status": "available",
+      "uploaded_by_role": "operations",
+      "uploaded_by_name": "Karthik Raman (Operations Executive)",
+      "notes": "Includes 25kg checked baggage and reserved standard aisle seats.",
+      "created_at": "2026-02-12T14:15:00Z"
+    },
+    {
+      "id": "doc_htl_01",
+      "agency_id": "agency_travel_genie",
+      "booking_id": "bk_4011",
+      "customer_id": "usr_cust_rohit",
+      "category": "Hotel Voucher",
+      "title": "The Seminyak Beach Resort & Spa Voucher",
+      "file_name": "Hotel_Voucher_Seminyak_OceanVilla.pdf",
+      "file_url": "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80",
+      "file_size": "310 KB",
+      "file_type": "application/pdf",
+      "status": "available",
+      "uploaded_by_role": "operations",
+      "uploaded_by_name": "Karthik Raman (Operations Executive)",
+      "notes": "Confirmation #SMR-8921-ID. Complimentary daily breakfast and welcome tropical fruit basket.",
+      "created_at": "2026-02-12T15:00:00Z"
+    },
+    {
+      "id": "doc_tr_01",
+      "agency_id": "agency_travel_genie",
+      "booking_id": "bk_4011",
+      "customer_id": "usr_cust_rohit",
+      "category": "Transport Voucher",
+      "title": "Private AC Sightseeing & Airport Transfer Pass",
+      "file_name": "Transport_Pass_Toyota_Alphard_Bali.pdf",
+      "file_url": "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80",
+      "file_size": "180 KB",
+      "file_type": "application/pdf",
+      "status": "available",
+      "uploaded_by_role": "operations",
+      "uploaded_by_name": "Karthik Raman (Operations Executive)",
+      "notes": "Assigned Driver: Wayan Sudirta (+62 812-3456-7890). Vehicle: Toyota Alphard VIP AC.",
+      "created_at": "2026-02-13T10:00:00Z"
+    },
+    {
+      "id": "doc_act_01",
+      "agency_id": "agency_travel_genie",
+      "booking_id": "bk_4011",
+      "customer_id": "usr_cust_rohit",
+      "category": "Activity Pass",
+      "title": "Uluwatu Temple Sunset & Kecak Dance VIP Entry Pass",
+      "file_name": "Activity_Pass_Uluwatu_VIP_Tickets.pdf",
+      "file_url": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80",
+      "file_size": "195 KB",
+      "file_type": "application/pdf",
+      "status": "available",
+      "uploaded_by_role": "operations",
+      "uploaded_by_name": "Karthik Raman (Operations Executive)",
+      "notes": "Reserved front-row seating vouchers. Show starts at 18:00 Bali local time.",
+      "created_at": "2026-02-13T12:00:00Z"
+    },
+    {
+      "id": "doc_cst_01",
+      "agency_id": "agency_travel_genie",
+      "booking_id": "bk_4011",
+      "customer_id": "usr_cust_rohit",
+      "category": "Customer-Provided",
+      "title": "Passport Copy - Rohit Kulkarni (Exp 2031)",
+      "file_name": "Passport_Copy_Rohit_Kulkarni.pdf",
+      "file_url": "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80",
+      "file_size": "540 KB",
+      "file_type": "application/pdf",
+      "status": "verified",
+      "uploaded_by_role": "customer",
+      "uploaded_by_name": "Rohit Kulkarni",
+      "expiry_date": "2031-08-15",
+      "notes": "Verified by Operations team for Bali immigration requirements.",
+      "created_at": "2026-02-08T09:30:00Z"
+    },
+    {
+      "id": "doc_cst_02",
+      "agency_id": "agency_travel_genie",
+      "booking_id": "bk_4011",
+      "customer_id": "usr_cust_rohit",
+      "category": "Customer-Provided",
+      "title": "International Travel Insurance Policy Certificate",
+      "file_name": "TataAIG_Travel_Guard_Policy.pdf",
+      "file_url": "https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=800&q=80",
+      "file_size": "620 KB",
+      "file_type": "application/pdf",
+      "status": "verified",
+      "uploaded_by_role": "customer",
+      "uploaded_by_name": "Rohit Kulkarni",
+      "expiry_date": "2026-03-31",
+      "notes": "$100,000 USD emergency medical & baggage cover.",
+      "created_at": "2026-02-09T16:20:00Z"
+    },
+    {
+      "id": "doc_bk_02",
+      "agency_id": "agency_travel_genie",
+      "booking_id": "bk_4012",
+      "customer_id": "usr_cust_ananya",
+      "category": "Booking Confirmation",
+      "title": "Trip Confirmation Voucher - Enchanting Kashmir 6D5N",
+      "file_name": "TripByGenie_Voucher_Kashmir_BK-2026-4012.pdf",
+      "file_url": "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80",
+      "file_size": "260 KB",
+      "file_type": "application/pdf",
+      "status": "available",
+      "uploaded_by_role": "operations",
+      "uploaded_by_name": "Karthik Raman (Operations Executive)",
+      "notes": "Includes houseboat stay at Dal Lake and Gulmarg Gondola Phase 1 & 2 tickets.",
+      "created_at": "2026-02-14T11:00:00Z"
+    },
+    {
+      "id": "doc_htl_02",
+      "agency_id": "agency_travel_genie",
+      "booking_id": "bk_4012",
+      "customer_id": "usr_cust_ananya",
+      "category": "Hotel Voucher",
+      "title": "The Khyber Himalayan Resort & Spa Confirmation",
+      "file_name": "Hotel_Voucher_Khyber_Gulmarg.pdf",
+      "file_url": "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80",
+      "file_size": "280 KB",
+      "file_type": "application/pdf",
+      "status": "available",
+      "uploaded_by_role": "operations",
+      "uploaded_by_name": "Karthik Raman (Operations Executive)",
+      "notes": "Premier Valley View Room with heated indoor pool access.",
+      "created_at": "2026-02-14T12:00:00Z"
+    },
+    {
+      "id": "doc_cst_03",
+      "agency_id": "agency_travel_genie",
+      "booking_id": "bk_4012",
+      "customer_id": "usr_cust_ananya",
+      "category": "Customer-Provided",
+      "title": "Aadhaar Card / Government Photo ID",
+      "file_name": "Govt_ID_Proof_Ananya_Rao.pdf",
+      "file_url": "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80",
+      "file_size": "340 KB",
+      "file_type": "application/pdf",
+      "status": "verified",
+      "uploaded_by_role": "customer",
+      "uploaded_by_name": "Ananya Rao",
+      "notes": "Submitted for Kashmir hotel verification & Gondola passes.",
+      "created_at": "2026-02-14T09:00:00Z"
+    }
+  ],
   "operations_arrangements": [
-  {
-    "id": "arr_01",
-    "agency_id": "agency_travel_genie",
-    "booking_id": "bk_4011",
-    "trip_status": "Hotel Confirmed",
-    "hotel_name": "The Seminyak Beach Resort & Spa (Bali)",
-    "room_category": "Deluxe Ocean View Pool Villa",
-    "meal_plan": "Daily Buffet Breakfast + 2 Gourmet Dinners",
-    "hotel_confirmation_number": "SMR-8921-ID",
-    "hotel_check_in": "2026-03-15",
-    "hotel_check_out": "2026-03-20",
-    "vehicle_type": "Toyota Alphard VIP AC",
-    "driver_name": "Wayan Sudirta",
-    "driver_phone": "+62 812-3456-7890",
-    "pickup_location": "Denpasar International Airport (DPS) Arrival Gate 3",
-    "drop_location": "The Seminyak Beach Resort Lobby",
-    "guide_name": "Ketut Artha",
-    "guide_phone": "+62 813-9876-5432",
-    "special_instructions": "Anniversary celebration. Complimentary fruit basket and honeymoon cake requested on arrival.",
-    "dossier_generated": true,
-    "dossier_url": "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80",
-    "updated_at": "2026-02-18T10:30:00Z"
-  },
-  {
-    "id": "arr_02",
-    "agency_id": "agency_travel_genie",
-    "booking_id": "bk_4012",
-    "trip_status": "Transport Confirmed",
-    "hotel_name": "The Khyber Himalayan Resort & Spa, Gulmarg",
-    "room_category": "Premier Valley View Luxury Room",
-    "meal_plan": "Breakfast & Dinner (Modified American Plan)",
-    "hotel_confirmation_number": "KHY-2026-671",
-    "hotel_check_in": "2026-03-22",
-    "hotel_check_out": "2026-03-27",
-    "vehicle_type": "Toyota Innova Crysta 4x4 Luxury",
-    "driver_name": "Mohammad Altaf",
-    "driver_phone": "+91 94190 12345",
-    "pickup_location": "Srinagar Airport (SXR) Arrival Hall",
-    "drop_location": "Dal Lake Houseboat Ghat No. 7",
-    "guide_name": "Bashir Ahmed",
-    "guide_phone": "+91 94191 54321",
-    "special_instructions": "Gondola tickets booked for Phase 1 & 2 on Day 3. Snow chains installed on vehicle for Gulmarg climb.",
-    "dossier_generated": false,
-    "updated_at": "2026-02-19T14:10:00Z"
-  },
-  {
-    "id": "arr_03",
-    "agency_id": "agency_travel_genie",
-    "booking_id": "boo_9c7481bf72",
-    "trip_status": "Ready to Travel",
-    "hotel_name": "Hotel Schweizerhof Zurich & Sunstar Alpine Grindelwald",
-    "room_category": "Superior Alpine View Twin Room",
-    "meal_plan": "Continental Swiss Buffet Breakfast",
-    "hotel_confirmation_number": "SWZ-9921-CH",
-    "hotel_check_in": "2026-04-05",
-    "hotel_check_out": "2026-04-12",
-    "vehicle_type": "First Class Swiss Travel Rail Pass + Station Limousine",
-    "driver_name": "Lukas Meyer",
-    "driver_phone": "+41 79 123 4567",
-    "pickup_location": "Zurich Kloten Airport (ZRH) Terminal 2",
-    "drop_location": "Grindelwald Sunstar Hotel",
-    "guide_name": "Heidi Zgraggen",
-    "guide_phone": "+41 78 765 4321",
-    "special_instructions": "Jungfraujoch Top of Europe seat reservations confirmed. Swiss Rail electronic passes delivered.",
-    "dossier_generated": true,
-    "dossier_url": "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80",
-    "updated_at": "2026-02-20T08:45:00Z"
-  }
-],
+    {
+      "id": "arr_01",
+      "agency_id": "agency_travel_genie",
+      "booking_id": "bk_4011",
+      "trip_status": "Hotel Confirmed",
+      "hotel_name": "The Seminyak Beach Resort & Spa (Bali)",
+      "room_category": "Deluxe Ocean View Pool Villa",
+      "meal_plan": "Daily Buffet Breakfast + 2 Gourmet Dinners",
+      "hotel_confirmation_number": "SMR-8921-ID",
+      "hotel_check_in": "2026-03-15",
+      "hotel_check_out": "2026-03-20",
+      "vehicle_type": "Toyota Alphard VIP AC",
+      "driver_name": "Wayan Sudirta",
+      "driver_phone": "+62 812-3456-7890",
+      "pickup_location": "Denpasar International Airport (DPS) Arrival Gate 3",
+      "drop_location": "The Seminyak Beach Resort Lobby",
+      "guide_name": "Ketut Artha",
+      "guide_phone": "+62 813-9876-5432",
+      "special_instructions": "Anniversary celebration. Complimentary fruit basket and honeymoon cake requested on arrival.",
+      "dossier_generated": true,
+      "dossier_url": "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80",
+      "updated_at": "2026-02-18T10:30:00Z"
+    },
+    {
+      "id": "arr_02",
+      "agency_id": "agency_travel_genie",
+      "booking_id": "bk_4012",
+      "trip_status": "Transport Confirmed",
+      "hotel_name": "The Khyber Himalayan Resort & Spa, Gulmarg",
+      "room_category": "Premier Valley View Luxury Room",
+      "meal_plan": "Breakfast & Dinner (Modified American Plan)",
+      "hotel_confirmation_number": "KHY-2026-671",
+      "hotel_check_in": "2026-03-22",
+      "hotel_check_out": "2026-03-27",
+      "vehicle_type": "Toyota Innova Crysta 4x4 Luxury",
+      "driver_name": "Mohammad Altaf",
+      "driver_phone": "+91 94190 12345",
+      "pickup_location": "Srinagar Airport (SXR) Arrival Hall",
+      "drop_location": "Dal Lake Houseboat Ghat No. 7",
+      "guide_name": "Bashir Ahmed",
+      "guide_phone": "+91 94191 54321",
+      "special_instructions": "Gondola tickets booked for Phase 1 & 2 on Day 3. Snow chains installed on vehicle for Gulmarg climb.",
+      "dossier_generated": false,
+      "updated_at": "2026-02-19T14:10:00Z"
+    },
+    {
+      "id": "arr_03",
+      "agency_id": "agency_travel_genie",
+      "booking_id": "boo_9c7481bf72",
+      "trip_status": "Ready to Travel",
+      "hotel_name": "Hotel Schweizerhof Zurich & Sunstar Alpine Grindelwald",
+      "room_category": "Superior Alpine View Twin Room",
+      "meal_plan": "Continental Swiss Buffet Breakfast",
+      "hotel_confirmation_number": "SWZ-9921-CH",
+      "hotel_check_in": "2026-04-05",
+      "hotel_check_out": "2026-04-12",
+      "vehicle_type": "First Class Swiss Travel Rail Pass + Station Limousine",
+      "driver_name": "Lukas Meyer",
+      "driver_phone": "+41 79 123 4567",
+      "pickup_location": "Zurich Kloten Airport (ZRH) Terminal 2",
+      "drop_location": "Grindelwald Sunstar Hotel",
+      "guide_name": "Heidi Zgraggen",
+      "guide_phone": "+41 78 765 4321",
+      "special_instructions": "Jungfraujoch Top of Europe seat reservations confirmed. Swiss Rail electronic passes delivered.",
+      "dossier_generated": true,
+      "dossier_url": "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80",
+      "updated_at": "2026-02-20T08:45:00Z"
+    }
+  ],
   "support_tickets": [
-  {
-    "id": "tkt_1042",
-    "ticket_number": "TKT-1042",
-    "agency_id": "agency_travel_genie",
-    "user_id": "usr_cust_rohit",
-    "customer_name": "Rohit Kulkarni",
-    "customer_email": "rohit.customer@gmail.com",
-    "booking_id": "bk_4011",
-    "subject": "Request to add Tanah Lot Sunset Tour to Bali Itinerary",
-    "category": "Booking Modification",
-    "priority": "medium",
-    "status": "in_progress",
-    "assigned_to": "Karthik Raman (Operations)",
-    "messages": [
-      {
-        "id": "msg_01",
-        "sender_role": "customer",
-        "sender_name": "Rohit Kulkarni",
-        "message": "Hi team, could we please add a visit to Tanah Lot temple on Day 4 afternoon? Please let me know if any extra vehicle charges apply.",
-        "created_at": "2026-02-15T10:14:00Z"
-      },
-      {
-        "id": "msg_02",
-        "sender_role": "operations",
-        "sender_name": "Karthik Raman (Operations)",
-        "message": "Hello Mr. Rohit! We have coordinated with our local Bali operations manager. Tanah Lot can easily be added to your private vehicle schedule on Day 4 at no extra vehicle charge! The entry ticket is 75,000 IDR per person payable on arrival.",
-        "created_at": "2026-02-15T11:30:00Z"
-      }
-    ],
-    "created_at": "2026-02-15T10:14:00Z",
-    "updated_at": "2026-02-15T11:30:00Z"
-  },
-  {
-    "id": "tkt_1038",
-    "ticket_number": "TKT-1038",
-    "agency_id": "agency_travel_genie",
-    "user_id": "usr_cust_ananya",
-    "customer_name": "Ananya Rao",
-    "customer_email": "ananya.customer@gmail.com",
-    "booking_id": "bk_4012",
-    "subject": "Jain/Vegetarian meal preference confirmation for Srinagar trip",
-    "category": "General Enquiry",
-    "priority": "low",
-    "status": "resolved",
-    "assigned_to": "Priya Nair (Sales Executive)",
-    "messages": [
-      {
-        "id": "msg_03",
-        "sender_role": "customer",
-        "sender_name": "Ananya Rao",
-        "message": "Kindly ensure pure vegetarian meals without onion and garlic during our stay in the Dal Lake houseboat and Gulmarg resort.",
-        "created_at": "2026-02-14T15:20:00Z"
-      },
-      {
-        "id": "msg_04",
-        "sender_role": "staff",
-        "sender_name": "Priya Nair",
-        "message": "Dear Ananya, we have flagged your special dietary requirement in your hotel and houseboat vouchers with the head chef. You will be served customized pure Jain/vegetarian meals throughout your journey!",
-        "created_at": "2026-02-14T16:05:00Z"
-      }
-    ],
-    "created_at": "2026-02-14T15:20:00Z",
-    "updated_at": "2026-02-14T16:05:00Z"
-  }
-],
+    {
+      "id": "tkt_1042",
+      "ticket_number": "TKT-1042",
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_cust_rohit",
+      "customer_name": "Rohit Kulkarni",
+      "customer_email": "rohit.customer@gmail.com",
+      "booking_id": "bk_4011",
+      "subject": "Request to add Tanah Lot Sunset Tour to Bali Itinerary",
+      "category": "Booking Modification",
+      "priority": "medium",
+      "status": "in_progress",
+      "assigned_to": "Karthik Raman (Operations)",
+      "messages": [
+        {
+          "id": "msg_01",
+          "sender_role": "customer",
+          "sender_name": "Rohit Kulkarni",
+          "message": "Hi team, could we please add a visit to Tanah Lot temple on Day 4 afternoon? Please let me know if any extra vehicle charges apply.",
+          "created_at": "2026-02-15T10:14:00Z"
+        },
+        {
+          "id": "msg_02",
+          "sender_role": "operations",
+          "sender_name": "Karthik Raman (Operations)",
+          "message": "Hello Mr. Rohit! We have coordinated with our local Bali operations manager. Tanah Lot can easily be added to your private vehicle schedule on Day 4 at no extra vehicle charge! The entry ticket is 75,000 IDR per person payable on arrival.",
+          "created_at": "2026-02-15T11:30:00Z"
+        }
+      ],
+      "created_at": "2026-02-15T10:14:00Z",
+      "updated_at": "2026-02-15T11:30:00Z"
+    },
+    {
+      "id": "tkt_1038",
+      "ticket_number": "TKT-1038",
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_cust_ananya",
+      "customer_name": "Ananya Rao",
+      "customer_email": "ananya.customer@gmail.com",
+      "booking_id": "bk_4012",
+      "subject": "Jain/Vegetarian meal preference confirmation for Srinagar trip",
+      "category": "General Enquiry",
+      "priority": "low",
+      "status": "resolved",
+      "assigned_to": "Priya Nair (Sales Executive)",
+      "messages": [
+        {
+          "id": "msg_03",
+          "sender_role": "customer",
+          "sender_name": "Ananya Rao",
+          "message": "Kindly ensure pure vegetarian meals without onion and garlic during our stay in the Dal Lake houseboat and Gulmarg resort.",
+          "created_at": "2026-02-14T15:20:00Z"
+        },
+        {
+          "id": "msg_04",
+          "sender_role": "staff",
+          "sender_name": "Priya Nair",
+          "message": "Dear Ananya, we have flagged your special dietary requirement in your hotel and houseboat vouchers with the head chef. You will be served customized pure Jain/vegetarian meals throughout your journey!",
+          "created_at": "2026-02-14T16:05:00Z"
+        }
+      ],
+      "created_at": "2026-02-14T15:20:00Z",
+      "updated_at": "2026-02-14T16:05:00Z"
+    }
+  ],
   "agent_customers": [
-  {
-    "id": "ag_cst_01",
-    "agency_id": "agency_travel_genie",
-    "agent_id": "usr_agent_vikram",
-    "name": "Dr. Ramesh Sharma & Family",
-    "email": "ramesh.sharma@medicare.in",
-    "phone": "+91 98200 44551",
-    "passport_number": "Z9821456",
-    "id_proof_type": "Passport",
-    "id_proof_number": "Z9821456",
-    "notes": "Premium VIP client. Booked Enchanting Kashmir through GlobeTrotters Agency.",
-    "created_at": "2026-02-05T12:00:00Z"
-  },
-  {
-    "id": "ag_cst_02",
-    "agency_id": "agency_travel_genie",
-    "agent_id": "usr_agent_vikram",
-    "name": "Mr. Akash Verma",
-    "email": "akash.verma@techsolutions.com",
-    "phone": "+91 98110 33221",
-    "passport_number": "M7744123",
-    "id_proof_type": "Passport",
-    "id_proof_number": "M7744123",
-    "notes": "Booked Bali package for 2 pax.",
-    "created_at": "2026-02-07T14:30:00Z"
-  },
-  {
-    "id": "ag_cst_03",
-    "agency_id": "agency_travel_genie",
-    "agent_id": "usr_agent_vikram",
-    "name": "Mrs. Sunita & Rahul Kapoor",
-    "email": "rahul.kapoor@innovate.co",
-    "phone": "+91 98450 11223",
-    "passport_number": "P5566778",
-    "id_proof_type": "Passport",
-    "id_proof_number": "P5566778",
-    "notes": "Swiss Highlights tour for autumn departure.",
-    "created_at": "2026-02-10T16:00:00Z"
-  }
-],
+    {
+      "id": "ag_cst_01",
+      "agency_id": "agency_travel_genie",
+      "agent_id": "usr_agent_vikram",
+      "name": "Dr. Ramesh Sharma & Family",
+      "email": "ramesh.sharma@medicare.in",
+      "phone": "+91 98200 44551",
+      "passport_number": "Z9821456",
+      "id_proof_type": "Passport",
+      "id_proof_number": "Z9821456",
+      "notes": "Premium VIP client. Booked Enchanting Kashmir through GlobeTrotters Agency.",
+      "created_at": "2026-02-05T12:00:00Z"
+    },
+    {
+      "id": "ag_cst_02",
+      "agency_id": "agency_travel_genie",
+      "agent_id": "usr_agent_vikram",
+      "name": "Mr. Akash Verma",
+      "email": "akash.verma@techsolutions.com",
+      "phone": "+91 98110 33221",
+      "passport_number": "M7744123",
+      "id_proof_type": "Passport",
+      "id_proof_number": "M7744123",
+      "notes": "Booked Bali package for 2 pax.",
+      "created_at": "2026-02-07T14:30:00Z"
+    },
+    {
+      "id": "ag_cst_03",
+      "agency_id": "agency_travel_genie",
+      "agent_id": "usr_agent_vikram",
+      "name": "Mrs. Sunita & Rahul Kapoor",
+      "email": "rahul.kapoor@innovate.co",
+      "phone": "+91 98450 11223",
+      "passport_number": "P5566778",
+      "id_proof_type": "Passport",
+      "id_proof_number": "P5566778",
+      "notes": "Swiss Highlights tour for autumn departure.",
+      "created_at": "2026-02-10T16:00:00Z"
+    }
+  ],
   "refunds": [
     {
       "id": "ref_001",
@@ -68361,9 +68679,41 @@ export const fallbackData: any = {
     }
   ],
   "audit_logs": [
-    { "id": "aud_001", "user_id": "usr_admin_genie", "action": "USER_ROLE_ASSIGNED", "entity_type": "USER", "entity_id": "usr_operations_karthik", "details": "Assigned operations role to Karthik Raman", "created_at": "2026-02-15T10:00:00Z" },
-    { "id": "aud_002", "user_id": "usr_manager_genie", "action": "LEAD_ASSIGNED", "entity_type": "LEAD", "entity_id": "lead_01", "details": "Assigned Bali enquiry to Priya Nair", "created_at": "2026-02-15T09:30:00Z" },
-    { "id": "aud_003", "user_id": "usr_staff_priya", "action": "BOOKING_CONVERTED", "entity_type": "BOOKING", "entity_id": "bk_4011", "details": "Converted lead to confirmed booking BK-4011", "created_at": "2026-02-18T10:00:00Z" },
-    { "id": "aud_004", "user_id": "usr_operations_karthik", "action": "DOSSIER_GENERATED", "entity_type": "TRAVEL_DOCUMENT", "entity_id": "bk_4011", "details": "Generated consolidated travel dossier for BK-4011", "created_at": "2026-02-18T14:45:00Z" }
+    {
+      "id": "aud_001",
+      "user_id": "usr_admin_genie",
+      "action": "USER_ROLE_ASSIGNED",
+      "entity_type": "USER",
+      "entity_id": "usr_operations_karthik",
+      "details": "Assigned operations role to Karthik Raman",
+      "created_at": "2026-02-15T10:00:00Z"
+    },
+    {
+      "id": "aud_002",
+      "user_id": "usr_manager_genie",
+      "action": "LEAD_ASSIGNED",
+      "entity_type": "LEAD",
+      "entity_id": "lead_01",
+      "details": "Assigned Bali enquiry to Priya Nair",
+      "created_at": "2026-02-15T09:30:00Z"
+    },
+    {
+      "id": "aud_003",
+      "user_id": "usr_staff_priya",
+      "action": "BOOKING_CONVERTED",
+      "entity_type": "BOOKING",
+      "entity_id": "bk_4011",
+      "details": "Converted lead to confirmed booking BK-4011",
+      "created_at": "2026-02-18T10:00:00Z"
+    },
+    {
+      "id": "aud_004",
+      "user_id": "usr_operations_karthik",
+      "action": "DOSSIER_GENERATED",
+      "entity_type": "TRAVEL_DOCUMENT",
+      "entity_id": "bk_4011",
+      "details": "Generated consolidated travel dossier for BK-4011",
+      "created_at": "2026-02-18T14:45:00Z"
+    }
   ]
 };

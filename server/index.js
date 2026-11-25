@@ -383,7 +383,7 @@ app.get('/api/public/agency', (req, res) => {
 // Public Hero Banners
 app.get('/api/public/banners', (req, res) => {
   const agencyId = req.query.agency_id || 'agency_travel_genie';
-  const banners = db.findAll('hero_banners', (b) => b.agency_id === agencyId && b.is_active);
+  const banners = db.findAll('hero_banners', (b) => (!b.agency_id || b.agency_id === agencyId || b.agency_id === 'agency_001') && b.is_active);
   banners.sort((a, b) => a.display_order - b.display_order);
   res.json(banners);
 });
@@ -414,7 +414,7 @@ app.get('/api/public/destinations', (req, res) => {
   const agencyId = req.query.agency_id || 'agency_travel_genie';
   const { region, featured } = req.query;
 
-  let destinations = db.findAll('destinations', (d) => d.agency_id === agencyId && d.is_published);
+  let destinations = db.findAll('destinations', (d) => (!d.agency_id || d.agency_id === agencyId || d.agency_id === 'agency_001') && d.is_published);
   if (region && region !== 'all') {
     destinations = destinations.filter((d) => d.region.toLowerCase() === region.toLowerCase());
   }
@@ -454,14 +454,20 @@ app.get('/api/public/packages', (req, res) => {
   const agencyId = req.query.agency_id || 'agency_travel_genie';
   const { category, destination, max_price, duration, search, featured, group_tour } = req.query;
 
-  let packages = db.findAll('packages', (p) => p.agency_id === agencyId && p.is_published);
+  let packages = db.findAll('packages', (p) => (!p.agency_id || p.agency_id === agencyId || p.agency_id === 'agency_001') && p.is_published);
 
   if (category && category !== 'all') {
     packages = packages.filter((p) => p.category.toLowerCase() === category.toLowerCase());
   }
 
   if (destination && destination !== 'all') {
-    packages = packages.filter((p) => p.destination_id === destination);
+    const dTarget = destination.toLowerCase().trim();
+    const destObj = db.findOne('destinations', (d) => d.id === destination || d.slug === dTarget || (d.name && d.name.toLowerCase() === dTarget));
+    if (destObj) {
+      packages = packages.filter((p) => matchPackageToDestination(p, destObj));
+    } else {
+      packages = packages.filter((p) => p.destination_id === destination || (p.destination && p.destination.toLowerCase() === dTarget));
+    }
   }
 
   if (max_price) {
@@ -548,7 +554,7 @@ app.get('/api/public/packages/:slug', (req, res) => {
 // Public Group Tours
 app.get('/api/public/group-tours', (req, res) => {
   const agencyId = req.query.agency_id || 'agency_travel_genie';
-  const tours = db.findAll('packages', (p) => p.agency_id === agencyId && (p.is_group_tour || p.category === 'Group Tours') && p.is_published !== false);
+  const tours = db.findAll('packages', (p) => (!p.agency_id || p.agency_id === agencyId || p.agency_id === 'agency_001') && (p.is_group_tour || p.category === 'Group Tours') && p.is_published !== false);
   const publicTours = tours.map(({ wholesale_price, ...rest }) => rest);
   res.json(publicTours);
 });
