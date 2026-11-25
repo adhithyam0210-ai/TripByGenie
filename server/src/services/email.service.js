@@ -3,6 +3,11 @@
  * Dispatches real emails via SMTP/Nodemailer when configured, or logs locally.
  * Never exposes passwords or sensitive keys in logs.
  */
+const path = require('path');
+try {
+  require('dotenv').config({ path: path.join(__dirname, '../../../.env') });
+} catch (e) { }
+
 const db = require('../../db');
 
 let nodemailer = null;
@@ -13,6 +18,46 @@ try {
 }
 
 class EmailService {
+  /**
+   * Get public status of configured email service
+   */
+  getStatus() {
+    const gmailUser = process.env.GMAIL_USER || process.env.EMAIL_USER;
+    const gmailPass = process.env.GMAIL_APP_PASSWORD || process.env.GMAIL_PASS || process.env.EMAIL_PASS;
+    const smtpHost = process.env.SMTP_HOST;
+    const smtpUser = process.env.SMTP_USER;
+
+    if (gmailUser && gmailPass) {
+      const masked = gmailUser.replace(/(.{2})(.*)(@.*)/, '$1***$3');
+      return {
+        configured: true,
+        mode: 'gmail',
+        provider: 'Gmail SMTP',
+        account: masked,
+        from: process.env.SMTP_FROM || process.env.EMAIL_FROM || `"Trip by Genie" <${gmailUser}>`
+      };
+    }
+
+    if (smtpHost) {
+      const masked = smtpUser ? smtpUser.replace(/(.{2})(.*)(@.*)/, '$1***$3') : undefined;
+      return {
+        configured: true,
+        mode: 'smtp',
+        provider: 'Custom SMTP',
+        host: smtpHost,
+        port: Number(process.env.SMTP_PORT) || 587,
+        account: masked,
+        from: process.env.SMTP_FROM || process.env.EMAIL_FROM || '"Trip by Genie" <no-reply@tripbygenie.in>'
+      };
+    }
+
+    return {
+      configured: false,
+      mode: 'simulated',
+      provider: 'Simulation Mode',
+      message: 'No SMTP credentials found in .env. Real emails are currently simulated and logged to the server terminal.'
+    };
+  }
   /**
    * Get configured Nodemailer transport
    */

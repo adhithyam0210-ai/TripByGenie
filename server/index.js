@@ -1,6 +1,7 @@
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '../.env') });
 const express = require('express');
 const cors = require('cors');
-const path = require('path');
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
@@ -2685,6 +2686,50 @@ app.put('/api/admin/settings', authenticate, authorize(['admin', 'manager']), (r
   }
 
   res.json({ agency: updatedAgency, settings });
+});
+
+// Admin Email Service Status & Live Dispatch Test
+app.get('/api/admin/email-status', authenticate, authorize(['admin', 'manager']), (req, res) => {
+  res.json(emailService.getStatus());
+});
+
+app.post('/api/admin/test-email', authenticate, authorize(['admin', 'manager']), async (req, res) => {
+  const targetEmail = req.body.to || req.user.email;
+  if (!targetEmail) {
+    return res.status(400).json({ error: 'Recipient email address is required.' });
+  }
+
+  const result = await emailService.sendMail({
+    to: targetEmail,
+    subject: 'Trip by Genie - Live Email Service Test',
+    text: `Hello,\n\nThis is a verification test email from your Trip by Genie system sent at ${new Date().toLocaleString()}.\n\nYour SMTP/Email integration is active and working properly!`,
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #e2e8f0; border-radius: 12px;">
+        <h2 style="color: #082c43; margin-top: 0;">Trip by Genie • Email Service Test</h2>
+        <p style="color: #334155; font-size: 15px;">Hello,</p>
+        <p style="color: #334155; font-size: 15px;">This is a live test email from your <strong>Trip by Genie</strong> platform.</p>
+        <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 12px 16px; margin: 16px 0;">
+          <p style="color: #166534; font-weight: bold; margin: 0;">✓ Email service is connected and delivering messages successfully.</p>
+          <p style="color: #166534; font-size: 13px; margin: 4px 0 0 0;">Timestamp: ${new Date().toLocaleString()}</p>
+        </div>
+        <p style="color: #64748b; font-size: 12px; margin-top: 24px;">Trip by Genie Automated Mail Dispatcher</p>
+      </div>
+    `
+  });
+
+  if (result.sent) {
+    return res.json({ success: true, message: `Test email delivered successfully to ${targetEmail}!`, messageId: result.messageId });
+  } else if (result.simulated) {
+    return res.status(400).json({
+      success: false,
+      error: 'Email service is running in simulated mode. No SMTP credentials (GMAIL_USER / SMTP_HOST) found in .env.'
+    });
+  } else {
+    return res.status(500).json({
+      success: false,
+      error: `Failed to deliver email: ${result.error}`
+    });
+  }
 });
 
 // ==========================================

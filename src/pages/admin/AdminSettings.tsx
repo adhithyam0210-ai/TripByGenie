@@ -12,7 +12,8 @@ import {
   FileText, 
   CheckCircle,
   AlertCircle,
-  Users
+  Users,
+  Send
 } from 'lucide-react';
 import { api } from '../../services/api';
 import { Button } from '../../components/common/Button';
@@ -36,6 +37,19 @@ export const AdminSettings: React.FC = () => {
     default_wholesale_discount_pct: 12,
     terms_conditions: ''
   });
+
+  const [emailStatus, setEmailStatus] = useState<any>(null);
+  const [testEmailTo, setTestEmailTo] = useState('');
+  const [sendingTestEmail, setSendingTestEmail] = useState(false);
+
+  const fetchEmailStatus = async () => {
+    try {
+      const status = await api.getEmailStatus();
+      setEmailStatus(status);
+    } catch {
+      setEmailStatus({ configured: false, mode: 'simulated', provider: 'Simulation Mode' });
+    }
+  };
 
   const fetchSettings = async () => {
     try {
@@ -62,7 +76,25 @@ export const AdminSettings: React.FC = () => {
 
   useEffect(() => {
     fetchSettings();
+    fetchEmailStatus();
   }, [currentAgency?.id]);
+
+  const handleSendTestEmail = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!testEmailTo.trim()) {
+      showToast('Please enter a recipient email address.', 'error');
+      return;
+    }
+    try {
+      setSendingTestEmail(true);
+      const res = await api.sendTestEmail(testEmailTo.trim());
+      showToast(res.message || 'Test email dispatched successfully!', 'success');
+    } catch (err: any) {
+      showToast(err.message || 'Failed to dispatch test email.', 'error');
+    } finally {
+      setSendingTestEmail(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -303,6 +335,81 @@ export const AdminSettings: React.FC = () => {
           </Button>
         </div>
       </form>
+
+      {/* Email Delivery Configuration & Live Test Card */}
+      <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-xs space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-sky-50 flex items-center justify-center text-sky-600">
+              <Mail className="w-5 h-5" />
+            </div>
+            <div>
+              <h3 className="text-base font-bold text-gray-900">Email Delivery Service</h3>
+              <p className="text-xs text-gray-500">Live SMTP & transactional email dispatch status</p>
+            </div>
+          </div>
+          <div>
+            {emailStatus?.configured ? (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                <CheckCircle className="w-3.5 h-3.5 text-emerald-600" />
+                Active ({emailStatus.provider})
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                <AlertCircle className="w-3.5 h-3.5 text-amber-600" />
+                Simulated Mode (No Credentials in .env)
+              </span>
+            )}
+          </div>
+        </div>
+
+        {emailStatus && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+            <div className="p-3 bg-gray-50 rounded-xl border border-gray-100">
+              <span className="text-gray-400 block text-[11px] font-semibold mb-0.5">Delivery Mode</span>
+              <strong className="text-gray-800">{emailStatus.provider || 'Simulation Mode'}</strong>
+            </div>
+            <div className="p-3 bg-gray-50 rounded-xl border border-gray-100">
+              <span className="text-gray-400 block text-[11px] font-semibold mb-0.5">Sender Identity</span>
+              <strong className="text-gray-800 truncate block">{emailStatus.from || 'Simulated'}</strong>
+            </div>
+            <div className="p-3 bg-gray-50 rounded-xl border border-gray-100">
+              <span className="text-gray-400 block text-[11px] font-semibold mb-0.5">Connected Account</span>
+              <strong className="text-gray-800 font-mono">{emailStatus.account || 'None (Configure .env)'}</strong>
+            </div>
+          </div>
+        )}
+
+        {/* Live Test Email Dispatcher */}
+        <div className="pt-2">
+          <h4 className="text-xs font-bold text-gray-800 mb-2">Live Test Email Dispatch</h4>
+          <form onSubmit={handleSendTestEmail} className="flex flex-col sm:flex-row gap-2">
+            <input
+              type="email"
+              value={testEmailTo}
+              onChange={(e) => setTestEmailTo(e.target.value)}
+              placeholder="Enter your email to test (e.g. yourname@gmail.com)"
+              className="flex-1 px-3.5 py-2 text-xs border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-ocean/20 focus:border-brand-ocean"
+            />
+            <Button type="submit" variant="outline" size="sm" disabled={sendingTestEmail} className="whitespace-nowrap cursor-pointer">
+              {sendingTestEmail ? (
+                <>
+                  <div className="w-3.5 h-3.5 border-2 border-brand-coral border-t-transparent rounded-full animate-spin mr-1.5" />
+                  Sending Test...
+                </>
+              ) : (
+                <>
+                  <Send className="w-3.5 h-3.5 mr-1.5 text-brand-coral" />
+                  Send Test Email
+                </>
+              )}
+            </Button>
+          </form>
+          <p className="text-[11px] text-gray-400 mt-2">
+            Tip: To send real emails, update your <code className="bg-gray-100 px-1 py-0.5 rounded font-mono text-[10px]">.env</code> file with your Gmail App Password or SMTP credentials and restart the backend server.
+          </p>
+        </div>
+      </div>
     </div>
     </DashboardLayout>
   );

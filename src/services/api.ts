@@ -1268,6 +1268,32 @@ export const api = {
       method: 'PUT',
       body: JSON.stringify(data)
     }),
+  get: <T = any>(endpoint: string) => request<T>(endpoint),
+  post: <T = any>(endpoint: string, data?: any) =>
+    request<T>(endpoint, {
+      method: 'POST',
+      body: data ? JSON.stringify(data) : undefined
+    }),
+  put: <T = any>(endpoint: string, data?: any) =>
+    request<T>(endpoint, {
+      method: 'PUT',
+      body: data ? JSON.stringify(data) : undefined
+    }),
+  delete: <T = any>(endpoint: string) =>
+    request<T>(endpoint, { method: 'DELETE' }),
+  getEmailStatus: async () => {
+    try {
+      return await request<any>('/admin/email-status');
+    } catch {
+      return { configured: false, mode: 'simulated', provider: 'Simulation Mode' };
+    }
+  },
+  sendTestEmail: async (to?: string) => {
+    return await request<any>('/admin/test-email', {
+      method: 'POST',
+      body: JSON.stringify({ to })
+    });
+  },
 
   // ==========================================
   // Staff Portal

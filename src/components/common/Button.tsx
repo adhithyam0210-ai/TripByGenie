@@ -29,6 +29,9 @@ export const Button: React.FC<ButtonProps> = ({
     lg: 'text-base px-6 py-3.5 gap-2.5'
   };
 
+  const hasCustomHoverBg = className.includes('hover:bg-') || className.includes('hover:!bg-');
+  const hasCustomBorder = className.includes('border-') || className.includes('hover:border-');
+
   const variantClasses = {
     primary:
       'bg-[#FF795C] text-white hover:bg-[#E66346] shadow-sm hover:shadow-md hover:shadow-[#FF795C]/25',
@@ -37,7 +40,7 @@ export const Button: React.FC<ButtonProps> = ({
     turquoise:
       'bg-[#55C9BD] text-[#041D30] hover:bg-[#40B5A9] font-bold shadow-sm',
     outline:
-      'border-2 border-[#17648A]/30 text-[#082C43] hover:border-[#17648A] hover:bg-[#17648A]/5',
+      `border-2 ${hasCustomBorder ? '' : 'border-[#17648A]/30 hover:border-[#17648A]'} text-[#082C43] ${hasCustomHoverBg ? '' : 'hover:bg-[#17648A]/5'}`,
     ghost:
       'text-[#17648A] hover:bg-[#17648A]/10',
     white:

@@ -885,7 +885,11 @@ export const Home: React.FC = () => {
 
           <div className="mt-6 sm:mt-7 text-center">
             <Link to="/destinations">
-              <Button variant="outline" size="lg" className="border-[#082C43] text-[#082C43] hover:bg-[#082C43] hover:text-white font-bold text-xs">
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-2 border-[#082C43] text-[#082C43] hover:bg-[#082C43] hover:text-white font-bold text-xs transition-all duration-200 shadow-xs hover:shadow-md"
+              >
                 Explore All Destinations →
               </Button>
             </Link>
@@ -989,7 +993,7 @@ export const Home: React.FC = () => {
               <Button
                 variant="outline"
                 size="lg"
-                className="border-[#082C43] text-[#082C43] hover:bg-[#082C43] hover:text-white font-bold text-xs"
+                className="border-2 border-[#082C43] text-[#082C43] hover:bg-[#082C43] hover:text-white font-bold text-xs transition-all duration-200 shadow-xs hover:shadow-md"
               >
                 View All Holiday Packages ({packages.length}) →
               </Button>
@@ -1160,28 +1164,37 @@ export const Home: React.FC = () => {
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4">
             {services.map((srv) => (
-              <div
+              <Link
                 key={srv.id}
-                className="p-5 rounded-2xl bg-white border border-[#EFE7DA] shadow-xs hover:shadow-md hover:border-[#55C9BD]/50 transition-all flex flex-col justify-between"
+                to="/services"
+                className="p-5 rounded-2xl bg-white border border-[#EFE7DA] shadow-xs hover:shadow-md hover:border-[#55C9BD]/50 transition-all flex flex-col justify-between group cursor-pointer"
               >
                 <div>
                   <div className="w-10 h-10 rounded-xl bg-[#082C43]/5 flex items-center justify-center text-[#17648A] mb-3 group-hover:scale-105 transition-transform">
                     {renderServiceIcon(srv)}
                   </div>
-                  <h3 className="text-sm font-bold text-[#082C43]">{srv.title}</h3>
-                  <p className="text-xs text-gray-500 mt-1 line-clamp-3 leading-relaxed">
-                    {srv.description}
-                  </p>
+                  <h3 className="text-sm font-bold text-[#082C43] group-hover:text-[#17648A] transition-colors">{srv.title}</h3>
+                  {srv.description && (
+                    <p className="text-xs text-gray-500 mt-1 line-clamp-3 leading-relaxed">
+                      {srv.description}
+                    </p>
+                  )}
                 </div>
-                <Link
-                  to="/services"
-                  className="mt-4 text-[11px] font-bold text-[#17648A] hover:text-[#FF795C] flex items-center gap-1"
-                >
-                  <span>Learn more</span>
-                  <ArrowRight className="w-3 h-3" />
-                </Link>
-              </div>
+              </Link>
             ))}
+          </div>
+
+          {/* Single Learn More Button at the bottom */}
+          <div className="mt-6 sm:mt-7 text-center">
+            <Link to="/services">
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-2 border-[#082C43] text-[#082C43] hover:bg-[#082C43] hover:text-white font-bold text-xs transition-all duration-200 shadow-xs hover:shadow-md"
+              >
+                Learn More →
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
