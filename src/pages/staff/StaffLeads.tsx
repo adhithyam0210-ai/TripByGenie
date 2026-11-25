@@ -161,10 +161,10 @@ export const StaffLeads: React.FC = () => {
     if (!search.trim()) return true;
     const q = search.toLowerCase();
     return (
-      l.customer_name.toLowerCase().includes(q) ||
-      l.interested_destination.toLowerCase().includes(q) ||
-      l.customer_email.toLowerCase().includes(q) ||
-      l.customer_phone.includes(q)
+      (l.customer_name || '').toLowerCase().includes(q) ||
+      (l.interested_destination || '').toLowerCase().includes(q) ||
+      (l.customer_email || '').toLowerCase().includes(q) ||
+      (l.customer_phone || '').includes(q)
     );
   });
 

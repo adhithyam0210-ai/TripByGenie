@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   Plane,
   Bus,
@@ -29,6 +29,24 @@ import { api } from '../../services/api';
 import { useToast } from '../../context/ToastContext';
 import { useAuth } from '../../context/AuthContext';
 import { TravelService } from '../../types';
+
+
+const countryCodes = [
+  { code: '+91', country: 'IN', label: '+91 (IN)' },
+  { code: '+1', country: 'US', label: '+1 (US)' },
+  { code: '+44', country: 'UK', label: '+44 (UK)' },
+  { code: '+971', country: 'UAE', label: '+971 (UAE)' },
+  { code: '+65', country: 'SG', label: '+65 (SG)' },
+  { code: '+60', country: 'MY', label: '+60 (MY)' },
+  { code: '+61', country: 'AU', label: '+61 (AU)' },
+  { code: '+966', country: 'SA', label: '+966 (SA)' },
+  { code: '+974', country: 'QA', label: '+974 (QA)' },
+  { code: '+49', country: 'DE', label: '+49 (DE)' },
+  { code: '+33', country: 'FR', label: '+33 (FR)' },
+  { code: '+94', country: 'LK', label: '+94 (LK)' },
+  { code: '+977', country: 'NP', label: '+977 (NP)' },
+  { code: '+880', country: 'BD', label: '+880 (BD)' },
+];
 
 interface ServiceEnquiryModalProps {
   isOpen: boolean;
@@ -478,10 +496,11 @@ export const ServiceEnquiryModal: React.FC<ServiceEnquiryModalProps> = ({
           break;
       }
 
+      const fullPhone = phone.trim().startsWith('+') ? phone.trim() : `${countryCode} ${phone.trim()}`;
       await api.submitEnquiry({
         name,
         email,
-        phone,
+        phone: fullPhone,
         destination: interestedDestination,
         package_id: null,
         departure_city: flightFrom || busFrom || carPickupCity || genDepartCity || '',

@@ -99,6 +99,7 @@ export const SearchWidget: React.FC<SearchWidgetProps> = ({ compact = false, cla
           </label>
           <input
             type="date"
+            min={new Date().toISOString().split('T')[0]}
             value={travelDate}
             onChange={(e) => setTravelDate(e.target.value)}
             className="w-full text-sm font-semibold text-[#082C43] bg-transparent focus:outline-none cursor-pointer"

@@ -90,10 +90,26 @@ export const AdminLeads: React.FC = () => {
         source: sourceFilter,
         search
       });
-      const leadsList = res.data || res.leads || (Array.isArray(res) ? res : []);
-      setLeads(leadsList);
-      setTotalPages(res.totalPages || Math.ceil(leadsList.length / 15) || 1);
-      setTotalLeads(res.total ?? leadsList.length);
+      const rawList = res.data || res.leads || (Array.isArray(res) ? res : []);
+      const normalizedList: Lead[] = rawList.map((l: any) => ({
+        ...l,
+        customer_name: l.customer_name || l.name || 'Traveler',
+        customer_email: l.customer_email || l.email || '',
+        customer_phone: l.customer_phone || l.phone || '',
+        interested_destination: l.interested_destination || l.destination || 'Custom Tour',
+        departure_city: l.departure_city || l.city || '',
+        travel_date: l.travel_date || l.departure_date || '',
+        travelers_count: Number(l.travelers_count) || ((Number(l.adults) || 2) + (Number(l.children) || 0)),
+        budget: l.budget || 'Comfort',
+        lead_source: l.lead_source || l.source || 'Website Enquiry',
+        status: l.status || 'New',
+        assigned_staff_id: l.assigned_staff_id || null,
+        assigned_staff_name: l.assigned_staff_name || (l.assigned_staff_id ? 'Assigned' : 'Unassigned'),
+        created_at: l.created_at || new Date().toISOString()
+      }));
+      setLeads(normalizedList);
+      setTotalPages(res.totalPages || Math.ceil(normalizedList.length / 15) || 1);
+      setTotalLeads(res.total ?? normalizedList.length);
     } catch (e) {
       console.error(e);
     } finally {
@@ -189,6 +205,7 @@ export const AdminLeads: React.FC = () => {
       await api.deleteAdminLead(id);
       success('Lead deleted successfully.');
       if (selectedLead?.id === id) setSelectedLead(null);
+      setSelectedLeadIds((prev) => prev.filter((item) => item !== id));
       loadLeads();
     } catch (err: any) {
       error(err.message || 'Failed to delete lead.');
@@ -198,10 +215,13 @@ export const AdminLeads: React.FC = () => {
   const handleFlushLeads = async () => {
     if (!confirm('Are you sure you want to flush all test leads? This will reset the leads pipeline cleanly.')) return;
     try {
+      localStorage.removeItem('tg_local_leads');
       await api.flushLeads();
       success('All test leads have been flushed clean.');
       setSelectedLead(null);
       setSelectedLeadIds([]);
+      setLeads([]);
+      setTotalLeads(0);
       loadLeads();
     } catch (err: any) {
       error(err.message || 'Failed to flush leads.');
@@ -397,14 +417,14 @@ export const AdminLeads: React.FC = () => {
                                   {(l as any).enquiry_id}
                                 </span>
                               )}
-                              <strong className="text-[#082C43] block">{l.customer_name}</strong>
-                              <span className="text-[11px] text-slate-500">{l.customer_phone || l.customer_email}</span>
+                              <strong className="text-[#082C43] block">{l.customer_name || (l as any).name || 'Traveler'}</strong>
+                              <span className="text-[11px] text-slate-500">{l.customer_phone || l.customer_email || (l as any).phone || (l as any).email || 'No contact info'}</span>
                             </td>
                             <td
                               className="py-3 px-3 font-semibold text-[#17648A] cursor-pointer"
                               onClick={() => handleSelectLeadDetail(l)}
                             >
-                              {l.interested_destination}
+                              {l.interested_destination || (l as any).destination || 'Custom Tour'}
                             </td>
                             <td className="py-3 px-3">
                               {l.assigned_staff_name ? (
@@ -416,10 +436,10 @@ export const AdminLeads: React.FC = () => {
                               )}
                             </td>
                             <td className="py-3 px-3">
-                              <StatusBadge status={l.status} />
+                              <StatusBadge status={l.status || 'New'} />
                             </td>
                             <td className="py-3 px-3 text-slate-500">
-                              {l.lead_source}
+                              {l.lead_source || (l as any).source || 'Website Enquiry'}
                             </td>
                             <td className="py-3 px-3 text-right">
                               <div className="flex items-center justify-end gap-1.5">
@@ -477,12 +497,12 @@ export const AdminLeads: React.FC = () => {
                   <div>
                     <div className="flex items-center gap-2">
                       <h3 className="text-base font-bold text-[#082C43] font-display">
-                        {selectedLead.customer_name}
+                        {selectedLead.customer_name || (selectedLead as any).name || 'Traveler'}
                       </h3>
-                      <StatusBadge status={selectedLead.status} />
+                      <StatusBadge status={selectedLead.status || 'New'} />
                     </div>
                     <p className="text-xs text-slate-500 mt-0.5">
-                      {(selectedLead as any).enquiry_id ? `Enquiry #${(selectedLead as any).enquiry_id} • ` : ''}Lead #{selectedLead.id} • Source: {selectedLead.lead_source}
+                      {(selectedLead as any).enquiry_id ? `Enquiry #${(selectedLead as any).enquiry_id} • ` : ''}Lead #{selectedLead.id} • Source: {selectedLead.lead_source || (selectedLead as any).source || 'Website'}
                     </p>
                   </div>
                   <button
@@ -495,16 +515,16 @@ export const AdminLeads: React.FC = () => {
 
                 {/* Lead Parameters */}
                 <div className="p-3.5 rounded-xl bg-[#F8F1E7]/50 border border-[#EFE7DA] text-xs space-y-1.5 text-[#173247]">
-                  <div><strong>Email:</strong> {selectedLead.customer_email || 'Not provided'}</div>
-                  <div><strong>Phone:</strong> {selectedLead.customer_phone || 'Not provided'}</div>
-                  <div><strong>Destination:</strong> {selectedLead.interested_destination}</div>
-                  <div><strong>Travel Date:</strong> {selectedLead.travel_date || 'Flexible'}</div>
-                  <div><strong>Travelers:</strong> {selectedLead.travelers_count} Guests</div>
-                  <div><strong>Budget:</strong> {selectedLead.budget}</div>
+                  <div><strong>Email:</strong> {selectedLead.customer_email || (selectedLead as any).email || 'Not provided'}</div>
+                  <div><strong>Phone:</strong> {selectedLead.customer_phone || (selectedLead as any).phone || 'Not provided'}</div>
+                  <div><strong>Destination:</strong> {selectedLead.interested_destination || (selectedLead as any).destination || 'Custom Tour'}</div>
+                  <div><strong>Travel Date:</strong> {selectedLead.travel_date || (selectedLead as any).departure_date || 'Flexible'}</div>
+                  <div><strong>Travelers:</strong> {selectedLead.travelers_count || 2} Guests</div>
+                  <div><strong>Budget:</strong> {selectedLead.budget || 'Comfort'}</div>
                   <div><strong>Assigned Consultant:</strong> {selectedLead.assigned_staff_name || 'Unassigned'}</div>
-                  {selectedLead.notes && (
+                  {(selectedLead.notes || (selectedLead as any).additional_requirements) && (
                     <div className="pt-1.5 border-t border-[#EFE7DA] text-slate-600">
-                      <strong>Notes:</strong> {selectedLead.notes}
+                      <strong>Notes:</strong> {selectedLead.notes || (selectedLead as any).additional_requirements}
                     </div>
                   )}
                 </div>
@@ -516,18 +536,25 @@ export const AdminLeads: React.FC = () => {
                     value={selectedLead.assigned_staff_id || ''}
                     onChange={async (e) => {
                       const staffId = e.target.value;
-                      await api.assignLeads({
-                        lead_ids: [selectedLead.id],
-                        staff_id: staffId,
-                        notes: 'Reassigned via lead drawer.'
-                      });
-                      success('Lead reassigned.');
-                      loadLeads();
-                      handleSelectLeadDetail({
-                        ...selectedLead,
-                        assigned_staff_id: staffId,
-                        assigned_staff_name: staffList.find((s) => s.id === staffId)?.name || 'Unassigned'
-                      });
+                      try {
+                        await api.assignLeads({
+                          lead_ids: [selectedLead.id],
+                          staff_id: staffId,
+                          notes: 'Reassigned via lead drawer.'
+                        });
+                        const assignedStaff = staffList.find((s) => s.id === staffId);
+                        const assignedName = assignedStaff ? assignedStaff.name : 'Unassigned';
+                        success(`Lead reassigned to ${assignedName}.`);
+                        loadLeads();
+                        setSelectedLead((prev) => prev ? {
+                          ...prev,
+                          assigned_staff_id: staffId,
+                          assigned_staff_name: assignedName,
+                          status: staffId ? 'Assigned' : 'Unassigned'
+                        } : null);
+                      } catch (err: any) {
+                        error(err.message || 'Failed to reassign lead.');
+                      }
                     }}
                     className="p-1.5 rounded-lg border border-[#EFE7DA] bg-white font-semibold text-xs"
                   >

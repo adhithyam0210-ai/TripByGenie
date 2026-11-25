@@ -380,6 +380,7 @@ export const AgentMarketplace: React.FC = () => {
                 <input
                   type="date"
                   required
+                  min={new Date().toISOString().split('T')[0]}
                   value={purchaseForm.travel_date}
                   onChange={(e) => setPurchaseForm({ ...purchaseForm, travel_date: e.target.value })}
                   className="w-full p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"

@@ -814,14 +814,25 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
 
           {/* Mobile Menu Actions & Hamburger */}
           <div className="flex xl:hidden items-center gap-1.5 sm:gap-2">
-            <Link
-              to="/login"
-              className="text-xs bg-[#082C43] hover:bg-[#003b73] text-white px-2.5 py-1.5 rounded-lg font-bold flex items-center gap-1 transition-all shadow-xs"
-              title="Staff, Agent & Customer Login"
-            >
-              <User className="w-3.5 h-3.5 text-[#55C9BD]" />
-              <span>Login</span>
-            </Link>
+            {isAuthenticated && user ? (
+              <Link
+                to={getRoleDashboardPath(user.role)}
+                className="text-xs bg-[#082C43] hover:bg-[#003b73] text-white px-2.5 py-1.5 rounded-lg font-bold flex items-center gap-1 transition-all shadow-xs"
+                title={`${user.role.toUpperCase()} Workspace`}
+              >
+                <User className="w-3.5 h-3.5 text-[#55C9BD]" />
+                <span>Dashboard</span>
+              </Link>
+            ) : (
+              <Link
+                to="/login"
+                className="text-xs bg-[#082C43] hover:bg-[#003b73] text-white px-2.5 py-1.5 rounded-lg font-bold flex items-center gap-1 transition-all shadow-xs"
+                title="Staff, Agent & Customer Login"
+              >
+                <User className="w-3.5 h-3.5 text-[#55C9BD]" />
+                <span>Login</span>
+              </Link>
+            )}
             <button
               type="button"
               onClick={onOpenTripModal}
@@ -870,7 +881,7 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
           onClick={() => setIsMobileMenuOpen(false)}
         >
           <div
-            className="dropdown-scroll-box w-full max-w-sm bg-[#082C43] text-white h-full overflow-y-auto overscroll-contain p-6 flex flex-col justify-between shadow-2xl"
+            className="dropdown-scroll-box w-full max-w-sm bg-[#082C43] text-white h-full overflow-y-auto overscroll-contain p-6 flex flex-col shadow-2xl"
             style={{
               overscrollBehavior: 'contain',
               WebkitOverflowScrolling: 'touch',
@@ -1005,107 +1016,6 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
                 >
                   Contact Us
                 </Link>
-              </div>
-            </div>
-
-            {/* Bottom Actions & Contacts */}
-            <div className="pt-6 border-t border-white/10 space-y-4">
-              <Button
-                variant="primary"
-                size="md"
-                onClick={() => {
-                  setIsMobileMenuOpen(false);
-                  if (onOpenTripModal) onOpenTripModal();
-                }}
-                className="w-full text-xs font-bold shadow-lg"
-              >
-                Plan Your Customized Trip
-              </Button>
-
-              {isAuthenticated && user ? (
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between text-xs text-white/80 bg-white/10 p-2.5 rounded-xl border border-white/10">
-                    <span className="font-semibold">Logged in as <strong className="text-[#55C9BD]">{user.name}</strong></span>
-                    <span className="text-[10px] bg-[#FF795C] text-white px-2 py-0.5 rounded-full font-bold uppercase">{user.role}</span>
-                  </div>
-                  <Link to={getRoleDashboardPath(user.role)} onClick={() => setIsMobileMenuOpen(false)}>
-                    <Button variant="outline" size="md" className="w-full text-white border-white/30 text-xs font-bold hover:bg-white/10">
-                      Go to {user.role.toUpperCase()} Workspace →
-                    </Button>
-                  </Link>
-                </div>
-              ) : (
-                <div className="space-y-2.5">
-                  <div className="text-[11px] font-bold uppercase tracking-wider text-[#55C9BD] flex items-center justify-between">
-                    <span className="flex items-center gap-1.5">
-                      <ShieldCheck className="w-3.5 h-3.5" />
-                      <span>Staff & Partner Access Portals</span>
-                    </span>
-                    <Link
-                      to="/login"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="text-[#FF795C] text-[10px] font-bold lowercase hover:underline"
-                    >
-                      all logins →
-                    </Link>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2 text-xs">
-                    <Link
-                      to="/login?role=staff"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 flex flex-col text-left transition-colors group"
-                    >
-                      <span className="font-bold text-white flex items-center gap-1.5 group-hover:text-[#55C9BD]">
-                        <Users className="w-3.5 h-3.5 text-[#55C9BD]" />
-                        Staff CRM
-                      </span>
-                      <span className="text-[10px] text-white/60 mt-0.5">Leads & Follow-ups</span>
-                    </Link>
-
-                    <Link
-                      to="/login?role=agent"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 flex flex-col text-left transition-colors group"
-                    >
-                      <span className="font-bold text-white flex items-center gap-1.5 group-hover:text-amber-400">
-                        <Briefcase className="w-3.5 h-3.5 text-amber-400" />
-                        B2B Agent
-                      </span>
-                      <span className="text-[10px] text-white/60 mt-0.5">Wholesale Net Rates</span>
-                    </Link>
-
-                    <Link
-                      to="/login?role=admin"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 flex flex-col text-left transition-colors group"
-                    >
-                      <span className="font-bold text-white flex items-center gap-1.5 group-hover:text-[#FF795C]">
-                        <Shield className="w-3.5 h-3.5 text-[#FF795C]" />
-                        Admin CRM
-                      </span>
-                      <span className="text-[10px] text-white/60 mt-0.5">Executive Command</span>
-                    </Link>
-
-                    <Link
-                      to="/login?role=customer"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 flex flex-col text-left transition-colors group"
-                    >
-                      <span className="font-bold text-white flex items-center gap-1.5 group-hover:text-emerald-400">
-                        <User className="w-3.5 h-3.5 text-emerald-400" />
-                        Customer
-                      </span>
-                      <span className="text-[10px] text-white/60 mt-0.5">Bookings & Hub</span>
-                    </Link>
-                  </div>
-                </div>
-              )}
-
-              <div className="bg-white/5 p-3 rounded-xl text-xs space-y-1.5 text-white/80">
-                <p className="font-bold text-[#55C9BD]">Direct Contact Helpline</p>
-                <p>Phone: <a href="tel:+914446071374" className="text-white hover:underline">+91 (44) 46071374</a></p>
-                <p>WhatsApp: <a href="https://wa.me/919940463566" className="text-white hover:underline">+91 99404 63566</a></p>
-                <p>Email: <a href="mailto:info@tripbygenie.com" className="text-white hover:underline">info@tripbygenie.com</a></p>
               </div>
             </div>
           </div>

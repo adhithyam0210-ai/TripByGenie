@@ -280,92 +280,51 @@ export const AdminBookings: React.FC = () => {
             <div className="space-y-5 w-full min-w-0">
               {/* Table Selector & Controls Card */}
               <div className="bg-white p-4 rounded-2xl border border-[#EFE7DA] shadow-xs flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 text-xs w-full min-w-0">
-                {/* Dropdown Selector & Quick Pills */}
-                <div className="flex flex-wrap items-center gap-2.5">
-                  <div>
-                    <span className="text-[10px] font-bold text-[#17648A] uppercase tracking-wider block mb-1">
-                      Select Table:
-                    </span>
-                    <div className="relative">
-                      <select
-                        value={tableView}
-                        onChange={(e) => setTableView(e.target.value as any)}
-                        className="pl-3 pr-8 py-2 rounded-xl border-2 border-[#17648A]/30 bg-[#F8F1E7]/60 font-bold text-[#082C43] text-xs focus:outline-none focus:border-[#17648A] cursor-pointer appearance-none shadow-xs"
-                      >
-                        <option value="b2c">B2C Direct Customer Bookings ({b2cBookings.length})</option>
-                        <option value="b2b">B2B Wholesale Partner Bookings ({b2bBookings.length})</option>
-                        <option value="all">Master Register - All Bookings ({bookings.length})</option>
-                      </select>
-                      <ChevronDown className="w-4 h-4 text-[#17648A] absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-                    </div>
-                  </div>
-
-                  {/* Quick Segment Pills */}
-                  <div className="flex items-center gap-1.5 self-end pt-1">
-                    <button
-                      type="button"
-                      onClick={() => setTableView('b2c')}
-                      className={`px-3 py-2 rounded-xl font-bold transition-all text-xs flex items-center gap-1.5 cursor-pointer ${tableView === 'b2c'
-                          ? 'bg-[#17648A] text-white shadow-xs'
-                          : 'bg-[#F8F1E7] text-[#485264] hover:bg-[#EFE7DA]'
-                        }`}
+                {/* Dropdown Selector */}
+                <div className="flex items-center gap-2">
+                  <span className="text-[11px] font-bold text-[#17648A] uppercase tracking-wider whitespace-nowrap">
+                    Choose Table:
+                  </span>
+                  <div className="relative">
+                    <select
+                      value={tableView}
+                      onChange={(e) => setTableView(e.target.value as any)}
+                      className="pl-3 pr-8 py-2 rounded-xl border-2 border-[#17648A]/30 bg-[#F8F1E7]/60 font-bold text-[#082C43] text-xs focus:outline-none focus:border-[#17648A] cursor-pointer appearance-none shadow-xs"
                     >
-                      <User className="w-3.5 h-3.5" />
-                      <span>B2C Customers ({b2cBookings.length})</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => setTableView('b2b')}
-                      className={`px-3 py-2 rounded-xl font-bold transition-all text-xs flex items-center gap-1.5 cursor-pointer ${tableView === 'b2b'
-                          ? 'bg-[#082C43] text-white shadow-xs'
-                          : 'bg-[#F8F1E7] text-[#485264] hover:bg-[#EFE7DA]'
-                        }`}
-                    >
-                      <Building2 className="w-3.5 h-3.5" />
-                      <span>B2B Wholesale ({b2bBookings.length})</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => setTableView('all')}
-                      className={`px-3 py-2 rounded-xl font-bold transition-all text-xs flex items-center gap-1.5 cursor-pointer ${tableView === 'all'
-                          ? 'bg-[#2563EB] text-white shadow-xs'
-                          : 'bg-[#F8F1E7] text-[#485264] hover:bg-[#EFE7DA]'
-                        }`}
-                    >
-                      <Layers className="w-3.5 h-3.5" />
-                      <span>All ({bookings.length})</span>
-                    </button>
+                      <option value="b2c">B2C Direct Customer Bookings ({b2cBookings.length})</option>
+                      <option value="b2b">B2B Wholesale Partner Bookings ({b2bBookings.length})</option>
+                      <option value="all">Master Register - All Bookings ({bookings.length})</option>
+                    </select>
+                    <ChevronDown className="w-4 h-4 text-[#17648A] absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                   </div>
                 </div>
 
-                                  {/* Search & Status Filter */}
-                                  <div className="flex items-center gap-2 self-end w-full lg:w-auto">
-                                    <div className="relative flex-1 lg:w-60">
-                                      <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                                      <input
-                                        type="text"
-                                        placeholder="Search booking #, name, tour..."
-                                        value={search}
-                                        onChange={(e) => setSearch(e.target.value)}
-                                        className="w-full pl-8 pr-3 py-2 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] text-xs focus:outline-none"
-                                      />
-                                    </div>
+                {/* Search & Status Filter */}
+                <div className="flex items-center gap-2 w-full sm:w-auto">
+                  <div className="relative flex-1 sm:w-60">
+                    <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                    <input
+                      type="text"
+                      placeholder="Search booking #, name, tour..."
+                      value={search}
+                      onChange={(e) => setSearch(e.target.value)}
+                      className="w-full pl-8 pr-3 py-2 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] text-xs focus:outline-none"
+                    />
+                  </div>
 
-                                    <select
-                                      value={statusFilter}
-                                      onChange={(e) => setStatusFilter(e.target.value)}
-                                      className="p-2 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] text-xs font-semibold cursor-pointer"
-                                    >
-                                      <option value="all">All Statuses</option>
-                                      <option value="confirmed">Confirmed</option>
-                                      <option value="partial">Partially Paid</option>
-                                      <option value="paid">Paid</option>
-                                      <option value="pending">Pending</option>
-                                    </select>
-                                  </div>
-                              </div>
+                  <select
+                    value={statusFilter}
+                    onChange={(e) => setStatusFilter(e.target.value)}
+                    className="p-2 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] text-xs font-semibold cursor-pointer"
+                  >
+                    <option value="all">All Statuses</option>
+                    <option value="confirmed">Confirmed</option>
+                    <option value="partial">Partially Paid</option>
+                    <option value="paid">Paid</option>
+                    <option value="pending">Pending</option>
+                  </select>
+                </div>
+              </div>
 
         {/* Bookings Table Card with Self-Contained Horizontal Scroll */}
                             <div className="bg-white rounded-2xl border border-[#EFE7DA] shadow-xs overflow-hidden w-full min-w-0">

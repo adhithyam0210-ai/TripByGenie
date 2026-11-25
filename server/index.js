@@ -1514,10 +1514,11 @@ app.post('/api/admin/leads/assign', authenticate, authorize(['admin', 'manager']
   const updatedLeads = [];
   for (const id of lead_ids) {
     const lead = db.findById('leads', id);
-    if (lead && lead.agency_id === agencyId) {
+    if (lead && (!lead.agency_id || lead.agency_id === agencyId || lead.agency_id === 'agency_travel_genie' || !agencyId)) {
       const prevStaff = lead.assigned_staff_id;
       const prevStaffName = lead.assigned_staff_name;
       const prevStatus = lead.status;
+      const effectiveAgencyId = lead.agency_id || agencyId || 'agency_travel_genie';
 
       const updated = db.update('leads', id, {
         assigned_staff_id: staff_id || null,
@@ -1528,7 +1529,7 @@ app.post('/api/admin/leads/assign', authenticate, authorize(['admin', 'manager']
 
       // 1. Record in lead_assignments table
       db.insert('lead_assignments', {
-        agency_id: agencyId,
+        agency_id: effectiveAgencyId,
         lead_id: id,
         assigned_by: req.user.id,
         assigned_by_name: req.user.name,
@@ -1542,14 +1543,14 @@ app.post('/api/admin/leads/assign', authenticate, authorize(['admin', 'manager']
 
       // 2. Record status history
       if (prevStatus !== updated.status) {
-        db.recordLeadStatusHistory(agencyId, id, prevStatus, updated.status, req.user.id, `Lead assigned to ${staffName}. ${notes || ''}`);
+        db.recordLeadStatusHistory(effectiveAgencyId, id, prevStatus, updated.status, req.user.id, `Lead assigned to ${staffName}. ${notes || ''}`);
       }
 
       // 3. Record in lead_activities
-      db.recordActivity(id, req.user.id, 'assignment', `Assigned to ${staffName} by Admin. ${notes || ''}`);
+      db.recordActivity(id, req.user.id, 'assignment', `Assigned to ${staffName} by Admin/Manager. ${notes || ''}`);
 
       // 4. Record audit log
-      db.recordAuditLog(agencyId, req.user.id, 'ASSIGN_LEAD', 'lead', id, {
+      db.recordAuditLog(effectiveAgencyId, req.user.id, 'ASSIGN_LEAD', 'lead', id, {
         staff_id,
         staff_name: staffName,
         previous_staff_id: prevStaff,
@@ -1563,10 +1564,10 @@ app.post('/api/admin/leads/assign', authenticate, authorize(['admin', 'manager']
   // Notify assigned staff
   if (staff_id) {
     db.createNotification(
-      agencyId,
+      agencyId || 'agency_travel_genie',
       staff_id,
       'Leads Assigned',
-      `You have been assigned ${updatedLeads.length} lead(s) by Administrator.`,
+      `You have been assigned ${updatedLeads.length} lead(s) by Operations Manager.`,
       'info',
       '/staff/leads'
     );
@@ -1582,10 +1583,9 @@ app.post('/api/admin/leads/assign', authenticate, authorize(['admin', 'manager']
 // Admin Delete Lead
 app.delete('/api/admin/leads/:id', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const lead = db.findById('leads', req.params.id);
-  if (!lead || (lead.agency_id && lead.agency_id !== req.user.agency_id)) {
-    return res.status(404).json({ error: 'Lead not found.' });
+  if (lead) {
+    db.delete('leads', req.params.id);
   }
-  db.delete('leads', req.params.id);
   res.json({ success: true, message: 'Lead deleted successfully.' });
 });
 

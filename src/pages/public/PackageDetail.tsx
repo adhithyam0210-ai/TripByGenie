@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
   Clock,
@@ -39,19 +39,119 @@ export const PackageDetail: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isTripModalOpen, setIsTripModalOpen] = useState(false);
 
-  // Fast booking box form
+  const todayStr = useMemo(() => new Date().toISOString().split('T')[0], []);
+
+  const countryCodes = useMemo(() => [
+    { code: '+91', country: 'IN', label: '+91 (India)' },
+    { code: '+1', country: 'US', label: '+1 (USA/Canada)' },
+    { code: '+44', country: 'UK', label: '+44 (UK)' },
+    { code: '+971', country: 'AE', label: '+971 (UAE)' },
+    { code: '+65', country: 'SG', label: '+65 (Singapore)' },
+    { code: '+60', country: 'MY', label: '+60 (Malaysia)' },
+    { code: '+61', country: 'AU', label: '+61 (Australia)' },
+    { code: '+966', country: 'SA', label: '+966 (Saudi Arabia)' },
+    { code: '+974', country: 'QA', label: '+974 (Qatar)' },
+    { code: '+968', country: 'OM', label: '+968 (Oman)' },
+    { code: '+49', country: 'DE', label: '+49 (Germany)' },
+    { code: '+33', country: 'FR', label: '+33 (France)' },
+    { code: '+39', country: 'IT', label: '+39 (Italy)' },
+    { code: '+81', country: 'JP', label: '+81 (Japan)' },
+    { code: '+66', country: 'TH', label: '+66 (Thailand)' },
+    { code: '+94', country: 'LK', label: '+94 (Sri Lanka)' },
+    { code: '+977', country: 'NP', label: '+977 (Nepal)' },
+    { code: '+880', country: 'BD', label: '+880 (Bangladesh)' }
+  ], []);
+
+  // Fast booking box form with inline validation
   const [bookingForm, setBookingForm] = useState({
     name: '',
     email: '',
+    countryCode: '+91',
     phone: '',
     travelDate: '',
     travelers: '2'
   });
+  const [formErrors, setFormErrors] = useState<{
+    name?: string;
+    email?: string;
+    phone?: string;
+    travelDate?: string;
+  }>({});
+  const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
   const [isSubmittingBooking, setIsSubmittingBooking] = useState(false);
 
   useEffect(() => {
     if (packageSlug) loadPackage(packageSlug);
   }, [packageSlug]);
+
+  const validateField = (field: 'name' | 'email' | 'phone' | 'travelDate', val: string, code = bookingForm.countryCode) => {
+    let err = '';
+    const trimmed = (val || '').trim();
+
+    if (field === 'name') {
+      if (!trimmed) {
+        err = 'Your name is required';
+      } else if (trimmed.length < 2) {
+        err = 'Name must be at least 2 characters';
+      } else if (/^\d+$/.test(trimmed)) {
+        err = 'Name cannot be numbers only';
+      }
+    } else if (field === 'email') {
+      if (!trimmed) {
+        err = 'Email address is required';
+      } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(trimmed)) {
+        err = 'Please enter a valid email address';
+      }
+    } else if (field === 'phone') {
+      const digits = trimmed.replace(/\D/g, '');
+      if (!trimmed) {
+        err = 'Mobile number is required';
+      } else if (code === '+91') {
+        if (digits.length !== 10) {
+          err = 'Please enter a valid 10-digit mobile number';
+        }
+      } else if (digits.length < 7 || digits.length > 15) {
+        err = 'Please enter a valid phone number (7-15 digits)';
+      }
+    } else if (field === 'travelDate') {
+      if (trimmed) {
+        const selected = new Date(trimmed);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        if (selected < today) {
+          err = 'Travel date cannot be in the past';
+        }
+      }
+    }
+
+    setFormErrors((prev) => {
+      const next = { ...prev };
+      if (err) {
+        next[field] = err;
+      } else {
+        delete next[field];
+      }
+      return next;
+    });
+
+    return err;
+  };
+
+  const validateAll = () => {
+    const nameErr = validateField('name', bookingForm.name);
+    const emailErr = validateField('email', bookingForm.email);
+    const phoneErr = validateField('phone', bookingForm.phone, bookingForm.countryCode);
+    const dateErr = validateField('travelDate', bookingForm.travelDate);
+
+    const errs: typeof formErrors = {};
+    if (nameErr) errs.name = nameErr;
+    if (emailErr) errs.email = emailErr;
+    if (phoneErr) errs.phone = phoneErr;
+    if (dateErr) errs.travelDate = dateErr;
+
+    setFormErrors(errs);
+    return Object.keys(errs).length === 0;
+  };
 
   const loadPackage = async (packageSlug: string) => {
     setIsLoading(true);
@@ -82,17 +182,19 @@ export const PackageDetail: React.FC = () => {
     e.preventDefault();
     if (!pkg) return;
 
-    if (!bookingForm.name || (!bookingForm.email && !bookingForm.phone)) {
-      error('Please provide your name and contact details.');
+    setHasAttemptedSubmit(true);
+    if (!validateAll()) {
+      error('Please complete all required fields correctly.');
       return;
     }
 
     setIsSubmittingBooking(true);
     try {
+      const fullPhone = `${bookingForm.countryCode} ${bookingForm.phone.trim()}`;
       await api.submitEnquiry({
-        name: bookingForm.name,
-        email: bookingForm.email,
-        phone: bookingForm.phone,
+        name: bookingForm.name.trim(),
+        email: bookingForm.email.trim(),
+        phone: fullPhone,
         destination: pkg.title,
         package_id: pkg.id,
         travel_date: bookingForm.travelDate,
@@ -103,7 +205,9 @@ export const PackageDetail: React.FC = () => {
       });
 
       success('Enquiry received! Our travel specialist will call you with quotation & booking confirmation.');
-      setBookingForm({ name: '', email: '', phone: '', travelDate: '', travelers: '2' });
+      setBookingForm({ name: '', email: '', countryCode: '+91', phone: '', travelDate: '', travelers: '2' });
+      setFormErrors({});
+      setHasAttemptedSubmit(false);
     } catch (err: any) {
       error(err.message || 'Failed to submit enquiry.');
     } finally {
@@ -381,7 +485,7 @@ export const PackageDetail: React.FC = () => {
               </div>
 
               {/* Fast Booking Form */}
-              <form onSubmit={handleQuickEnquire} className="space-y-3">
+              <form onSubmit={handleQuickEnquire} noValidate className="space-y-3">
                 <h4 className="text-xs font-bold uppercase tracking-wider text-[#082C43]">
                   Book / Enquire For This Package
                 </h4>
@@ -395,12 +499,28 @@ export const PackageDetail: React.FC = () => {
                     required
                     placeholder="Enter full name"
                     value={bookingForm.name}
-                    onChange={(e) => setBookingForm({ ...bookingForm, name: e.target.value })}
-                    className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setBookingForm((prev) => ({ ...prev, name: val }));
+                      if (hasAttemptedSubmit) validateField('name', val);
+                    }}
+                    onBlur={() => {
+                      if (hasAttemptedSubmit || bookingForm.name) validateField('name', bookingForm.name);
+                    }}
+                    className={`w-full text-xs p-2.5 rounded-xl border bg-[#FFFDF8] focus:outline-none transition-colors ${
+                      formErrors.name
+                        ? 'border-red-400 focus:border-red-500 bg-red-50/15'
+                        : 'border-[#EFE7DA] focus:border-[#FF795C]'
+                    }`}
                   />
+                  {formErrors.name && (
+                    <p className="text-[10px] text-red-500 font-medium mt-1 animate-in fade-in">
+                      {formErrors.name}
+                    </p>
+                  )}
                 </div>
 
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   <div>
                     <label className="text-[11px] font-bold text-slate-700 block mb-1">
                       Email *
@@ -410,22 +530,74 @@ export const PackageDetail: React.FC = () => {
                       required
                       placeholder="Email"
                       value={bookingForm.email}
-                      onChange={(e) => setBookingForm({ ...bookingForm, email: e.target.value })}
-                      className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setBookingForm((prev) => ({ ...prev, email: val }));
+                        if (hasAttemptedSubmit) validateField('email', val);
+                      }}
+                      onBlur={() => {
+                        if (hasAttemptedSubmit || bookingForm.email) validateField('email', bookingForm.email);
+                      }}
+                      className={`w-full text-xs p-2.5 rounded-xl border bg-[#FFFDF8] focus:outline-none transition-colors ${
+                        formErrors.email
+                          ? 'border-red-400 focus:border-red-500 bg-red-50/15'
+                          : 'border-[#EFE7DA] focus:border-[#FF795C]'
+                      }`}
                     />
+                    {formErrors.email && (
+                      <p className="text-[10px] text-red-500 font-medium mt-1 animate-in fade-in">
+                        {formErrors.email}
+                      </p>
+                    )}
                   </div>
                   <div>
                     <label className="text-[11px] font-bold text-slate-700 block mb-1">
                       Phone *
                     </label>
-                    <input
-                      type="tel"
-                      required
-                      placeholder="Phone/WhatsApp"
-                      value={bookingForm.phone}
-                      onChange={(e) => setBookingForm({ ...bookingForm, phone: e.target.value })}
-                      className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"
-                    />
+                    <div
+                      className={`flex rounded-xl border overflow-hidden bg-[#FFFDF8] transition-colors ${
+                        formErrors.phone
+                          ? 'border-red-400 focus-within:border-red-500 bg-red-50/15'
+                          : 'border-[#EFE7DA] focus-within:border-[#FF795C]'
+                      }`}
+                    >
+                      <select
+                        aria-label="Country Code"
+                        value={bookingForm.countryCode}
+                        onChange={(e) => {
+                          const newCode = e.target.value;
+                          setBookingForm((prev) => ({ ...prev, countryCode: newCode }));
+                          if (hasAttemptedSubmit) validateField('phone', bookingForm.phone, newCode);
+                        }}
+                        className="text-[11px] bg-[#F8F1E7]/70 text-[#082C43] font-semibold pl-2 pr-1 py-2 border-r border-[#EFE7DA] focus:outline-none cursor-pointer shrink-0"
+                      >
+                        {countryCodes.map((c) => (
+                          <option key={c.code} value={c.code}>
+                            {c.code} {c.country}
+                          </option>
+                        ))}
+                      </select>
+                      <input
+                        type="tel"
+                        required
+                        placeholder="Phone/WhatsApp"
+                        value={bookingForm.phone}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setBookingForm((prev) => ({ ...prev, phone: val }));
+                          if (hasAttemptedSubmit) validateField('phone', val);
+                        }}
+                        onBlur={() => {
+                          if (hasAttemptedSubmit || bookingForm.phone) validateField('phone', bookingForm.phone);
+                        }}
+                        className="w-full text-xs p-2 bg-transparent focus:outline-none min-w-0"
+                      />
+                    </div>
+                    {formErrors.phone && (
+                      <p className="text-[10px] text-red-500 font-medium mt-1 animate-in fade-in">
+                        {formErrors.phone}
+                      </p>
+                    )}
                   </div>
                 </div>
 
@@ -436,10 +608,24 @@ export const PackageDetail: React.FC = () => {
                     </label>
                     <input
                       type="date"
+                      min={todayStr}
                       value={bookingForm.travelDate}
-                      onChange={(e) => setBookingForm({ ...bookingForm, travelDate: e.target.value })}
-                      className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setBookingForm((prev) => ({ ...prev, travelDate: val }));
+                        if (hasAttemptedSubmit) validateField('travelDate', val);
+                      }}
+                      className={`w-full text-xs p-2.5 rounded-xl border bg-[#FFFDF8] focus:outline-none transition-colors ${
+                        formErrors.travelDate
+                          ? 'border-red-400 focus:border-red-500 bg-red-50/15'
+                          : 'border-[#EFE7DA] focus:border-[#FF795C]'
+                      }`}
                     />
+                    {formErrors.travelDate && (
+                      <p className="text-[10px] text-red-500 font-medium mt-1 animate-in fade-in">
+                        {formErrors.travelDate}
+                      </p>
+                    )}
                   </div>
                   <div>
                     <label className="text-[11px] font-bold text-slate-700 block mb-1">
@@ -447,7 +633,7 @@ export const PackageDetail: React.FC = () => {
                     </label>
                     <select
                       value={bookingForm.travelers}
-                      onChange={(e) => setBookingForm({ ...bookingForm, travelers: e.target.value })}
+                      onChange={(e) => setBookingForm((prev) => ({ ...prev, travelers: e.target.value }))}
                       className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"
                     >
                       <option value="1">1 Traveler</option>

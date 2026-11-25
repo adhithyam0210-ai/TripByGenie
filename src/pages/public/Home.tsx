@@ -289,23 +289,8 @@ export const Home: React.FC = () => {
     return closestIndex;
   };
 
-  // MICE Mobile Slider with Native Smooth Swipe & Dynamic Bump Effect
-  const miceSliderRef = useRef<HTMLDivElement>(null);
-  const [activeMiceIndex, setActiveMiceIndex] = useState(0);
-
-  const handleMiceScroll = () => {
-    setActiveMiceIndex(getActiveSliderIndex(miceSliderRef.current));
-  };
-
-  const scrollToMiceCard = (idx: number) => {
-    if (miceSliderRef.current) {
-      const card = miceSliderRef.current.children[idx] as HTMLElement;
-      if (card) {
-        card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-      }
-      setActiveMiceIndex(idx);
-    }
-  };
+  // MICE Interactive Image Accordion state (tripbygenie.in)
+  const [activeMiceAccordion, setActiveMiceAccordion] = useState<number>(0);
 
   // Featured Packages Mobile Slider with Native Smooth Swipe & Dynamic Bump Effect (like MICE)
   const packagesSliderRef = useRef<HTMLDivElement>(null);
@@ -350,110 +335,36 @@ export const Home: React.FC = () => {
     }
   };
 
-  const micePillars = [
+  const miceAccordionItems = [
     {
+      id: 'meetings',
       letter: 'M',
-      title: 'Meetings',
-      subtitle: 'Boardrooms & Strategic Offsites',
-      desc: 'Executive board meetings, leadership retreats, high-speed Wi-Fi, audio-visual projection, and confidential business dining.',
-      highlights: ['Executive Boardroom Suites', 'AV & Digital Whiteboards', 'Private Business Dining'],
-      tag: 'Leadership & Strategy',
-      themeColor: 'text-[#17648A]',
-      badgeBg: 'bg-[#17648A]',
-      img: 'https://images.unsplash.com/photo-1517502884422-41eaead166d4?auto=format&fit=crop&w=800&q=80'
+      title: 'M - Meetings',
+      img: '/images/mice/mice-meetings.webp',
+      link: '/mice'
     },
     {
+      id: 'incentives',
       letter: 'I',
-      title: 'Incentives',
-      subtitle: 'Employee & Dealer Reward Tours',
-      desc: 'Reward top performers and dealers with memorable luxury getaways to Dubai, Bali, Thailand, Sri Lanka, Goa, and luxury cruises.',
-      highlights: ['5-Star Luxury Stays', 'Private Yacht & Catamaran Parties', 'Curated Gala Evenings'],
-      tag: 'Rewards & Recognition',
-      themeColor: 'text-[#FF795C]',
-      badgeBg: 'bg-[#FF795C]',
-      img: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80'
+      title: 'I - Incentives',
+      img: '/images/mice/mice-incentives.webp',
+      link: '/mice'
     },
     {
+      id: 'conferences',
       letter: 'C',
-      title: 'Conferences',
-      subtitle: 'National & Global Summits',
-      desc: 'End-to-end coordination for 50 to 1,500+ delegates. Room blocks, bulk airfare discounts, delegate registration, and stage production.',
-      highlights: ['Bulk Group Airfares', 'Large 5-Star Hotel Blocks', 'Acoustics & LED Video Walls'],
-      tag: 'Summits & Conventions',
-      themeColor: 'text-[#55C9BD]',
-      badgeBg: 'bg-[#008080]',
-      img: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80'
+      title: 'C - Conferences',
+      img: '/images/mice/mice-conferences.webp',
+      link: '/mice'
     },
     {
+      id: 'exhibitions',
       letter: 'E',
-      title: 'Exhibitions & Events',
-      subtitle: 'Product Launches & Gala Galas',
-      desc: 'Flawless execution for brand showcases, dealer expos, and themed gala nights with custom stall fabrication and celebrity artists.',
-      highlights: ['Custom Stall Fabrication', 'Intelligent Lighting & Sound', 'Celebrity Emcees & Artists'],
-      tag: 'Trade Expos & Galas',
-      themeColor: 'text-[#082C43]',
-      badgeBg: 'bg-[#082C43]',
-      img: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80'
+      title: 'E - Exhibitions',
+      img: '/images/mice/mice-exhibitions.webp',
+      link: '/mice'
     }
   ];
-
-  const renderMiceCard = (pillar: typeof micePillars[0], isCompactMobile = false, isActive = true) => (
-    <div
-      key={pillar.title}
-      className={`h-full rounded-2xl sm:rounded-3xl overflow-hidden bg-white border border-[#EFE7DA] flex flex-col justify-between group transition-all duration-300 ${
-        isCompactMobile
-          ? `w-[86vw] max-w-[340px] shrink-0 snap-center ${
-              isActive ? 'scale-100 shadow-xl opacity-100 ring-1 ring-[#082C43]/10' : 'scale-[0.94] shadow-md opacity-85'
-            }`
-          : 'shadow-xs hover:shadow-md'
-      }`}
-    >
-      <div>
-        {/* Visual Photographic Header with Badges */}
-        <div className={`relative ${isCompactMobile ? 'h-48' : 'h-44 sm:h-52'} overflow-hidden bg-slate-900`}>
-          <img
-            src={pillar.img}
-            alt={pillar.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-          
-          {/* Top Left Title Badge - Compact & Sleek */}
-          <div className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full bg-white/95 text-[#082C43] shadow-xs text-[10px] sm:text-[11px] font-bold tracking-normal flex items-center border border-[#EFE7DA]">
-            <span>{pillar.title}</span>
-          </div>
-
-          {/* Top Right Tag Badge - Compact & Sleek */}
-          <div className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full bg-white/95 text-[#082C43] shadow-xs text-[9px] sm:text-[10px] font-semibold tracking-normal border border-[#EFE7DA]">
-            {pillar.tag}
-          </div>
-
-          {/* Bottom Image Subtitle */}
-          <div className="absolute bottom-3 left-3 right-3 text-white">
-            <p className="text-sm font-bold font-display drop-shadow-sm leading-tight text-white group-hover:text-amber-200 transition-colors">
-              {pillar.subtitle}
-            </p>
-          </div>
-        </div>
-
-        {/* Card Content - Clean without SLA & Inquire Now buttons */}
-        <div className="p-4 sm:p-5 space-y-2.5 sm:space-y-3">
-          <p className="text-xs text-[#173247]/75 leading-relaxed">
-            {pillar.desc}
-          </p>
-
-          <div className="pt-2 border-t border-[#EFE7DA] space-y-1.5">
-            {pillar.highlights.map((h) => (
-              <div key={h} className="flex items-center gap-1.5 text-[11px] font-medium text-[#082C43]">
-                <CheckCircle2 className="w-3.5 h-3.5 text-[#55C9BD] shrink-0" />
-                <span>{h}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
 
   const renderServiceIcon = (srv: TravelService) => {
     const t = (srv.title || '').toLowerCase();
@@ -492,13 +403,11 @@ export const Home: React.FC = () => {
   const renderGroupTourCard = (tour: any, isCompactMobile = false, isActive = true) => (
     <div
       key={tour.id}
-      className={`rounded-3xl bg-white/10 backdrop-blur-md border border-white/20 p-5 sm:p-6 flex flex-col justify-between hover:bg-white/15 transition-all duration-300 h-full ${
-        isCompactMobile
-          ? `w-[86vw] max-w-[340px] shrink-0 snap-center ${
-              isActive ? 'scale-100 shadow-2xl opacity-100 ring-1 ring-[#55C9BD]/40' : 'scale-[0.94] shadow-md opacity-85'
-            }`
-          : 'shadow-xl'
-      }`}
+      className={`rounded-3xl bg-white/10 backdrop-blur-md border border-white/20 p-5 sm:p-6 flex flex-col justify-between hover:bg-white/15 transition-all duration-300 h-full ${isCompactMobile
+        ? `w-[86vw] max-w-[340px] shrink-0 snap-center ${isActive ? 'scale-100 shadow-2xl opacity-100 ring-1 ring-[#55C9BD]/40' : 'scale-[0.94] shadow-md opacity-85'
+        }`
+        : 'shadow-xl'
+        }`}
     >
       <div className="space-y-3.5 sm:space-y-4">
         <div className="flex items-center justify-between">
@@ -576,77 +485,59 @@ export const Home: React.FC = () => {
     {
       id: 'loan-zero-down',
       title: 'Zero Rupees Down Payment With Genie',
-      badge: '₹0 Down Payment',
-      img: 'https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=600&q=80'
+      subtitle: 'Hassle-Free Holidays Begin with Here',
+      img: '/images/loans/loan-zero-down.png'
     },
     {
       id: 'loan-zero-interest',
       title: 'Zero Rupees Intrest With Genie',
-      badge: '0% Interest Rate',
-      img: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=600&q=80'
+      subtitle: 'Hassle-Free Holidays Begin with Here',
+      img: '/images/loans/loan-zero-interest.png'
     },
     {
       id: 'loan-zero-fee',
       title: 'Zero Processing FEE With Genie',
-      badge: 'Zero Hidden Fees',
-      img: 'https://images.unsplash.com/photo-1539635278303-d4002c07eae3?auto=format&fit=crop&w=600&q=80'
+      subtitle: 'Hassle-Free Holidays Begin with Here',
+      img: '/images/loans/loan-zero-fee.png'
     },
     {
       id: 'loan-6-months',
       title: '6 Months Easy Vacations With Genie',
-      badge: '6 Months Tenor',
-      img: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=600&q=80'
+      subtitle: 'Hassle-Free Holidays Begin with Here',
+      img: '/images/loans/loan-6-months.png'
     },
     {
       id: 'loan-no-cost-emi',
       title: 'No Cost EMI Vacations With Genie',
-      badge: 'Instant Approval',
-      img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80'
+      subtitle: 'Hassle-Free Holidays Begin with Here',
+      img: '/images/loans/loan-no-cost-emi.png'
     }
   ];
 
   const renderLoanCard = (loanCard: typeof loanCards[0], isMobile = false) => (
     <div
       key={loanCard.id}
-      className={`group relative rounded-2xl overflow-hidden bg-[#082C43] text-white shadow-xs hover:shadow-md transition-all duration-300 flex flex-col border border-[#EFE7DA] ${
-        isMobile ? 'w-[78vw] max-w-[270px] shrink-0 snap-center' : ''
-      }`}
+      className={`group relative rounded-2xl overflow-hidden bg-[#044A9C] text-white shadow-md hover:shadow-2xl transition-all duration-300 ease-out transform hover:-translate-y-2.5 hover:scale-[1.03] cursor-pointer will-change-transform flex flex-col ${isMobile ? 'w-[78vw] max-w-[270px] shrink-0 snap-center' : ''
+        }`}
     >
-      {/* Image Section with Dotted Flight Path Accent */}
-      <div className="relative h-36 sm:h-40 md:h-44 overflow-hidden bg-[#082C43]/40">
+      {/* Top Graphic Section from tripbygenie.in */}
+      <div className="relative overflow-hidden bg-[#044A9C] pt-4 px-3 flex items-center justify-center">
         <img
           src={loanCard.img}
           alt={loanCard.title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          className="w-full h-auto max-h-48 object-contain group-hover:scale-105 transition-transform duration-500 rounded-t-xl"
+          loading="lazy"
         />
-        {/* Seamless blended dark gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#082C43] via-[#082C43]/20 to-transparent" />
-        
-        {/* Flight Trail Decorative Vector */}
-        <svg
-          className="absolute inset-0 w-full h-full pointer-events-none opacity-30 group-hover:opacity-50 transition-opacity"
-          viewBox="0 0 200 200"
-          fill="none"
-        >
-          <path
-            d="M20 180 C 60 120, 140 160, 180 40"
-            stroke="white"
-            strokeWidth="1.5"
-            strokeDasharray="4 4"
-          />
-        </svg>
-
-        {/* Top Right Pill Badge - Solid White Background */}
-        <div className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full bg-white text-[#082C43] font-bold text-[9px] tracking-wider shadow-xs border border-[#EFE7DA]">
-          {loanCard.badge}
-        </div>
       </div>
 
-      {/* Card Text Content with Brand Theme Color */}
-      <div className="p-3.5 sm:p-4 flex-1 flex flex-col justify-center text-center relative z-10 bg-[#082C43]">
-        <h3 className="text-sm sm:text-[15px] font-bold font-display leading-tight tracking-tight text-white group-hover:text-[#55C9BD] transition-colors">
+      {/* Card Content with Seamless Brand Blue (#044A9C) */}
+      <div className="p-5 pt-2 flex-1 flex flex-col justify-between text-center relative z-10 bg-[#044A9C]">
+        <h3 className="text-base sm:text-[17px] font-bold font-display leading-snug tracking-tight text-white mb-2">
           {loanCard.title}
         </h3>
+        <p className="text-xs sm:text-[13px] text-white/90 font-normal leading-relaxed">
+          {loanCard.subtitle}
+        </p>
       </div>
     </div>
   );
@@ -839,11 +730,10 @@ export const Home: React.FC = () => {
             <button
               key={idx}
               onClick={() => setCurrentBannerIndex(idx)}
-              className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                currentBannerIndex === idx
-                  ? 'w-6 bg-[#FF795C]'
-                  : 'w-2 bg-white/60 hover:bg-white'
-              }`}
+              className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${currentBannerIndex === idx
+                ? 'w-6 bg-[#FF795C]'
+                : 'w-2 bg-white/60 hover:bg-white'
+                }`}
               aria-label={`Go to slide ${idx + 1}`}
             />
           ))}
@@ -1051,9 +941,8 @@ export const Home: React.FC = () => {
                 return (
                   <div
                     key={pkg.id}
-                    className={`shrink-0 snap-center w-[86vw] max-w-[340px] transition-all duration-300 ${
-                      isActive ? 'scale-100 shadow-xl opacity-100 ring-1 ring-[#FF795C]/20' : 'scale-[0.94] shadow-md opacity-85'
-                    }`}
+                    className={`shrink-0 snap-center w-[86vw] max-w-[340px] transition-all duration-300 ${isActive ? 'scale-100 shadow-xl opacity-100 ring-1 ring-[#FF795C]/20' : 'scale-[0.94] shadow-md opacity-85'
+                      }`}
                   >
                     <PackageCard
                       packageData={pkg}
@@ -1073,11 +962,10 @@ export const Home: React.FC = () => {
                     type="button"
                     onClick={() => scrollToPackageCard(idx)}
                     aria-label={`Go to package slide ${idx + 1}`}
-                    className={`transition-all duration-300 rounded-full h-1.5 cursor-pointer ${
-                      activePackageIndex === idx
-                        ? 'w-6 bg-[#FF795C]'
-                        : 'w-1.5 bg-[#082C43]/20 hover:bg-[#082C43]/40'
-                    }`}
+                    className={`transition-all duration-300 rounded-full h-1.5 cursor-pointer ${activePackageIndex === idx
+                      ? 'w-6 bg-[#FF795C]'
+                      : 'w-1.5 bg-[#082C43]/20 hover:bg-[#082C43]/40'
+                      }`}
                   />
                 ))}
               </div>
@@ -1159,11 +1047,10 @@ export const Home: React.FC = () => {
                       type="button"
                       onClick={() => scrollToGroupTourCard(idx)}
                       aria-label={`Go to group tour slide ${idx + 1}`}
-                      className={`transition-all duration-300 rounded-full h-1.5 cursor-pointer ${
-                        activeGroupTourIndex === idx
-                          ? 'w-6 bg-[#55C9BD]'
-                          : 'w-1.5 bg-white/20 hover:bg-white/40'
-                      }`}
+                      className={`transition-all duration-300 rounded-full h-1.5 cursor-pointer ${activeGroupTourIndex === idx
+                        ? 'w-6 bg-[#55C9BD]'
+                        : 'w-1.5 bg-white/20 hover:bg-white/40'
+                        }`}
                     />
                   ))}
                 </div>
@@ -1181,80 +1068,78 @@ export const Home: React.FC = () => {
       {/* ======================================================== */}
       {/* SECTION 5.8: MICE & CORPORATE TRAVEL (tripbygenie.in)     */}
       {/* Meetings, Incentives, Conferences & Exhibitions          */}
+      {/* Interactive Image Accordion matching tripbygenie.in       */}
       {/* ======================================================== */}
-      <section className="py-6 sm:py-8 bg-[#F8F1E7]/70 relative border-t border-[#EFE7DA]">
-        <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
-          
-          {/* Section Header matching tripbygenie.in */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
-            <div className="max-w-3xl space-y-1">
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#082C43] font-display">
-                Corporate Travel & MICE Solutions
-              </h2>
-              <p className="text-xs sm:text-sm text-[#173247]/80 leading-relaxed">
-                Discover expert MICE travel solutions with the Best Travel Agency in South India for seamless meetings, incentives, conferences, and corporate events tailored to your business needs.
-              </p>
-            </div>
+      <section className="py-6 sm:py-10 bg-[#FFFDF8] relative border-t border-[#EFE7DA]">
+        <div className="max-w-[1450px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
 
-            {/* Desktop Only Header Button */}
-            <div className="hidden sm:flex items-center gap-3 shrink-0">
-              <Link
-                to="/mice"
-                className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#082C43] hover:bg-[#17648A] text-white text-xs font-bold shadow-sm transition-all"
-              >
-                <span>About MICE</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
+          {/* Section Header matching tripbygenie.in & user specification */}
+          <div className="text-center max-w-5xl mx-auto space-y-2 mb-5 sm:mb-6">
+            <h2 className="text-xl sm:text-2xl md:text-[28px] lg:text-[32px] font-extrabold text-[#082C43] font-display flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
+              <span className="text-[#D93F3F]">MICE -</span>
+              <span>Meetings, Incentives, Conferences & Exhibitions</span>
+            </h2>
+            <p className="text-xs sm:text-sm text-[#173247]/80 leading-relaxed max-w-2xl mx-auto">
+              Discover expert MICE travel solutions with the Best Travel Agency in South India for seamless meetings, incentives, conferences, and events tailored to your needs.
+            </p>
           </div>
 
-          {/* Mobile View: High-Performance Smooth Swipe with Bump Effect */}
-          <div className="block sm:hidden">
-            <div 
-              ref={miceSliderRef}
-              onScroll={handleMiceScroll}
-              className="flex gap-3 overflow-x-auto snap-x snap-mandatory scroll-smooth py-3 px-[7vw] scrollbar-none select-none"
-              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-            >
-              {micePillars.map((pillar, idx) => (
-                <div key={pillar.title} className="shrink-0 snap-center">
-                  {renderMiceCard(pillar, true, idx === activeMiceIndex)}
+          {/* Interactive Image Accordion Frame (tripbygenie.in / media_1795591454530_ff603f99.jpg) */}
+          <div className="w-full max-w-[1140px] lg:max-w-[1240px] xl:max-w-[1300px] mx-auto rounded-2xl sm:rounded-3xl overflow-hidden border border-[#E2E8F0] shadow-xl bg-slate-900 h-[240px] sm:h-[380px] md:h-[450px] lg:h-[480px] flex flex-row">
+            {miceAccordionItems.map((item, idx) => {
+              const isActive = activeMiceAccordion === idx;
+              return (
+                <div
+                  key={item.id}
+                  onMouseEnter={() => setActiveMiceAccordion(idx)}
+                  onClick={() => setActiveMiceAccordion(idx)}
+                  className={`relative h-full overflow-hidden cursor-pointer select-none transition-all duration-500 ease-in-out ${isActive ? 'flex-[2.8] sm:flex-[3.5]' : 'flex-[1]'
+                    }`}
+                  style={{
+                    backgroundImage: `url(${item.img})`,
+                    backgroundPosition: 'center',
+                    backgroundSize: 'cover',
+                    backgroundRepeat: 'no-repeat'
+                  }}
+                >
+                  {/* Subtle Dark Gradient Overlay for Contrast */}
+                  <div
+                    className={`absolute inset-0 transition-opacity duration-500 ${isActive
+                      ? 'bg-gradient-to-t from-black/85 via-black/35 to-black/10'
+                      : 'bg-black/50 hover:bg-black/35'
+                      }`}
+                  />
+
+                  {/* Collapsed Letter Indicator - Responsive: Compact on mobile, bold on desktop */}
+                  <div
+                    className={`absolute bottom-3.5 sm:bottom-6 left-1/2 -translate-x-1/2 transition-opacity duration-300 z-10 ${isActive ? 'opacity-0 pointer-events-none' : 'opacity-95'
+                      }`}
+                  >
+                    <div className="w-7 h-7 sm:w-12 sm:h-12 rounded-full bg-white text-[#044A9C] border border-white sm:border-2 shadow-md sm:shadow-xl text-xs sm:text-xl font-black flex items-center justify-center transition-transform hover:scale-110">
+                      {item.letter}
+                    </div>
+                  </div>
+
+                  {/* Active Panel Content: Title & Read More Button */}
+                  <div
+                    className={`absolute bottom-3.5 left-3.5 sm:bottom-7 sm:left-7 z-20 transition-all duration-500 max-w-[90%] sm:max-w-[85%] ${isActive
+                      ? 'opacity-100 translate-y-0'
+                      : 'opacity-0 translate-y-4 pointer-events-none'
+                      }`}
+                  >
+                    <h3 className="text-xs sm:text-xl md:text-2xl lg:text-[26px] font-bold font-display text-white drop-shadow-md mb-1.5 sm:mb-3 tracking-tight line-clamp-1 sm:line-clamp-none">
+                      {item.title}
+                    </h3>
+                    <Link
+                      to={item.link}
+                      className="inline-flex items-center justify-center px-3.5 py-1 sm:px-6 sm:py-2.5 rounded-full bg-[#044A9C] hover:bg-[#033B7C] text-white text-[11px] sm:text-sm font-semibold shadow-md sm:shadow-lg transition-all duration-200 hover:scale-105 active:scale-95"
+                    >
+                      Read More
+                    </Link>
+                  </div>
                 </div>
-              ))}
-            </div>
-
-            {/* Clean, Responsive Progress Dots */}
-            <div className="flex items-center justify-center gap-1.5 mt-2">
-              {micePillars.map((_, idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  onClick={() => scrollToMiceCard(idx)}
-                  aria-label={`Go to slide ${idx + 1}`}
-                  className={`transition-all duration-300 rounded-full h-1.5 cursor-pointer ${
-                    activeMiceIndex === idx
-                      ? 'w-6 bg-[#082C43]'
-                      : 'w-1.5 bg-[#082C43]/20 hover:bg-[#082C43]/40'
-                  }`}
-                />
-              ))}
-            </div>
-
-            {/* Mobile View: About MICE Button (positioned below cards & dots, above corporate support bar) */}
-            <div className="mt-4 flex justify-center">
-              <Link
-                to="/mice"
-                className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-xl bg-[#082C43] hover:bg-[#17648A] text-white text-xs font-bold shadow-sm transition-all w-full max-w-[260px]"
-              >
-                <span>About MICE</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
-          </div>
-
-          {/* Desktop & Tablet View: 4-Column Grid */}
-          <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-            {micePillars.map((pillar) => renderMiceCard(pillar, false, true))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -1307,7 +1192,7 @@ export const Home: React.FC = () => {
       {/* ======================================================== */}
       <section className="py-6 sm:py-8 bg-[#FFFDF8] relative border-t border-[#EFE7DA]">
         <div className="max-w-[1450px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
-          
+
           {/* Section Header */}
           <div className="text-center max-w-3xl mx-auto space-y-1.5 mb-4 sm:mb-6">
             <h2 className="text-2xl sm:text-3xl font-extrabold text-[#082C43] font-display leading-tight">
@@ -1337,18 +1222,17 @@ export const Home: React.FC = () => {
                   type="button"
                   onClick={() => scrollToLoanCard(idx)}
                   aria-label={`Slide ${idx + 1}`}
-                  className={`transition-all duration-300 rounded-full h-1.5 ${
-                    activeLoanIndex === idx
-                      ? 'w-6 bg-[#082C43]'
-                      : 'w-1.5 bg-[#082C43]/20 hover:bg-[#082C43]/40'
-                  }`}
+                  className={`transition-all duration-300 rounded-full h-1.5 ${activeLoanIndex === idx
+                    ? 'w-6 bg-[#082C43]'
+                    : 'w-1.5 bg-[#082C43]/20 hover:bg-[#082C43]/40'
+                    }`}
                 />
               ))}
             </div>
           </div>
 
           {/* Desktop & Tablet View: 5-Column Side-by-Side Grid */}
-          <div className="hidden sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4">
+          <div className="hidden sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4 pt-3 pb-3">
             {loanCards.map((card) => renderLoanCard(card, false))}
           </div>
 
@@ -1680,11 +1564,10 @@ export const Home: React.FC = () => {
                       key={preset.url}
                       type="button"
                       onClick={() => setCustomVideoInput(preset.url)}
-                      className={`p-2.5 rounded-xl border text-left text-xs font-medium transition-all ${
-                        customVideoInput === preset.url
-                          ? 'border-[#FF795C] bg-[#FF795C]/10 text-[#082C43] font-bold ring-2 ring-[#FF795C]/30'
-                          : 'border-gray-200 hover:border-gray-300 text-gray-700 bg-gray-50'
-                      }`}
+                      className={`p-2.5 rounded-xl border text-left text-xs font-medium transition-all ${customVideoInput === preset.url
+                        ? 'border-[#FF795C] bg-[#FF795C]/10 text-[#082C43] font-bold ring-2 ring-[#FF795C]/30'
+                        : 'border-gray-200 hover:border-gray-300 text-gray-700 bg-gray-50'
+                        }`}
                     >
                       {preset.name}
                     </button>
