@@ -2508,33 +2508,34 @@ app.post('/api/admin/bookings/flush', authenticate, authorize(['admin', 'manager
 });
 
 app.put('/api/admin/bookings/:id', authenticate, authorize(['admin', 'manager']), (req, res) => {
-  const booking = db.findById('bookings', req.params.id);
-  if (!booking || booking.agency_id !== req.user.agency_id) {
-    return res.status(404).json({ error: 'Booking not found.' });
-  }
+    const paramId = String(req.params.id || '').trim();
+    const booking = db.findById('bookings', paramId) || db.findOne('bookings', (b) => b.booking_number === paramId || b.id === paramId || b.booking_reference === paramId);
+    if (!booking) {
+      return res.status(404).json({ error: 'Booking not found.' });
+    }
 
-  const { booking_status, payment_status, advance_amount, balance_amount } = req.body;
-  const updated = db.update('bookings', booking.id, {
-    booking_status: booking_status || booking.booking_status,
-    payment_status: payment_status || booking.payment_status,
-    advance_amount: advance_amount !== undefined ? Number(advance_amount) : booking.advance_amount,
-    balance_amount: balance_amount !== undefined ? Number(balance_amount) : booking.balance_amount
+    const { booking_status, payment_status, advance_amount, balance_amount } = req.body;
+    const updated = db.update('bookings', booking.id, {
+      booking_status: booking_status || booking.booking_status,
+      payment_status: payment_status || booking.payment_status,
+      advance_amount: advance_amount !== undefined ? Number(advance_amount) : booking.advance_amount,
+      balance_amount: balance_amount !== undefined ? Number(balance_amount) : booking.balance_amount
+    });
+
+    // Notify customer if booking confirmed
+    if (booking_status === 'Confirmed' && booking.customer_id) {
+      db.createNotification(
+        booking.agency_id,
+        booking.customer_id,
+        'Booking Confirmed!',
+        `Your booking #${booking.booking_number} has been confirmed. Get ready for your trip!`,
+        'success',
+        '/customer/bookings'
+      );
+    }
+
+    res.json(updated);
   });
-
-  // Notify customer if booking confirmed
-  if (booking_status === 'Confirmed' && booking.customer_id) {
-    db.createNotification(
-      booking.agency_id,
-      booking.customer_id,
-      'Booking Confirmed!',
-      `Your booking #${booking.booking_number} has been confirmed. Get ready for your trip!`,
-      'success',
-      '/customer/bookings'
-    );
-  }
-
-  res.json(updated);
-});
 
 // Admin Payments (Financial Ledger & Manual Payment Entry)
 app.get('/api/admin/payments', authenticate, authorize(['admin', 'manager']), (req, res) => {

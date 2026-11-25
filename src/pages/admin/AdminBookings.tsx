@@ -164,7 +164,13 @@ export const AdminBookings: React.FC = () => {
   }, [tableView, b2cBookings, b2bBookings, bookings, statusFilter, search]);
 
   const handleOpenLoginSetup = (b: any) => {
-    setSelectedBookingForLogin(b);
+    const normBookingNumber = b.booking_number || b.booking_reference || b.id || 'BK-2026';
+    const norm = {
+      ...b,
+      id: b.id || b.booking_reference || normBookingNumber,
+      booking_number: normBookingNumber
+    };
+    setSelectedBookingForLogin(norm);
     setLoginForm({
       name: b.customer_name || '',
       email: b.customer_email || '',
@@ -180,7 +186,7 @@ export const AdminBookings: React.FC = () => {
     try {
       setIsProcessingAction(true);
       const res = await api.createCustomerAccount({
-        booking_id: selectedBookingForLogin.id,
+        booking_id: selectedBookingForLogin.id || selectedBookingForLogin.booking_number,
         name: loginForm.name,
         email: loginForm.email,
         temp_password: loginForm.tempPassword
@@ -194,7 +200,7 @@ export const AdminBookings: React.FC = () => {
         customerName: loginForm.name,
         email: loginForm.email,
         tempPassword: res.temp_password || loginForm.tempPassword,
-        bookingNumber: selectedBookingForLogin.booking_number,
+        bookingNumber: selectedBookingForLogin.booking_number || (selectedBookingForLogin as any).booking_reference || selectedBookingForLogin.id,
         activationLink: res.activation_link || `${window.location.origin}/login?email=${encodeURIComponent(loginForm.email)}`,
         loginUrl: res.login_url || `${window.location.origin}/login?email=${encodeURIComponent(loginForm.email)}`
       });
@@ -208,7 +214,8 @@ export const AdminBookings: React.FC = () => {
   const handleResendInvitation = async (b: any) => {
     try {
       setIsProcessingAction(true);
-      const res = await api.resendCustomerInvitation({ booking_id: b.id, email: b.customer_email });
+      const targetId = b.id || b.booking_number || b.booking_reference;
+      const res = await api.resendCustomerInvitation({ booking_id: targetId, email: b.customer_email });
       success(res.message || `Activation invitation resent to ${b.customer_email}.`);
       loadBookings();
       if (res.activation_link) {
@@ -218,7 +225,7 @@ export const AdminBookings: React.FC = () => {
           customerName: b.customer_name,
           email: b.customer_email,
           tempPassword: b.temp_password,
-          bookingNumber: b.booking_number,
+          bookingNumber: b.booking_number || b.booking_reference || targetId,
           activationLink: res.activation_link,
           loginUrl: `${window.location.origin}/login?email=${encodeURIComponent(b.customer_email)}`
         });
@@ -231,11 +238,34 @@ export const AdminBookings: React.FC = () => {
   };
 
   const handleOpenEdit = (b: Booking) => {
-    setSelectedBooking(b);
-    setBookingStatus(b.booking_status);
-    setPaymentStatus(b.payment_status);
-    setAdvanceAmount(b.advance_amount);
-    setBalanceAmount(b.balance_amount);
+    const normBookingNumber = b.booking_number || (b as any).booking_reference || b.id || 'BK-2026';
+    const normId = b.id || (b as any).booking_reference || normBookingNumber;
+    const normStatus = b.booking_status || (b as any).status || 'Confirmed';
+    const normPayment = b.payment_status || ((b as any).payment_status === 'PARTIALLY_PAID' ? 'Partial' : (b as any).payment_status === 'PAID' ? 'Paid' : 'Pending');
+    const tot = Number(b.total_amount || 0);
+    const adv = Number(b.advance_amount ?? 0);
+    const bal = b.balance_amount !== undefined
+      ? Number(b.balance_amount)
+      : ((b as any).balance_due !== undefined
+        ? Number((b as any).balance_due)
+        : Math.max(0, tot - adv));
+
+    const normalizedBooking = {
+      ...b,
+      id: normId,
+      booking_number: normBookingNumber,
+      booking_status: normStatus,
+      payment_status: normPayment,
+      total_amount: tot,
+      advance_amount: adv,
+      balance_amount: bal
+    };
+
+    setSelectedBooking(normalizedBooking);
+    setBookingStatus(normStatus);
+    setPaymentStatus(normPayment);
+    setAdvanceAmount(adv);
+    setBalanceAmount(bal);
     setIsEditModalOpen(true);
   };
 
@@ -244,14 +274,15 @@ export const AdminBookings: React.FC = () => {
     if (!selectedBooking) return;
 
     try {
-      await api.updateAdminBooking(selectedBooking.id, {
-        booking_status: bookingStatus,
-        payment_status: paymentStatus,
-        advance_amount: Number(advanceAmount),
-        balance_amount: Number(balanceAmount)
-      });
+        const targetId = selectedBooking.id || selectedBooking.booking_number || (selectedBooking as any).booking_reference;
+        await api.updateAdminBooking(targetId, {
+          booking_status: bookingStatus,
+          payment_status: paymentStatus,
+          advance_amount: Number(advanceAmount),
+          balance_amount: Number(balanceAmount)
+        });
 
-      success(`Booking #${selectedBooking.booking_number} updated.`);
+      success(`Booking #${ selectedBooking.booking_number || targetId } updated successfully.`);
       setIsEditModalOpen(false);
       loadBookings();
     } catch (err: any) {
@@ -333,10 +364,10 @@ export const AdminBookings: React.FC = () => {
                                   <h3 className="text-sm font-bold text-[#082C43] uppercase tracking-wider flex items-center gap-2">
                                     <span>
                                       {tableView === 'b2c'
-                                        ? `B2C Direct Customer Bookings (${currentList.length})`
+                                        ? `B2C Direct Customer Bookings(${ currentList.length })`
                                         : tableView === 'b2b'
-                                          ? `B2B Wholesale Partner Bookings (${currentList.length})`
-                                          : `Master Booking Register (${currentList.length})`}
+                                          ? `B2B Wholesale Partner Bookings(${ currentList.length })`
+                                          : `Master Booking Register(${ currentList.length })`}
                                     </span>
                                     {statusFilter !== 'all' && (
                                       <span className="text-[10px] font-normal normal-case px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
@@ -391,7 +422,7 @@ export const AdminBookings: React.FC = () => {
                                         currentList.map((b) => (
                       <tr key={b.id} className="hover:bg-[#F8F1E7]/30 transition-colors">
                         <td className="py-2.5 px-3 font-mono font-bold text-[#082C43] whitespace-nowrap">
-                          {b.booking_number}
+                          {b.booking_number || (b as any).booking_reference || b.id}
                         </td>
                         <td className="py-2.5 px-3">
                           <strong className="text-[#082C43] block truncate max-w-[180px]">{b.customer_name}</strong>
@@ -529,7 +560,7 @@ export const AdminBookings: React.FC = () => {
                                     currentList.map((b) => (
                       <tr key={b.id} className="hover:bg-[#F8F1E7]/30 transition-colors">
                         <td className="py-2.5 px-3 font-mono font-bold text-[#082C43] whitespace-nowrap">
-                          {b.booking_number}
+                          {b.booking_number || (b as any).booking_reference || b.id}
                         </td>
                         <td className="py-2.5 px-3">
                           <div className="flex items-center gap-1.5">
@@ -636,16 +667,17 @@ export const AdminBookings: React.FC = () => {
                                       <tr key={b.id} className="hover:bg-[#F8F1E7]/30 transition-colors">
                                         <td className="py-2.5 px-3 whitespace-nowrap">
                                           <span
-                                            className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${isB2B
-                                                ? 'bg-amber-50 text-amber-800 border-amber-200'
-                                                : 'bg-teal-50 text-teal-800 border-teal-200'
-                                              }`}
+                                            className={`px - 2 py - 0.5 rounded - full text - [10px] font - bold border ${
+        isB2B
+        ? 'bg-amber-50 text-amber-800 border-amber-200'
+          : 'bg-teal-50 text-teal-800 border-teal-200'
+      }`}
                                           >
                                             {isB2B ? 'B2B Partner' : 'B2C Direct'}
                                           </span>
                                         </td>
                                         <td className="py-2.5 px-3 font-mono font-bold text-[#082C43] whitespace-nowrap">
-                                          {b.booking_number}
+                                          {b.booking_number || (b as any).booking_reference || b.id}
                                         </td>
                                         <td className="py-2.5 px-3">
                                           <strong className="text-[#082C43] block truncate max-w-[180px]">{b.customer_name}</strong>
@@ -738,8 +770,8 @@ export const AdminBookings: React.FC = () => {
           <Modal
             isOpen={isEditModalOpen}
             onClose={() => setIsEditModalOpen(false)}
-            title={`Update Booking #${selectedBooking.booking_number}`}
-            subtitle={`Client: ${selectedBooking.customer_name} • Total: ₹${selectedBooking.total_amount?.toLocaleString('en-IN')}`}
+            title={`Update Booking #${ selectedBooking.booking_number || (selectedBooking as any).booking_reference || selectedBooking.id || 'BK-2026' }`}
+            subtitle={`Client: ${ selectedBooking.customer_name || 'Direct Customer' } • Total: ₹${(selectedBooking.total_amount || 0).toLocaleString('en-IN')}`}
           >
             <form onSubmit={handleSaveStatus} className="space-y-4 text-xs">
               <div className="grid grid-cols-2 gap-3">
@@ -782,7 +814,16 @@ export const AdminBookings: React.FC = () => {
                     onChange={(e) => {
                       const adv = Number(e.target.value);
                       setAdvanceAmount(adv);
-                      setBalanceAmount(Math.max(0, (selectedBooking.total_amount || 0) - adv));
+                      const tot = selectedBooking.total_amount || 0;
+                      const newBal = Math.max(0, tot - adv);
+                      setBalanceAmount(newBal);
+                      if (newBal === 0 && tot > 0) {
+                        setPaymentStatus('Paid');
+                      } else if (adv > 0) {
+                        setPaymentStatus('Partial');
+                      } else {
+                        setPaymentStatus('Pending');
+                      }
                     }}
                     className="w-full p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8]"
                   />
@@ -793,7 +834,13 @@ export const AdminBookings: React.FC = () => {
                   <input
                     type="number"
                     value={balanceAmount}
-                    onChange={(e) => setBalanceAmount(Number(e.target.value))}
+                    onChange={(e) => {
+                      const bal = Number(e.target.value);
+                      setBalanceAmount(bal);
+                      if (bal === 0 && (selectedBooking.total_amount || 0) > 0) {
+                        setPaymentStatus('Paid');
+                      }
+                    }}
                     className="w-full p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8]"
                   />
                 </div>
@@ -817,7 +864,7 @@ export const AdminBookings: React.FC = () => {
             isOpen={isLoginSetupModalOpen}
             onClose={() => setIsLoginSetupModalOpen(false)}
             title="Create Customer Login Credentials"
-            subtitle={`Booking #${selectedBookingForLogin.booking_number} • ${selectedBookingForLogin.package_title || selectedBookingForLogin.destination || 'Tour Package'}`}
+            subtitle={`Booking #${ selectedBookingForLogin.booking_number || (selectedBookingForLogin as any).booking_reference || selectedBookingForLogin.id || 'BK-2026' } • ${ selectedBookingForLogin.package_title || selectedBookingForLogin.destination || 'Tour Package' } `}
           >
             <form onSubmit={handleConfirmCreateLogin} className="space-y-4 text-xs">
               <div className="p-3 bg-[#F8F1E7]/70 border border-[#EFE7DA] rounded-xl flex items-center justify-between text-xs">
@@ -992,7 +1039,7 @@ export const AdminBookings: React.FC = () => {
                 </button>
                 <a
                   href={`https://wa.me/?text=${encodeURIComponent(
-                    `*Trip by Genie - Customer Portal Credentials*\n\nHello ${invitationModalData.customerName},\n\nYour Trip by Genie customer portal account is ready!\n\nBooking: #${invitationModalData.bookingNumber}\nLogin ID: ${invitationModalData.email}\nTemporary Password: ${invitationModalData.tempPassword || 'Set via link'}\nLogin Link: ${invitationModalData.activationLink || invitationModalData.loginUrl}\n\nPlease sign in to access your itinerary and trip documents.`
+    `*Trip by Genie - Customer Portal Credentials*\n\nHello ${invitationModalData.customerName},\n\nYour Trip by Genie customer portal account is ready!\n\nBooking: #${invitationModalData.bookingNumber}\nLogin ID: ${invitationModalData.email}\nTemporary Password: ${invitationModalData.tempPassword || 'Set via link'}\nLogin Link: ${invitationModalData.activationLink || invitationModalData.loginUrl}\n\nPlease sign in to access your itinerary and trip documents.`
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"

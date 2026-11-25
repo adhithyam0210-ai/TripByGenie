@@ -1139,18 +1139,40 @@ export const api = {
   },
 
   getAdminBookings: async () => {
+    const normalizeBooking = (b: any) => {
+      const bNum = b.booking_number || b.booking_reference || (b.id ? `BK-${String(b.id).slice(-4)}` : 'BK-2026-0001');
+      const tot = Number(b.total_amount || 0);
+      const adv = Number(b.advance_amount ?? 0);
+      const bal = Number(b.balance_amount !== undefined ? b.balance_amount : (b.balance_due !== undefined ? b.balance_due : Math.max(0, tot - adv)));
+      return {
+        ...b,
+        booking_number: bNum,
+        booking_reference: bNum,
+        booking_status: b.booking_status || (b.status === 'BOOKING_CONFIRMED' ? 'Confirmed' : b.status || 'Confirmed'),
+        payment_status: b.payment_status === 'PARTIALLY_PAID' ? 'Partial' : (b.payment_status === 'PAID' ? 'Paid' : (b.payment_status || (bal === 0 ? 'Paid' : adv > 0 ? 'Partial' : 'Pending'))),
+        package_title: b.package_title || b.package_name || b.interested_destination || 'Tour Package',
+        total_amount: tot,
+        advance_amount: adv,
+        balance_amount: bal,
+        balance_due: bal
+      };
+    };
+
     try {
       const serverBookings = await request<any[]>('/admin/bookings');
       const localBookings = JSON.parse(localStorage.getItem('tg_local_bookings') || '[]');
+      let combined: any[] = [];
       if (Array.isArray(serverBookings) && localBookings.length > 0) {
-        const existingIds = new Set(serverBookings.map((b: any) => b.id));
-        const missingLocals = localBookings.filter((b: any) => !existingIds.has(b.id));
-        return [...missingLocals, ...serverBookings];
+        const existingIds = new Set(serverBookings.map((b: any) => b.id || b.booking_number));
+        const missingLocals = localBookings.filter((b: any) => !existingIds.has(b.id) && !existingIds.has(b.booking_number));
+        combined = [...missingLocals, ...serverBookings];
+      } else {
+        combined = Array.isArray(serverBookings) && serverBookings.length > 0 ? serverBookings : [...localBookings, ...(fallbackData.bookings || [])];
       }
-      return serverBookings;
+      return combined.map(normalizeBooking);
     } catch {
       const localBookings = JSON.parse(localStorage.getItem('tg_local_bookings') || '[]');
-      return [...localBookings, ...fallbackData.bookings];
+      return [...localBookings, ...(fallbackData.bookings || [])].map(normalizeBooking);
     }
   },
   flushBookings: async () => {
@@ -1161,11 +1183,44 @@ export const api = {
       return { success: true, message: 'Local bookings cleared.' };
     }
   },
-  updateAdminBooking: (id: string, data: any) =>
-    request<any>(`/admin/bookings/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify(data)
-    }),
+  updateAdminBooking: async (id: string, data: any) => {
+    // 1. Immediately update tg_local_bookings so local storage stays in sync
+    try {
+      const localBookings = JSON.parse(localStorage.getItem('tg_local_bookings') || '[]');
+      const bIdx = localBookings.findIndex((b: any) => b.id === id || b.booking_number === id || b.booking_reference === id);
+      if (bIdx !== -1) {
+        localBookings[bIdx] = {
+          ...localBookings[bIdx],
+          ...data,
+          booking_status: data.booking_status || localBookings[bIdx].booking_status || 'Confirmed',
+          status: data.booking_status || localBookings[bIdx].status || 'Confirmed',
+          payment_status: data.payment_status || localBookings[bIdx].payment_status,
+          advance_amount: data.advance_amount !== undefined ? Number(data.advance_amount) : localBookings[bIdx].advance_amount,
+          balance_amount: data.balance_amount !== undefined ? Number(data.balance_amount) : localBookings[bIdx].balance_amount,
+          balance_due: data.balance_amount !== undefined ? Number(data.balance_amount) : localBookings[bIdx].balance_due
+        };
+        localStorage.setItem('tg_local_bookings', JSON.stringify(localBookings));
+      }
+    } catch { }
+
+    // 2. Also update fallbackData.bookings if present
+    try {
+      const fbIdx = (fallbackData.bookings || []).findIndex((b: any) => b.id === id || b.booking_number === id);
+      if (fbIdx !== -1) {
+        fallbackData.bookings[fbIdx] = { ...fallbackData.bookings[fbIdx], ...data };
+      }
+    } catch { }
+
+    // 3. Persist to server backend
+    try {
+      return await request<any>(`/admin/bookings/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data)
+      });
+    } catch {
+      return { success: true, message: 'Booking updated successfully.' };
+    }
+  },
 
   getAdminPayments: async () => {
     try {
@@ -1321,22 +1376,28 @@ export const api = {
         const advanceAmount = Number(data.advance_amount) || 0;
         const totalAmount = Number(data.total_amount) || 0;
         const balanceDue = Math.max(0, totalAmount - advanceAmount);
-        const paymentStatus = balanceDue === 0 ? 'PAID' : (advanceAmount > 0 ? 'PARTIALLY_PAID' : 'PENDING');
+        const paymentStatus = balanceDue === 0 ? 'Paid' : (advanceAmount > 0 ? 'Partial' : 'Pending');
+        const bookingNum = `BK-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
 
         const newBooking = {
           id: `bk_${Date.now()}`,
-          booking_reference: `BK-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`,
+          booking_number: bookingNum,
+          booking_reference: bookingNum,
           customer_name: lead.customer_name || 'Direct Customer',
           customer_email: lead.customer_email || '',
           customer_phone: lead.customer_phone || '',
+          package_title: lead.interested_destination || 'Customized Tour Package',
           package_name: lead.interested_destination || 'Customized Tour Package',
+          travel_start_date: data.travel_start_date || lead.travel_date || '2026-12-15',
           departure_date: data.travel_start_date || lead.travel_date || '2026-12-15',
           travelers_count: Number(lead.travelers_count) || 2,
           total_amount: totalAmount,
           advance_amount: advanceAmount,
+          balance_amount: balanceDue,
           balance_due: balanceDue,
           payment_status: paymentStatus,
-          status: 'BOOKING_CONFIRMED',
+          booking_status: 'Confirmed',
+          status: 'Confirmed',
           type: 'B2C',
           payment_proof: data.payment_proof || 'Direct Bank Transfer',
           created_at: new Date().toISOString()

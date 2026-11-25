@@ -53,24 +53,29 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
     setActiveDropdown(null);
   }, [location.pathname]);
 
-  // Lock body scroll & prevent underlying page scrolling when desktop dropdown or mobile menu is open
+  // Lock body scroll only for full-screen mobile menu drawer (not desktop dropdowns, to avoid page jumping to top)
   useEffect(() => {
-    if (activeDropdown || isMobileMenuOpen) {
+    if (isMobileMenuOpen) {
       const originalBodyOverflow = document.body.style.overflow;
       document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = originalBodyOverflow;
+      };
+    }
+  }, [isMobileMenuOpen]);
 
-      // Intercept wheel events so the underlying page is 100% frozen
+  // Prevent background chain scrolling when desktop dropdown is open without altering window.scrollY
+  useEffect(() => {
+    if (activeDropdown) {
       const handleWheel = (e: WheelEvent) => {
         const target = e.target as HTMLElement | null;
         const scrollContainer = target?.closest('.dropdown-scroll-box') as HTMLElement | null;
 
         if (!scrollContainer) {
-          // Outside the scrollable dropdown box: block wheel scrolling completely
           e.preventDefault();
           return;
         }
 
-        // Inside scrollable dropdown box: allow scrolling inside, but block chaining at top/bottom edges
         const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
         const isAtTop = scrollTop <= 0;
         const isAtBottom = scrollTop + clientHeight >= scrollHeight - 1;
@@ -92,15 +97,11 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
       window.addEventListener('touchmove', handleTouchMove, { passive: false });
 
       return () => {
-        document.body.style.overflow = originalBodyOverflow;
         window.removeEventListener('wheel', handleWheel);
         window.removeEventListener('touchmove', handleTouchMove);
       };
-    } else {
-      document.body.style.overflow = '';
-      document.body.style.touchAction = '';
     }
-  }, [activeDropdown, isMobileMenuOpen]);
+  }, [activeDropdown]);
 
   // Close dropdown or mobile menu on Escape key press
   useEffect(() => {
@@ -318,10 +319,10 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
   return (
     <>
       {/* ======================================================== */}
-      {/* MAIN NAVIGATION BAR (Sticky, Header, Mega Dropdowns)      */}
+      {/* MAIN NAVIGATION BAR (Fixed, Header, Mega Dropdowns)       */}
       {/* ======================================================== */}
       <header
-        className={`sticky top-0 z-40 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 w-full z-40 transition-all duration-300 ${
           isScrolled
             ? 'bg-white/95 backdrop-blur-md shadow-md py-2.5 border-b border-[#EFE7DA]'
             : 'bg-white py-3.5 border-b border-[#EFE7DA]/80 shadow-xs'
@@ -466,7 +467,7 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
               {/* India Mega Dropdown Box */}
               {activeDropdown === 'india' && (
                 <div
-                  className="dropdown-scroll-box absolute top-full mt-2 left-0 w-[880px] max-w-[calc(100vw-32px)] max-h-[calc(100vh-100px)] overflow-y-auto overscroll-contain bg-white rounded-3xl shadow-2xl border border-[#EFE7DA] p-6 animate-in fade-in slide-in-from-top-2 duration-200 text-[#082C43] z-50"
+                  className="dropdown-scroll-box absolute top-full mt-2 left-1/2 -translate-x-1/3 2xl:-translate-x-1/2 w-[880px] max-w-[calc(100vw-32px)] max-h-[calc(100vh-100px)] overflow-y-auto overscroll-contain bg-white rounded-3xl shadow-2xl border border-[#EFE7DA] p-6 animate-in fade-in slide-in-from-top-2 duration-200 text-[#082C43] z-50"
                   style={{ overscrollBehavior: 'contain', scrollbarWidth: 'thin' }}
                   onWheel={(e) => e.stopPropagation()}
                 >
@@ -546,7 +547,7 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
 
               {activeDropdown === 'honeymoon' && (
                 <div
-                  className="dropdown-scroll-box absolute top-full mt-2 left-0 w-[620px] max-w-[calc(100vw-32px)] max-h-[calc(100vh-100px)] overflow-y-auto overscroll-contain bg-white rounded-3xl shadow-2xl border border-[#EFE7DA] p-6 animate-in fade-in slide-in-from-top-2 duration-200 text-[#082C43] z-50"
+                  className="dropdown-scroll-box absolute top-full mt-2 right-0 2xl:left-1/2 2xl:-translate-x-1/2 w-[620px] max-w-[calc(100vw-32px)] max-h-[calc(100vh-100px)] overflow-y-auto overscroll-contain bg-white rounded-3xl shadow-2xl border border-[#EFE7DA] p-6 animate-in fade-in slide-in-from-top-2 duration-200 text-[#082C43] z-50"
                   style={{ overscrollBehavior: 'contain', scrollbarWidth: 'thin' }}
                   onWheel={(e) => e.stopPropagation()}
                 >
@@ -853,6 +854,9 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
           </div>
         </div>
       </header>
+
+      {/* Spacer to preserve document layout flow under the fixed navbar */}
+      <div className="h-[74px] sm:h-[84px] md:h-[90px] lg:h-[102px] shrink-0 pointer-events-none" aria-hidden="true" />
 
       {/* Full-screen Backdrop for Desktop Dropdowns: prevents background chain scrolling & closes on click */}
       {activeDropdown && (
