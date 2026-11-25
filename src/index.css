@@ -34,13 +34,15 @@ html {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
 }
 
 body {
   font-family: var(--font-sans);
   color: #0F2231;
   background-color: #FFFFFF;
-  overflow-x: hidden;
+  overflow-x: clip;
+  -webkit-overflow-scrolling: touch;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -147,8 +149,23 @@ dialog {
   -webkit-overflow-scrolling: touch;
 }
 
+/* iOS WebKit Touch & Heading Scrolling Fix:
+   Prevents iOS Safari text selection / 3D Touch Callout from hijacking or locking vertical scrolling */
+h1, h2, h3, h4, h5, h6,
+.font-display,
+[class*="font-display"],
+section h1,
+section h2,
+section h3,
+section p {
+  -webkit-touch-callout: none;
+  touch-action: pan-y;
+}
+
 h1, h2, h3, .font-display {
   font-family: var(--font-display);
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .font-serif-luxury {

@@ -256,9 +256,9 @@ export const PublicFooter: React.FC = () => {
 
           <div className="flex items-center gap-6">
             <Link to="/about" className="hover:text-white transition-colors">About Us</Link>
-            <Link to="/contact" className="hover:text-white transition-colors">Privacy Policy</Link>
-            <Link to="/contact" className="hover:text-white transition-colors">Terms of Service</Link>
-            <Link to="/contact" className="hover:text-white transition-colors">Cancellation Policy</Link>
+            <Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
+            <Link to="/terms-of-service" className="hover:text-white transition-colors">Terms of Service</Link>
+            <Link to="/cancellation-policy" className="hover:text-white transition-colors">Cancellation Policy</Link>
           </div>
         </div>
       </div>

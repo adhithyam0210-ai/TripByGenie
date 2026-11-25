@@ -6,19 +6,19 @@ export const About: React.FC = () => {
   return (
     <div className="bg-[#FFFDF8] min-h-screen pb-20">
       {/* Hero */}
-      <section className="relative py-16 bg-[#082C43] text-white">
+      <section className="relative py-5 sm:py-7 bg-[#082C43] text-white">
         <TravelPatternBg variant="navy" opacity={0.06} />
-        <div className="relative max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 text-center space-y-3">
-          <h1 className="text-3xl sm:text-5xl font-extrabold font-display">
+        <div className="relative max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 text-center space-y-1.5">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold font-display tracking-tight">
             About Travel Genie
           </h1>
-          <p className="text-sm sm:text-base text-white/80 max-w-2xl mx-auto">
+          <p className="text-xs sm:text-sm text-white/80 max-w-2xl mx-auto leading-relaxed">
             Crafting extraordinary domestic and international travel memories through personalized design, transparent pricing, and world-class hospitality.
           </p>
         </div>
       </section>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 space-y-16">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-10 space-y-10 sm:space-y-12">
         {/* Story Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
           <div className="space-y-4">

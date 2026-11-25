@@ -18,6 +18,9 @@ import { Services } from './pages/public/Services';
 import { MICE } from './pages/public/MICE';
 import { About } from './pages/public/About';
 import { Contact } from './pages/public/Contact';
+import { PrivacyPolicy } from './pages/public/PrivacyPolicy';
+import { TermsOfService } from './pages/public/TermsOfService';
+import { CancellationPolicy } from './pages/public/CancellationPolicy';
 
 // Auth Pages
 import { Login } from './pages/auth/Login';
@@ -155,6 +158,13 @@ export const App: React.FC = () => {
         <Route path="/mice" element={<MICE />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/privacy" element={<Navigate to="/privacy-policy" replace />} />
+        <Route path="/terms-of-service" element={<TermsOfService />} />
+        <Route path="/terms-and-conditions" element={<Navigate to="/terms-of-service" replace />} />
+        <Route path="/terms" element={<Navigate to="/terms-of-service" replace />} />
+        <Route path="/cancellation-policy" element={<CancellationPolicy />} />
+        <Route path="/cancellation" element={<Navigate to="/cancellation-policy" replace />} />
 
         {/* Direct destination URLs matching tripbygenie.in/:slug/ */}
         <Route path="/australia" element={<Navigate to="/destinations/australia" replace />} />

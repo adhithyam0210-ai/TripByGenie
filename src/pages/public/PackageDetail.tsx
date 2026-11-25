@@ -14,7 +14,8 @@ import {
   ArrowLeft,
   Phone,
   Compass,
-  Navigation
+  Navigation,
+  ChevronDown
 } from 'lucide-react';
 import { api } from '../../services/api';
 import { Package, Destination, PackageItinerary } from '../../types';
@@ -561,22 +562,25 @@ export const PackageDetail: React.FC = () => {
                           : 'border-[#EFE7DA] focus-within:border-[#FF795C]'
                       }`}
                     >
-                      <select
-                        aria-label="Country Code"
-                        value={bookingForm.countryCode}
-                        onChange={(e) => {
-                          const newCode = e.target.value;
-                          setBookingForm((prev) => ({ ...prev, countryCode: newCode }));
-                          if (hasAttemptedSubmit) validateField('phone', bookingForm.phone, newCode);
-                        }}
-                        className="text-[11px] bg-[#F8F1E7]/70 text-[#082C43] font-semibold pl-2 pr-1 py-2 border-r border-[#EFE7DA] focus:outline-none cursor-pointer shrink-0"
-                      >
-                        {countryCodes.map((c) => (
-                          <option key={c.code} value={c.code}>
-                            {c.code} {c.country}
-                          </option>
-                        ))}
-                      </select>
+                      <div className="relative shrink-0 flex items-center">
+                        <select
+                          aria-label="Country Code"
+                          value={bookingForm.countryCode}
+                          onChange={(e) => {
+                            const newCode = e.target.value;
+                            setBookingForm((prev) => ({ ...prev, countryCode: newCode }));
+                            if (hasAttemptedSubmit) validateField('phone', bookingForm.phone, newCode);
+                          }}
+                          className="h-full text-[10px] bg-[#F8F1E7]/70 text-[#082C43] font-bold pl-2 pr-3.5 py-2 border-r border-[#EFE7DA] focus:outline-none cursor-pointer appearance-none shrink-0"
+                        >
+                          {countryCodes.map((c) => (
+                            <option key={c.code} value={c.code} title={c.label}>
+                              {c.code} {c.country}
+                            </option>
+                          ))}
+                        </select>
+                        <ChevronDown className="w-2.5 h-2.5 text-[#082C43]/60 absolute right-1 pointer-events-none" />
+                      </div>
                       <input
                         type="tel"
                         required
