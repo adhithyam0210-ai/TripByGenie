@@ -305,19 +305,19 @@ export const api = {
       }
     } catch { }
 
-      if (params?.category && params.category !== 'all' && params.category !== 'All Packages') {
-        list = list.filter((p: any) => p.category?.toLowerCase() === params.category?.toLowerCase());
-      }
-      if (params?.search) {
-        const s = params.search.toLowerCase();
-        list = list.filter((p: any) => (p.title + ' ' + p.destination).toLowerCase().includes(s));
-      }
-      if (params?.destination_id) {
-        list = list.filter((p: any) => p.destination_id === params.destination_id);
-      }
-      if (params?.featured) {
-        list = list.filter((p: any) => p.is_featured);
-      }
+    if (params?.category && params.category !== 'all' && params.category !== 'All Packages') {
+      list = list.filter((p: any) => p.category?.toLowerCase() === params.category?.toLowerCase());
+    }
+    if (params?.search) {
+      const s = params.search.toLowerCase();
+      list = list.filter((p: any) => (p.title + ' ' + p.destination).toLowerCase().includes(s));
+    }
+    if (params?.destination_id) {
+      list = list.filter((p: any) => p.destination_id === params.destination_id);
+    }
+    if (params?.featured) {
+      list = list.filter((p: any) => p.is_featured);
+    }
     if (params?.limit) {
       list = list.slice(0, Number(params.limit));
     }
@@ -576,7 +576,7 @@ export const api = {
             res.total = (res.total || 0) + missingLocals.length;
           }
         }
-      } catch {}
+      } catch { }
       return res;
     } catch {
       const localLeads = JSON.parse(localStorage.getItem('tg_local_leads') || '[]');
@@ -649,7 +649,7 @@ export const api = {
       const localLeads = JSON.parse(localStorage.getItem('tg_local_leads') || '[]');
       const updated = localLeads.map((l: any) => l.id === id ? { ...l, ...data } : l);
       localStorage.setItem('tg_local_leads', JSON.stringify(updated));
-    } catch {}
+    } catch { }
 
     try {
       return await request<any>(`/admin/leads/${id}`, {
@@ -1293,7 +1293,7 @@ export const api = {
       const localLeads = JSON.parse(localStorage.getItem('tg_local_leads') || '[]');
       const updated = localLeads.map((l: any) => l.id === id ? { ...l, ...data } : l);
       localStorage.setItem('tg_local_leads', JSON.stringify(updated));
-    } catch {}
+    } catch { }
 
     try {
       return await request<any>(`/staff/leads/${id}/status`, {
