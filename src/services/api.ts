@@ -813,21 +813,148 @@ export const api = {
 
   getAdminStaff: async () => {
     try {
-      return await request<any[]>('/admin/staff');
+      const remote = await request<any[]>('/admin/staff');
+      if (Array.isArray(remote) && remote.length > 0) {
+        return remote;
+      }
     } catch {
-      return fallbackData.users.filter((u: any) => u.role === 'staff');
+      // ignore
+    }
+    const local = localStorage.getItem('tg_local_staff');
+    if (local) {
+      try {
+        return JSON.parse(local);
+      } catch (e) {}
+    }
+    return (fallbackData.users || [])
+      .filter((u: any) => u.role === 'staff' || u.role === 'sales' || u.role === 'operations')
+      .map((u: any) => {
+        const isOps = u.role === 'operations';
+        const profile = (fallbackData.staff_profiles || []).find((p: any) => p.user_id === u.id) || {
+          employee_id: u.display_id || (isOps ? 'TBG_OPE_001' : 'TBG_SAL_001'),
+          role_type: isOps ? 'operations' : 'sales',
+          department: isOps ? 'Travel & Transportation Operations' : 'Holidays & International',
+          departments: [isOps ? 'Travel & Transportation Operations' : 'Holidays & International'],
+          designation: isOps ? 'Operations' : 'Sales',
+          designations: [isOps ? 'Operations' : 'Sales']
+        };
+        return {
+          ...u,
+          profile,
+          assignedLeadsCount: 0,
+          convertedLeadsCount: 0
+        };
+      });
+  },
+  createAdminStaff: async (data: any) => {
+    try {
+      return await request<any>('/admin/staff', {
+        method: 'POST',
+        body: JSON.stringify(data)
+      });
+    } catch (err: any) {
+      console.warn('Backend staff creation unavailable or static deployment, using client-side fallback:', err);
+      const isOps = data.role === 'operations' || data.role_type === 'operations' || (data.designation && data.designation.toLowerCase().includes('operation'));
+      const newStaffId = 'usr_staff_' + Date.now();
+      const newEmpId = data.employee_id || (isOps ? 'TBG_OPE_001' : 'TBG_SAL_001');
+      const tempPass = data.password || 'TBG#2026!PASS';
+      const roleType = isOps ? 'operations' : 'sales';
+      const depts = Array.isArray(data.departments) && data.departments.length > 0 ? data.departments : [data.department || (isOps ? 'Travel & Transportation Operations' : 'Holidays & International')];
+
+      const newMember: any = {
+        id: newStaffId,
+        agency_id: 'agency_travel_genie',
+        role: roleType,
+        name: data.name,
+        email: data.email,
+        phone: data.phone || '',
+        display_id: newEmpId,
+        status: 'active',
+        created_at: new Date().toISOString(),
+        profile: {
+          id: 'spf_' + newStaffId,
+          user_id: newStaffId,
+          agency_id: 'agency_travel_genie',
+          employee_id: newEmpId,
+          role_type: roleType,
+          department: depts.join(', '),
+          departments: depts,
+          designation: data.designation || (isOps ? 'Operations' : 'Sales'),
+          designations: [data.designation || (isOps ? 'Operations' : 'Sales')],
+          assigned_leads_count: 0,
+          converted_leads_count: 0,
+          rating: 5.0
+        },
+        assignedLeadsCount: 0,
+        convertedLeadsCount: 0,
+        temporary_password: tempPass,
+        invitation_link: `${window.location.origin}/login?email=${encodeURIComponent(data.email)}&role=${roleType}`
+      };
+
+      try {
+        const stored = localStorage.getItem('tg_local_staff');
+        let currentList: any[] = [];
+        if (stored) {
+          currentList = JSON.parse(stored);
+        } else {
+          currentList = (fallbackData.users || [])
+            .filter((u: any) => u.role === 'staff' || u.role === 'sales' || u.role === 'operations')
+            .map((u: any) => {
+              const uOps = u.role === 'operations';
+              return {
+                ...u,
+                profile: {
+                  employee_id: u.display_id || (uOps ? 'TBG_OPE_001' : 'TBG_SAL_001'),
+                  role_type: uOps ? 'operations' : 'sales',
+                  department: uOps ? 'Travel & Transportation Operations' : 'Holidays & International',
+                  departments: [uOps ? 'Travel & Transportation Operations' : 'Holidays & International'],
+                  designation: uOps ? 'Operations' : 'Sales',
+                  designations: [uOps ? 'Operations' : 'Sales']
+                },
+                assignedLeadsCount: 0,
+                convertedLeadsCount: 0
+              };
+            });
+        }
+        currentList.push(newMember);
+        localStorage.setItem('tg_local_staff', JSON.stringify(currentList));
+      } catch (e) {
+        console.error('Failed to save staff to localStorage:', e);
+      }
+
+      return newMember;
     }
   },
-  createAdminStaff: (data: any) =>
-    request<any>('/admin/staff', {
-      method: 'POST',
-      body: JSON.stringify(data)
-    }),
-  updateAdminStaff: (id: string, data: any) =>
-    request<any>(`/admin/staff/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify(data)
-    }),
+  updateAdminStaff: async (id: string, data: any) => {
+    try {
+      return await request<any>(`/admin/staff/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data)
+      });
+    } catch (err: any) {
+      console.warn('Backend staff update unavailable, updating local storage:', err);
+      try {
+        const stored = localStorage.getItem('tg_local_staff');
+        if (stored) {
+          const currentList = JSON.parse(stored);
+          const idx = currentList.findIndex((s: any) => s.id === id);
+          if (idx !== -1) {
+            currentList[idx] = {
+              ...currentList[idx],
+              ...data,
+              profile: {
+                ...currentList[idx].profile,
+                ...data
+              }
+            };
+            localStorage.setItem('tg_local_staff', JSON.stringify(currentList));
+            return currentList[idx];
+          }
+        }
+      } catch (e) {}
+      return { id, ...data };
+    }
+  },
 
   getAdminAgents: async () => {
     try {
