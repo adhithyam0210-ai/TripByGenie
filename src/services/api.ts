@@ -27,10 +27,38 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const response = await fetch(`${API_BASE}${endpoint}`, {
+  let response = await fetch(`${API_BASE}${endpoint}`, {
     ...options,
+    credentials: 'include',
     headers
   });
+
+  // Seamless Automatic Token Refresh on 401
+  if (response.status === 401 && endpoint !== '/auth/login' && endpoint !== '/auth/refresh') {
+    try {
+      const refreshRes = await fetch(`${API_BASE}/auth/refresh`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      if (refreshRes.ok) {
+        const refreshData = await refreshRes.json();
+        if (refreshData.token) {
+          setAuthToken(refreshData.token);
+          headers['Authorization'] = `Bearer ${refreshData.token}`;
+          response = await fetch(`${API_BASE}${endpoint}`, {
+            ...options,
+            credentials: 'include',
+            headers
+          });
+        }
+      } else {
+        removeAuthToken();
+      }
+    } catch (e) {
+      removeAuthToken();
+    }
+  }
 
   if (!response.ok) {
     let errorMsg = 'An error occurred';

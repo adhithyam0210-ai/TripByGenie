@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Compass, Phone, Mail, MapPin, ShieldCheck, Heart, ArrowUpRight, Clock } from 'lucide-react';
+import { Phone, Mail, MapPin, ArrowUpRight, Clock } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { TravelPatternBg } from '../travel/TravelPatternBg';
 import { BrandLogo } from '../common/BrandLogo';
@@ -156,38 +156,62 @@ export const PublicFooter: React.FC = () => {
             </div>
           </div>
 
-          {/* Popular Destinations */}
+          {/* South India & India Tours + Legal */}
           <div>
-            <h4 className="text-sm font-bold uppercase tracking-wider text-[#55C9BD] mb-4 font-display">
-              South India & India Tours
-            </h4>
-            <ul className="space-y-2.5 text-xs text-white/75">
-              <li>
-                <Link to="/packages?search=Kerala" className="hover:text-white transition-colors">Kerala Backwaters & Munnar</Link>
-              </li>
-              <li>
-                <Link to="/packages?search=Ooty" className="hover:text-white transition-colors">Ooty, Nilgiris & Coonoor</Link>
-              </li>
-              <li>
-                <Link to="/packages?search=Kodaikanal" className="hover:text-white transition-colors">Kodaikanal Princess of Hills</Link>
-              </li>
-              <li>
-                <Link to="/packages?search=Coorg" className="hover:text-white transition-colors">Coorg Scotland of India</Link>
-              </li>
-              <li>
-                <Link to="/packages?search=Kashmir" className="hover:text-white transition-colors">Kashmir & Gulmarg Snow</Link>
-              </li>
-              <li>
-                <Link to="/packages?search=Andaman" className="hover:text-white transition-colors">Andaman & Havelock Island</Link>
-              </li>
-              <li>
-                <Link to="/packages?search=Tirupati" className="hover:text-white transition-colors">Tirupati & Spiritual Circuits</Link>
-              </li>
-            </ul>
+            {/* South India Tours - Hidden on mobile view */}
+            <div className="hidden md:block">
+              <h4 className="text-sm font-bold uppercase tracking-wider text-[#55C9BD] mb-4 font-display">
+                South India & India Tours
+              </h4>
+              <ul className="space-y-2.5 text-xs text-white/75">
+                <li>
+                  <Link to="/packages?search=Kerala" className="hover:text-white transition-colors">Kerala Backwaters & Munnar</Link>
+                </li>
+                <li>
+                  <Link to="/packages?search=Ooty" className="hover:text-white transition-colors">Ooty, Nilgiris & Coonoor</Link>
+                </li>
+                <li>
+                  <Link to="/packages?search=Kodaikanal" className="hover:text-white transition-colors">Kodaikanal Princess of Hills</Link>
+                </li>
+                <li>
+                  <Link to="/packages?search=Coorg" className="hover:text-white transition-colors">Coorg Scotland of India</Link>
+                </li>
+                <li>
+                  <Link to="/packages?search=Kashmir" className="hover:text-white transition-colors">Kashmir & Gulmarg Snow</Link>
+                </li>
+                <li>
+                  <Link to="/packages?search=Andaman" className="hover:text-white transition-colors">Andaman & Havelock Island</Link>
+                </li>
+                <li>
+                  <Link to="/packages?search=Tirupati" className="hover:text-white transition-colors">Tirupati & Spiritual Circuits</Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Legal - Moved below South India Tours */}
+            <div className="pt-2 md:pt-4 md:mt-4 md:border-t md:border-white/10">
+              <h4 className="text-sm font-bold uppercase tracking-wider text-[#55C9BD] mb-3 font-display">
+                Legal
+              </h4>
+              <ul className="space-y-2 text-xs text-white/75">
+                <li>
+                  <Link to="/about" className="hover:text-white transition-colors">About Us</Link>
+                </li>
+                <li>
+                  <Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
+                </li>
+                <li>
+                  <Link to="/terms-of-service" className="hover:text-white transition-colors">Terms of Service</Link>
+                </li>
+                <li>
+                  <Link to="/cancellation-policy" className="hover:text-white transition-colors">Cancellation Policy</Link>
+                </li>
+              </ul>
+            </div>
           </div>
 
-          {/* International Holiday Packages */}
-          <div>
+          {/* International Holiday Packages - Hidden on mobile view */}
+          <div className="hidden md:block">
             <h4 className="text-sm font-bold uppercase tracking-wider text-[#55C9BD] mb-4 font-display">
               International Escapes
             </h4>
@@ -216,8 +240,8 @@ export const PublicFooter: React.FC = () => {
             </ul>
           </div>
 
-          {/* Travel Services & Portals */}
-          <div>
+          {/* Travel Services & Portals - Hidden on mobile view */}
+          <div className="hidden md:block">
             <h4 className="text-sm font-bold uppercase tracking-wider text-[#55C9BD] mb-4 font-display">
               Services & Portals
             </h4>
@@ -249,16 +273,20 @@ export const PublicFooter: React.FC = () => {
 
         {/* Bottom copyright and accreditation */}
         <div className="pt-5 sm:pt-6 flex flex-col md:flex-row items-center justify-between text-xs text-white/60 gap-4">
-          <div className="flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4 text-[#55C9BD]" />
+          <div className="text-center md:text-left">
             <span>© {new Date().getFullYear()} Trip by Genie. Best Travel Agency in South India for Dream Getaways. All rights reserved.</span>
           </div>
 
-          <div className="flex items-center gap-6">
-            <Link to="/about" className="hover:text-white transition-colors">About Us</Link>
-            <Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
-            <Link to="/terms-of-service" className="hover:text-white transition-colors">Terms of Service</Link>
-            <Link to="/cancellation-policy" className="hover:text-white transition-colors">Cancellation Policy</Link>
+          <div className="text-center md:text-right text-xs text-white/70">
+            <span>Crafted by </span>
+            <a
+              href="https://www.bing.com/alink/link?url=http%3a%2f%2fwww.infyjob.com%2f&source=serp-local&h=AqfNRw%2fLIwgRJ5YXYELs66wKkrsxcmWODXNMHK94ScM%3d&p=lw_magsmlt&ig=DCFE1EA07E3F41948DE611F0897CE1DA&ypid=YNF64209535624FD94"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#55C9BD] hover:text-[#FF795C] font-semibold transition-colors"
+            >
+              Infyjob Technology Solutions (OPC) Private Limited
+            </a>
           </div>
         </div>
       </div>

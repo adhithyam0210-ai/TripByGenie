@@ -25,16 +25,18 @@ export const DraggableWhatsApp: React.FC<DraggableWhatsAppProps> = ({ isModalOpe
   });
   const buttonRef = useRef<HTMLDivElement>(null);
 
-  // Clear any previously persisted positions on mount so refresh always resets to the default bottom-right position
+  // Always reset to the default position on refresh / initial page load
   useEffect(() => {
     try {
       localStorage.removeItem('tg_whatsapp_pos');
     } catch {
       // ignore
     }
+    setHasDragged(false);
+    setPosition(null);
   }, []);
 
-  // When opening a new page or navigating, reset back to default bottom-right position
+  // When navigating routes, keep at default position
   useEffect(() => {
     setHasDragged(false);
     setPosition(null);
@@ -46,12 +48,12 @@ export const DraggableWhatsApp: React.FC<DraggableWhatsAppProps> = ({ isModalOpe
       if (!hasDragged) return;
       setPosition((prev) => {
         if (!prev) return null;
-        const btnSize = 60;
-        const maxX = window.innerWidth - btnSize - 10;
-        const maxY = window.innerHeight - btnSize - 10;
+        const btnSize = 64;
+        const maxX = window.innerWidth - btnSize - 16;
+        const maxY = window.innerHeight - btnSize - 16;
         return {
-          x: Math.max(10, Math.min(maxX, prev.x)),
-          y: Math.max(10, Math.min(maxY, prev.y))
+          x: Math.max(16, Math.min(maxX, prev.x)),
+          y: Math.max(16, Math.min(maxY, prev.y))
         };
       });
     };
@@ -60,7 +62,6 @@ export const DraggableWhatsApp: React.FC<DraggableWhatsAppProps> = ({ isModalOpe
   }, [hasDragged]);
 
   const handlePointerDown = (e: React.PointerEvent) => {
-    // Only respond to primary click / touch
     if (e.button !== 0) return;
 
     const rect = e.currentTarget.getBoundingClientRect();
@@ -90,12 +91,12 @@ export const DraggableWhatsApp: React.FC<DraggableWhatsAppProps> = ({ isModalOpe
       setHasDragged(true);
     }
 
-    const btnSize = 60;
-    const maxX = window.innerWidth - btnSize - 10;
-    const maxY = window.innerHeight - btnSize - 10;
+    const btnSize = 64;
+    const maxX = window.innerWidth - btnSize - 16;
+    const maxY = window.innerHeight - btnSize - 16;
 
-    const newX = Math.max(10, Math.min(maxX, dragStartRef.current.posX + deltaX));
-    const newY = Math.max(10, Math.min(maxY, dragStartRef.current.posY + deltaY));
+    const newX = Math.max(16, Math.min(maxX, dragStartRef.current.posX + deltaX));
+    const newY = Math.max(16, Math.min(maxY, dragStartRef.current.posY + deltaY));
 
     setPosition({ x: newX, y: newY });
   };
@@ -111,14 +112,20 @@ export const DraggableWhatsApp: React.FC<DraggableWhatsAppProps> = ({ isModalOpe
       // ignore
     }
 
-    // If user tapped/clicked without dragging, open WhatsApp
     if (!dragStartRef.current.hasMoved) {
+      // If user tapped/clicked without dragging, open WhatsApp
       window.open(
         'https://wa.me/919940463566?text=Hi%20TripByGenie%2C%20I%20would%20like%20to%20enquire%20about%20a%20travel%20package.',
         '_blank',
         'noopener,noreferrer'
       );
     }
+  };
+
+  // Double click resets back to default position
+  const handleDoubleClick = () => {
+    setHasDragged(false);
+    setPosition(null);
   };
 
   // 1. Only show on the landing page (home)
@@ -134,6 +141,7 @@ export const DraggableWhatsApp: React.FC<DraggableWhatsAppProps> = ({ isModalOpe
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerCancel={() => setIsDragging(false)}
+      onDoubleClick={handleDoubleClick}
       style={
         hasDragged && position
           ? {
@@ -145,13 +153,13 @@ export const DraggableWhatsApp: React.FC<DraggableWhatsAppProps> = ({ isModalOpe
               touchAction: 'none'
             }
       }
-      className={`fixed z-20 select-none cursor-grab active:cursor-grabbing ${
-        !hasDragged ? 'bottom-6 right-6' : ''
+      className={`fixed z-50 select-none cursor-grab active:cursor-grabbing ${
+        !hasDragged ? 'bottom-24 right-5 sm:bottom-28 sm:right-6' : ''
       } ${isDragging ? 'scale-105 transition-none' : 'transition-transform duration-150'}`}
-      aria-label="Chat with us on WhatsApp (Drag to move)"
-      title="Chat with us on WhatsApp (Drag to move)"
+      aria-label="Chat with us on WhatsApp (Drag to move, resets on refresh)"
+      title="Chat with us on WhatsApp (Drag to move, resets on refresh)"
     >
-      <div className="relative w-14 h-14 sm:w-15 sm:h-15 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white shadow-2xl flex items-center justify-center ring-4 ring-[#25D366]/30 hover:scale-105 active:scale-95 transition-all">
+      <div className="relative w-14 h-14 sm:w-[60px] sm:h-[60px] rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white shadow-xl flex items-center justify-center hover:scale-105 active:scale-95 transition-all">
         {/* Crisp clean official WhatsApp phone icon */}
         <svg
           className="w-7 h-7 sm:w-8 sm:h-8 fill-white pointer-events-none"

@@ -7,22 +7,28 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const multer = require('multer');
 const crypto = require('crypto');
+const cookieParser = require('cookie-parser');
 const uuidv4 = () => crypto.randomUUID();
 const db = require('./db');
 const emailService = require('./src/services/email.service');
+const tokenService = require('./src/services/token.service');
+const { corsOptions, helmetMiddleware, authLimiter, enquiryLimiter, safePathResolver } = require('./src/middlewares/security.middleware');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 const JWT_SECRET = process.env.JWT_SECRET || 'travel_genie_super_secure_jwt_secret_2026';
 
-// Middleware
-app.use(cors());
-app.use(express.json({ limit: '100mb' }));
-app.use(express.urlencoded({ extended: true, limit: '100mb' }));
+// Enterprise Security Middlewares
+app.use(helmetMiddleware);
+app.use(cors(corsOptions));
+app.use(cookieParser());
+app.use(express.json({ limit: '25mb' }));
+app.use(express.urlencoded({ extended: true, limit: '25mb' }));
 
 // Mount Modular API v1 Routes
 const v1Routes = require('./src/routes/v1');
 app.use('/api/v1', v1Routes);
+app.use('/api/privacy', require('./src/routes/v1/privacy.routes'));
 
 // Uploads directory
 const uploadDir = path.join(__dirname, 'uploads');
@@ -41,19 +47,19 @@ app.use('/uploads', express.static(uploadDir, {
   }
 }));
 
-// Local media file streaming endpoint (supports byte ranges for videos & local files)
+// Local media file streaming endpoint (supports byte ranges for videos & local files, protected against path traversal)
 app.get('/api/media/stream', (req, res) => {
-  let filePath = req.query.path || '';
-  filePath = filePath.replace(/^["']|["']$/g, '').trim();
+  const rawPath = req.query.path || '';
+  const safeFile = safePathResolver(uploadDir, rawPath) || safePathResolver(path.join(__dirname, '../public'), rawPath);
 
-  if (!filePath || !fs.existsSync(filePath)) {
-    return res.status(404).send('Media file not found');
+  if (!safeFile || !fs.existsSync(safeFile)) {
+    return res.status(404).send('Media file not found or path access denied');
   }
 
-  const stat = fs.statSync(filePath);
+  const stat = fs.statSync(safeFile);
   const fileSize = stat.size;
   const range = req.headers.range;
-  const ext = path.extname(filePath).toLowerCase();
+  const ext = path.extname(safeFile).toLowerCase();
 
   let contentType = 'video/mp4';
   if (ext === '.webm') contentType = 'video/webm';
@@ -67,7 +73,7 @@ app.get('/api/media/stream', (req, res) => {
     const start = parseInt(parts[0], 10);
     const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
     const chunksize = (end - start) + 1;
-    const file = fs.createReadStream(filePath, { start, end });
+    const file = fs.createReadStream(safeFile, { start, end });
     const head = {
       'Content-Range': `bytes ${start}-${end}/${fileSize}`,
       'Accept-Ranges': 'bytes',
@@ -83,7 +89,7 @@ app.get('/api/media/stream', (req, res) => {
       'Accept-Ranges': 'bytes',
     };
     res.writeHead(200, head);
-    fs.createReadStream(filePath).pipe(res);
+    fs.createReadStream(safeFile).pipe(res);
   }
 });
 
@@ -100,34 +106,40 @@ const upload = multer({
   limits: { fileSize: 250 * 1024 * 1024 } // 250MB for pristine 4K/HD video and raw media
 });
 
-// JWT helper
+// JWT helper (Dual-token compatible 15-minute access token)
 const generateToken = (user) => {
-  return jwt.sign(
-    {
-      id: user.id,
-      email: user.email,
-      role: user.role,
-      agency_id: user.agency_id,
-      name: user.name
-    },
-    JWT_SECRET,
-    { expiresIn: '7d' }
-  );
+  return tokenService.createAccessToken(user);
 };
 
-// Auth Middleware
+// Auth Middleware (Dual-token & HttpOnly Cookie aware with Session Invalidation)
 const authenticate = (req, res, next) => {
+  let token = null;
   const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    token = authHeader.split(' ')[1];
+  } else if (req.cookies && req.cookies.tg_access_token) {
+    token = req.cookies.tg_access_token;
+  }
+
+  if (!token) {
     return res.status(401).json({ error: 'Authentication required. No token provided.' });
   }
 
-  const token = authHeader.split(' ')[1];
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
     const user = db.findById('users', decoded.id);
     if (!user || user.status !== 'active') {
       return res.status(401).json({ error: 'User not found or account is deactivated.' });
+    }
+    if (user.status === 'suspended') {
+      return res.status(403).json({ error: 'Your account has been suspended. Please contact administrator.' });
+    }
+    if (user.tokens_invalidated_before && decoded.iat) {
+      const tokenIatMs = decoded.iat * 1000;
+      const invalidatedBeforeMs = new Date(user.tokens_invalidated_before).getTime();
+      if (tokenIatMs < invalidatedBeforeMs) {
+        return res.status(401).json({ error: 'Session invalidated. Please log in again.' });
+      }
     }
     req.user = user;
     next();
@@ -159,8 +171,8 @@ const authorize = (allowedRoles = []) => {
 // 1. AUTHENTICATION & SESSION ROUTES
 // ==========================================
 
-// Login (Unified single login for all roles with Agent ID or Email support)
-app.post('/api/auth/login', (req, res) => {
+// Login (Unified single login for all roles with Agent ID or Email support + Rotating Refresh Token)
+app.post('/api/auth/login', authLimiter, async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(400).json({ error: 'Email/Agent ID and password are required.' });
@@ -205,16 +217,58 @@ app.post('/api/auth/login', (req, res) => {
     if (b2b) db.update('b2b_agents', b2b.id, { last_login_at: new Date().toISOString() });
   }
 
-  const token = generateToken(user);
+  const tokenPair = await tokenService.issueTokenPair(user, req, res);
   const agency = db.findById('agencies', user.agency_id);
 
   // Return clean user object without password_hash
   const { password_hash, ...safeUser } = user;
   res.json({
-    token,
+    token: tokenPair.token,
+    accessToken: tokenPair.accessToken,
+    refreshToken: tokenPair.refreshToken,
+    expiresIn: tokenPair.expiresIn,
     user: safeUser,
     agency
   });
+});
+
+// Refresh token rotation endpoint
+app.post('/api/auth/refresh', async (req, res) => {
+  try {
+    const rawRefreshToken = req.cookies?.tg_refresh_token || req.body?.refreshToken;
+    const tokenPair = await tokenService.rotateRefreshToken(rawRefreshToken, req, res);
+    res.json({
+      token: tokenPair.token,
+      accessToken: tokenPair.accessToken,
+      refreshToken: tokenPair.refreshToken,
+      expiresIn: tokenPair.expiresIn
+    });
+  } catch (err) {
+    return res.status(err.statusCode || 401).json({ error: err.message, code: err.code || 'REFRESH_FAILED' });
+  }
+});
+
+// Logout endpoint
+app.post('/api/auth/logout', (req, res) => {
+  const rawRefreshToken = req.cookies?.tg_refresh_token || req.body?.refreshToken;
+  if (rawRefreshToken) {
+    tokenService.revokeToken(rawRefreshToken);
+  }
+  if (res.clearCookie) {
+    res.clearCookie('tg_refresh_token', { path: '/' });
+    res.clearCookie('tg_access_token', { path: '/' });
+  }
+  res.json({ success: true, message: 'Logged out successfully.' });
+});
+
+// Logout from all devices
+app.post('/api/auth/logout-all', authenticate, (req, res) => {
+  tokenService.revokeAllUserTokens(req.user.id);
+  if (res.clearCookie) {
+    res.clearCookie('tg_refresh_token', { path: '/' });
+    res.clearCookie('tg_access_token', { path: '/' });
+  }
+  res.json({ success: true, message: 'All active sessions terminated across all devices.' });
 });
 
 // Demo Login (Instant switch between roles for testing: admin, manager, sales/staff, operations, agent, customer)
@@ -3556,11 +3610,11 @@ app.post('/api/admin/customers/create-login', authenticate, authorize(['admin', 
     name: name || booking.customer_name,
     email: customerEmail,
     phone: booking.customer_phone || '',
-    password_hash: passwordHash,
-    temp_password: finalTempPassword,
-    status: 'active',
-    account_status: 'ACTIVE',
-    activation_status: 'ACTIVATED',
+    password_hash: '',
+    temp_password: '',
+    status: 'pending_activation',
+    account_status: 'INVITATION_SENT',
+    activation_status: 'INVITATION_SENT',
     created_at: new Date().toISOString()
   });
 
@@ -3680,10 +3734,8 @@ app.post('/api/admin/customers/create-login', authenticate, authorize(['admin', 
     login_url: loginUrl,
     activation_link: activationLink,
     booking_id: booking.booking_number,
-    account_status: 'ACTIVE'
+    account_status: 'INVITATION_SENT'
   });
-  activation_link: emailResult?.activation_link || undefined
-});
 });
 
 // Manager Create Paid Customer Account & Generate Customer ID
@@ -4795,12 +4847,31 @@ app.put('/api/documents/:id/verify', authenticate, authorize(['operations', 'man
   res.json(updated);
 });
 
-// Delete document
+// Delete document (Protected by Strict Ownership Enforcement)
 app.delete('/api/documents/:id', authenticate, (req, res) => {
   const doc = db.findById('travel_documents', req.params.id);
   if (!doc) {
     return res.status(404).json({ error: 'Document not found.' });
   }
+
+  const userRole = (req.user.role || '').toLowerCase();
+  const userId = req.user.id;
+
+  if (userRole !== 'admin' && userRole !== 'manager') {
+    if (userRole === 'customer') {
+      const userBookings = db.findAll('bookings', (b) => b.customer_id === userId).map((b) => b.id);
+      if (doc.customer_id !== userId && !userBookings.includes(doc.booking_id)) {
+        return res.status(403).json({ error: 'Access denied: cannot delete another traveler’s private document.' });
+      }
+    } else if (userRole === 'agent') {
+      if (doc.agent_id && doc.agent_id !== userId && doc.uploaded_by_role === 'agent') {
+        return res.status(403).json({ error: 'Access denied: cannot delete another agent’s document.' });
+      }
+    } else {
+      return res.status(403).json({ error: 'Forbidden: your role is not authorized to delete documents.' });
+    }
+  }
+
   db.delete('travel_documents', doc.id);
   res.json({ success: true, message: 'Document deleted successfully.' });
 });

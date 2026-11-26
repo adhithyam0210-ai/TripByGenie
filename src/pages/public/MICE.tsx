@@ -19,7 +19,8 @@ import {
   Headphones,
   FileCheck2,
   Coffee,
-  Check
+  Check,
+  AlertCircle
 } from 'lucide-react';
 import { TravelPatternBg } from '../../components/travel/TravelPatternBg';
 import { Button } from '../../components/common/Button';
@@ -42,6 +43,66 @@ export const MICE: React.FC = () => {
   });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+  const validateField = (field: string, value: string): string => {
+    let err = '';
+    const trimmed = (value || '').trim();
+
+    if (field === 'companyName') {
+      if (!trimmed) {
+        err = 'Company name is required';
+      } else if (trimmed.length < 2) {
+        err = 'Company name must be at least 2 characters';
+      }
+    } else if (field === 'contactPerson') {
+      if (!trimmed) {
+        err = 'Contact person name is required';
+      } else if (trimmed.length < 2) {
+        err = 'Contact person name must be at least 2 characters';
+      }
+    } else if (field === 'email') {
+      if (trimmed && !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(trimmed)) {
+        err = 'Please enter a valid corporate email address';
+      }
+    } else if (field === 'phone') {
+      const digits = trimmed.replace(/\D/g, '');
+      if (!trimmed) {
+        err = 'Phone or WhatsApp number is required';
+      } else if (digits.length < 10) {
+        err = 'Phone number must contain at least 10 digits';
+      }
+    }
+
+    setErrors((prev) => {
+      const next = { ...prev };
+      if (err) next[field] = err;
+      else delete next[field];
+      return next;
+    });
+
+    return err;
+  };
+
+  const validateAll = (): boolean => {
+    const newErrors: { [key: string]: string } = {};
+    const compErr = validateField('companyName', formData.companyName);
+    if (compErr) newErrors.companyName = compErr;
+
+    const personErr = validateField('contactPerson', formData.contactPerson);
+    if (personErr) newErrors.contactPerson = personErr;
+
+    if (formData.email) {
+      const emailErr = validateField('email', formData.email);
+      if (emailErr) newErrors.email = emailErr;
+    }
+
+    const phoneErr = validateField('phone', formData.phone);
+    if (phoneErr) newErrors.phone = phoneErr;
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const micePillars = [
     {
@@ -125,8 +186,8 @@ export const MICE: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.companyName || !formData.contactPerson || !formData.phone) {
-      showToast('Please fill in required corporate details', 'warning');
+    if (!validateAll()) {
+      showToast('Please fix the highlighted corporate form errors', 'warning');
       return;
     }
 
@@ -202,12 +263,12 @@ export const MICE: React.FC = () => {
             </div>
 
             {/* Action Buttons */}
-            <div className="pt-2 sm:pt-3 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-xl mx-auto w-full">
+            <div className="pt-2 sm:pt-3 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 max-w-xl mx-auto w-full">
               <a href="#corporate-rfp" className="w-full sm:w-1/2">
                 <Button
                   variant="primary"
-                  className="w-full justify-center text-xs sm:text-sm font-bold py-3 px-5 rounded-xl shadow-lg"
-                  leftIcon={<Send className="w-4 h-4" />}
+                  className="w-full justify-center text-[11px] sm:text-sm font-bold py-2 sm:py-3 px-3 sm:px-5 rounded-lg sm:rounded-xl shadow-md h-8.5 sm:h-auto"
+                  leftIcon={<Send className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
                 >
                   Request Corporate Proposal (RFP)
                 </Button>
@@ -215,9 +276,9 @@ export const MICE: React.FC = () => {
               <button
                 type="button"
                 onClick={handleWhatsAppDirect}
-                className="w-full sm:w-1/2 inline-flex items-center justify-center gap-2 py-3 px-5 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs sm:text-sm font-bold shadow-lg transition-all cursor-pointer select-none active:scale-[0.98]"
+                className="w-full sm:w-1/2 inline-flex items-center justify-center gap-1.5 sm:gap-2 py-2 sm:py-3 px-3 sm:px-5 rounded-lg sm:rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white text-[11px] sm:text-sm font-bold shadow-md transition-all cursor-pointer select-none active:scale-[0.98] h-8.5 sm:h-auto"
               >
-                <PhoneCall className="w-4 h-4 shrink-0" />
+                <PhoneCall className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
                 <span>Direct Corporate WhatsApp</span>
               </button>
             </div>
@@ -443,7 +504,7 @@ export const MICE: React.FC = () => {
                 </div>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form onSubmit={handleSubmit} className="space-y-5" noValidate>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Company Name */}
                   <div>
@@ -452,12 +513,25 @@ export const MICE: React.FC = () => {
                     </label>
                     <input
                       type="text"
-                      required
                       placeholder="e.g. Acme Technologies Pvt Ltd"
                       value={formData.companyName}
-                      onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] text-xs font-medium focus:ring-2 focus:ring-[#17648A] focus:outline-none"
+                      onChange={(e) => {
+                        setFormData({ ...formData, companyName: e.target.value });
+                        if (errors.companyName) validateField('companyName', e.target.value);
+                      }}
+                      onBlur={() => validateField('companyName', formData.companyName)}
+                      className={`w-full px-3.5 py-2.5 rounded-xl border text-xs font-medium focus:outline-none transition-colors ${
+                        errors.companyName
+                          ? 'border-red-400 focus:border-red-500 bg-red-50/15'
+                          : 'border-[#EFE7DA] bg-[#FFFDF8] focus:ring-2 focus:ring-[#17648A]'
+                      }`}
                     />
+                    {errors.companyName && (
+                      <p className="text-[11px] text-red-500 font-medium mt-1 flex items-center gap-1 animate-in fade-in">
+                        <AlertCircle className="w-3 h-3 shrink-0" />
+                        <span>{errors.companyName}</span>
+                      </p>
+                    )}
                   </div>
 
                   {/* Contact Person */}
@@ -467,12 +541,25 @@ export const MICE: React.FC = () => {
                     </label>
                     <input
                       type="text"
-                      required
                       placeholder="e.g. Priya Sharma (HR Director / Admin Head)"
                       value={formData.contactPerson}
-                      onChange={(e) => setFormData({ ...formData, contactPerson: e.target.value })}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] text-xs font-medium focus:ring-2 focus:ring-[#17648A] focus:outline-none"
+                      onChange={(e) => {
+                        setFormData({ ...formData, contactPerson: e.target.value });
+                        if (errors.contactPerson) validateField('contactPerson', e.target.value);
+                      }}
+                      onBlur={() => validateField('contactPerson', formData.contactPerson)}
+                      className={`w-full px-3.5 py-2.5 rounded-xl border text-xs font-medium focus:outline-none transition-colors ${
+                        errors.contactPerson
+                          ? 'border-red-400 focus:border-red-500 bg-red-50/15'
+                          : 'border-[#EFE7DA] bg-[#FFFDF8] focus:ring-2 focus:ring-[#17648A]'
+                      }`}
                     />
+                    {errors.contactPerson && (
+                      <p className="text-[11px] text-red-500 font-medium mt-1 flex items-center gap-1 animate-in fade-in">
+                        <AlertCircle className="w-3 h-3 shrink-0" />
+                        <span>{errors.contactPerson}</span>
+                      </p>
+                    )}
                   </div>
 
                   {/* Corporate Email */}
@@ -484,9 +571,23 @@ export const MICE: React.FC = () => {
                       type="email"
                       placeholder="e.g. priya@acme.com"
                       value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] text-xs font-medium focus:ring-2 focus:ring-[#17648A] focus:outline-none"
+                      onChange={(e) => {
+                        setFormData({ ...formData, email: e.target.value });
+                        if (errors.email) validateField('email', e.target.value);
+                      }}
+                      onBlur={() => validateField('email', formData.email)}
+                      className={`w-full px-3.5 py-2.5 rounded-xl border text-xs font-medium focus:outline-none transition-colors ${
+                        errors.email
+                          ? 'border-red-400 focus:border-red-500 bg-red-50/15'
+                          : 'border-[#EFE7DA] bg-[#FFFDF8] focus:ring-2 focus:ring-[#17648A]'
+                      }`}
                     />
+                    {errors.email && (
+                      <p className="text-[11px] text-red-500 font-medium mt-1 flex items-center gap-1 animate-in fade-in">
+                        <AlertCircle className="w-3 h-3 shrink-0" />
+                        <span>{errors.email}</span>
+                      </p>
+                    )}
                   </div>
 
                   {/* Phone / WhatsApp */}
@@ -496,12 +597,25 @@ export const MICE: React.FC = () => {
                     </label>
                     <input
                       type="tel"
-                      required
                       placeholder="e.g. +91 98765 43210"
                       value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] text-xs font-medium focus:ring-2 focus:ring-[#17648A] focus:outline-none"
+                      onChange={(e) => {
+                        setFormData({ ...formData, phone: e.target.value });
+                        if (errors.phone) validateField('phone', e.target.value);
+                      }}
+                      onBlur={() => validateField('phone', formData.phone)}
+                      className={`w-full px-3.5 py-2.5 rounded-xl border text-xs font-medium focus:outline-none transition-colors ${
+                        errors.phone
+                          ? 'border-red-400 focus:border-red-500 bg-red-50/15'
+                          : 'border-[#EFE7DA] bg-[#FFFDF8] focus:ring-2 focus:ring-[#17648A]'
+                      }`}
                     />
+                    {errors.phone && (
+                      <p className="text-[11px] text-red-500 font-medium mt-1 flex items-center gap-1 animate-in fade-in">
+                        <AlertCircle className="w-3 h-3 shrink-0" />
+                        <span>{errors.phone}</span>
+                      </p>
+                    )}
                   </div>
 
                   {/* Event Type */}

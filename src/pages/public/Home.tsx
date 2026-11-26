@@ -38,6 +38,7 @@ import { PackageCard } from '../../components/travel/PackageCard';
 import { TravelPatternBg } from '../../components/travel/TravelPatternBg';
 import { Button } from '../../components/common/Button';
 import { Badge } from '../../components/common/Badge';
+import { EmiEnquiryModal } from '../../components/travel/EmiEnquiryModal';
 import { resolveMediaUrl } from '../../utils/mediaUrl';
 import { fallbackData } from '../../data/fallbackData';
 
@@ -50,6 +51,7 @@ export const Home: React.FC = () => {
   const [banners, setBanners] = useState<HeroBanner[]>((fallbackData.hero_banners || []) as any);
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  const [isEmiModalOpen, setIsEmiModalOpen] = useState(false);
   const [customVideoInput, setCustomVideoInput] = useState('');
   const [destinations, setDestinations] = useState<Destination[]>((fallbackData.destinations || []) as any);
   const [selectedRegion, setSelectedRegion] = useState('all');
@@ -517,6 +519,7 @@ export const Home: React.FC = () => {
   const renderLoanCard = (loanCard: typeof loanCards[0], isMobile = false) => (
     <div
       key={loanCard.id}
+      onClick={() => setIsEmiModalOpen(true)}
       className={`group relative rounded-2xl overflow-hidden bg-[#044A9C] text-white shadow-md hover:shadow-2xl transition-all duration-300 ease-out transform hover:-translate-y-2.5 hover:scale-[1.03] cursor-pointer will-change-transform flex flex-col select-none ${isMobile ? 'w-[78vw] max-w-[270px] shrink-0 snap-center' : ''
         }`}
     >
@@ -751,24 +754,24 @@ export const Home: React.FC = () => {
             </p>
 
             {/* Action Buttons: Row on desktop with Group Tours near Plan Your Trip; Under orange button on mobile */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-start gap-2.5 sm:gap-3 pt-1 sm:pt-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-start gap-2 sm:gap-3 pt-1 sm:pt-3">
               <Link to={currentBanner.cta_link || '/packages'} className="w-full sm:w-auto">
                 <Button
                   variant="primary"
                   size="sm"
-                  className="w-full sm:w-auto shadow-md shadow-[#FF795C]/30 text-xs font-bold px-4 py-2 h-9 sm:h-9.5 rounded-xl cursor-pointer justify-center"
+                  className="w-full sm:w-auto shadow-md shadow-[#FF795C]/30 text-[11px] sm:text-xs font-bold px-3 sm:px-4 py-1.5 sm:py-2 h-8 sm:h-9.5 rounded-xl cursor-pointer justify-center"
                 >
                   {currentBanner.cta_text || 'Explore Packages'}
                 </Button>
               </Link>
 
               {/* Placed near Plan Your Trip (under the orange button on mobile) */}
-              <div className="flex items-center gap-2.5 sm:gap-3 w-full sm:w-auto">
+              <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
                 <Button
                   variant="white"
                   size="sm"
                   onClick={handleOpenTripModal}
-                  className="flex-1 sm:flex-initial text-xs font-bold shadow-xs px-4 py-2 h-9 sm:h-9.5 rounded-xl text-[#082C43] hover:bg-white/95 cursor-pointer whitespace-nowrap shrink-0 justify-center"
+                  className="flex-1 sm:flex-initial text-[11px] sm:text-xs font-bold shadow-xs px-3 sm:px-4 py-1.5 sm:py-2 h-8 sm:h-9.5 rounded-xl text-[#082C43] hover:bg-white/95 cursor-pointer whitespace-nowrap shrink-0 justify-center"
                 >
                   Plan Your Trip
                 </Button>
@@ -777,7 +780,7 @@ export const Home: React.FC = () => {
                   <Button
                     variant="white"
                     size="sm"
-                    className="w-full sm:w-auto text-xs font-bold shadow-xs px-4 py-2 h-9 sm:h-9.5 rounded-xl text-[#082C43] hover:bg-white/95 cursor-pointer whitespace-nowrap shrink-0 justify-center"
+                    className="w-full sm:w-auto text-[11px] sm:text-xs font-bold shadow-xs px-3 sm:px-4 py-1.5 sm:py-2 h-8 sm:h-9.5 rounded-xl text-[#082C43] hover:bg-white/95 cursor-pointer whitespace-nowrap shrink-0 justify-center"
                   >
                     Group Tours
                   </Button>
@@ -1283,7 +1286,7 @@ export const Home: React.FC = () => {
               <Button
                 variant="primary"
                 size="sm"
-                onClick={handleOpenTripModal}
+                onClick={() => setIsEmiModalOpen(true)}
                 className="flex-1 sm:flex-initial h-8 px-3 text-[11px] sm:text-xs font-bold rounded-lg shadow-xs justify-center whitespace-nowrap"
               >
                 Apply for 0% EMI Trip
@@ -1334,19 +1337,19 @@ export const Home: React.FC = () => {
                 ))}
               </div>
 
-              <div className="pt-3 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full">
+              <div className="pt-3 flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4 w-full">
                 <Button
                   variant="primary"
-                  size="lg"
+                  size="sm"
                   onClick={handleOpenTripModal}
-                  className="shadow-md font-bold text-xs w-full sm:w-auto justify-center"
+                  className="shadow-md font-bold text-[11px] sm:text-xs py-2 sm:py-2.5 px-3.5 sm:px-5 rounded-xl w-full sm:w-auto justify-center h-8.5 sm:h-auto"
                 >
-                  <Send className="w-4 h-4 mr-1.5" />
+                  <Send className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1.5" />
                   Get Free Trip Quotation
                 </Button>
                 <a href="tel:+914446071374" className="w-full sm:w-auto block sm:inline-block">
-                  <Button variant="outline" size="lg" className="border-[#082C43] text-[#082C43] font-bold text-xs w-full sm:w-auto justify-center">
-                    <PhoneCall className="w-4 h-4 mr-1.5 text-[#55C9BD]" />
+                  <Button variant="outline" size="sm" className="border-[#082C43] text-[#082C43] font-bold text-[11px] sm:text-xs py-2 sm:py-2.5 px-3.5 sm:px-5 rounded-xl w-full sm:w-auto justify-center h-8.5 sm:h-auto">
+                    <PhoneCall className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1.5 text-[#55C9BD]" />
                     Call +91 (44) 46071374
                   </Button>
                 </a>
@@ -1644,6 +1647,11 @@ export const Home: React.FC = () => {
           </div>
         </div>
       )}
+      {/* Dedicated 0% No Cost EMI Holiday Loan Modal */}
+      <EmiEnquiryModal
+        isOpen={isEmiModalOpen}
+        onClose={() => setIsEmiModalOpen(false)}
+      />
     </div>
   );
 };

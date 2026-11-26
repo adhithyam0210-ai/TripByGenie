@@ -37,10 +37,16 @@ class DatabaseEngine {
   }
 
   persist() {
-    try {
-      fs.writeFileSync(DB_FILE, JSON.stringify(this.data, null, 2), 'utf8');
-    } catch (err) {
-      console.error('Failed to persist database:', err);
+    const serialized = JSON.stringify(this.data, null, 2);
+    for (let attempt = 0; attempt < 5; attempt++) {
+      try {
+        fs.writeFileSync(DB_FILE, serialized, 'utf8');
+        return;
+      } catch (err) {
+        if (attempt === 4) {
+          console.error('Failed to persist database:', err);
+        }
+      }
     }
   }
 

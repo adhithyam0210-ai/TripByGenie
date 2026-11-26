@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Send, MessageSquare, Clock, ShieldCheck, ExternalLink, ArrowUpRight } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, MessageSquare, Clock, ShieldCheck, ExternalLink, ArrowUpRight, AlertCircle } from 'lucide-react';
 import { api } from '../../services/api';
 import { useToast } from '../../context/ToastContext';
 import { useAuth } from '../../context/AuthContext';
@@ -16,7 +16,75 @@ export const Contact: React.FC = () => {
     subject: '',
     message: ''
   });
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const validateField = (field: string, value: string): string => {
+    let err = '';
+    const trimmed = (value || '').trim();
+
+    if (field === 'name') {
+      if (!trimmed) {
+        err = 'Full Name is required';
+      } else if (trimmed.length < 2) {
+        err = 'Name must be at least 2 characters';
+      } else if (/^\d+$/.test(trimmed)) {
+        err = 'Name cannot be only numbers';
+      } else if (!/[a-zA-Z]/.test(trimmed)) {
+        err = 'Name must contain at least one letter';
+      } else if (/[^a-zA-Z0-9_\s]/.test(trimmed)) {
+        err = 'Name cannot contain special characters';
+      }
+    } else if (field === 'email') {
+      if (!trimmed) {
+        err = 'Email Address is required';
+      } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(trimmed)) {
+        err = 'Please enter a valid email address with a domain (e.g. name@domain.com)';
+      }
+    } else if (field === 'phone') {
+      if (trimmed) {
+        const digitsOnly = trimmed.replace(/\D/g, '');
+        if (digitsOnly.length < 10) {
+          err = 'Phone number must contain at least 10 digits';
+        }
+      }
+    } else if (field === 'message') {
+      if (!trimmed) {
+        err = 'Your message or enquiry is required';
+      } else if (trimmed.length < 10) {
+        err = 'Message must be at least 10 characters';
+      }
+    }
+
+    setErrors((prev) => {
+      const next = { ...prev };
+      if (err) next[field] = err;
+      else delete next[field];
+      return next;
+    });
+
+    return err;
+  };
+
+  const validateAll = (): boolean => {
+    const newErrors: { [key: string]: string } = {};
+    const nameErr = validateField('name', formData.name);
+    if (nameErr) newErrors.name = nameErr;
+
+    const emailErr = validateField('email', formData.email);
+    if (emailErr) newErrors.email = emailErr;
+
+    if (formData.phone) {
+      const phoneErr = validateField('phone', formData.phone);
+      if (phoneErr) newErrors.phone = phoneErr;
+    }
+
+    const msgErr = validateField('message', formData.message);
+    if (msgErr) newErrors.message = msgErr;
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   // Canonical contact information
   const phone1 = '+91 (44) 46071374';
@@ -32,24 +100,25 @@ export const Contact: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message) {
-      error('Please complete all required fields.');
+    if (!validateAll()) {
+      error('Please fix highlighted errors before submitting.');
       return;
     }
 
     setIsSubmitting(true);
     try {
       await api.submitContact({
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        subject: formData.subject || 'General Enquiry',
-        message: formData.message,
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
+        subject: formData.subject.trim() || 'General Enquiry',
+        message: formData.message.trim(),
         agency_id: agency?.id || 'agency_travel_genie'
       });
 
       success('Thank you! Your message has been received. Our team will contact you promptly.');
       setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+      setErrors({});
     } catch (err: any) {
       error(err.message || 'Failed to submit contact enquiry.');
     } finally {
@@ -210,7 +279,7 @@ export const Contact: React.FC = () => {
                 Fill in the form and an operations consultant will reply within 30 minutes.
               </p>
 
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-4" noValidate>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="text-xs font-bold text-[#082C43] mb-1 block">
@@ -218,12 +287,25 @@ export const Contact: React.FC = () => {
                     </label>
                     <input
                       type="text"
-                      required
                       placeholder="e.g. Priya Sharma"
                       value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full text-xs p-3 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"
+                      onChange={(e) => {
+                        setFormData({ ...formData, name: e.target.value });
+                        if (errors.name) validateField('name', e.target.value);
+                      }}
+                      onBlur={() => validateField('name', formData.name)}
+                      className={`w-full text-xs p-3 rounded-xl border bg-[#FFFDF8] focus:outline-none transition-colors ${
+                        errors.name
+                          ? 'border-red-400 focus:border-red-500 bg-red-50/15'
+                          : 'border-[#EFE7DA] focus:border-[#FF795C]'
+                      }`}
                     />
+                    {errors.name && (
+                      <p className="text-[11px] text-red-500 font-medium mt-1 flex items-center gap-1 animate-in fade-in">
+                        <AlertCircle className="w-3 h-3 shrink-0" />
+                        <span>{errors.name}</span>
+                      </p>
+                    )}
                   </div>
 
                   <div>
@@ -232,12 +314,25 @@ export const Contact: React.FC = () => {
                     </label>
                     <input
                       type="email"
-                      required
                       placeholder="priya@example.com"
                       value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full text-xs p-3 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"
+                      onChange={(e) => {
+                        setFormData({ ...formData, email: e.target.value });
+                        if (errors.email) validateField('email', e.target.value);
+                      }}
+                      onBlur={() => validateField('email', formData.email)}
+                      className={`w-full text-xs p-3 rounded-xl border bg-[#FFFDF8] focus:outline-none transition-colors ${
+                        errors.email
+                          ? 'border-red-400 focus:border-red-500 bg-red-50/15'
+                          : 'border-[#EFE7DA] focus:border-[#FF795C]'
+                      }`}
                     />
+                    {errors.email && (
+                      <p className="text-[11px] text-red-500 font-medium mt-1 flex items-center gap-1 animate-in fade-in">
+                        <AlertCircle className="w-3 h-3 shrink-0" />
+                        <span>{errors.email}</span>
+                      </p>
+                    )}
                   </div>
                 </div>
 
@@ -250,9 +345,23 @@ export const Contact: React.FC = () => {
                       type="tel"
                       placeholder="+91 98765 43210"
                       value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full text-xs p-3 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"
+                      onChange={(e) => {
+                        setFormData({ ...formData, phone: e.target.value });
+                        if (errors.phone) validateField('phone', e.target.value);
+                      }}
+                      onBlur={() => validateField('phone', formData.phone)}
+                      className={`w-full text-xs p-3 rounded-xl border bg-[#FFFDF8] focus:outline-none transition-colors ${
+                        errors.phone
+                          ? 'border-red-400 focus:border-red-500 bg-red-50/15'
+                          : 'border-[#EFE7DA] focus:border-[#FF795C]'
+                      }`}
                     />
+                    {errors.phone && (
+                      <p className="text-[11px] text-red-500 font-medium mt-1 flex items-center gap-1 animate-in fade-in">
+                        <AlertCircle className="w-3 h-3 shrink-0" />
+                        <span>{errors.phone}</span>
+                      </p>
+                    )}
                   </div>
 
                   <div>
@@ -275,12 +384,25 @@ export const Contact: React.FC = () => {
                   </label>
                   <textarea
                     rows={4}
-                    required
                     placeholder="Tell us what you are looking for..."
                     value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="w-full text-xs p-3 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none resize-none"
+                    onChange={(e) => {
+                      setFormData({ ...formData, message: e.target.value });
+                      if (errors.message) validateField('message', e.target.value);
+                    }}
+                    onBlur={() => validateField('message', formData.message)}
+                    className={`w-full text-xs p-3 rounded-xl border bg-[#FFFDF8] focus:outline-none resize-none transition-colors ${
+                      errors.message
+                        ? 'border-red-400 focus:border-red-500 bg-red-50/15'
+                        : 'border-[#EFE7DA] focus:border-[#FF795C]'
+                    }`}
                   />
+                  {errors.message && (
+                    <p className="text-[11px] text-red-500 font-medium mt-1 flex items-center gap-1 animate-in fade-in">
+                      <AlertCircle className="w-3 h-3 shrink-0" />
+                      <span>{errors.message}</span>
+                    </p>
+                  )}
                 </div>
 
                 <Button

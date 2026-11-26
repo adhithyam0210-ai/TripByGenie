@@ -21,7 +21,8 @@ import {
   ArrowLeftRight,
   Luggage,
   Info,
-  Check
+  Check,
+  AlertCircle
 } from 'lucide-react';
 import { Modal } from '../common/Modal';
 import { Button } from '../common/Button';
@@ -68,6 +69,63 @@ export const ServiceEnquiryModal: React.FC<ServiceEnquiryModalProps> = ({
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [additionalNotes, setAdditionalNotes] = useState('');
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+  const validateField = (field: string, value: string): string => {
+    let err = '';
+    const trimmed = (value || '').trim();
+
+    if (field === 'name') {
+      if (!trimmed) {
+        err = 'Full Name is required';
+      } else if (trimmed.length < 2) {
+        err = 'Name must be at least 2 characters';
+      } else if (/^\d+$/.test(trimmed)) {
+        err = 'Name cannot be only numbers';
+      } else if (!/[a-zA-Z]/.test(trimmed)) {
+        err = 'Name must contain at least one letter';
+      } else if (/[^a-zA-Z0-9_\s]/.test(trimmed)) {
+        err = 'Name cannot contain special characters';
+      }
+    } else if (field === 'email') {
+      if (trimmed && !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(trimmed)) {
+        err = 'Please enter a valid email address with a domain (e.g. name@domain.com)';
+      }
+    } else if (field === 'phone') {
+      const digitsOnly = trimmed.replace(/\D/g, '');
+      if (!trimmed) {
+        err = 'Mobile number is required';
+      } else if (digitsOnly.length < 10) {
+        err = 'Mobile number must contain at least 10 digits';
+      }
+    }
+
+    setErrors((prev) => {
+      const next = { ...prev };
+      if (err) next[field] = err;
+      else delete next[field];
+      return next;
+    });
+
+    return err;
+  };
+
+  const validateAll = (): boolean => {
+    const newErrors: { [key: string]: string } = {};
+    const nameErr = validateField('name', name);
+    if (nameErr) newErrors.name = nameErr;
+
+    const phoneErr = validateField('phone', phone);
+    if (phoneErr) newErrors.phone = phoneErr;
+
+    if (email) {
+      const emailErr = validateField('email', email);
+      if (emailErr) newErrors.email = emailErr;
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   // 1. Flight specific state
   const [flightTripType, setFlightTripType] = useState<'One Way' | 'Round Trip' | 'Multi-City'>('Round Trip');
@@ -312,8 +370,8 @@ export const ServiceEnquiryModal: React.FC<ServiceEnquiryModalProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || (!email && !phone)) {
-      error('Please provide your name and contact phone or email.');
+    if (!validateAll()) {
+      error('Please fix highlighted contact errors before submitting.');
       return;
     }
 
@@ -548,9 +606,6 @@ export const ServiceEnquiryModal: React.FC<ServiceEnquiryModalProps> = ({
               </span>
             </div>
           </div>
-          <span className="text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-full">
-            Instant Quote Assistance
-          </span>
         </div>
 
         {/* ======================================================== */}
@@ -1775,9 +1830,23 @@ export const ServiceEnquiryModal: React.FC<ServiceEnquiryModalProps> = ({
                 required
                 placeholder="e.g. Rahul Sharma"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-white focus:border-[#FF795C] focus:outline-none"
+                onChange={(e) => {
+                  setName(e.target.value);
+                  if (errors.name) validateField('name', e.target.value);
+                }}
+                onBlur={() => validateField('name', name)}
+                className={`w-full text-xs p-2.5 rounded-xl border bg-white focus:outline-none transition-colors ${
+                  errors.name
+                    ? 'border-red-400 focus:border-red-500 bg-red-50/15'
+                    : 'border-[#EFE7DA] focus:border-[#FF795C]'
+                }`}
               />
+              {errors.name && (
+                <p className="text-[11px] text-red-500 font-medium mt-1 flex items-center gap-1 animate-in fade-in">
+                  <AlertCircle className="w-3 h-3 shrink-0" />
+                  <span>{errors.name}</span>
+                </p>
+              )}
             </div>
 
             <div>
@@ -1787,11 +1856,25 @@ export const ServiceEnquiryModal: React.FC<ServiceEnquiryModalProps> = ({
               <input
                 type="tel"
                 required
-                placeholder="e.g. +91 99404 63566"
+                placeholder="e.g. 9940463566"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-white focus:border-[#FF795C] focus:outline-none"
+                onChange={(e) => {
+                  setPhone(e.target.value);
+                  if (errors.phone) validateField('phone', e.target.value);
+                }}
+                onBlur={() => validateField('phone', phone)}
+                className={`w-full text-xs p-2.5 rounded-xl border bg-white focus:outline-none transition-colors ${
+                  errors.phone
+                    ? 'border-red-400 focus:border-red-500 bg-red-50/15'
+                    : 'border-[#EFE7DA] focus:border-[#FF795C]'
+                }`}
               />
+              {errors.phone && (
+                <p className="text-[11px] text-red-500 font-medium mt-1 flex items-center gap-1 animate-in fade-in">
+                  <AlertCircle className="w-3 h-3 shrink-0" />
+                  <span>{errors.phone}</span>
+                </p>
+              )}
             </div>
 
             <div>
@@ -1802,9 +1885,23 @@ export const ServiceEnquiryModal: React.FC<ServiceEnquiryModalProps> = ({
                 type="email"
                 placeholder="e.g. rahul@example.com"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-white focus:border-[#FF795C] focus:outline-none"
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (errors.email) validateField('email', e.target.value);
+                }}
+                onBlur={() => validateField('email', email)}
+                className={`w-full text-xs p-2.5 rounded-xl border bg-white focus:outline-none transition-colors ${
+                  errors.email
+                    ? 'border-red-400 focus:border-red-500 bg-red-50/15'
+                    : 'border-[#EFE7DA] focus:border-[#FF795C]'
+                }`}
               />
+              {errors.email && (
+                <p className="text-[11px] text-red-500 font-medium mt-1 flex items-center gap-1 animate-in fade-in">
+                  <AlertCircle className="w-3 h-3 shrink-0" />
+                  <span>{errors.email}</span>
+                </p>
+              )}
             </div>
           </div>
 

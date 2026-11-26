@@ -11,12 +11,14 @@ const publicRoutes = require('./public.routes');
 const adminRoutes = require('./admin.routes');
 const staffRoutes = require('./staff.routes');
 const agentRoutes = require('./agent.routes');
+const privacyRoutes = require('./privacy.routes');
 
 router.use('/auth', authRoutes);
 router.use('/public', publicRoutes);
 router.use('/admin', adminRoutes);
 router.use('/staff', staffRoutes);
 router.use('/agent', agentRoutes);
+router.use('/privacy', privacyRoutes);
 
 // Health check endpoint
 router.get('/health', (req, res) => {
