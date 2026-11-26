@@ -74,19 +74,19 @@ class DatabaseEngine {
   }
 
   findAll(table, filterFn = null) {
-    const records = this.getTable(table);
+    const records = this.getTable(table).filter((item) => item !== null && item !== undefined);
     if (!filterFn) return [...records];
-    return records.filter(filterFn);
+    return records.filter((item) => item && filterFn(item));
   }
 
   findById(table, id) {
     const records = this.getTable(table);
-    return records.find((item) => String(item.id) === String(id)) || null;
+    return records.find((item) => item && String(item.id) === String(id)) || null;
   }
 
   findOne(table, filterFn) {
     const records = this.getTable(table);
-    return records.find(filterFn) || null;
+    return records.find((item) => item && filterFn(item)) || null;
   }
 
   insert(table, itemData) {

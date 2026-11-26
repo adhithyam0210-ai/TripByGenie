@@ -812,9 +812,14 @@ export const api = {
     request<any>(`/admin/users/${id}`, { method: 'DELETE' }),
 
   getAdminStaff: async () => {
+    let deletedIds: string[] = [];
+    try {
+      deletedIds = JSON.parse(localStorage.getItem('tg_deleted_staff_ids') || '[]');
+    } catch { }
+
     try {
       const remote = await request<any[]>('/admin/staff');
-      if (Array.isArray(remote) && remote.length > 0) {
+      if (Array.isArray(remote)) {
         return remote;
       }
     } catch {
@@ -823,11 +828,12 @@ export const api = {
     const local = localStorage.getItem('tg_local_staff');
     if (local) {
       try {
-        return JSON.parse(local);
+        const parsed = JSON.parse(local);
+        return parsed.filter((s: any) => !deletedIds.includes(s.id) && !deletedIds.includes(s.email?.toLowerCase()));
       } catch (e) {}
     }
     return (fallbackData.users || [])
-      .filter((u: any) => u.role === 'staff' || u.role === 'sales' || u.role === 'operations')
+      .filter((u: any) => (u.role === 'staff' || u.role === 'sales' || u.role === 'operations') && !deletedIds.includes(u.id) && !deletedIds.includes(u.email?.toLowerCase()))
       .map((u: any) => {
         const isOps = u.role === 'operations';
         const profile = (fallbackData.staff_profiles || []).find((p: any) => p.user_id === u.id) || {
@@ -848,11 +854,21 @@ export const api = {
   },
   createAdminStaff: async (data: any) => {
     try {
-      return await request<any>('/admin/staff', {
+      const res = await request<any>('/admin/staff', {
         method: 'POST',
         body: JSON.stringify(data)
       });
+      // Clear newly provisioned user from deleted IDs tracking
+      try {
+        const deletedIds = JSON.parse(localStorage.getItem('tg_deleted_staff_ids') || '[]');
+        const updated = deletedIds.filter((id: string) => id !== res?.id && id !== data.email?.toLowerCase());
+        localStorage.setItem('tg_deleted_staff_ids', JSON.stringify(updated));
+      } catch {}
+      return res;
     } catch (err: any) {
+      if (err.message && !err.message.includes('Failed to fetch') && !err.message.includes('NetworkError') && !err.message.includes('Load failed')) {
+        throw err;
+      }
       console.warn('Backend staff creation unavailable or static deployment, using client-side fallback:', err);
       const isOps = data.role === 'operations' || data.role_type === 'operations' || (data.designation && data.designation.toLowerCase().includes('operation'));
       const newStaffId = 'usr_staff_' + Date.now();
@@ -869,7 +885,7 @@ export const api = {
         email: data.email,
         phone: data.phone || '',
         display_id: newEmpId,
-        status: 'active',
+        status: 'pending',
         created_at: new Date().toISOString(),
         profile: {
           id: 'spf_' + newStaffId,
@@ -888,7 +904,7 @@ export const api = {
         assignedLeadsCount: 0,
         convertedLeadsCount: 0,
         temporary_password: tempPass,
-        invitation_link: `${window.location.origin}/login?email=${encodeURIComponent(data.email)}&role=${roleType}`
+        invitation_link: `${window.location.origin}/staff-login?email=${encodeURIComponent(data.email)}&role=${roleType}`
       };
 
       try {
@@ -953,6 +969,47 @@ export const api = {
         }
       } catch (e) {}
       return { id, ...data };
+    }
+  },
+  resendAdminStaffInvitation: async (id: string, data?: { password?: string }) => {
+    try {
+      return await request<any>(`/admin/staff/${id}/resend-invitation`, {
+        method: 'POST',
+        body: JSON.stringify(data || {})
+      });
+    } catch (err: any) {
+      console.warn('Backend staff resend invite fallback:', err);
+      const tempPass = data?.password || `Genie@${Math.floor(1000 + Math.random() * 9000)}`;
+      return {
+        success: true,
+        message: 'Credentials reset. Copy the invitation link below to share with the employee.',
+        temporary_password: tempPass,
+        invitation_link: `${window.location.origin}/login`
+      };
+    }
+  },
+  deleteAdminStaff: async (id: string) => {
+    try {
+      const stored = localStorage.getItem('tg_local_staff');
+      if (stored) {
+        const currentList = JSON.parse(stored);
+        const filtered = currentList.filter((s: any) => s.id !== id && s.email?.toLowerCase() !== id.toLowerCase());
+        localStorage.setItem('tg_local_staff', JSON.stringify(filtered));
+      }
+    } catch { }
+
+    try {
+      const deletedList = JSON.parse(localStorage.getItem('tg_deleted_staff_ids') || '[]');
+      if (!deletedList.includes(id)) {
+        deletedList.push(id);
+        localStorage.setItem('tg_deleted_staff_ids', JSON.stringify(deletedList));
+      }
+    } catch { }
+
+    try {
+      return await request<any>(`/admin/staff/${id}`, { method: 'DELETE' });
+    } catch {
+      return { success: true, message: 'Staff member deleted.' };
     }
   },
 

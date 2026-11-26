@@ -5,7 +5,6 @@ import {
   Menu,
   X,
   ChevronDown,
-  User,
   Phone,
   Mail,
   Clock,
@@ -22,7 +21,6 @@ import {
   Layers,
   Search
 } from 'lucide-react';
-import { useAuth } from '../../context/AuthContext';
 import { Button } from '../common/Button';
 import { BrandLogo } from '../common/BrandLogo';
 
@@ -31,7 +29,6 @@ interface PublicNavbarProps {
 }
 
 export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) => {
-  const { user, isAuthenticated, getRoleDashboardPath, currentAgency, demoLogin, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
@@ -351,11 +348,10 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
       {/* MAIN NAVIGATION BAR (Fixed, Header, Mega Dropdowns)       */}
       {/* ======================================================== */}
       <header
-        className={`fixed top-0 left-0 right-0 w-full z-40 transition-all duration-300 ${
-          isScrolled
+        className={`fixed top-0 left-0 right-0 w-full z-40 transition-all duration-300 ${isScrolled
             ? 'bg-white/95 backdrop-blur-md shadow-md py-2 border-b border-[#EFE7DA]'
             : 'bg-white py-2.5 border-b border-[#EFE7DA]/80 shadow-xs'
-        }`}
+          }`}
       >
         <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 flex items-center justify-between gap-3">
           {/* Logo & Brand matching tripbygenie.in - High Quality & Clear */}
@@ -369,16 +365,14 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
           </div>
 
           {/* Desktop Navigation Links — Compact Blue Pill Buttons */}
-          <nav className="hidden xl:flex items-center gap-1.5 2xl:gap-2">
-            {/* 1. Home */}
-            <Link
-              to="/"
-              onClick={handleHomeClick}
-              className={`px-3 py-1.5 2xl:px-3.5 2xl:py-2 rounded-full text-xs 2xl:text-[13px] font-bold tracking-tight transition-all shadow-xs flex items-center justify-center whitespace-nowrap ${
-                location.pathname === '/'
-                  ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-sm'
-                  : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
-              }`}
+            <nav className="hidden xl:flex items-center gap-2 2xl:gap-3">
+              {/* 1. Home */}
+              <Link
+                to="/"
+                onClick={handleHomeClick}
+                      ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-sm'
+                      : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
+                    }`}
             >
               Home
             </Link>
@@ -386,11 +380,10 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
             {/* 2. About Us */}
             <Link
               to="/about"
-              className={`px-3 py-1.5 2xl:px-3.5 2xl:py-2 rounded-full text-xs 2xl:text-[13px] font-bold tracking-tight transition-all shadow-xs flex items-center justify-center whitespace-nowrap ${
-                location.pathname === '/about'
-                  ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-sm'
-                  : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
-              }`}
+                className = {`px-4 py-2 2xl:px-4.5 2xl:py-2.5 rounded-full text-[13px] 2xl:text-sm font-bold tracking-tight transition-all shadow-xs flex items-center justify-center whitespace-nowrap ${location.pathname === '/about'
+                    ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-sm'
+                    : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
+                  }`}
             >
               About Us
             </Link>
@@ -400,14 +393,12 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
               <button
                 type="button"
                 onClick={() => setActiveDropdown(activeDropdown === 'packages' ? null : 'packages')}
-                className={`px-3 py-1.5 2xl:px-3.5 2xl:py-2 rounded-full text-xs 2xl:text-[13px] font-bold tracking-tight transition-all shadow-xs flex items-center gap-1 justify-center whitespace-nowrap ${
-                  location.pathname === '/packages' || activeDropdown === 'packages'
-                    ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-sm'
-                    : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
-                }`}
+                      ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-sm'
+                      : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
+                    }`}
               >
                 <span>Packages</span>
-                <span className="text-[9px] transform translate-y-[0.5px]">▼</span>
+                <span className="text-[10px] 2xl:text-[11px] transform translate-y-[0.5px]">▼</span>
               </button>
 
               {/* Mega Dropdown Box */}
@@ -444,7 +435,7 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
                           {col.countries.map((c) => (
                             <li key={c}>
                               <Link
-                                to={`/destinations/${getDestinationSlug(c)}`}
+                                to={`/ destinations / ${getDestinationSlug(c)}`}
                                 onClick={() => setActiveDropdown(null)}
                                 className="text-xs text-gray-700 hover:text-[#FF795C] hover:translate-x-1 transition-all flex items-center justify-between py-0.5 group"
                               >
@@ -484,14 +475,12 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
               <button
                 type="button"
                 onClick={() => setActiveDropdown(activeDropdown === 'india' ? null : 'india')}
-                className={`px-3 py-1.5 2xl:px-3.5 2xl:py-2 rounded-full text-xs 2xl:text-[13px] font-bold tracking-tight transition-all shadow-xs flex items-center gap-1 justify-center whitespace-nowrap ${
-                  location.pathname === '/destinations' || activeDropdown === 'india'
-                    ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-sm'
-                    : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
-                }`}
+          ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-sm'
+          : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
+        }`}
               >
                 <span>India</span>
-                <span className="text-[9px] transform translate-y-[0.5px]">▼</span>
+                <span className="text-[10px] 2xl:text-[11px] transform translate-y-[0.5px]">▼</span>
               </button>
 
               {/* India Mega Dropdown Box */}
@@ -528,7 +517,7 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
                           {col.spots.map((spot) => (
                             <li key={spot}>
                               <Link
-                                to={`/destinations/${getDestinationSlug(spot)}`}
+                                to={`/ destinations / ${getDestinationSlug(spot)}`}
                                 onClick={() => setActiveDropdown(null)}
                                 className="text-xs text-gray-700 hover:text-[#FF795C] hover:translate-x-1 transition-all flex items-center justify-between py-0.5 group"
                               >
@@ -565,74 +554,72 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
               <button
                 type="button"
                 onClick={() => setActiveDropdown(activeDropdown === 'honeymoon' ? null : 'honeymoon')}
-                className={`px-3 py-1.5 2xl:px-3.5 2xl:py-2 rounded-full text-xs 2xl:text-[13px] font-bold tracking-tight transition-all shadow-xs flex items-center gap-1 justify-center whitespace-nowrap ${
-                  location.pathname === '/honeymoon' || activeDropdown === 'honeymoon'
-                    ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-sm'
-                    : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
-                }`}
+  className = {`px-4 py-2 2xl:px-4.5 2xl:py-2.5 rounded-full text-[13px] 2xl:text-sm font-bold tracking-tight transition-all shadow-xs flex items-center gap-1.5 justify-center whitespace-nowrap ${location.pathname === '/honeymoon' || activeDropdown === 'honeymoon'
+      ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-sm'
+      : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
+    }`
+}
               >
                 <span>Honeymoon</span>
-                <span className="text-[9px] transform translate-y-[0.5px]">▼</span>
-              </button>
+                <span className="text-[10px] 2xl:text-[11px] transform translate-y-[0.5px]">▼</span>
+              </button >
 
-              {activeDropdown === 'honeymoon' && (
-                <div
-                  className="dropdown-scroll-box absolute top-full mt-2 right-0 2xl:left-1/2 2xl:-translate-x-1/2 w-[620px] max-w-[calc(100vw-32px)] max-h-[calc(100vh-100px)] overflow-y-auto overscroll-contain bg-white rounded-3xl shadow-2xl border border-[#EFE7DA] p-6 animate-in fade-in slide-in-from-top-2 duration-200 text-[#082C43] z-50"
-                  style={{ overscrollBehavior: 'contain', scrollbarWidth: 'thin' }}
-                  onWheel={(e) => e.stopPropagation()}
-                >
-                  <div className="flex items-center justify-between border-b border-gray-100 pb-3 mb-4">
-                    <div className="flex items-center gap-2">
-                      <Heart className="w-5 h-5 text-rose-500 fill-rose-500" />
-                      <span className="text-sm font-bold uppercase tracking-wider text-[#082C43]">
-                        Handpicked Honeymoon Packages
-                      </span>
-                    </div>
-                    <Link
-                      to="/honeymoon"
-                      onClick={() => setActiveDropdown(null)}
-                      className="text-xs font-bold text-[#FF795C] hover:underline"
-                    >
-                      All Honeymoon Tours →
-                    </Link>
-                  </div>
+  { activeDropdown === 'honeymoon' && (
+    <div
+      className="dropdown-scroll-box absolute top-full mt-2 right-0 2xl:left-1/2 2xl:-translate-x-1/2 w-[620px] max-w-[calc(100vw-32px)] max-h-[calc(100vh-100px)] overflow-y-auto overscroll-contain bg-white rounded-3xl shadow-2xl border border-[#EFE7DA] p-6 animate-in fade-in slide-in-from-top-2 duration-200 text-[#082C43] z-50"
+      style={{ overscrollBehavior: 'contain', scrollbarWidth: 'thin' }}
+      onWheel={(e) => e.stopPropagation()}
+    >
+      <div className="flex items-center justify-between border-b border-gray-100 pb-3 mb-4">
+        <div className="flex items-center gap-2">
+          <Heart className="w-5 h-5 text-rose-500 fill-rose-500" />
+          <span className="text-sm font-bold uppercase tracking-wider text-[#082C43]">
+            Handpicked Honeymoon Packages
+          </span>
+        </div>
+        <Link
+          to="/honeymoon"
+          onClick={() => setActiveDropdown(null)}
+          className="text-xs font-bold text-[#FF795C] hover:underline"
+        >
+          All Honeymoon Tours →
+        </Link>
+      </div>
 
-                  <div className="grid grid-cols-2 gap-6">
-                    {honeymoonDestinations.map((col) => (
-                      <div key={col.type} className="space-y-2">
-                        <h4 className="text-xs font-bold uppercase tracking-wider text-[#17648A] border-b border-gray-100 pb-1">
-                          {col.type}
-                        </h4>
-                        <ul className="space-y-1">
-                          {col.spots.map((spot) => (
-                            <li key={spot}>
-                              <Link
-                                to={`/destinations/${getDestinationSlug(spot)}`}
-                                onClick={() => setActiveDropdown(null)}
-                                className="text-xs text-gray-700 hover:text-[#FF795C] hover:translate-x-1 transition-all flex items-center justify-between py-0.5 group"
-                              >
-                                <span>{spot}</span>
-                                <span className="text-[10px] text-gray-300 group-hover:text-[#FF795C]">›</span>
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
+      <div className="grid grid-cols-2 gap-6">
+        {honeymoonDestinations.map((col) => (
+          <div key={col.type} className="space-y-2">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-[#17648A] border-b border-gray-100 pb-1">
+              {col.type}
+            </h4>
+            <ul className="space-y-1">
+              {col.spots.map((spot) => (
+                <li key={spot}>
+                  <Link
+                    to={`/destinations/${getDestinationSlug(spot)}`}
+                    onClick={() => setActiveDropdown(null)}
+                    className="text-xs text-gray-700 hover:text-[#FF795C] hover:translate-x-1 transition-all flex items-center justify-between py-0.5 group"
+                  >
+                    <span>{spot}</span>
+                    <span className="text-[10px] text-gray-300 group-hover:text-[#FF795C]">›</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+            </div >
 
-            {/* 6. Tickets Bookings (Direct link button, no dropdown) */}
-            <Link
-              to="/services"
-              onClick={() => setActiveDropdown(null)}
-              className={`px-3 py-1.5 2xl:px-3.5 2xl:py-2 rounded-full text-xs 2xl:text-[13px] font-bold tracking-tight transition-all shadow-xs flex items-center justify-center whitespace-nowrap ${
-                location.pathname === '/services'
-                  ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-sm'
-                  : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
-              }`}
+  {/* 6. Tickets Bookings (Direct link button, no dropdown) */ }
+  < Link
+to = "/services"
+onClick = {() => setActiveDropdown(null)}
+      ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-sm'
+      : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
+    }`}
             >
               Tickets Bookings
             </Link>
@@ -640,98 +627,31 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
             {/* 8. Contact Us */}
             <Link
               to="/contact"
-              className={`px-3 py-1.5 2xl:px-3.5 2xl:py-2 rounded-full text-xs 2xl:text-[13px] font-bold tracking-tight transition-all shadow-xs flex items-center justify-center whitespace-nowrap ${
-                location.pathname === '/contact'
-                  ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-sm'
-                  : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
-              }`}
+  className = {`px-4 py-2 2xl:px-4.5 2xl:py-2.5 rounded-full text-[13px] 2xl:text-sm font-bold tracking-tight transition-all shadow-xs flex items-center justify-center whitespace-nowrap ${location.pathname === '/contact'
+      ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-sm'
+      : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
+    }`
+}
             >
-              Contact Us
-            </Link>
-          </nav>
+  Contact Us
+            </Link >
+          </nav >
 
-          {/* Right Action: Sign In & Plan Trip CTA */}
-          <div className="hidden lg:flex items-center gap-2.5 shrink-0">
-            {isAuthenticated && user ? (
-              <div className="flex items-center gap-2">
-                <Link
-                  to={getRoleDashboardPath()}
-                  className="inline-flex items-center gap-2 pl-1.5 pr-3.5 py-1 rounded-full text-xs font-bold transition-all border border-[#003b73]/25 bg-white hover:bg-slate-50 text-[#082C43] shadow-xs group"
-                  title={`Open ${user.name || user.role} Dashboard`}
-                >
-                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#003b73] text-white flex items-center justify-center font-bold text-xs shadow-xs shrink-0 group-hover:scale-105 transition-transform">
-                    {user.avatar ? (
-                      <img src={user.avatar} alt={user.name} className="w-full h-full object-cover rounded-full" />
-                    ) : (
-                      user.name ? user.name.charAt(0).toUpperCase() : <User className="w-4 h-4 text-white" />
-                    )}
-                  </div>
-                  <div className="flex flex-col text-left">
-                    <span className="text-[11px] font-bold text-[#082C43] leading-tight">
-                      {user.name ? (user.name.length > 12 ? `${user.name.slice(0, 10)}...` : user.name) : 'Dashboard'}
-                    </span>
-                    <span className="text-[9px] text-[#FF795C] font-semibold uppercase tracking-wider leading-none">
-                      {user.role || 'Profile'}
-                    </span>
-                  </div>
-                </Link>
-                <button
-                  type="button"
-                  onClick={() => logout()}
-                  className="text-xs text-rose-600 hover:text-rose-700 font-semibold px-2 py-1.5 rounded-lg hover:bg-rose-50 transition-colors cursor-pointer"
-                  title="Sign Out"
-                >
-                  Sign Out
-                </button>
-              </div>
-            ) : (
-              <Link
-                to="/login"
-                className="inline-flex items-center gap-2 pl-1.5 pr-4 py-1 rounded-full text-xs sm:text-[13px] font-bold transition-all border border-[#082C43]/20 bg-white hover:bg-slate-50 text-[#082C43] hover:text-[#FF795C] shadow-xs hover:border-[#003b73] group"
-              >
-                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#F0F4F8] text-[#003b73] flex items-center justify-center border border-[#003b73]/15 shadow-xs shrink-0 group-hover:bg-[#003b73] group-hover:text-white transition-all">
-                  <User className="w-4.5 h-4.5 transition-transform group-hover:scale-110" />
-                </div>
-                <span className="font-bold tracking-tight">Sign In</span>
-              </Link>
-            )}
+  {/* Right Action: Plan Trip CTA */ }
+  < div className = "hidden lg:flex items-center gap-2.5 shrink-0" >
+    <Button
+      variant="primary"
+      size="sm"
+      onClick={onOpenTripModal}
+      className="shadow-md shadow-[#FF795C]/25 text-xs sm:text-[13px] font-bold whitespace-nowrap shrink-0 h-9 sm:h-9.5 px-4 sm:px-5 inline-flex items-center gap-2 rounded-full"
+    >
+      <Send className="w-3.5 h-3.5 shrink-0" />
+      <span className="whitespace-nowrap">Plan Your Trip</span>
+    </Button>
+          </div >
 
-            <Button
-              variant="primary"
-              size="sm"
-              onClick={onOpenTripModal}
-              className="shadow-md shadow-[#FF795C]/25 text-xs font-bold whitespace-nowrap shrink-0 h-8 sm:h-8.5 px-3.5 inline-flex items-center gap-1.5 rounded-full"
-            >
-              <Send className="w-3.5 h-3.5 shrink-0" />
-              <span className="whitespace-nowrap">Plan Your Trip</span>
-            </Button>
-          </div>
-
-          {/* Mobile Menu Actions & Hamburger */}
-          <div className="flex xl:hidden items-center gap-1.5 sm:gap-2">
-            {isAuthenticated && user ? (
-              <Link
-                to={getRoleDashboardPath(user.role)}
-                className="inline-flex items-center gap-1.5 bg-[#082C43] hover:bg-[#003b73] text-white pl-1.5 pr-2.5 py-1 rounded-full text-xs font-bold transition-all shadow-xs"
-                title={`${user.role.toUpperCase()} Workspace`}
-              >
-                <div className="w-6 h-6 rounded-full bg-[#55C9BD] text-[#082C43] flex items-center justify-center font-bold text-[10px]">
-                  {user.name ? user.name.charAt(0).toUpperCase() : <User className="w-3.5 h-3.5" />}
-                </div>
-                <span>Dashboard</span>
-              </Link>
-            ) : (
-              <Link
-                to="/login"
-                className="inline-flex items-center gap-1.5 bg-white border border-[#082C43]/20 hover:bg-slate-50 text-[#082C43] pl-1.5 pr-2.5 py-1 rounded-full text-xs font-bold transition-all shadow-xs"
-                title="Sign In"
-              >
-                <div className="w-6 h-6 rounded-full bg-[#003b73]/10 text-[#003b73] flex items-center justify-center">
-                  <User className="w-3.5 h-3.5" />
-                </div>
-                <span>Sign In</span>
-              </Link>
-            )}
+  {/* Mobile Menu Actions & Hamburger */ }
+  < div className = "flex xl:hidden items-center gap-1.5 sm:gap-2" >
             <button
               type="button"
               onClick={onOpenTripModal}
@@ -749,165 +669,167 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
             >
               {isMobileMenuOpen ? <X className="w-6 h-6 text-[#FF795C]" /> : <Menu className="w-6 h-6 text-[#082C43]" />}
             </button>
-          </div>
-        </div>
-      </header>
+          </div >
+        </div >
+      </header >
 
-      {/* Spacer to preserve document layout flow under the fixed navbar */}
-      <div className="h-[72px] sm:h-[76px] md:h-[80px] lg:h-[84px] shrink-0 pointer-events-none" aria-hidden="true" />
+  {/* Spacer to preserve document layout flow under the fixed navbar */ }
+  < div className = "h-[72px] sm:h-[76px] md:h-[80px] lg:h-[84px] shrink-0 pointer-events-none" aria - hidden="true" />
 
 
-      {/* ======================================================== */}
-      {/* MOBILE NAVIGATION DRAWER (Full Categories & Phone)       */}
-      {/* ======================================================== */}
-      {isMobileMenuOpen && (
-        <div
-          className="xl:hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex justify-end animate-in fade-in overscroll-contain"
-          style={{ overscrollBehavior: 'contain' }}
-          onClick={() => setIsMobileMenuOpen(false)}
-        >
-          <div
-            className="dropdown-scroll-box w-full max-w-sm bg-[#082C43] text-white h-full overflow-y-auto overscroll-contain p-6 flex flex-col shadow-2xl"
-            style={{
-              overscrollBehavior: 'contain',
-              WebkitOverflowScrolling: 'touch',
-              touchAction: 'pan-y'
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="space-y-6">
-              {/* Header */}
-              <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                <div className="bg-white px-3 py-1.5 rounded-xl shadow-xs">
-                  <BrandLogo size="sm" to="/" onClick={handleHomeClick} />
-                </div>
-                <button
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="p-1 rounded-lg text-white/70 hover:text-white"
-                >
-                  <X className="w-6 h-6" />
-                </button>
-              </div>
-
-              {/* Direct links */}
-              <div className="space-y-2 text-sm font-semibold">
-                <Link
-                  to="/"
-                  onClick={handleHomeClick}
-                  className="block px-3 py-2 rounded-xl hover:bg-white/10 transition-colors"
-                >
-                  Home
-                </Link>
-
-                <Link
-                  to="/about"
-                  className="block px-3 py-2 rounded-xl hover:bg-white/10 transition-colors"
-                >
-                  About Us
-                </Link>
-
-                {/* International accordion */}
-                <div>
-                  <button
-                    onClick={() => toggleMobileSection('intl')}
-                    className="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/10 transition-colors text-left"
-                  >
-                    <span>International Packages</span>
-                    <ChevronDown className={`w-4 h-4 transition-transform ${mobileSectionOpen.intl ? 'rotate-180' : ''}`} />
-                  </button>
-                  {mobileSectionOpen.intl && (
-                    <div className="pl-4 pr-2 py-2 space-y-3 bg-black/20 rounded-xl my-1 text-xs">
-                      {internationalDestinations.map(cat => (
-                        <div key={cat.continent}>
-                          <p className="font-bold text-[#55C9BD] uppercase tracking-wider mb-1">{cat.continent}</p>
-                          <div className="grid grid-cols-2 gap-1 text-white/80">
-                            {cat.countries.map(c => (
-                              <Link
-                                key={c}
-                                to={`/destinations/${getDestinationSlug(c)}`}
-                                onClick={() => setIsMobileMenuOpen(false)}
-                                className="hover:text-[#FF795C] py-0.5"
-                              >
-                                {c}
-                              </Link>
-                            ))}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                {/* India accordion */}
-                <div>
-                  <button
-                    onClick={() => toggleMobileSection('india')}
-                    className="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/10 transition-colors text-left"
-                  >
-                    <span className="flex items-center gap-1.5">
-                      <span>India & South India</span>
-                      <span className="text-[9px] bg-[#55C9BD] text-[#082C43] font-bold px-1 rounded">Top</span>
-                    </span>
-                    <ChevronDown className={`w-4 h-4 transition-transform ${mobileSectionOpen.india ? 'rotate-180' : ''}`} />
-                  </button>
-                  {mobileSectionOpen.india && (
-                    <div className="pl-4 pr-2 py-2 space-y-3 bg-black/20 rounded-xl my-1 text-xs">
-                      {indiaDestinations.map(reg => (
-                        <div key={reg.region}>
-                          <p className="font-bold text-[#FF795C] uppercase tracking-wider mb-1">{reg.region}</p>
-                          <div className="space-y-1 text-white/80">
-                            {reg.spots.map(s => (
-                              <Link
-                                key={s}
-                                to={`/destinations/${getDestinationSlug(s)}`}
-                                onClick={() => setIsMobileMenuOpen(false)}
-                                className="block hover:text-[#55C9BD] py-0.5"
-                              >
-                                {s}
-                              </Link>
-                            ))}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                <Link
-                  to="/honeymoon"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block px-3 py-2 rounded-xl hover:bg-white/10 transition-colors text-white"
-                >
-                  Honeymoon Packages
-                </Link>
-
-                <Link
-                  to="/group-tours"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block px-3 py-2 rounded-xl hover:bg-white/10 transition-colors text-white"
-                >
-                  Group Tours
-                </Link>
-
-                <Link
-                  to="/services"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block px-3 py-2 rounded-xl hover:bg-white/10 transition-colors text-white"
-                >
-                  Tickets Bookings
-                </Link>
-
-                <Link
-                  to="/contact"
-                  className="block px-3 py-2 rounded-xl hover:bg-white/10 transition-colors"
-                >
-                  Contact Us
-                </Link>
-              </div>
+    {/* ======================================================== */ }
+{/* MOBILE NAVIGATION DRAWER (Full Categories & Phone)       */ }
+{/* ======================================================== */ }
+{
+  isMobileMenuOpen && (
+    <div
+      className="xl:hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex justify-end animate-in fade-in overscroll-contain"
+      style={{ overscrollBehavior: 'contain' }}
+      onClick={() => setIsMobileMenuOpen(false)}
+    >
+      <div
+        className="dropdown-scroll-box w-full max-w-sm bg-[#082C43] text-white h-full overflow-y-auto overscroll-contain p-6 flex flex-col shadow-2xl"
+        style={{
+          overscrollBehavior: 'contain',
+          WebkitOverflowScrolling: 'touch',
+          touchAction: 'pan-y'
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="space-y-6">
+          {/* Header */}
+          <div className="flex items-center justify-between border-b border-white/10 pb-3">
+            <div className="bg-white px-3 py-1.5 rounded-xl shadow-xs">
+              <BrandLogo size="sm" to="/" onClick={handleHomeClick} />
             </div>
+            <button
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="p-1 rounded-lg text-white/70 hover:text-white"
+            >
+              <X className="w-6 h-6" />
+            </button>
+          </div>
+
+          {/* Direct links */}
+          <div className="space-y-2 text-sm font-semibold">
+            <Link
+              to="/"
+              onClick={handleHomeClick}
+              className="block px-3 py-2 rounded-xl hover:bg-white/10 transition-colors"
+            >
+              Home
+            </Link>
+
+            <Link
+              to="/about"
+              className="block px-3 py-2 rounded-xl hover:bg-white/10 transition-colors"
+            >
+              About Us
+            </Link>
+
+            {/* International accordion */}
+            <div>
+              <button
+                onClick={() => toggleMobileSection('intl')}
+                className="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/10 transition-colors text-left"
+              >
+                <span>International Packages</span>
+                <ChevronDown className={`w-4 h-4 transition-transform ${mobileSectionOpen.intl ? 'rotate-180' : ''}`} />
+              </button>
+              {mobileSectionOpen.intl && (
+                <div className="pl-4 pr-2 py-2 space-y-3 bg-black/20 rounded-xl my-1 text-xs">
+                  {internationalDestinations.map(cat => (
+                    <div key={cat.continent}>
+                      <p className="font-bold text-[#55C9BD] uppercase tracking-wider mb-1">{cat.continent}</p>
+                      <div className="grid grid-cols-2 gap-1 text-white/80">
+                        {cat.countries.map(c => (
+                          <Link
+                            key={c}
+                            to={`/destinations/${getDestinationSlug(c)}`}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="hover:text-[#FF795C] py-0.5"
+                          >
+                            {c}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* India accordion */}
+            <div>
+              <button
+                onClick={() => toggleMobileSection('india')}
+                className="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/10 transition-colors text-left"
+              >
+                <span className="flex items-center gap-1.5">
+                  <span>India & South India</span>
+                  <span className="text-[9px] bg-[#55C9BD] text-[#082C43] font-bold px-1 rounded">Top</span>
+                </span>
+                <ChevronDown className={`w-4 h-4 transition-transform ${mobileSectionOpen.india ? 'rotate-180' : ''}`} />
+              </button>
+              {mobileSectionOpen.india && (
+                <div className="pl-4 pr-2 py-2 space-y-3 bg-black/20 rounded-xl my-1 text-xs">
+                  {indiaDestinations.map(reg => (
+                    <div key={reg.region}>
+                      <p className="font-bold text-[#FF795C] uppercase tracking-wider mb-1">{reg.region}</p>
+                      <div className="space-y-1 text-white/80">
+                        {reg.spots.map(s => (
+                          <Link
+                            key={s}
+                            to={`/destinations/${getDestinationSlug(s)}`}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="block hover:text-[#55C9BD] py-0.5"
+                          >
+                            {s}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <Link
+              to="/honeymoon"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="block px-3 py-2 rounded-xl hover:bg-white/10 transition-colors text-white"
+            >
+              Honeymoon Packages
+            </Link>
+
+            <Link
+              to="/group-tours"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="block px-3 py-2 rounded-xl hover:bg-white/10 transition-colors text-white"
+            >
+              Group Tours
+            </Link>
+
+            <Link
+              to="/services"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="block px-3 py-2 rounded-xl hover:bg-white/10 transition-colors text-white"
+            >
+              Tickets Bookings
+            </Link>
+
+            <Link
+              to="/contact"
+              className="block px-3 py-2 rounded-xl hover:bg-white/10 transition-colors"
+            >
+              Contact Us
+            </Link>
           </div>
         </div>
-      )}
+      </div>
+    </div>
+  )
+}
     </>
   );
 };

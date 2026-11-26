@@ -24,7 +24,9 @@ import {
   Activity,
   Compass,
   Calendar,
-  ArrowUpRight
+  ArrowUpRight,
+  Clock,
+  Trash2
 } from 'lucide-react';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { Button } from '../../components/common/Button';
@@ -94,6 +96,7 @@ export const AdminStaff: React.FC = () => {
   const [deactivateStep, setDeactivateStep] = useState<1 | 2 | null>(null);
   const [deactivateReason, setDeactivateReason] = useState('Temporary Leave / Suspension');
   const [deactivateConfirmed, setDeactivateConfirmed] = useState(false);
+  const [deletePermanently, setDeletePermanently] = useState(false);
   const [isDeactivating, setIsDeactivating] = useState(false);
 
   // Role Filter state (Sales vs Operations dropdown filter)
@@ -245,7 +248,7 @@ export const AdminStaff: React.FC = () => {
 
       const effectiveEmpId = res?.profile?.employee_id || formData.employee_id;
       const effectivePass = res?.temporary_password || formData.password;
-      const effectiveLink = res?.invitation_link || `${window.location.origin}/login?email=${encodeURIComponent(formData.email)}&role=${roleType}`;
+      const effectiveLink = res?.invitation_link || res?.login_link || `${window.location.origin}/staff-login?email=${encodeURIComponent(formData.email)}&role=${roleType}`;
 
       setProvisionedStaff({
         name: formData.name,
@@ -256,7 +259,7 @@ export const AdminStaff: React.FC = () => {
         invitation_link: effectiveLink
       });
 
-      success(`Staff account provisioned! Invitation with credentials dispatched.`);
+      success(`Staff invitation dispatched to ${formData.email}. Account is pending onboarding.`);
       setIsModalOpen(false);
       loadStaff();
     } catch (err: any) {
@@ -292,8 +295,8 @@ export const AdminStaff: React.FC = () => {
       Array.isArray(profile.departments) && profile.departments.length > 0
         ? profile.departments
         : profile.department
-        ? profile.department.split(',').map((x: string) => x.trim())
-        : [isOps ? 'Travel & Transportation Operations' : 'Holidays & International'];
+          ? profile.department.split(',').map((x: string) => x.trim())
+          : [isOps ? 'Travel & Transportation Operations' : 'Holidays & International'];
 
     let initialExtension = '+91';
     let initialPhone = staffMember.phone || '';
@@ -400,17 +403,37 @@ export const AdminStaff: React.FC = () => {
     if (!editingStaff) return;
     setIsDeactivating(true);
     try {
-      await api.updateAdminStaff(editingStaff.id, {
-        status: 'inactive'
-      });
-      success(`Staff account for ${editingStaff.name} has been successfully deactivated.`);
+      if (deletePermanently) {
+        await api.deleteAdminStaff(editingStaff.id);
+        success(`Staff member ${editingStaff.name} has been permanently removed from the staff directory.`);
+      } else {
+        await api.updateAdminStaff(editingStaff.id, {
+          status: 'inactive'
+        });
+        success(`Staff account for ${editingStaff.name} has been successfully deactivated.`);
+      }
       setDeactivateStep(null);
+      setDeletePermanently(false);
+      setDeactivateConfirmed(false);
       setEditingStaff(null);
       loadStaff();
     } catch (err: any) {
-      error(err.message || 'Failed to deactivate staff account.');
+      error(err.message || 'Failed to process staff deactivation/removal.');
     } finally {
       setIsDeactivating(false);
+    }
+  };
+
+  const handleDeletePendingStaff = async (staffMember: any) => {
+    if (!window.confirm(`Are you sure you want to permanently delete ${staffMember.name} from the database?`)) {
+      return;
+    }
+    try {
+      await api.deleteAdminStaff(staffMember.id);
+      success(`Staff member ${staffMember.name} has been permanently deleted from the database.`);
+      loadStaff();
+    } catch (err: any) {
+      error(err.message || 'Failed to permanently delete staff member.');
     }
   };
 
@@ -569,11 +592,21 @@ Access & Login Link: ${provisionedStaff.invitation_link}`;
                       Array.isArray(profile.departments) && profile.departments.length > 0
                         ? profile.departments
                         : profile.department
-                        ? profile.department.split(',').map((x: string) => x.trim())
-                        : [isOps ? 'Travel & Transportation Operations' : 'Holidays & International'];
+                          ? profile.department.split(',').map((x: string) => x.trim())
+                          : [isOps ? 'Travel & Transportation Operations' : 'Holidays & International'];
 
                     const displayDesignation = isOps ? 'Operations' : 'Sales';
                     const displayEmpId = profile?.employee_id || s.display_id || (isOps ? 'TBG_OPE_001' : 'TBG_SAL_001');
+
+                    const statusStr = (s.status || s.account_status || s.profile?.status || '').toLowerCase();
+                    const isPending =
+                      statusStr === 'pending' ||
+                      statusStr === 'pending_activation' ||
+                      statusStr === 'invitation_sent' ||
+                      statusStr === 'invited' ||
+                      (s.account_status && s.account_status.toLowerCase() === 'invitation_sent') ||
+                      (s.activation_status && s.activation_status.toLowerCase() === 'invitation_sent') ||
+                      (s.profile?.status && s.profile.status.toLowerCase() === 'pending');
 
                     return (
                       <tr key={s.id} className="hover:bg-[#F8F1E7]/30 transition-colors">
@@ -581,15 +614,22 @@ Access & Login Link: ${provisionedStaff.invitation_link}`;
                         <td className="py-3.5 px-4">
                           <button
                             type="button"
-                            onClick={() => handleOpenAnalytics(s)}
-                            className="text-left group cursor-pointer block"
-                            title="Click to view full analytics dashboard"
+                            disabled={isPending}
+                            onClick={() => !isPending && handleOpenAnalytics(s)}
+                            className={`text-left block ${
+                              isPending ? 'cursor-not-allowed opacity-75' : 'group cursor-pointer'
+                            }`}
+                            title={isPending ? 'Awaiting staff onboarding' : 'Click to view full analytics dashboard'}
                           >
                             <div className="flex items-center gap-1.5">
-                              <span className="font-bold text-[#082C43] group-hover:text-[#17648A] group-hover:underline transition-colors text-xs">
+                              <span className={`font-bold text-xs transition-colors ${
+                                isPending ? 'text-slate-600' : 'text-[#082C43] group-hover:text-[#17648A] group-hover:underline'
+                              }`}>
                                 {s.name}
                               </span>
-                              <BarChart3 className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#17648A] transition-colors" />
+                              <BarChart3 className={`w-3.5 h-3.5 transition-colors ${
+                                isPending ? 'text-slate-300' : 'text-slate-400 group-hover:text-[#17648A]'
+                              }`} />
                             </div>
                             <span className="text-[11px] text-slate-500 block">{s.email}</span>
                             {s.phone && (
@@ -629,15 +669,14 @@ Access & Login Link: ${provisionedStaff.invitation_link}`;
                             {depts.map((d: string) => (
                               <span
                                 key={d}
-                                className={`text-[10px] font-semibold px-2 py-0.5 rounded-md border ${
-                                  d.toLowerCase().includes('international')
-                                    ? 'bg-blue-50 text-blue-700 border-blue-200'
-                                    : d.toLowerCase().includes('domestic')
+                                className={`text-[10px] font-semibold px-2 py-0.5 rounded-md border ${d.toLowerCase().includes('international')
+                                  ? 'bg-blue-50 text-blue-700 border-blue-200'
+                                  : d.toLowerCase().includes('domestic')
                                     ? 'bg-amber-50 text-amber-700 border-amber-200'
                                     : d.toLowerCase().includes('operations') || d.toLowerCase().includes('transport')
-                                    ? 'bg-purple-50 text-purple-700 border-purple-200'
-                                    : 'bg-slate-50 text-slate-700 border-slate-200'
-                                }`}
+                                      ? 'bg-purple-50 text-purple-700 border-purple-200'
+                                      : 'bg-slate-50 text-slate-700 border-slate-200'
+                                  }`}
                               >
                                 {d}
                               </span>
@@ -659,20 +698,22 @@ Access & Login Link: ${provisionedStaff.invitation_link}`;
 
                         {/* Status */}
                         <td className="py-3.5 px-4">
-                          <span
-                            className={`inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full capitalize ${
-                              s.status === 'active'
-                                ? 'bg-emerald-100 text-emerald-800'
-                                : 'bg-rose-100 text-rose-800'
-                            }`}
-                          >
-                            <span
-                              className={`w-1.5 h-1.5 rounded-full ${
-                                s.status === 'active' ? 'bg-emerald-600' : 'bg-rose-600'
-                              }`}
-                            />
-                            {s.status}
-                          </span>
+                          {isPending ? (
+                            <span className="inline-flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-300">
+                              <span className="w-1.5 h-1.5 rounded-full bg-amber-600 animate-pulse" />
+                              Pending
+                            </span>
+                          ) : statusStr === 'active' ? (
+                            <span className="inline-flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
+                              Active
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-800">
+                              <span className="w-1.5 h-1.5 rounded-full bg-rose-600" />
+                              Inactive
+                            </span>
+                          )}
                         </td>
 
                         {/* Actions */}
@@ -680,21 +721,43 @@ Access & Login Link: ${provisionedStaff.invitation_link}`;
                           <div className="flex items-center justify-end gap-1.5">
                             <button
                               type="button"
-                              onClick={() => handleOpenAnalytics(s)}
-                              className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors cursor-pointer"
-                              title="View Performance Analytics"
+                              disabled={isPending}
+                              onClick={() => !isPending && handleOpenAnalytics(s)}
+                              className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                                isPending
+                                  ? 'text-slate-400 bg-slate-100/60 opacity-50 cursor-not-allowed border border-dashed border-slate-300'
+                                  : 'text-slate-700 bg-slate-100 hover:bg-slate-200 cursor-pointer'
+                              }`}
+                              title={isPending ? 'Action disabled: Awaiting staff onboarding' : 'View Performance Analytics'}
                             >
-                              <BarChart3 className="w-3.5 h-3.5 text-[#17648A]" />
+                              <BarChart3 className={`w-3.5 h-3.5 ${isPending ? 'text-slate-400' : 'text-[#17648A]'}`} />
                               Analytics
                             </button>
                             <button
                               type="button"
-                              onClick={() => handleOpenEditModal(s)}
-                              className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-bold text-[#17648A] bg-[#17648A]/10 hover:bg-[#17648A]/20 transition-colors cursor-pointer"
+                              disabled={isPending}
+                              onClick={() => !isPending && handleOpenEditModal(s)}
+                              className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                                isPending
+                                  ? 'text-slate-400 bg-slate-100/60 opacity-50 cursor-not-allowed border border-dashed border-slate-300'
+                                  : 'text-[#17648A] bg-[#17648A]/10 hover:bg-[#17648A]/20 cursor-pointer'
+                              }`}
+                              title={isPending ? 'Action disabled: Awaiting staff onboarding' : 'Edit Staff Account'}
                             >
                               <Pencil className="w-3.5 h-3.5" />
                               Edit
                             </button>
+                            {isPending && (
+                              <button
+                                type="button"
+                                onClick={() => handleDeletePendingStaff(s)}
+                                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 border border-red-200 transition-colors cursor-pointer"
+                                title="Permanently delete this pending staff member from database"
+                              >
+                                <Trash2 className="w-3.5 h-3.5 text-red-600" />
+                                Delete
+                              </button>
+                            )}
                           </div>
                         </td>
                       </tr>
@@ -728,9 +791,8 @@ Access & Login Link: ${provisionedStaff.invitation_link}`;
                     setFormData({ ...formData, name: e.target.value });
                     validateField('name', e.target.value);
                   }}
-                  className={`w-full p-2 rounded-xl border bg-[#FFFDF8] font-semibold text-xs text-[#082C43] transition-colors ${
-                    errors.name ? 'border-red-400 bg-red-50/20' : 'border-[#EFE7DA]'
-                  }`}
+                  className={`w-full p-2 rounded-xl border bg-[#FFFDF8] font-semibold text-xs text-[#082C43] transition-colors ${errors.name ? 'border-red-400 bg-red-50/20' : 'border-[#EFE7DA]'
+                    }`}
                 />
                 {errors.name && (
                   <p className="text-red-500 text-[11px] font-medium mt-1">{errors.name}</p>
@@ -746,9 +808,8 @@ Access & Login Link: ${provisionedStaff.invitation_link}`;
                     setFormData({ ...formData, email: e.target.value });
                     validateField('email', e.target.value);
                   }}
-                  className={`w-full p-2 rounded-xl border bg-[#FFFDF8] font-semibold text-xs text-[#082C43] transition-colors ${
-                    errors.email ? 'border-red-400 bg-red-50/20' : 'border-[#EFE7DA]'
-                  }`}
+                  className={`w-full p-2 rounded-xl border bg-[#FFFDF8] font-semibold text-xs text-[#082C43] transition-colors ${errors.email ? 'border-red-400 bg-red-50/20' : 'border-[#EFE7DA]'
+                    }`}
                 />
                 {errors.email && (
                   <p className="text-red-500 text-[11px] font-medium mt-1">{errors.email}</p>
@@ -781,9 +842,8 @@ Access & Login Link: ${provisionedStaff.invitation_link}`;
                       setFormData({ ...formData, phone: val });
                       validateField('phone', val);
                     }}
-                    className={`w-full p-2 rounded-xl border bg-[#FFFDF8] font-semibold text-xs text-[#082C43] transition-colors ${
-                      errors.phone ? 'border-red-400 bg-red-50/20' : 'border-[#EFE7DA]'
-                    }`}
+                    className={`w-full p-2 rounded-xl border bg-[#FFFDF8] font-semibold text-xs text-[#082C43] transition-colors ${errors.phone ? 'border-red-400 bg-red-50/20' : 'border-[#EFE7DA]'
+                      }`}
                   />
                 </div>
                 {errors.phone && (
@@ -854,9 +914,8 @@ Access & Login Link: ${provisionedStaff.invitation_link}`;
                 </span>
               </div>
               <div
-                className={`grid grid-cols-2 gap-2 p-2.5 bg-[#FFFDF8] rounded-xl border transition-colors ${
-                  errors.departments ? 'border-red-400 bg-red-50/20' : 'border-[#EFE7DA]'
-                }`}
+                className={`grid grid-cols-2 gap-2 p-2.5 bg-[#FFFDF8] rounded-xl border transition-colors ${errors.departments ? 'border-red-400 bg-red-50/20' : 'border-[#EFE7DA]'
+                  }`}
               >
                 {(formData.designation === 'Operations' ? OPERATIONS_DEPARTMENT_OPTIONS : SALES_DEPARTMENT_OPTIONS).map((dept) => {
                   const isSelected = formData.departments.includes(dept);
@@ -865,16 +924,14 @@ Access & Login Link: ${provisionedStaff.invitation_link}`;
                       key={dept}
                       type="button"
                       onClick={() => toggleDepartment(dept)}
-                      className={`flex items-center gap-2 p-2 rounded-lg text-xs font-semibold text-left transition-all border cursor-pointer ${
-                        isSelected
-                          ? 'bg-[#17648A] text-white border-[#17648A] shadow-xs'
-                          : 'bg-white text-slate-600 border-[#EFE7DA] hover:border-[#17648A]/40'
-                      }`}
+                      className={`flex items-center gap-2 p-2 rounded-lg text-xs font-semibold text-left transition-all border cursor-pointer ${isSelected
+                        ? 'bg-[#17648A] text-white border-[#17648A] shadow-xs'
+                        : 'bg-white text-slate-600 border-[#EFE7DA] hover:border-[#17648A]/40'
+                        }`}
                     >
                       <div
-                        className={`w-4 h-4 rounded flex items-center justify-center border text-[10px] shrink-0 ${
-                          isSelected ? 'bg-white text-[#17648A] border-white font-bold' : 'border-slate-300 bg-white'
-                        }`}
+                        className={`w-4 h-4 rounded flex items-center justify-center border text-[10px] shrink-0 ${isSelected ? 'bg-white text-[#17648A] border-white font-bold' : 'border-slate-300 bg-white'
+                          }`}
                       >
                         {isSelected ? '✓' : ''}
                       </div>
@@ -893,7 +950,7 @@ Access & Login Link: ${provisionedStaff.invitation_link}`;
                 Cancel
               </Button>
               <Button type="submit" variant="primary" size="sm" isLoading={isSubmitting}>
-                Provision Staff & Send Invitation
+                Create Staff Account
               </Button>
             </div>
           </form>
@@ -918,9 +975,8 @@ Access & Login Link: ${provisionedStaff.invitation_link}`;
                   type="text"
                   value={editFormData.name}
                   onChange={(e) => setEditFormData({ ...editFormData, name: e.target.value })}
-                  className={`w-full p-2 rounded-xl border bg-[#FFFDF8] font-semibold text-xs text-[#082C43] transition-colors ${
-                    editErrors.name ? 'border-red-400 bg-red-50/20' : 'border-[#EFE7DA]'
-                  }`}
+                  className={`w-full p-2 rounded-xl border bg-[#FFFDF8] font-semibold text-xs text-[#082C43] transition-colors ${editErrors.name ? 'border-red-400 bg-red-50/20' : 'border-[#EFE7DA]'
+                    }`}
                 />
                 {editErrors.name && (
                   <p className="text-red-500 text-[11px] font-medium mt-1">{editErrors.name}</p>
@@ -964,9 +1020,8 @@ Access & Login Link: ${provisionedStaff.invitation_link}`;
                       const val = e.target.value.replace(/[^\d\s-]/g, '');
                       setEditFormData({ ...editFormData, phone: val });
                     }}
-                    className={`w-full p-2 rounded-xl border bg-[#FFFDF8] font-semibold text-xs text-[#082C43] transition-colors ${
-                      editErrors.phone ? 'border-red-400 bg-red-50/20' : 'border-[#EFE7DA]'
-                    }`}
+                    className={`w-full p-2 rounded-xl border bg-[#FFFDF8] font-semibold text-xs text-[#082C43] transition-colors ${editErrors.phone ? 'border-red-400 bg-red-50/20' : 'border-[#EFE7DA]'
+                      }`}
                   />
                 </div>
                 {editErrors.phone && (
@@ -1015,11 +1070,10 @@ Access & Login Link: ${provisionedStaff.invitation_link}`;
                 <select
                   value={editFormData.status}
                   onChange={(e) => setEditFormData({ ...editFormData, status: e.target.value as 'active' | 'inactive' })}
-                  className={`w-full p-2 rounded-xl border font-bold text-xs focus:outline-none cursor-pointer ${
-                    editFormData.status === 'active'
-                      ? 'border-emerald-300 bg-emerald-50/50 text-emerald-800'
-                      : 'border-rose-300 bg-rose-50/50 text-rose-800'
-                  }`}
+                  className={`w-full p-2 rounded-xl border font-bold text-xs focus:outline-none cursor-pointer ${editFormData.status === 'active'
+                    ? 'border-emerald-300 bg-emerald-50/50 text-emerald-800'
+                    : 'border-rose-300 bg-rose-50/50 text-rose-800'
+                    }`}
                 >
                   <option value="active">Active (Can log in & handle leads)</option>
                   <option value="inactive">Inactive / Deactivated (Access paused)</option>
@@ -1042,9 +1096,8 @@ Access & Login Link: ${provisionedStaff.invitation_link}`;
                 </span>
               </div>
               <div
-                className={`grid grid-cols-2 gap-2 p-2.5 bg-[#FFFDF8] rounded-xl border transition-colors ${
-                  editErrors.departments ? 'border-red-400 bg-red-50/20' : 'border-[#EFE7DA]'
-                }`}
+                className={`grid grid-cols-2 gap-2 p-2.5 bg-[#FFFDF8] rounded-xl border transition-colors ${editErrors.departments ? 'border-red-400 bg-red-50/20' : 'border-[#EFE7DA]'
+                  }`}
               >
                 {(editFormData.designation === 'Operations' ? OPERATIONS_DEPARTMENT_OPTIONS : SALES_DEPARTMENT_OPTIONS).map((dept) => {
                   const isSelected = editFormData.departments.includes(dept);
@@ -1053,16 +1106,14 @@ Access & Login Link: ${provisionedStaff.invitation_link}`;
                       key={dept}
                       type="button"
                       onClick={() => toggleEditDepartment(dept)}
-                      className={`flex items-center gap-2 p-2 rounded-lg text-xs font-semibold text-left transition-all border cursor-pointer ${
-                        isSelected
-                          ? 'bg-[#17648A] text-white border-[#17648A] shadow-xs'
-                          : 'bg-white text-slate-600 border-[#EFE7DA] hover:border-[#17648A]/40'
-                      }`}
+                      className={`flex items-center gap-2 p-2 rounded-lg text-xs font-semibold text-left transition-all border cursor-pointer ${isSelected
+                        ? 'bg-[#17648A] text-white border-[#17648A] shadow-xs'
+                        : 'bg-white text-slate-600 border-[#EFE7DA] hover:border-[#17648A]/40'
+                        }`}
                     >
                       <div
-                        className={`w-4 h-4 rounded flex items-center justify-center border text-[10px] shrink-0 ${
-                          isSelected ? 'bg-white text-[#17648A] border-white font-bold' : 'border-slate-300 bg-white'
-                        }`}
+                        className={`w-4 h-4 rounded flex items-center justify-center border text-[10px] shrink-0 ${isSelected ? 'bg-white text-[#17648A] border-white font-bold' : 'border-slate-300 bg-white'
+                          }`}
                       >
                         {isSelected ? '✓' : ''}
                       </div>
@@ -1125,18 +1176,16 @@ Access & Login Link: ${provisionedStaff.invitation_link}`;
             <div className="flex items-center justify-between pb-3 border-b border-[#EFE7DA]">
               <div className="flex items-center gap-2">
                 <span
-                  className={`w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs ${
-                    deactivateStep === 1
-                      ? 'bg-rose-600 text-white'
-                      : 'bg-rose-100 text-rose-700'
-                  }`}
+                  className={`w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs ${deactivateStep === 1
+                    ? 'bg-rose-600 text-white'
+                    : 'bg-rose-100 text-rose-700'
+                    }`}
                 >
                   1
                 </span>
                 <span
-                  className={`font-bold ${
-                    deactivateStep === 1 ? 'text-rose-900' : 'text-slate-500'
-                  }`}
+                  className={`font-bold ${deactivateStep === 1 ? 'text-rose-900' : 'text-slate-500'
+                    }`}
                 >
                   Review Impact & Reason
                 </span>
@@ -1144,18 +1193,16 @@ Access & Login Link: ${provisionedStaff.invitation_link}`;
               <span className="text-slate-300 font-bold">&rarr;</span>
               <div className="flex items-center gap-2">
                 <span
-                  className={`w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs ${
-                    deactivateStep === 2
-                      ? 'bg-rose-600 text-white'
-                      : 'bg-slate-100 text-slate-400'
-                  }`}
+                  className={`w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs ${deactivateStep === 2
+                    ? 'bg-rose-600 text-white'
+                    : 'bg-slate-100 text-slate-400'
+                    }`}
                 >
                   2
                 </span>
                 <span
-                  className={`font-bold ${
-                    deactivateStep === 2 ? 'text-rose-900' : 'text-slate-400'
-                  }`}
+                  className={`font-bold ${deactivateStep === 2 ? 'text-rose-900' : 'text-slate-400'
+                    }`}
                 >
                   Final Confirmation
                 </span>
@@ -1257,21 +1304,49 @@ Access & Login Link: ${provisionedStaff.invitation_link}`;
                   </span>
                 </label>
 
+                {/* Second Checkbox: Permanent Removal Option */}
+                <label className={`flex items-start gap-2.5 p-3 rounded-xl border cursor-pointer transition-colors ${deletePermanently
+                  ? 'border-red-400 bg-red-50/60 shadow-xs'
+                  : 'border-[#EFE7DA] bg-[#FFFDF8] hover:bg-rose-50/20'
+                  }`}>
+                  <input
+                    type="checkbox"
+                    checked={deletePermanently}
+                    onChange={(e) => setDeletePermanently(e.target.checked)}
+                    className="mt-0.5 w-4 h-4 rounded text-red-600 focus:ring-red-500 border-slate-300"
+                  />
+                  <div className="space-y-0.5">
+                    <span className="text-xs font-bold text-red-950 block leading-snug">
+                      Remove from the staff list permanently
+                    </span>
+                    <span className="text-[11px] text-slate-500 block leading-tight">
+                      Check this to permanently delete this employee from the staff directory and account register instead of keeping an inactive record.
+                    </span>
+                  </div>
+                </label>
+
                 <div className="pt-2 flex justify-between gap-2 border-t border-[#EFE7DA]">
                   <Button type="button" variant="ghost" size="sm" onClick={() => setDeactivateStep(1)}>
                     &larr; Back to Step 1
                   </Button>
                   <div className="flex gap-2">
-                    <Button type="button" variant="ghost" size="sm" onClick={() => setDeactivateStep(null)}>
+                    <Button type="button" variant="ghost" size="sm" onClick={() => {
+                      setDeactivateStep(null);
+                      setDeletePermanently(false);
+                      setDeactivateConfirmed(false);
+                    }}>
                       Cancel
                     </Button>
                     <button
                       type="button"
                       disabled={!deactivateConfirmed || isDeactivating}
                       onClick={handleExecuteDeactivation}
-                      className="px-4 py-2 bg-rose-600 hover:bg-rose-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold text-xs rounded-xl transition-all shadow-sm flex items-center gap-1.5 cursor-pointer"
+                      className={`px-4 py-2 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold text-xs rounded-xl transition-all shadow-sm flex items-center gap-1.5 cursor-pointer ${deletePermanently ? 'bg-red-700 hover:bg-red-800' : 'bg-rose-600 hover:bg-rose-700'
+                        }`}
                     >
-                      {isDeactivating ? 'Deactivating...' : 'Confirm & Deactivate'}
+                      {isDeactivating
+                        ? (deletePermanently ? 'Removing...' : 'Deactivating...')
+                        : (deletePermanently ? 'Confirm & Remove Permanently' : 'Confirm & Deactivate')}
                     </button>
                   </div>
                 </div>
@@ -1281,23 +1356,23 @@ Access & Login Link: ${provisionedStaff.invitation_link}`;
         </Modal>
       )}
 
-      {/* Account Provisioned & Invitation Sent Success Modal */}
+      {/* Account Created & Invitation Dispatched Success Modal */}
       {provisionedStaff && (
         <Modal
           isOpen={!!provisionedStaff}
           onClose={() => setProvisionedStaff(null)}
-          title="Staff Account Provisioned Successfully!"
-          subtitle="An official onboarding invitation email with access credentials has been dispatched."
+          title="Staff Invitation Dispatched"
+          subtitle={`An onboarding invitation email with login credentials and secure link has been sent to ${provisionedStaff.email}.`}
           maxWidth="lg"
         >
           <div className="space-y-4 text-xs">
-            <div className="p-3.5 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 flex items-start gap-2.5">
-              <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
+            <div className="p-3.5 bg-amber-50 border border-amber-200 rounded-xl text-amber-900 flex items-start gap-2.5">
+              <Clock className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
               <div>
-                <strong className="block text-sm">Credentials & Invitation Dispatched</strong>
-                <p className="text-[11px] text-emerald-700 mt-0.5 leading-relaxed">
-                  The employee account is active. An invitation with login instructions has been sent to{' '}
-                  <strong className="underline">{provisionedStaff.email}</strong>.
+                <strong className="block text-sm">Status: Pending Onboarding</strong>
+                <p className="text-[11px] text-amber-800 mt-0.5 leading-relaxed">
+                  The employee account has been created with <strong>Pending</strong> status. An official onboarding invitation link and temporary credentials have been sent to{' '}
+                  <strong className="underline">{provisionedStaff.email}</strong>. Once the staff member onboards and logs in, their status will automatically become <strong>Active</strong>.
                 </p>
               </div>
             </div>
@@ -1345,7 +1420,7 @@ Access & Login Link: ${provisionedStaff.invitation_link}`;
                 </div>
               </div>
               <div className="pt-1">
-                <span className="text-slate-500 block mb-1">Direct Invitation & Login Link:</span>
+                <span className="text-slate-500 block mb-1">Staff Workspace Login Link:</span>
                 <div className="flex items-center gap-2">
                   <input
                     type="text"
@@ -1364,7 +1439,7 @@ Access & Login Link: ${provisionedStaff.invitation_link}`;
               </div>
             </div>
 
-            <div className="pt-2 flex justify-end gap-2">
+            <div className="pt-2 flex flex-wrap justify-end gap-2">
               <Button
                 type="button"
                 variant="outline"
@@ -1372,10 +1447,10 @@ Access & Login Link: ${provisionedStaff.invitation_link}`;
                 onClick={copyAllCredentials}
                 leftIcon={<Copy className="w-3.5 h-3.5" />}
               >
-                Copy Full Invitation
+                Copy Details
               </Button>
               <Button type="button" variant="primary" size="sm" onClick={() => setProvisionedStaff(null)}>
-                Done
+                OK
               </Button>
             </div>
           </div>
@@ -1409,8 +1484,8 @@ Access & Login Link: ${provisionedStaff.invitation_link}`;
               Array.isArray(profile.departments) && profile.departments.length > 0
                 ? profile.departments
                 : profile.department
-                ? profile.department.split(',').map((x: string) => x.trim())
-                : [isOps ? 'Travel & Transportation Operations' : 'Holidays & International'];
+                  ? profile.department.split(',').map((x: string) => x.trim())
+                  : [isOps ? 'Travel & Transportation Operations' : 'Holidays & International'];
 
             const uniqueDestinations = Array.from(
               new Set(
@@ -1432,11 +1507,10 @@ Access & Login Link: ${provisionedStaff.invitation_link}`;
                         {displayEmpId}
                       </span>
                       <span
-                        className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full capitalize ${
-                          analyticsStaff.status === 'active'
-                            ? 'bg-emerald-100 text-emerald-800'
-                            : 'bg-rose-100 text-rose-800'
-                        }`}
+                        className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full capitalize ${analyticsStaff.status === 'active'
+                          ? 'bg-emerald-100 text-emerald-800'
+                          : 'bg-rose-100 text-rose-800'
+                          }`}
                       >
                         <span className={`w-1.5 h-1.5 rounded-full ${analyticsStaff.status === 'active' ? 'bg-emerald-600' : 'bg-rose-600'}`} />
                         {analyticsStaff.status}

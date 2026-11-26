@@ -381,19 +381,6 @@
     {
       "agency_id": "agency_travel_genie",
       "role": "agent",
-      "name": "siva",
-      "email": "adhithyam0210@gmail.com",
-      "phone": "9361814601",
-      "password_hash": "$2b$10$R0e3XZR/qXmABtp7yUvwUOKLo8pzeBGPAhttoR9NzOnAsFgKoLm9.",
-      "status": "active",
-      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
-      "id": "use_0b6b5675c0",
-      "created_at": "2026-11-23T16:55:44.846Z",
-      "updated_at": "2026-11-23T16:55:44.846Z"
-    },
-    {
-      "agency_id": "agency_travel_genie",
-      "role": "agent",
       "name": "Rohan Mehra",
       "email": "partner.travel_1795453689051@voyageexpress.com",
       "phone": "+91 9811189051",
@@ -1348,16 +1335,20 @@
     {
       "agency_id": "agency_travel_genie",
       "role": "sales",
-      "display_id": "TBG_SAL_005",
-      "name": "siva",
-      "email": "cr9092819654@gmail.com",
-      "phone": "+91 9092819654",
-      "password_hash": "$2b$10$/.Z7qtrFXoDYjUWenguJyesNsA2zv5L9IGvjPhAOY8N7/jt0RTWGG",
+      "display_id": "TBG_SAL_006",
+      "name": "Adhithyan S",
+      "email": "adhithyam0210@gmail.com",
+      "phone": "+91 9361814601",
+      "password_hash": "$2b$10$gsuB.WyQ7TfcGdDX0MhmbeBE53Iz5J28HS4Y0TUgD5zw13qhPiJfm",
       "status": "active",
+      "account_status": "ACTIVE",
+      "activation_status": "ACTIVATED",
       "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
-      "id": "use_ad2055923f",
-      "created_at": "2026-11-26T12:42:43.890Z",
-      "updated_at": "2026-11-26T12:42:43.890Z"
+      "created_at": "2026-11-26T17:09:38.164Z",
+      "id": "use_f9b9700746",
+      "updated_at": "2026-11-26T17:29:10.691Z",
+      "activated_at": "2026-11-26T17:29:10.118Z",
+      "last_login_at": "2026-11-26T17:29:10.627Z"
     }
   ],
   "staff_profiles": [
@@ -1497,26 +1488,26 @@
       "created_at": "2026-11-26T12:03:48.338Z"
     },
     {
-      "user_id": "use_ad2055923f",
+      "user_id": "use_f9b9700746",
       "agency_id": "agency_travel_genie",
-      "employee_id": "TBG_SAL_005",
+      "employee_id": "TBG_SAL_006",
       "role_type": "sales",
-      "department": "Holidays & International, Honeymoon Specialists, Domestic & Group Tours",
+      "department": "Holidays & International",
       "departments": [
-        "Holidays & International",
-        "Honeymoon Specialists",
-        "Domestic & Group Tours"
+        "Holidays & International"
       ],
       "designation": "Sales",
       "designations": [
         "Sales"
       ],
+      "status": "active",
       "assigned_leads_count": 0,
       "converted_leads_count": 0,
       "rating": 5,
-      "id": "sta_1620a802b2",
-      "created_at": "2026-11-26T12:42:44.018Z",
-      "updated_at": "2026-11-26T12:42:44.018Z"
+      "created_at": "2026-11-26T17:09:38.257Z",
+      "id": "sta_9f3da09d6a",
+      "updated_at": "2026-11-26T17:29:10.243Z",
+      "activated_at": "2026-11-26T17:29:10.243Z"
     }
   ],
   "agent_profiles": [
@@ -85524,6 +85515,91 @@
       "id": "ema_f2fdd465bc",
       "created_at": "2026-11-26T12:42:45.796Z",
       "updated_at": "2026-11-26T12:42:45.796Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "to_email": "adhithyam0210@gmail.com",
+      "subject": "Action Required: Onboard Your Trip by Genie Staff Account (Sales)",
+      "template_name": "STAFF_ACCOUNT_INVITATION",
+      "status": "DELIVERED",
+      "metadata": {
+        "employee_id": "TBG_SAL_001",
+        "employee_name": "Adhithyan S",
+        "designation": "Sales",
+        "login_link": "http://localhost:3000/activate-account?token=test_token_123&type=staff"
+      },
+      "sent_at": "2026-11-26T16:13:34.998Z",
+      "id": "ema_55891c140e",
+      "created_at": "2026-11-26T16:13:35.048Z",
+      "updated_at": "2026-11-26T16:13:35.048Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "to_email": "adhithyam0210+staff@gmail.com",
+      "subject": "Action Required: Onboard Your Trip by Genie Staff Account (Sales)",
+      "template_name": "STAFF_ACCOUNT_INVITATION",
+      "status": "DELIVERED",
+      "metadata": {
+        "employee_id": "TBG_SAL_005",
+        "employee_name": "Adhithyan S",
+        "designation": "Sales",
+        "login_link": "https://tripbygenie.vercel.app/activate-account?token=800845a872eb7d94284d806f798483c57a1a418f0ce8638a71bb631a24ac0b26&type=staff"
+      },
+      "sent_at": "2026-11-26T16:46:42.379Z",
+      "id": "ema_cec1588ff8",
+      "created_at": "2026-11-26T16:46:42.444Z",
+      "updated_at": "2026-11-26T16:46:42.444Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "to_email": "adhithyam0210@gmail.com",
+      "subject": "Action Required: Onboard Your Trip by Genie Staff Account (Sales)",
+      "template_name": "STAFF_ACCOUNT_INVITATION",
+      "status": "DELIVERED",
+      "metadata": {
+        "employee_id": "TBG_SAL_005",
+        "employee_name": "Adhithyan S",
+        "designation": "Sales",
+        "login_link": "https://tripbygenie.vercel.app/activate-account?token=0882e4423bd930ddb22b7ffb85c2e682c9434110e2f1826473c7cabbbcb38cc3&type=staff"
+      },
+      "sent_at": "2026-11-26T17:07:39.944Z",
+      "id": "ema_fdd1636e29",
+      "created_at": "2026-11-26T17:07:40.001Z",
+      "updated_at": "2026-11-26T17:07:40.001Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "to_email": "adhithyam0210@gmail.com",
+      "subject": "Action Required: Onboard Your Trip by Genie Staff Account (Sales)",
+      "template_name": "STAFF_ACCOUNT_INVITATION",
+      "status": "DELIVERED",
+      "metadata": {
+        "employee_id": "TBG_SAL_005",
+        "employee_name": "adhi",
+        "designation": "Sales",
+        "login_link": "http://localhost:3001/activate-account?token=ec32bc16557695cc4ae7d723e92b27583ba9764a17608adbec1b206f93acb4b6&type=staff"
+      },
+      "sent_at": "2026-11-26T17:09:51.379Z",
+      "id": "ema_468e6841e1",
+      "created_at": "2026-11-26T17:09:51.457Z",
+      "updated_at": "2026-11-26T17:09:51.457Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "to_email": "adhithyam0210@gmail.com",
+      "subject": "Welcome Aboard! Your Trip by Genie Staff Workspace Access (Sales)",
+      "template_name": "STAFF_ACCOUNT_INVITATION",
+      "status": "DELIVERED",
+      "metadata": {
+        "employee_id": "TBG_SAL_006",
+        "employee_name": "Adhithyan S",
+        "designation": "Sales",
+        "login_link": "https://tripbygenie.vercel.app/staff-login?email=adhithyam0210%40gmail.com&role=sales"
+      },
+      "sent_at": "2026-11-26T17:29:09.738Z",
+      "id": "ema_e1865bf145",
+      "created_at": "2026-11-26T17:29:09.794Z",
+      "updated_at": "2026-11-26T17:29:09.794Z"
     }
   ],
   "customer_account_invitations": [
@@ -87993,6 +88069,18 @@
       "id": "ref_d745babec6",
       "updated_at": "2026-11-26T07:47:48.145Z",
       "revoked_at": "2026-11-26T07:47:48.144Z"
+    },
+    {
+      "user_id": "use_f9b9700746",
+      "token_hash": "6e79bbd529036fe28ebe245d6317360ce8b39fb61797a44868b0981d836bccc0",
+      "family_id": "6288b567-2065-422f-ab33-fbc18daac5f2",
+      "is_revoked": false,
+      "expires_at": "2026-12-03T17:29:10.760Z",
+      "user_agent": "Unknown",
+      "ip_address": "::ffff:127.0.0.1",
+      "created_at": "2026-11-26T17:29:10.760Z",
+      "id": "ref_848db824c5",
+      "updated_at": "2026-11-26T17:29:10.811Z"
     }
   ],
   "user_consents": [
@@ -88094,6 +88182,39 @@
       "id": "use_cccb9da645",
       "created_at": "2026-11-26T07:47:47.557Z",
       "updated_at": "2026-11-26T07:47:47.557Z"
+    }
+  ],
+  "staff_account_invitations": [
+    {
+      "user_id": "use_f9b9700746",
+      "agency_id": "agency_travel_genie",
+      "email": "adhithyam0210@gmail.com",
+      "name": "adhi",
+      "role": "sales",
+      "employee_id": "TBG_SAL_005",
+      "token": "ec32bc16557695cc4ae7d723e92b27583ba9764a17608adbec1b206f93acb4b6",
+      "temporary_password": "TBG#2881!4VJQ",
+      "expires_at": "2026-12-03T17:09:38.444Z",
+      "is_used": true,
+      "created_at": "2026-11-26T17:09:38.444Z",
+      "id": "sta_29a39ad076",
+      "updated_at": "2026-11-26T17:29:10.370Z",
+      "used_at": "2026-11-26T17:29:10.370Z"
+    },
+    {
+      "user_id": "use_f9b9700746",
+      "agency_id": "agency_travel_genie",
+      "email": "adhithyam0210@gmail.com",
+      "name": "Adhithyan S",
+      "role": "sales",
+      "employee_id": "TBG_SAL_006",
+      "token": "94f5b50851d9472bad36e6a1d3a410b857c896ac01e3d6fdb5202b68d726f8ca",
+      "temporary_password": "TBG#2026!Staff",
+      "expires_at": "2026-12-03T17:29:07.256Z",
+      "is_used": false,
+      "created_at": "2026-11-26T17:29:07.256Z",
+      "id": "sta_db23426213",
+      "updated_at": "2026-11-26T17:29:07.316Z"
     }
   ]
 }

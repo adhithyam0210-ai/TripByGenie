@@ -24,6 +24,7 @@ import { CancellationPolicy } from './pages/public/CancellationPolicy';
 
 // Auth Pages
 import { Login } from './pages/auth/Login';
+import { StaffLogin } from './pages/auth/StaffLogin';
 import { Signup } from './pages/auth/Signup';
 import { ActivateAccount } from './pages/auth/ActivateAccount';
 
@@ -184,6 +185,10 @@ export const App: React.FC = () => {
       <Route 
         path="/login" 
         element={authRedirect ? <Navigate to={authRedirect} replace /> : <Login />} 
+      />
+      <Route 
+        path="/staff-login" 
+        element={<StaffLogin />} 
       />
       <Route 
         path="/signup" 

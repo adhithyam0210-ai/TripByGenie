@@ -201,6 +201,39 @@ app.post('/api/auth/login', authLimiter, async (req, res) => {
     return res.status(403).json({ error: 'Your account has been suspended. Please contact administrator.' });
   }
 
+  if (user.status === 'inactive') {
+    return res.status(403).json({ error: 'Your account has been deactivated. Please contact administrator.' });
+  }
+
+  // Handle staff onboarding via direct login with invitation credentials:
+  if (user.status === 'pending' || user.status === 'pending_activation') {
+    const isMatch = bcrypt.compareSync(password, user.password_hash);
+    if (isMatch && (user.role === 'staff' || user.role === 'sales' || user.role === 'operations')) {
+      // First login with credentials automatically completes onboarding and activates staff account
+      db.update('users', user.id, {
+        status: 'active',
+        account_status: 'ACTIVE',
+        activation_status: 'ACTIVATED',
+        activated_at: new Date().toISOString()
+      });
+      user.status = 'active';
+
+      const staffProf = db.findOne('staff_profiles', (sp) => sp.user_id === user.id);
+      if (staffProf) {
+        db.update('staff_profiles', staffProf.id, { status: 'active', activated_at: new Date().toISOString() });
+      }
+
+      const staffInv = db.findOne('staff_account_invitations', (inv) => inv.user_id === user.id && !inv.is_used);
+      if (staffInv) {
+        db.update('staff_account_invitations', staffInv.id, { is_used: true, used_at: new Date().toISOString() });
+      }
+    } else if (!isMatch) {
+      return res.status(401).json({ error: 'Invalid corporate email or password. Please verify the credentials sent in your onboarding email.' });
+    } else {
+      return res.status(403).json({ error: 'Your account is pending onboarding. Please log in using your invitation credentials.' });
+    }
+  }
+
   if (user.status !== 'active') {
     return res.status(403).json({ error: 'Your account is pending activation or has been deactivated. Please contact administrator.' });
   }
@@ -310,7 +343,7 @@ app.post('/api/auth/register', (req, res) => {
     return res.status(400).json({ error: 'Name, email, and password are required.' });
   }
 
-  const existing = db.findOne('users', (u) => u.email.toLowerCase() === email.toLowerCase());
+  const existing = db.findOne('users', (u) => u && u.email && u.email.toLowerCase() === email.toLowerCase());
   if (existing) {
     return res.status(400).json({ error: 'An account with this email already exists. Please log in.' });
   }
@@ -1170,7 +1203,7 @@ app.post('/api/admin/users', authenticate, authorize(['admin']), (req, res) => {
     return res.status(400).json({ error: 'Role, Name, Email, and Password are required.' });
   }
 
-  const existing = db.findOne('users', (u) => u.email.toLowerCase() === email.toLowerCase());
+  const existing = db.findOne('users', (u) => u && u.email && u.email.toLowerCase() === email.toLowerCase());
   if (existing) {
     return res.status(400).json({ error: 'A user with this email already exists.' });
   }
@@ -1868,9 +1901,12 @@ app.post('/api/admin/staff', authenticate, authorize(['admin', 'manager']), asyn
     return res.status(400).json({ error: 'Employee name and email are required.' });
   }
 
-  const existing = db.findOne('users', (u) => u.email.toLowerCase() === email.toLowerCase());
+  const existing = db.findOne('users', (u) => u && u.email && u.email.toLowerCase() === email.toLowerCase());
   if (existing) {
-    return res.status(400).json({ error: 'A user with this email already exists.' });
+    const existingProfile = db.findOne('staff_profiles', (sp) => sp.user_id === existing.id);
+    if (existingProfile && existing.status === 'active' && (existing.role === 'staff' || existing.role === 'sales' || existing.role === 'operations')) {
+      return res.status(400).json({ error: 'An active staff member with this email already exists.' });
+    }
   }
 
   const isOps = (role_type === 'operations' || role === 'operations' || (designation && designation.toLowerCase() === 'operations'));
@@ -1892,53 +1928,139 @@ app.post('/api/admin/staff', authenticate, authorize(['admin', 'manager']), asyn
     ? designations
     : [effectiveDesignation];
 
-  const newStaff = db.insert('users', {
-    agency_id: agencyId,
-    role: effectiveRole,
-    display_id: effectiveEmployeeId,
-    name,
-    email: email.toLowerCase(),
-    phone: phone || '',
-    password_hash: bcrypt.hashSync(effectivePassword, 10),
-    status: 'active',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80'
-  });
+  let newStaff;
+  let profile;
 
-  const profile = db.insert('staff_profiles', {
+  if (existing) {
+    newStaff = db.update('users', existing.id, {
+      agency_id: agencyId,
+      role: effectiveRole,
+      display_id: effectiveEmployeeId,
+      name,
+      email: email.toLowerCase(),
+      phone: phone || existing.phone || '',
+      password_hash: bcrypt.hashSync(effectivePassword, 10),
+      status: 'pending',
+      account_status: 'INVITATION_SENT',
+      activation_status: 'INVITATION_SENT',
+      avatar: existing.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
+      updated_at: new Date().toISOString()
+    });
+
+    const existingProfile = db.findOne('staff_profiles', (sp) => sp.user_id === existing.id);
+    if (existingProfile) {
+      profile = db.update('staff_profiles', existingProfile.id, {
+        employee_id: effectiveEmployeeId,
+        role_type: effectiveRoleType,
+        department: deptList.join(', '),
+        departments: deptList,
+        designation: effectiveDesignation,
+        designations: desigList,
+        status: 'pending',
+        updated_at: new Date().toISOString()
+      });
+    } else {
+      profile = db.insert('staff_profiles', {
+        user_id: newStaff.id,
+        agency_id: agencyId,
+        employee_id: effectiveEmployeeId,
+        role_type: effectiveRoleType,
+        department: deptList.join(', '),
+        departments: deptList,
+        designation: effectiveDesignation,
+        designations: desigList,
+        status: 'pending',
+        assigned_leads_count: 0,
+        converted_leads_count: 0,
+        rating: 5.0,
+        created_at: new Date().toISOString()
+      });
+    }
+  } else {
+    newStaff = db.insert('users', {
+      agency_id: agencyId,
+      role: effectiveRole,
+      display_id: effectiveEmployeeId,
+      name,
+      email: email.toLowerCase(),
+      phone: phone || '',
+      password_hash: bcrypt.hashSync(effectivePassword, 10),
+      status: 'pending',
+      account_status: 'INVITATION_SENT',
+      activation_status: 'INVITATION_SENT',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
+      created_at: new Date().toISOString()
+    });
+
+    profile = db.insert('staff_profiles', {
+      user_id: newStaff.id,
+      agency_id: agencyId,
+      employee_id: effectiveEmployeeId,
+      role_type: effectiveRoleType,
+      department: deptList.join(', '),
+      departments: deptList,
+      designation: effectiveDesignation,
+      designations: desigList,
+      status: 'pending',
+      assigned_leads_count: 0,
+      converted_leads_count: 0,
+      rating: 5.0,
+      created_at: new Date().toISOString()
+    });
+  }
+
+  console.log(`[STAFF PROVISION] Staff account created/updated for ${name} (${email}), status: pending`);
+
+  const invitationToken = crypto.randomBytes(32).toString('hex');
+  const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(); // 7 days
+
+  db.insert('staff_account_invitations', {
     user_id: newStaff.id,
     agency_id: agencyId,
-    employee_id: effectiveEmployeeId,
-    role_type: effectiveRoleType,
-    department: deptList.join(', '),
-    departments: deptList,
-    designation: effectiveDesignation,
-    designations: desigList,
-    assigned_leads_count: 0,
-    converted_leads_count: 0,
-    rating: 5.0
-  });
-
-  const baseUrl = process.env.APP_URL || 'http://localhost:3000';
-  const invitationLink = `${baseUrl}/login?email=${encodeURIComponent(email.toLowerCase())}&role=${effectiveRole}`;
-
-  // Dispatch Invitation Email with credentials in background
-  emailService.sendStaffInvitationEmail({
-    agency_id: agencyId || 'agency_travel_genie',
-    to: email.toLowerCase(),
+    email: email.toLowerCase(),
     name,
+    role: effectiveRole,
     employee_id: effectiveEmployeeId,
-    designation: effectiveDesignation,
+    token: invitationToken,
     temporary_password: effectivePassword,
-    app_url: baseUrl
-  }).catch((emailErr) => {
-    console.warn('[EMAIL DISPATCH ERROR]', emailErr.message || emailErr);
+    expires_at: expiresAt,
+    is_used: false,
+    created_at: new Date().toISOString()
   });
+
+  const baseUrl = (req.headers.origin && req.headers.origin.includes('localhost'))
+    ? req.headers.origin.replace(/\/+$/, '')
+    : (process.env.APP_URL ? process.env.APP_URL.replace(/\/+$/, '') : (req.headers.origin || 'http://localhost:3000').replace(/\/+$/, ''));
+  const staffLoginLink = `${baseUrl}/staff-login?email=${encodeURIComponent(email.toLowerCase())}&role=${effectiveRole}`;
+
+  // Await real email dispatch with staff login link and credentials
+  let emailDispatched = false;
+  let emailError = null;
+  try {
+    const emailRes = await emailService.sendStaffInvitationEmail({
+      agency_id: agencyId || 'agency_travel_genie',
+      to: email.toLowerCase(),
+      name,
+      employee_id: effectiveEmployeeId,
+      designation: effectiveDesignation,
+      temporary_password: effectivePassword,
+      app_url: baseUrl
+    });
+    emailDispatched = emailRes?.sent ?? true;
+  } catch (emailErr) {
+    emailError = emailErr.message;
+    console.warn('[EMAIL DISPATCH ERROR]', emailErr.message || emailErr);
+  }
 
   const { password_hash, ...safeStaff } = newStaff;
   res.status(201).json({
     ...safeStaff,
     profile,
-    invitation_link: invitationLink,
+    status: 'pending',
+    email_sent: emailDispatched,
+    email_error: emailError,
+    invitation_link: staffLoginLink,
+    login_link: staffLoginLink,
     temporary_password: effectivePassword
   });
 });
@@ -1995,6 +2117,101 @@ app.put('/api/admin/staff/:id', authenticate, authorize(['admin', 'manager']), (
 
   const { password_hash, ...safeStaff } = updatedUser;
   res.json({ ...safeStaff, profile });
+});
+
+// Admin Resend Staff Invitation & Credentials
+app.post('/api/admin/staff/:id/resend-invitation', authenticate, authorize(['admin', 'manager']), async (req, res) => {
+  const staff = db.findById('users', req.params.id) || db.findOne('users', (u) => u.id === req.params.id || (u.email && u.email.toLowerCase() === req.params.id.toLowerCase()));
+  if (!staff || (staff.agency_id && staff.agency_id !== req.user.agency_id) || (staff.role !== 'staff' && staff.role !== 'sales' && staff.role !== 'operations')) {
+    return res.status(404).json({ error: 'Staff member not found.' });
+  }
+
+  const profile = db.findOne('staff_profiles', (sp) => sp.user_id === staff.id) || {};
+  const isOps = staff.role === 'operations' || profile.role_type === 'operations';
+  const effectiveRole = isOps ? 'operations' : 'sales';
+  const effectiveEmpId = profile.employee_id || staff.display_id || (isOps ? 'TBG_OPE_001' : 'TBG_SAL_001');
+  const effectiveDesignation = profile.designation || (isOps ? 'Operations' : 'Sales');
+
+  const newTempPassword = req.body.password || `Genie@${Math.floor(1000 + Math.random() * 9000)}`;
+  db.update('users', staff.id, {
+    password_hash: bcrypt.hashSync(newTempPassword, 10),
+    status: 'active'
+  });
+
+  const baseUrl = process.env.APP_URL || req.headers.origin || 'http://localhost:3000';
+  const invitationLink = `${baseUrl}/staff-login?email=${encodeURIComponent(staff.email.toLowerCase())}&role=${effectiveRole}`;
+
+  let emailSent = false;
+  let emailError = null;
+  try {
+    const emailRes = await emailService.sendStaffInvitationEmail({
+      agency_id: staff.agency_id || 'agency_travel_genie',
+      to: staff.email.toLowerCase(),
+      name: staff.name,
+      employee_id: effectiveEmpId,
+      designation: effectiveDesignation,
+      temporary_password: newTempPassword,
+      app_url: baseUrl
+    });
+    emailSent = emailRes?.sent ?? true;
+  } catch (err) {
+    emailError = err.message;
+    console.warn('[STAFF RESEND INVITATION ERROR]', err.message);
+  }
+
+  res.json({
+    success: true,
+    message: emailSent
+      ? `Onboarding invitation and login credentials emailed successfully to ${staff.email}.`
+      : `Credentials reset. Email dispatch simulated or logged (check SMTP settings).`,
+    email_sent: emailSent,
+    email_error: emailError,
+    temporary_password: newTempPassword,
+    invitation_link: invitationLink,
+    employee_id: effectiveEmpId,
+    email: staff.email
+  });
+});
+
+// Admin Delete Staff Account Permanently
+app.delete('/api/admin/staff/:id', authenticate, authorize(['admin', 'manager']), (req, res) => {
+  const staff = db.findById('users', req.params.id) || db.findOne('users', (u) => u.id === req.params.id || (u.email && u.email.toLowerCase() === req.params.id.toLowerCase()));
+  if (!staff || (staff.agency_id && req.user.agency_id && staff.agency_id !== req.user.agency_id) || (staff.role !== 'staff' && staff.role !== 'sales' && staff.role !== 'operations')) {
+    return res.status(404).json({ error: 'Staff member not found.' });
+  }
+
+  // 1. Delete all staff profiles
+  const profiles = db.findAll('staff_profiles', (sp) => sp.user_id === staff.id || (sp.employee_id && sp.employee_id === staff.display_id));
+  for (const p of profiles) {
+    db.delete('staff_profiles', p.id);
+  }
+
+  // 2. Delete all pending staff invitations
+  const invitations = db.findAll('staff_account_invitations', (i) => i.user_id === staff.id || (i.email && i.email.toLowerCase() === staff.email.toLowerCase()));
+  for (const inv of invitations) {
+    db.delete('staff_account_invitations', inv.id);
+  }
+
+  // 3. Reassign any assigned leads to unassigned
+  const assignedLeads = db.findAll('leads', (l) => l.assigned_staff_id === staff.id || l.assigned_to === staff.name || l.assigned_to === staff.id);
+  for (const lead of assignedLeads) {
+    db.update('leads', lead.id, {
+      assigned_staff_id: null,
+      assigned_staff_name: null,
+      assigned_to: 'Unassigned',
+      status: lead.status === 'Assigned' ? 'New' : lead.status
+    });
+  }
+
+  // 4. Revoke active auth tokens/sessions
+  tokenService.revokeAllUserTokens(staff.id);
+
+  // 5. Permanently remove the user record from the database
+  db.delete('users', staff.id);
+
+  console.log(`[STAFF PERMANENT DELETE] Staff member ${staff.name} (${staff.id}, ${staff.email}) deleted from database.`);
+
+  res.json({ success: true, message: `Staff member ${staff.name} permanently removed from the database.` });
 });
 
 // Admin Agent Management (B2B Partners)
@@ -2811,34 +3028,34 @@ app.post('/api/admin/bookings/flush', authenticate, authorize(['admin', 'manager
 });
 
 app.put('/api/admin/bookings/:id', authenticate, authorize(['admin', 'manager']), (req, res) => {
-    const paramId = String(req.params.id || '').trim();
-    const booking = db.findById('bookings', paramId) || db.findOne('bookings', (b) => b.booking_number === paramId || b.id === paramId || b.booking_reference === paramId);
-    if (!booking) {
-      return res.status(404).json({ error: 'Booking not found.' });
-    }
+  const paramId = String(req.params.id || '').trim();
+  const booking = db.findById('bookings', paramId) || db.findOne('bookings', (b) => b.booking_number === paramId || b.id === paramId || b.booking_reference === paramId);
+  if (!booking) {
+    return res.status(404).json({ error: 'Booking not found.' });
+  }
 
-    const { booking_status, payment_status, advance_amount, balance_amount } = req.body;
-    const updated = db.update('bookings', booking.id, {
-      booking_status: booking_status || booking.booking_status,
-      payment_status: payment_status || booking.payment_status,
-      advance_amount: advance_amount !== undefined ? Number(advance_amount) : booking.advance_amount,
-      balance_amount: balance_amount !== undefined ? Number(balance_amount) : booking.balance_amount
-    });
-
-    // Notify customer if booking confirmed
-    if (booking_status === 'Confirmed' && booking.customer_id) {
-      db.createNotification(
-        booking.agency_id,
-        booking.customer_id,
-        'Booking Confirmed!',
-        `Your booking #${booking.booking_number} has been confirmed. Get ready for your trip!`,
-        'success',
-        '/customer/bookings'
-      );
-    }
-
-    res.json(updated);
+  const { booking_status, payment_status, advance_amount, balance_amount } = req.body;
+  const updated = db.update('bookings', booking.id, {
+    booking_status: booking_status || booking.booking_status,
+    payment_status: payment_status || booking.payment_status,
+    advance_amount: advance_amount !== undefined ? Number(advance_amount) : booking.advance_amount,
+    balance_amount: balance_amount !== undefined ? Number(balance_amount) : booking.balance_amount
   });
+
+  // Notify customer if booking confirmed
+  if (booking_status === 'Confirmed' && booking.customer_id) {
+    db.createNotification(
+      booking.agency_id,
+      booking.customer_id,
+      'Booking Confirmed!',
+      `Your booking #${booking.booking_number} has been confirmed. Get ready for your trip!`,
+      'success',
+      '/customer/bookings'
+    );
+  }
+
+  res.json(updated);
+});
 
 // Admin Payments (Financial Ledger & Manual Payment Entry)
 app.get('/api/admin/payments', authenticate, authorize(['admin', 'manager']), (req, res) => {
@@ -4204,7 +4421,7 @@ app.post('/api/admin/customers/create-paid', authenticate, authorize(['admin', '
       customer_id: customerCode,
       booking_id: booking.booking_number,
       activation_token: activationToken,
-      app_url: req.headers.origin || 'http://localhost:3000'
+      app_url: process.env.APP_URL || req.headers.origin || 'http://localhost:3000'
     });
   } catch (mailErr) {
     console.error('Failed to send onboarding email:', mailErr);
@@ -4277,7 +4494,7 @@ app.post('/api/admin/customers/resend-invitation', authenticate, authorize(['adm
     customer_id: custCode,
     booking_id: bookingNum,
     activation_token: activationToken,
-    app_url: req.headers.origin || 'http://localhost:3000'
+    app_url: process.env.APP_URL || req.headers.origin || 'http://localhost:3000'
   });
 
   db.recordAuditLog(agencyId, req.user.id, 'RESEND_CUSTOMER_INVITATION', 'customer', custCode, {
@@ -4336,11 +4553,18 @@ app.get('/api/auth/verify-activation-token', (req, res) => {
   // 1. Check Customer Invitations
   let invitation = db.findOne('customer_account_invitations', (inv) => inv.token === token);
   let isAgent = false;
+  let isStaff = false;
 
   // 2. Check B2B Agent Invitations
   if (!invitation) {
     invitation = db.findOne('agent_account_invitations', (inv) => inv.token === token);
     if (invitation) isAgent = true;
+  }
+
+  // 3. Check Staff Invitations
+  if (!invitation) {
+    invitation = db.findOne('staff_account_invitations', (inv) => inv.token === token);
+    if (invitation) isStaff = true;
   }
 
   if (!invitation) {
@@ -4352,7 +4576,7 @@ app.get('/api/auth/verify-activation-token', (req, res) => {
   }
 
   if (new Date(invitation.expires_at) < new Date()) {
-    return res.status(400).json({ error: 'This activation link has expired (valid for 48 hours). Please contact your administrator for a fresh link.' });
+    return res.status(400).json({ error: 'This activation link has expired. Please contact your administrator for a fresh link.' });
   }
 
   if (isAgent) {
@@ -4366,6 +4590,19 @@ app.get('/api/auth/verify-activation-token', (req, res) => {
     });
   }
 
+  if (isStaff) {
+    const isOps = invitation.role === 'operations';
+    return res.json({
+      valid: true,
+      email: invitation.email,
+      role: invitation.role || (isOps ? 'operations' : 'sales'),
+      employee_id: invitation.employee_id,
+      name: invitation.name,
+      designation: isOps ? 'Operations' : 'Sales',
+      company_name: 'Trip by Genie'
+    });
+  }
+
   res.json({
     valid: true,
     email: invitation.email,
@@ -4375,7 +4612,7 @@ app.get('/api/auth/verify-activation-token', (req, res) => {
   });
 });
 
-// Activate Account & Set Password (Supports Customer & B2B Agent Invitations)
+// Activate Account & Set Password (Supports Customer, B2B Agent & Staff Invitations)
 app.post('/api/auth/activate-account', async (req, res) => {
   const { token, password } = req.body;
 
@@ -4390,11 +4627,18 @@ app.post('/api/auth/activate-account', async (req, res) => {
   // 1. Check Customer Invitations
   let invitation = db.findOne('customer_account_invitations', (inv) => inv.token === token);
   let isAgent = false;
+  let isStaff = false;
 
   // 2. Check B2B Agent Invitations
   if (!invitation) {
     invitation = db.findOne('agent_account_invitations', (inv) => inv.token === token);
     if (invitation) isAgent = true;
+  }
+
+  // 3. Check Staff Invitations
+  if (!invitation) {
+    invitation = db.findOne('staff_account_invitations', (inv) => inv.token === token);
+    if (invitation) isStaff = true;
   }
 
   if (!invitation) {
@@ -4416,6 +4660,38 @@ app.post('/api/auth/activate-account', async (req, res) => {
 
   // Hash new password securely with bcrypt
   const passwordHash = bcrypt.hashSync(password, 10);
+
+  if (isStaff) {
+    // Invalidate single-use staff invitation token
+    db.update('staff_account_invitations', invitation.id, {
+      is_used: true,
+      used_at: new Date().toISOString()
+    });
+
+    // Activate user account
+    db.update('users', user.id, {
+      password_hash: passwordHash,
+      status: 'active',
+      account_status: 'ACTIVE',
+      activation_status: 'ACTIVATED',
+      activated_at: new Date().toISOString()
+    });
+
+    const profile = db.findOne('staff_profiles', (p) => p.user_id === user.id);
+    if (profile) {
+      db.update('staff_profiles', profile.id, {
+        status: 'active',
+        activated_at: new Date().toISOString()
+      });
+    }
+
+    return res.json({
+      success: true,
+      role: user.role,
+      email: user.email,
+      message: 'Your staff account has been activated and onboarded successfully! Please log in to access your dashboard.'
+    });
+  }
 
   if (isAgent) {
     // Invalidate single-use agent invitation token

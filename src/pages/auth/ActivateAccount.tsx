@@ -53,6 +53,7 @@ export const ActivateAccount: React.FC = () => {
   }, [token]);
 
   const isB2BAgent = tokenData?.role === 'agent' || !!tokenData?.agent_id;
+  const isStaff = tokenData?.role === 'staff' || tokenData?.role === 'sales' || tokenData?.role === 'operations' || !!(tokenData as any)?.employee_id;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -70,11 +71,20 @@ export const ActivateAccount: React.FC = () => {
     setIsSubmitting(true);
     try {
       await api.activateCustomerAccount({ token, password });
-      success(isB2BAgent ? 'B2B Agent account activated successfully! Please log in.' : 'Your travel account has been activated successfully! Please log in.');
+      success(
+        isB2BAgent
+          ? 'B2B Agent account activated successfully! Please log in.'
+          : isStaff
+          ? 'Staff account onboarded and activated successfully! Please log in.'
+          : 'Your travel account has been activated successfully! Please log in.'
+      );
       setIsActivated(true);
       setTimeout(() => {
         if (isB2BAgent) {
           navigate(`/login?role=agent&identifier=${encodeURIComponent(tokenData?.agent_id || tokenData?.email || '')}`);
+        } else if (isStaff) {
+          const roleParam = tokenData?.role === 'operations' ? 'operations' : 'staff';
+          navigate(`/login?role=${roleParam}&email=${encodeURIComponent(tokenData?.email || '')}`);
         } else {
           navigate(`/login?role=customer&email=${encodeURIComponent(tokenData?.email || '')}`);
         }
@@ -110,11 +120,17 @@ export const ActivateAccount: React.FC = () => {
               <ShieldCheck className="w-6 h-6" />
             </div>
             <h1 className="text-xl sm:text-2xl font-extrabold text-[#082C43] font-display">
-              {isB2BAgent ? 'Activate Your B2B Agent Account' : 'Activate Your Travel Account'}
+              {isB2BAgent
+                ? 'Activate Your B2B Agent Account'
+                : isStaff
+                ? 'Onboard Your Staff Account'
+                : 'Activate Your Travel Account'}
             </h1>
             <p className="text-xs text-[#173247]/70">
               {isB2BAgent
                 ? 'Set your secure password to access your dedicated wholesale dashboard, wholesale packages, and client bookings.'
+                : isStaff
+                ? 'Set your secure permanent password to onboard and access your staff management dashboard.'
                 : 'Set your secure password to access your bookings, day-wise itineraries, and payment receipts.'}
             </p>
           </div>
@@ -179,6 +195,23 @@ export const ActivateAccount: React.FC = () => {
                     )}
                     <div className="flex justify-between">
                       <span className="text-slate-500">Registered Email:</span>
+                      <span className="font-semibold text-[#082C43]">{tokenData?.email}</span>
+                    </div>
+                  </>
+                ) : isStaff ? (
+                  <>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Employee ID:</span>
+                      <span className="font-mono font-bold text-[#17648A]">{(tokenData as any)?.employee_id}</span>
+                    </div>
+                    {(tokenData as any)?.designation && (
+                      <div className="flex justify-between">
+                        <span className="text-slate-500">Designation:</span>
+                        <span className="font-semibold text-[#082C43]">{(tokenData as any).designation}</span>
+                      </div>
+                    )}
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Corporate Email:</span>
                       <span className="font-semibold text-[#082C43]">{tokenData?.email}</span>
                     </div>
                   </>

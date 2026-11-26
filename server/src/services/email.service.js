@@ -232,7 +232,7 @@ Trip by Genie Accounts & Operations Desk`;
    * No permanent plaintext passwords are ever sent.
    */
   async sendAccountActivationEmail({ agency_id, to, name, customer_id, booking_id, activation_token, app_url }) {
-    const baseUrl = app_url || process.env.APP_URL || 'http://localhost:3000';
+    const baseUrl = (app_url || process.env.APP_URL || 'http://localhost:3000').replace(/\/+$/, '');
     const activationLink = `${baseUrl}/activate-account?token=${encodeURIComponent(activation_token)}`;
     const subject = 'Your Travel Account Is Ready – Access Your Booking Details';
 
@@ -311,7 +311,7 @@ Trip by Genie Customer Support Team`;
    * Matches Section 2.B Email Template specification.
    */
   async sendAgentInvitationEmail({ agency_id, to, name, company_name, agent_id, activation_token, app_url }) {
-    const baseUrl = app_url || process.env.APP_URL || 'http://localhost:3000';
+    const baseUrl = (app_url || process.env.APP_URL || 'http://localhost:3000').replace(/\/+$/, '');
     const activationLink = `${baseUrl}/activate-account?token=${encodeURIComponent(activation_token)}&type=b2b`;
     const companyName = 'Trip by Genie';
     const subject = `Welcome to ${companyName} – Your B2B Agent Account Is Ready!`;
@@ -394,67 +394,83 @@ B2B Partnership Team`;
   }
 
   /**
-   * Send Staff Consultant / Operations Onboarding Invitation with Credentials
+   * Send Staff Consultant / Operations Onboarding Invitation with Credentials & Onboarding Link
    */
   async sendStaffInvitationEmail({ agency_id, to, name, employee_id, designation, temporary_password, app_url }) {
-    const baseUrl = app_url || process.env.APP_URL || 'http://localhost:3000';
+    const baseUrl = (app_url || process.env.APP_URL || 'http://localhost:3000').replace(/\/+$/, '');
     const isOps = designation && designation.toLowerCase().includes('operation');
     const dashboardType = isOps ? 'Operations Dashboard' : 'Sales Dashboard';
-    const loginLink = `${baseUrl}/login?email=${encodeURIComponent(to)}&role=${isOps ? 'operations' : 'staff'}`;
+    const staffLoginLink = `${baseUrl}/staff-login?email=${encodeURIComponent(to)}&role=${isOps ? 'operations' : 'sales'}`;
     const companyName = 'Trip by Genie';
-    const subject = `Welcome to ${companyName} – Your ${designation} Account Credentials & Access Link`;
+    const subject = `Welcome Aboard! Your ${companyName} Staff Workspace Access (${designation})`;
 
     const content = `Dear ${name},
 
-Welcome to the ${companyName} Team!
-Your staff account has been provisioned with ${designation} designation and access to the ${dashboardType}.
+Welcome to Trip by Genie!
+We are thrilled to welcome you to our dedicated team of travel specialists, itinerary designers, and tourism professionals.
+
+At Trip by Genie, every day is about crafting unforgettable journeys, exploring breathtaking destinations, and delivering magical travel experiences to travelers across the globe.
+
+Your staff account has been created with ${designation} designation for the ${dashboardType}.
 
 Your Official Account Credentials:
 • Employee ID: ${employee_id}
-• Corporate Email: ${to}
+• Corporate Email (Login ID): ${to}
 • Designation: ${designation} (${dashboardType})
 • Temporary Password: ${temporary_password}
 
-Direct Access & Login Link:
-${loginLink}
+To access your staff workspace and activate your account, please sign in at:
+${staffLoginLink}
 
-Please log in using the temporary credentials above. You can update your password under your profile settings upon initial login.
+Wishing you exciting horizons and a memorable voyage with us!
 
-Key Responsibilities & System Access:
-${isOps 
-  ? '• Operations Execution: Manage vehicle fleet allocations, transfers, booking logistics, and travels enquiries.'
-  : '• Sales Management: Manage traveler inquiries, design custom holiday itineraries, and issue tour quotations.'}
-
-Best Regards,
-${companyName} Management & Operations Team`;
+Best regards,
+${companyName} Management & Operations Team
+Empowering Memorable Journeys Across India & The World`;
 
     console.log(`[EMAIL DISPATCH] Sent Staff Account Invitation to ${to} (Employee ID: ${employee_id}, Designation: ${designation})`);
 
-    await this.sendMail({
+    const mailRes = await this.sendMail({
       to,
       subject,
       text: content,
-      html: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #EFE7DA; border-radius: 16px; background-color: #FFFDF8;">
-        <h2 style="color: #082C43; margin-top: 0;">Welcome to ${companyName}!</h2>
-        <p style="color: #333; line-height: 1.6;">Dear <strong>${name}</strong>,</p>
-        <p style="color: #333; line-height: 1.6;">Your staff employee account has been created by Management. You have been assigned to the <strong>${designation}</strong> department with full access to the <strong>${dashboardType}</strong>.</p>
-        
-        <div style="background-color: #F8F1E7; padding: 18px; border-radius: 12px; margin: 20px 0; border-left: 4px solid #17648A;">
-          <p style="margin: 4px 0; color: #082C43;"><strong>Employee ID:</strong> <span style="font-family: monospace; font-size: 14px; font-weight: bold; color: #17648A;">${employee_id}</span></p>
-          <p style="margin: 4px 0; color: #082C43;"><strong>Corporate Email:</strong> ${to}</p>
-          <p style="margin: 4px 0; color: #082C43;"><strong>Designation:</strong> ${designation}</p>
-          <p style="margin: 4px 0; color: #082C43;"><strong>Temporary Password:</strong> <code style="background: #fff; padding: 2px 6px; border-radius: 4px; font-weight: bold; color: #D946EF;">${temporary_password}</code></p>
+      html: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 28px; border: 1px solid #EFE7DA; border-radius: 18px; background-color: #FFFDF8; box-shadow: 0 4px 20px rgba(8, 44, 67, 0.05);">
+        <div style="text-align: center; margin-bottom: 24px;">
+          <h2 style="color: #082C43; margin: 0 0 6px 0; font-size: 24px; font-weight: 800;">Welcome to Trip by Genie!</h2>
+          <p style="color: #FF795C; font-size: 13px; font-weight: bold; margin: 0; text-transform: uppercase; letter-spacing: 0.5px;">Crafting Unforgettable Journeys Across The Globe</p>
         </div>
 
-        <div style="text-align: center; margin: 30px 0;">
-          <a href="${loginLink}" style="background-color: #FF795C; color: white; padding: 14px 28px; text-decoration: none; font-weight: bold; border-radius: 12px; display: inline-block;">Log In to Staff Portal</a>
+        <p style="color: #333; line-height: 1.6; font-size: 14px;">Dear <strong>${name}</strong>,</p>
+        
+        <p style="color: #4A5568; line-height: 1.6; font-size: 14px;">
+          We are delighted to welcome you to the <strong>Trip by Genie</strong> family! You are joining an elite team of travel specialists, itinerary designers, and holiday creators dedicated to turning travel dreams into reality.
+        </p>
+
+        <p style="color: #4A5568; line-height: 1.6; font-size: 14px;">
+          Your staff account has been created with <strong>${designation}</strong> designation, providing full access to the <strong>${dashboardType}</strong>.
+        </p>
+        
+        <div style="background-color: #F8F1E7; padding: 20px; border-radius: 14px; margin: 24px 0; border-left: 4px solid #17648A;">
+          <p style="margin: 0 0 10px 0; color: #082C43; font-size: 14px; font-weight: bold;">Your Official Account Credentials:</p>
+          <p style="margin: 6px 0; color: #082C43; font-size: 13px;"><strong>Employee ID:</strong> <span style="font-family: monospace; font-size: 14px; font-weight: bold; color: #17648A;">${employee_id}</span></p>
+          <p style="margin: 6px 0; color: #082C43; font-size: 13px;"><strong>Corporate Email (Login ID):</strong> <span style="font-weight: bold; color: #082C43;">${to}</span></p>
+          <p style="margin: 6px 0; color: #082C43; font-size: 13px;"><strong>Designation:</strong> ${designation}</p>
+          <p style="margin: 6px 0; color: #082C43; font-size: 13px;"><strong>Temporary Password:</strong> <code style="background: #fff; padding: 3px 8px; border-radius: 6px; font-weight: bold; color: #9333EA; border: 1px solid #E9D5FF; font-size: 13px;">${temporary_password}</code></p>
         </div>
 
-        <p style="color: #666; font-size: 12px; line-height: 1.5;">Direct link:<br/><a href="${loginLink}" style="color: #17648A;">${loginLink}</a></p>
-        <p style="color: #888; font-size: 11px;">(Please change your password after initial sign-in under Profile Settings.)</p>
-        
+        <div style="text-align: center; margin: 32px 0 24px 0;">
+          <a href="${staffLoginLink}" style="background-color: #FF795C; background-image: linear-gradient(135deg, #FF795C 0%, #FF5733 100%); color: #ffffff; padding: 15px 36px; text-decoration: none; font-weight: bold; border-radius: 12px; display: inline-block; font-size: 15px; box-shadow: 0 4px 14px rgba(255, 87, 51, 0.35);">Log In to Staff Workspace &rarr;</a>
+        </div>
+
+        <p style="color: #718096; font-size: 12px; text-align: center; line-height: 1.5; margin: 0 0 24px 0;">
+          Use your Corporate Email (<strong>${to}</strong>) and the Temporary Password above to sign in. Upon your first login, your account will be activated.
+        </p>
+
         <hr style="border: none; border-top: 1px solid #EFE7DA; margin: 24px 0;" />
-        <p style="color: #999; font-size: 11px; margin-bottom: 0;">${companyName} Management Team</p>
+        <div style="text-align: center;">
+          <p style="color: #082C43; font-size: 13px; font-weight: bold; margin: 0 0 4px 0;">Trip by Genie Management Team</p>
+          <p style="color: #A0AEC0; font-size: 11px; margin: 0;">Empowering Memorable Journeys Across India & The World</p>
+        </div>
       </div>`
     });
 
@@ -462,14 +478,17 @@ ${companyName} Management & Operations Team`;
       employee_id,
       employee_name: name,
       designation,
-      login_link: loginLink
+      login_link: staffLoginLink
     });
 
     return {
-      success: true,
+      success: mailRes?.sent ?? true,
+      sent: mailRes?.sent ?? false,
+      simulated: mailRes?.simulated ?? false,
+      error: mailRes?.error,
       email_id: log.id,
       subject,
-      login_link: loginLink
+      login_link: staffLoginLink
     };
   }
 }
