@@ -353,16 +353,16 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
       <header
         className={`fixed top-0 left-0 right-0 w-full z-40 transition-all duration-300 ${
           isScrolled
-            ? 'bg-white/95 backdrop-blur-md shadow-md py-1.5 border-b border-[#EFE7DA]'
-            : 'bg-white py-2 border-b border-[#EFE7DA]/80 shadow-xs'
+            ? 'bg-white/95 backdrop-blur-md shadow-md py-2 border-b border-[#EFE7DA]'
+            : 'bg-white py-2.5 border-b border-[#EFE7DA]/80 shadow-xs'
         }`}
       >
         <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 flex items-center justify-between gap-3">
-          {/* Logo & Brand matching tripbygenie.in */}
+          {/* Logo & Brand matching tripbygenie.in - High Quality & Clear */}
           <div className="shrink-0">
             <BrandLogo
-              size="md"
-              imgClassName="h-9 sm:h-10 md:h-11 lg:h-[46px]"
+              size="lg"
+              imgClassName="h-12 sm:h-13 md:h-14 lg:h-[62px]"
               to="/"
               onClick={handleHomeClick}
             />
@@ -754,7 +754,7 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
       </header>
 
       {/* Spacer to preserve document layout flow under the fixed navbar */}
-      <div className="h-[56px] sm:h-[60px] md:h-[64px] lg:h-[68px] shrink-0 pointer-events-none" aria-hidden="true" />
+      <div className="h-[72px] sm:h-[76px] md:h-[80px] lg:h-[84px] shrink-0 pointer-events-none" aria-hidden="true" />
 
 
       {/* ======================================================== */}

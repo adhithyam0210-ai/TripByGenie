@@ -42,6 +42,11 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
         src="/logo.png"
         alt="Trip By Genie — A Elite Travel Experience"
         className={`${imgClassName || heightClasses[size]} w-auto object-contain transition-all`}
+        style={{
+          imageRendering: '-webkit-optimize-contrast',
+          transform: 'translateZ(0)',
+          backfaceVisibility: 'hidden'
+        }}
         onError={(e) => {
           // Fallback if image fails to load
           const target = e.currentTarget;
