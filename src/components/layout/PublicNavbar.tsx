@@ -651,20 +651,34 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
           </nav>
 
           {/* Right Action: Sign In & Plan Trip CTA */}
-          <div className="hidden lg:flex items-center gap-2 shrink-0">
-            {isAuthenticated ? (
-              <div className="flex items-center gap-1.5">
+          <div className="hidden lg:flex items-center gap-2.5 shrink-0">
+            {isAuthenticated && user ? (
+              <div className="flex items-center gap-2">
                 <Link
                   to={getRoleDashboardPath()}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all border border-[#003b73]/20 bg-[#003b73]/5 hover:bg-[#003b73]/10 text-[#003b73] shadow-xs"
+                  className="inline-flex items-center gap-2 pl-1.5 pr-3.5 py-1 rounded-full text-xs font-bold transition-all border border-[#003b73]/25 bg-white hover:bg-slate-50 text-[#082C43] shadow-xs group"
+                  title={`Open ${user.name || user.role} Dashboard`}
                 >
-                  <User className="w-3.5 h-3.5 text-[#003b73]" />
-                  <span>Dashboard</span>
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#003b73] text-white flex items-center justify-center font-bold text-xs shadow-xs shrink-0 group-hover:scale-105 transition-transform">
+                    {user.avatar ? (
+                      <img src={user.avatar} alt={user.name} className="w-full h-full object-cover rounded-full" />
+                    ) : (
+                      user.name ? user.name.charAt(0).toUpperCase() : <User className="w-4 h-4 text-white" />
+                    )}
+                  </div>
+                  <div className="flex flex-col text-left">
+                    <span className="text-[11px] font-bold text-[#082C43] leading-tight">
+                      {user.name ? (user.name.length > 12 ? `${user.name.slice(0, 10)}...` : user.name) : 'Dashboard'}
+                    </span>
+                    <span className="text-[9px] text-[#FF795C] font-semibold uppercase tracking-wider leading-none">
+                      {user.role || 'Profile'}
+                    </span>
+                  </div>
                 </Link>
                 <button
                   type="button"
                   onClick={() => logout()}
-                  className="text-xs text-rose-600 hover:text-rose-700 font-semibold px-2 py-1 rounded-lg hover:bg-rose-50 transition-colors cursor-pointer"
+                  className="text-xs text-rose-600 hover:text-rose-700 font-semibold px-2 py-1.5 rounded-lg hover:bg-rose-50 transition-colors cursor-pointer"
                   title="Sign Out"
                 >
                   Sign Out
@@ -673,10 +687,12 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
             ) : (
               <Link
                 to="/login"
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all border border-[#082C43]/20 bg-white hover:bg-[#F8F1E7]/50 text-[#082C43] hover:text-[#FF795C] shadow-xs"
+                className="inline-flex items-center gap-2 pl-1.5 pr-4 py-1 rounded-full text-xs sm:text-[13px] font-bold transition-all border border-[#082C43]/20 bg-white hover:bg-slate-50 text-[#082C43] hover:text-[#FF795C] shadow-xs hover:border-[#003b73] group"
               >
-                <User className="w-3.5 h-3.5 text-[#004c8f]" />
-                <span>Sign In</span>
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#F0F4F8] text-[#003b73] flex items-center justify-center border border-[#003b73]/15 shadow-xs shrink-0 group-hover:bg-[#003b73] group-hover:text-white transition-all">
+                  <User className="w-4.5 h-4.5 transition-transform group-hover:scale-110" />
+                </div>
+                <span className="font-bold tracking-tight">Sign In</span>
               </Link>
             )}
 
@@ -684,7 +700,7 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
               variant="primary"
               size="sm"
               onClick={onOpenTripModal}
-              className="shadow-md shadow-[#FF795C]/25 text-xs font-bold whitespace-nowrap shrink-0 h-8 px-3.5 inline-flex items-center gap-1.5 rounded-full"
+              className="shadow-md shadow-[#FF795C]/25 text-xs font-bold whitespace-nowrap shrink-0 h-8 sm:h-8.5 px-3.5 inline-flex items-center gap-1.5 rounded-full"
             >
               <Send className="w-3.5 h-3.5 shrink-0" />
               <span className="whitespace-nowrap">Plan Your Trip</span>
@@ -696,20 +712,24 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
             {isAuthenticated && user ? (
               <Link
                 to={getRoleDashboardPath(user.role)}
-                className="text-xs bg-[#082C43] hover:bg-[#003b73] text-white px-2.5 py-1.5 rounded-lg font-bold flex items-center gap-1 transition-all shadow-xs"
+                className="inline-flex items-center gap-1.5 bg-[#082C43] hover:bg-[#003b73] text-white pl-1.5 pr-2.5 py-1 rounded-full text-xs font-bold transition-all shadow-xs"
                 title={`${user.role.toUpperCase()} Workspace`}
               >
-                <User className="w-3.5 h-3.5 text-[#55C9BD]" />
+                <div className="w-6 h-6 rounded-full bg-[#55C9BD] text-[#082C43] flex items-center justify-center font-bold text-[10px]">
+                  {user.name ? user.name.charAt(0).toUpperCase() : <User className="w-3.5 h-3.5" />}
+                </div>
                 <span>Dashboard</span>
               </Link>
             ) : (
               <Link
                 to="/login"
-                className="text-xs bg-[#082C43] hover:bg-[#003b73] text-white px-2.5 py-1.5 rounded-lg font-bold flex items-center gap-1 transition-all shadow-xs"
-                title="Staff, Agent & Customer Login"
+                className="inline-flex items-center gap-1.5 bg-white border border-[#082C43]/20 hover:bg-slate-50 text-[#082C43] pl-1.5 pr-2.5 py-1 rounded-full text-xs font-bold transition-all shadow-xs"
+                title="Sign In"
               >
-                <User className="w-3.5 h-3.5 text-[#55C9BD]" />
-                <span>Login</span>
+                <div className="w-6 h-6 rounded-full bg-[#003b73]/10 text-[#003b73] flex items-center justify-center">
+                  <User className="w-3.5 h-3.5" />
+                </div>
+                <span>Sign In</span>
               </Link>
             )}
             <button
