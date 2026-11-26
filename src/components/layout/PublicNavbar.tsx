@@ -353,30 +353,30 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
       <header
         className={`fixed top-0 left-0 right-0 w-full z-40 transition-all duration-300 ${
           isScrolled
-            ? 'bg-white/95 backdrop-blur-md shadow-md py-2.5 border-b border-[#EFE7DA]'
-            : 'bg-white py-3.5 border-b border-[#EFE7DA]/80 shadow-xs'
+            ? 'bg-white/95 backdrop-blur-md shadow-md py-1.5 border-b border-[#EFE7DA]'
+            : 'bg-white py-2 border-b border-[#EFE7DA]/80 shadow-xs'
         }`}
       >
-        <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 flex items-center justify-between gap-4">
+        <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 flex items-center justify-between gap-3">
           {/* Logo & Brand matching tripbygenie.in */}
           <div className="shrink-0">
             <BrandLogo
-              size="lg"
-              imgClassName="h-13 sm:h-16 md:h-18 lg:h-[74px]"
+              size="md"
+              imgClassName="h-9 sm:h-10 md:h-11 lg:h-[46px]"
               to="/"
               onClick={handleHomeClick}
             />
           </div>
 
-          {/* Desktop Navigation Links — Blue Pill Buttons matching Image 2 */}
-          <nav className="hidden xl:flex items-center gap-2 2xl:gap-3">
+          {/* Desktop Navigation Links — Compact Blue Pill Buttons */}
+          <nav className="hidden xl:flex items-center gap-1.5 2xl:gap-2">
             {/* 1. Home */}
             <Link
               to="/"
               onClick={handleHomeClick}
-              className={`px-4.5 py-2 2xl:px-5.5 2xl:py-2.5 rounded-full text-sm 2xl:text-base font-bold tracking-tight transition-all shadow-sm flex items-center justify-center whitespace-nowrap ${
+              className={`px-3 py-1.5 2xl:px-3.5 2xl:py-2 rounded-full text-xs 2xl:text-[13px] font-bold tracking-tight transition-all shadow-xs flex items-center justify-center whitespace-nowrap ${
                 location.pathname === '/'
-                  ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-md'
+                  ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-sm'
                   : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
               }`}
             >
@@ -386,9 +386,9 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
             {/* 2. About Us */}
             <Link
               to="/about"
-              className={`px-4.5 py-2 2xl:px-5.5 2xl:py-2.5 rounded-full text-sm 2xl:text-base font-bold tracking-tight transition-all shadow-sm flex items-center justify-center whitespace-nowrap ${
+              className={`px-3 py-1.5 2xl:px-3.5 2xl:py-2 rounded-full text-xs 2xl:text-[13px] font-bold tracking-tight transition-all shadow-xs flex items-center justify-center whitespace-nowrap ${
                 location.pathname === '/about'
-                  ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-md'
+                  ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-sm'
                   : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
               }`}
             >
@@ -400,14 +400,14 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
               <button
                 type="button"
                 onClick={() => setActiveDropdown(activeDropdown === 'packages' ? null : 'packages')}
-                className={`px-4.5 py-2 2xl:px-5.5 2xl:py-2.5 rounded-full text-sm 2xl:text-base font-bold tracking-tight transition-all shadow-sm flex items-center gap-1.5 justify-center whitespace-nowrap ${
+                className={`px-3 py-1.5 2xl:px-3.5 2xl:py-2 rounded-full text-xs 2xl:text-[13px] font-bold tracking-tight transition-all shadow-xs flex items-center gap-1 justify-center whitespace-nowrap ${
                   location.pathname === '/packages' || activeDropdown === 'packages'
-                    ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-md'
+                    ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-sm'
                     : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
                 }`}
               >
                 <span>Packages</span>
-                <span className="text-xs transform translate-y-[0.5px]">▼</span>
+                <span className="text-[9px] transform translate-y-[0.5px]">▼</span>
               </button>
 
               {/* Mega Dropdown Box */}
@@ -484,14 +484,14 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
               <button
                 type="button"
                 onClick={() => setActiveDropdown(activeDropdown === 'india' ? null : 'india')}
-                className={`px-4.5 py-2 2xl:px-5.5 2xl:py-2.5 rounded-full text-sm 2xl:text-base font-bold tracking-tight transition-all shadow-sm flex items-center gap-1.5 justify-center whitespace-nowrap ${
+                className={`px-3 py-1.5 2xl:px-3.5 2xl:py-2 rounded-full text-xs 2xl:text-[13px] font-bold tracking-tight transition-all shadow-xs flex items-center gap-1 justify-center whitespace-nowrap ${
                   location.pathname === '/destinations' || activeDropdown === 'india'
-                    ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-md'
+                    ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-sm'
                     : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
                 }`}
               >
                 <span>India</span>
-                <span className="text-xs transform translate-y-[0.5px]">▼</span>
+                <span className="text-[9px] transform translate-y-[0.5px]">▼</span>
               </button>
 
               {/* India Mega Dropdown Box */}
@@ -565,14 +565,14 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
               <button
                 type="button"
                 onClick={() => setActiveDropdown(activeDropdown === 'honeymoon' ? null : 'honeymoon')}
-                className={`px-4.5 py-2 2xl:px-5.5 2xl:py-2.5 rounded-full text-sm 2xl:text-base font-bold tracking-tight transition-all shadow-sm flex items-center gap-1.5 justify-center whitespace-nowrap ${
+                className={`px-3 py-1.5 2xl:px-3.5 2xl:py-2 rounded-full text-xs 2xl:text-[13px] font-bold tracking-tight transition-all shadow-xs flex items-center gap-1 justify-center whitespace-nowrap ${
                   location.pathname === '/honeymoon' || activeDropdown === 'honeymoon'
-                    ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-md'
+                    ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-sm'
                     : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
                 }`}
               >
                 <span>Honeymoon</span>
-                <span className="text-xs transform translate-y-[0.5px]">▼</span>
+                <span className="text-[9px] transform translate-y-[0.5px]">▼</span>
               </button>
 
               {activeDropdown === 'honeymoon' && (
@@ -628,9 +628,9 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
             <Link
               to="/group-tours"
               onClick={() => setActiveDropdown(null)}
-              className={`px-4.5 py-2 2xl:px-5.5 2xl:py-2.5 rounded-full text-sm 2xl:text-base font-bold tracking-tight transition-all shadow-sm flex items-center justify-center whitespace-nowrap ${
+              className={`px-3 py-1.5 2xl:px-3.5 2xl:py-2 rounded-full text-xs 2xl:text-[13px] font-bold tracking-tight transition-all shadow-xs flex items-center justify-center whitespace-nowrap ${
                 location.pathname === '/group-tours'
-                  ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-md'
+                  ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-sm'
                   : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
               }`}
             >
@@ -641,9 +641,9 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
             <Link
               to="/services"
               onClick={() => setActiveDropdown(null)}
-              className={`px-4.5 py-2 2xl:px-5.5 2xl:py-2.5 rounded-full text-sm 2xl:text-base font-bold tracking-tight transition-all shadow-sm flex items-center justify-center whitespace-nowrap ${
+              className={`px-3 py-1.5 2xl:px-3.5 2xl:py-2 rounded-full text-xs 2xl:text-[13px] font-bold tracking-tight transition-all shadow-xs flex items-center justify-center whitespace-nowrap ${
                 location.pathname === '/services'
-                  ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-md'
+                  ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-sm'
                   : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
               }`}
             >
@@ -653,9 +653,9 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
             {/* 8. Contact Us */}
             <Link
               to="/contact"
-              className={`px-4.5 py-2 2xl:px-5.5 2xl:py-2.5 rounded-full text-sm 2xl:text-base font-bold tracking-tight transition-all shadow-sm flex items-center justify-center whitespace-nowrap ${
+              className={`px-3 py-1.5 2xl:px-3.5 2xl:py-2 rounded-full text-xs 2xl:text-[13px] font-bold tracking-tight transition-all shadow-xs flex items-center justify-center whitespace-nowrap ${
                 location.pathname === '/contact'
-                  ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-md'
+                  ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-sm'
                   : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
               }`}
             >
@@ -663,180 +663,41 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
             </Link>
           </nav>
 
-          {/* Right Action: Plan Trip CTA & Quick Login */}
-          <div className="hidden lg:flex items-center gap-2.5 shrink-0">
-            {/* Quick Login button near Plan Your Trip for easy testing */}
-            <div className="relative dropdown-container">
-              <div className="flex items-center shadow-xs">
+          {/* Right Action: Sign In & Plan Trip CTA */}
+          <div className="hidden lg:flex items-center gap-2 shrink-0">
+            {isAuthenticated ? (
+              <div className="flex items-center gap-1.5">
                 <Link
-                  to={isAuthenticated ? getRoleDashboardPath() : '/login'}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-l-xl text-xs font-bold transition-all border border-[#EFE7DA] bg-white text-[#082C43] hover:text-[#FF795C] hover:bg-[#F8F1E7]/50"
-                  title="Staff, Agent, Admin & Customer Login"
+                  to={getRoleDashboardPath()}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all border border-[#003b73]/20 bg-[#003b73]/5 hover:bg-[#003b73]/10 text-[#003b73] shadow-xs"
                 >
-                  <User className="w-3.5 h-3.5 text-[#55C9BD]" />
-                  <span>{isAuthenticated ? (user?.role ? user.role.toUpperCase() : 'Dashboard') : 'Login'}</span>
+                  <User className="w-3.5 h-3.5 text-[#003b73]" />
+                  <span>Dashboard</span>
                 </Link>
-
                 <button
                   type="button"
-                  onClick={() => setActiveDropdown(activeDropdown === 'quick-login' ? null : 'quick-login')}
-                  className="p-1.5 rounded-r-xl border-y border-r border-[#EFE7DA] bg-white hover:bg-[#F8F1E7]/50 text-slate-500 hover:text-[#082C43] transition-colors cursor-pointer"
-                  title="Switch Role / Easy Login"
+                  onClick={() => logout()}
+                  className="text-xs text-rose-600 hover:text-rose-700 font-semibold px-2 py-1 rounded-lg hover:bg-rose-50 transition-colors cursor-pointer"
+                  title="Sign Out"
                 >
-                  <ChevronDown className="w-3.5 h-3.5" />
+                  Sign Out
                 </button>
               </div>
-
-              {/* Quick Role Switcher Dropdown */}
-              {activeDropdown === 'quick-login' && (
-                <div
-                  className="dropdown-scroll-box absolute right-0 mt-2 w-56 max-h-[calc(100vh-100px)] overflow-y-auto overscroll-contain rounded-2xl bg-white border border-[#EFE7DA] shadow-xl p-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150 text-xs"
-                  style={{ overscrollBehavior: 'contain', scrollbarWidth: 'thin' }}
-                  onWheel={(e) => e.stopPropagation()}
-                >
-                  <div className="px-3 py-2 border-b border-[#EFE7DA] mb-1">
-                    <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider block">
-                      Easy Login (Quick Switch)
-                    </span>
-                    <p className="text-[11px] text-slate-600 font-medium">
-                      One-click test access to any portal:
-                    </p>
-                  </div>
-
-                  <div className="space-y-1">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        demoLogin('admin').then(() => {
-                          navigate('/admin/dashboard');
-                          setActiveDropdown(null);
-                        });
-                      }}
-                      className="w-full text-left px-3 py-2 rounded-xl hover:bg-orange-50 text-[#082C43] hover:text-[#FF795C] font-semibold flex items-center justify-between transition-colors cursor-pointer"
-                    >
-                      <span className="flex items-center gap-2">
-                        <Shield className="w-3.5 h-3.5 text-[#FF795C]" />
-                        Super Admin
-                      </span>
-                      <span className="text-[10px] bg-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-bold">Admin</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => {
-                        demoLogin('manager').then(() => {
-                          navigate('/manager/dashboard');
-                          setActiveDropdown(null);
-                        });
-                      }}
-                      className="w-full text-left px-3 py-2 rounded-xl hover:bg-purple-50 text-[#082C43] hover:text-purple-700 font-semibold flex items-center justify-between transition-colors cursor-pointer"
-                    >
-                      <span className="flex items-center gap-2">
-                        <ShieldCheck className="w-3.5 h-3.5 text-purple-600" />
-                        Manager Portal
-                      </span>
-                      <span className="text-[10px] bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded font-bold">Manager</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => {
-                        demoLogin('staff').then(() => {
-                          navigate('/staff/leads');
-                          setActiveDropdown(null);
-                        });
-                      }}
-                      className="w-full text-left px-3 py-2 rounded-xl hover:bg-sky-50 text-[#082C43] hover:text-[#004c8f] font-semibold flex items-center justify-between transition-colors cursor-pointer"
-                    >
-                      <span className="flex items-center gap-2">
-                        <Users className="w-3.5 h-3.5 text-[#004c8f]" />
-                        Sales Executive CRM
-                      </span>
-                      <span className="text-[10px] bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded font-bold">Sales</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => {
-                        demoLogin('operations').then(() => {
-                          navigate('/operations/dashboard');
-                          setActiveDropdown(null);
-                        });
-                      }}
-                      className="w-full text-left px-3 py-2 rounded-xl hover:bg-blue-50 text-[#082C43] hover:text-blue-700 font-semibold flex items-center justify-between transition-colors cursor-pointer"
-                    >
-                      <span className="flex items-center gap-2">
-                        <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
-                        Operations Logistics
-                      </span>
-                      <span className="text-[10px] bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded font-bold">Operations</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => {
-                        demoLogin('agent').then(() => {
-                          navigate('/agent/marketplace');
-                          setActiveDropdown(null);
-                        });
-                      }}
-                      className="w-full text-left px-3 py-2 rounded-xl hover:bg-orange-50 text-[#082C43] hover:text-[#FF795C] font-semibold flex items-center justify-between transition-colors cursor-pointer"
-                    >
-                      <span className="flex items-center gap-2">
-                        <Briefcase className="w-3.5 h-3.5 text-[#FF795C]" />
-                        B2B Agent Portal
-                      </span>
-                      <span className="text-[10px] bg-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-bold">Agent</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => {
-                        demoLogin('customer').then(() => {
-                          navigate('/customer/dashboard');
-                          setActiveDropdown(null);
-                        });
-                      }}
-                      className="w-full text-left px-3 py-2 rounded-xl hover:bg-teal-50 text-[#082C43] hover:text-[#55C9BD] font-semibold flex items-center justify-between transition-colors cursor-pointer"
-                    >
-                      <span className="flex items-center gap-2">
-                        <User className="w-3.5 h-3.5 text-[#55C9BD]" />
-                        Customer Portal
-                      </span>
-                      <span className="text-[10px] bg-teal-100 text-teal-800 px-1.5 py-0.5 rounded font-bold">User</span>
-                    </button>
-                  </div>
-
-                  <div className="pt-2 mt-1 border-t border-[#EFE7DA] flex items-center justify-between px-2">
-                    <Link
-                      to="/login"
-                      onClick={() => setActiveDropdown(null)}
-                      className="text-[11px] font-bold text-[#FF795C] hover:underline"
-                    >
-                      Standard Login Page →
-                    </Link>
-                    {isAuthenticated && (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          logout();
-                          setActiveDropdown(null);
-                        }}
-                        className="text-[11px] text-rose-600 font-bold hover:underline cursor-pointer"
-                      >
-                        Sign Out
-                      </button>
-                    )}
-                  </div>
-                </div>
-              )}
-            </div>
+            ) : (
+              <Link
+                to="/login"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all border border-[#082C43]/20 bg-white hover:bg-[#F8F1E7]/50 text-[#082C43] hover:text-[#FF795C] shadow-xs"
+              >
+                <User className="w-3.5 h-3.5 text-[#004c8f]" />
+                <span>Sign In</span>
+              </Link>
+            )}
 
             <Button
               variant="primary"
               size="sm"
               onClick={onOpenTripModal}
-              className="shadow-md shadow-[#FF795C]/25 text-xs font-bold whitespace-nowrap shrink-0 h-9 px-3.5 inline-flex items-center gap-1.5"
+              className="shadow-md shadow-[#FF795C]/25 text-xs font-bold whitespace-nowrap shrink-0 h-8 px-3.5 inline-flex items-center gap-1.5 rounded-full"
             >
               <Send className="w-3.5 h-3.5 shrink-0" />
               <span className="whitespace-nowrap">Plan Your Trip</span>
@@ -886,7 +747,7 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
       </header>
 
       {/* Spacer to preserve document layout flow under the fixed navbar */}
-      <div className="h-[74px] sm:h-[84px] md:h-[90px] lg:h-[102px] shrink-0 pointer-events-none" aria-hidden="true" />
+      <div className="h-[56px] sm:h-[60px] md:h-[64px] lg:h-[68px] shrink-0 pointer-events-none" aria-hidden="true" />
 
 
       {/* ======================================================== */}
