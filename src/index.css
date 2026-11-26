@@ -82,6 +82,8 @@ video {
 }
 
 /* Card and media imagery: rich saturation, high-definition clarity, and punchy micro-contrast */
+/* pointer-events: none disables browser-injected visual search overlays (e.g. Edge Visual Search camera lens & 3-dots buttons) */
+img,
 .group img,
 [class*="card"] img,
 [class*="Card"] img,
@@ -92,6 +94,9 @@ figure img,
 article img {
   filter: contrast(105%) saturate(114%) brightness(101%);
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+  pointer-events: none;
+  -webkit-user-drag: none;
+  user-select: none;
 }
 
 .group:hover img {

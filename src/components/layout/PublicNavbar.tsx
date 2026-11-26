@@ -53,32 +53,55 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
     setActiveDropdown(null);
   }, [location.pathname]);
 
-  // Lock body scroll only for full-screen mobile menu drawer (not desktop dropdowns, to avoid page jumping to top)
+  // Lock body scroll when mobile menu drawer or desktop dropdown popup is open
   useEffect(() => {
-    if (isMobileMenuOpen) {
+    if (isMobileMenuOpen || activeDropdown) {
       const originalBodyOverflow = document.body.style.overflow;
+      const originalPaddingRight = document.body.style.paddingRight;
+      const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+
       document.body.style.overflow = 'hidden';
+      if (scrollBarWidth > 0) {
+        document.body.style.paddingRight = `${scrollBarWidth}px`;
+      }
+
       return () => {
         document.body.style.overflow = originalBodyOverflow;
+        document.body.style.paddingRight = originalPaddingRight;
       };
     }
-  }, [isMobileMenuOpen]);
+  }, [isMobileMenuOpen, activeDropdown]);
 
-  // Prevent background chain scrolling when desktop dropdown is open without altering window.scrollY
+  // Prevent background chain scrolling:
+  // 1. Scrolling outside the popup does NOT close it, and does NOT scroll the below page
+  // 2. Scrolling inside the popup scrolls only the popup and cannot chain-scroll the page
+  // 3. Popup closes only when clicking outside or clicking the top menu button again
   useEffect(() => {
     if (activeDropdown) {
       const handleWheel = (e: WheelEvent) => {
         const target = e.target as HTMLElement | null;
         const scrollContainer = target?.closest('.dropdown-scroll-box') as HTMLElement | null;
 
+        // If scrolling outside the dropdown container:
+        // Lock background scroll and keep the popup open (do not close on scroll)
         if (!scrollContainer) {
           e.preventDefault();
           return;
         }
 
+        // If scrolling inside the dropdown container:
         const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
+        const canScroll = scrollHeight > clientHeight;
+
+        // If the dropdown fits entirely without overflowing, prevent scrolling behind it
+        if (!canScroll) {
+          e.preventDefault();
+          return;
+        }
+
+        // Prevent chain scrolling when reaching the boundaries of the scrollable dropdown
         const isAtTop = scrollTop <= 0;
-        const isAtBottom = scrollTop + clientHeight >= scrollHeight - 1;
+        const isAtBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight - 1;
 
         if ((e.deltaY < 0 && isAtTop) || (e.deltaY > 0 && isAtBottom)) {
           e.preventDefault();
@@ -93,12 +116,12 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
         }
       };
 
-      window.addEventListener('wheel', handleWheel, { passive: false });
-      window.addEventListener('touchmove', handleTouchMove, { passive: false });
+      window.addEventListener('wheel', handleWheel, { passive: false, capture: true });
+      window.addEventListener('touchmove', handleTouchMove, { passive: false, capture: true });
 
       return () => {
-        window.removeEventListener('wheel', handleWheel);
-        window.removeEventListener('touchmove', handleTouchMove);
+        window.removeEventListener('wheel', handleWheel, { capture: true });
+        window.removeEventListener('touchmove', handleTouchMove, { capture: true });
       };
     }
   }, [activeDropdown]);
@@ -131,6 +154,12 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
 
   const toggleMobileSection = (key: string) => {
     setMobileSectionOpen(prev => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  const handleHomeClick = () => {
+    setActiveDropdown(null);
+    setIsMobileMenuOpen(false);
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   };
 
   // Continents and countries from tripbygenie.in
@@ -335,7 +364,7 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
               size="lg"
               imgClassName="h-13 sm:h-16 md:h-18 lg:h-[74px]"
               to="/"
-              onClick={() => setIsMobileMenuOpen(false)}
+              onClick={handleHomeClick}
             />
           </div>
 
@@ -344,6 +373,7 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
             {/* 1. Home */}
             <Link
               to="/"
+              onClick={handleHomeClick}
               className={`px-4.5 py-2 2xl:px-5.5 2xl:py-2.5 rounded-full text-sm 2xl:text-base font-bold tracking-tight transition-all shadow-sm flex items-center justify-center whitespace-nowrap ${
                 location.pathname === '/'
                   ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-md'
@@ -858,22 +888,6 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
       {/* Spacer to preserve document layout flow under the fixed navbar */}
       <div className="h-[74px] sm:h-[84px] md:h-[90px] lg:h-[102px] shrink-0 pointer-events-none" aria-hidden="true" />
 
-      {/* Full-screen Backdrop for Desktop Dropdowns: prevents background chain scrolling & closes on click */}
-      {activeDropdown && (
-        <div
-          className="fixed inset-0 z-30 bg-black/20 backdrop-blur-[0.5px] transition-opacity animate-in fade-in duration-150 overscroll-contain"
-          style={{ overscrollBehavior: 'contain', touchAction: 'none' }}
-          onClick={() => setActiveDropdown(null)}
-          onWheel={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-          }}
-          onTouchMove={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-          }}
-        />
-      )}
 
       {/* ======================================================== */}
       {/* MOBILE NAVIGATION DRAWER (Full Categories & Phone)       */}
@@ -897,7 +911,7 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
               {/* Header */}
               <div className="flex items-center justify-between border-b border-white/10 pb-3">
                 <div className="bg-white px-3 py-1.5 rounded-xl shadow-xs">
-                  <BrandLogo size="sm" to="/" onClick={() => setIsMobileMenuOpen(false)} />
+                  <BrandLogo size="sm" to="/" onClick={handleHomeClick} />
                 </div>
                 <button
                   onClick={() => setIsMobileMenuOpen(false)}
@@ -911,6 +925,7 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
               <div className="space-y-2 text-sm font-semibold">
                 <Link
                   to="/"
+                  onClick={handleHomeClick}
                   className="block px-3 py-2 rounded-xl hover:bg-white/10 transition-colors"
                 >
                   Home
