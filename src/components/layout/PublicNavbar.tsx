@@ -624,20 +624,7 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
               )}
             </div>
 
-            {/* 6. Group Tours (Direct link to dedicated /group-tours page) */}
-            <Link
-              to="/group-tours"
-              onClick={() => setActiveDropdown(null)}
-              className={`px-3 py-1.5 2xl:px-3.5 2xl:py-2 rounded-full text-xs 2xl:text-[13px] font-bold tracking-tight transition-all shadow-xs flex items-center justify-center whitespace-nowrap ${
-                location.pathname === '/group-tours'
-                  ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-sm'
-                  : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
-              }`}
-            >
-              Group Tours
-            </Link>
-
-            {/* 7. Tickets Bookings (Direct link button, no dropdown) */}
+            {/* 6. Tickets Bookings (Direct link button, no dropdown) */}
             <Link
               to="/services"
               onClick={() => setActiveDropdown(null)}

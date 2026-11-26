@@ -750,25 +750,39 @@ export const Home: React.FC = () => {
               {currentBanner.subtitle}
             </p>
 
-            {/* Small Left-Aligned Action Buttons */}
-            <div className="flex flex-row items-center justify-start gap-2.5 sm:gap-3 pt-1 sm:pt-3">
-              <Link to={currentBanner.cta_link || '/packages'}>
+            {/* Action Buttons: Row on desktop with Group Tours near Plan Your Trip; Under orange button on mobile */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-start gap-2.5 sm:gap-3 pt-1 sm:pt-3">
+              <Link to={currentBanner.cta_link || '/packages'} className="w-full sm:w-auto">
                 <Button
                   variant="primary"
                   size="sm"
-                  className="shadow-md shadow-[#FF795C]/30 text-xs font-bold px-4 py-2 h-9 sm:h-9.5 rounded-xl cursor-pointer"
+                  className="w-full sm:w-auto shadow-md shadow-[#FF795C]/30 text-xs font-bold px-4 py-2 h-9 sm:h-9.5 rounded-xl cursor-pointer justify-center"
                 >
                   {currentBanner.cta_text || 'Explore Packages'}
                 </Button>
               </Link>
-              <Button
-                variant="white"
-                size="sm"
-                onClick={handleOpenTripModal}
-                className="text-xs font-bold shadow-xs px-4 py-2 h-9 sm:h-9.5 rounded-xl text-[#082C43] hover:bg-white/95 cursor-pointer whitespace-nowrap shrink-0"
-              >
-                Plan Your Trip
-              </Button>
+
+              {/* Placed near Plan Your Trip (under the orange button on mobile) */}
+              <div className="flex items-center gap-2.5 sm:gap-3 w-full sm:w-auto">
+                <Button
+                  variant="white"
+                  size="sm"
+                  onClick={handleOpenTripModal}
+                  className="flex-1 sm:flex-initial text-xs font-bold shadow-xs px-4 py-2 h-9 sm:h-9.5 rounded-xl text-[#082C43] hover:bg-white/95 cursor-pointer whitespace-nowrap shrink-0 justify-center"
+                >
+                  Plan Your Trip
+                </Button>
+
+                <Link to="/group-tours" className="flex-1 sm:flex-initial">
+                  <Button
+                    variant="white"
+                    size="sm"
+                    className="w-full sm:w-auto text-xs font-bold shadow-xs px-4 py-2 h-9 sm:h-9.5 rounded-xl text-[#082C43] hover:bg-white/95 cursor-pointer whitespace-nowrap shrink-0 justify-center"
+                  >
+                    Group Tours
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
