@@ -545,20 +545,33 @@ export const Home: React.FC = () => {
     </div>
   );
 
-  const filteredDestinations = destinations.filter((d) => {
-    if (selectedRegion === 'all') return true;
-    if (selectedRegion === 'south-india') {
-      const southSpots = ['kerala', 'ooty', 'kodaikanal', 'coorg', 'munnar', 'mysore', 'bangalore', 'hyderabad', 'tamil nadu', 'karnataka'];
-      return southSpots.some(s => d.name.toLowerCase().includes(s));
+  // Popular destinations prioritizing Kashmir, Goa, Dubai, Kerala, Manali on mobile (6 cards on mobile, 8 on desktop)
+  const displayedDestinations = useMemo(() => {
+    if (selectedRegion === 'all') {
+      const topOrder = ['dest_kashmir', 'dest_goa', 'dest_dubai', 'dest_kerala', 'dest_manali', 'dest_maldives', 'dest_bali', 'dest_andaman'];
+      const topMap = new Map(topOrder.map((id, index) => [id, index]));
+
+      return [...destinations].sort((a, b) => {
+        const orderA = topMap.has(a.id) ? topMap.get(a.id)! : 999;
+        const orderB = topMap.has(b.id) ? topMap.get(b.id)! : 999;
+        return orderA - orderB;
+      });
     }
-    if (selectedRegion === 'north-india') {
-      const northSpots = ['kashmir', 'ladakh', 'manali', 'shimla', 'delhi', 'agra', 'jaipur'];
-      return northSpots.some(s => d.name.toLowerCase().includes(s));
-    }
-    if (selectedRegion === 'india') return d.region === 'India';
-    if (selectedRegion === 'international') return d.region !== 'India';
-    return d.region.toLowerCase() === selectedRegion.toLowerCase();
-  });
+
+    return destinations.filter((d) => {
+      if (selectedRegion === 'south-india') {
+        const southSpots = ['kerala', 'ooty', 'kodaikanal', 'coorg', 'munnar', 'mysore', 'bangalore', 'hyderabad', 'tamil nadu', 'karnataka'];
+        return southSpots.some(s => d.name.toLowerCase().includes(s));
+      }
+      if (selectedRegion === 'north-india') {
+        const northSpots = ['kashmir', 'ladakh', 'manali', 'shimla', 'delhi', 'agra', 'jaipur'];
+        return northSpots.some(s => d.name.toLowerCase().includes(s));
+      }
+      if (selectedRegion === 'india') return d.region === 'India';
+      if (selectedRegion === 'international') return d.region !== 'India';
+      return d.region.toLowerCase() === selectedRegion.toLowerCase();
+    });
+  }, [destinations, selectedRegion]);
 
   const categoriesList = [
     'All Packages',
@@ -753,39 +766,36 @@ export const Home: React.FC = () => {
               {currentBanner.subtitle}
             </p>
 
-            {/* Action Buttons: Row on desktop with Group Tours near Plan Your Trip; Under orange button on mobile */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-start gap-2 sm:gap-3 pt-1 sm:pt-3">
-              <Link to={currentBanner.cta_link || '/packages'} className="w-full sm:w-auto">
+            {/* Action Buttons: Stacked one below another on mobile with matching size; Single row on desktop */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-start gap-2 sm:gap-3 pt-1 sm:pt-3">
+              <Link to={currentBanner.cta_link || '/packages'} className="w-[150px] sm:w-auto inline-block">
                 <Button
                   variant="primary"
                   size="sm"
-                  className="w-full sm:w-auto shadow-md shadow-[#FF795C]/30 text-[11px] sm:text-xs font-bold px-3 sm:px-4 py-1.5 sm:py-2 h-8 sm:h-9.5 rounded-xl cursor-pointer justify-center"
+                  className="w-full sm:w-auto shadow-md shadow-[#FF795C]/30 text-[11px] sm:text-xs font-bold px-3 sm:px-4 py-1 sm:py-2 h-7.5 sm:h-9.5 rounded-lg sm:rounded-xl cursor-pointer justify-center"
                 >
                   {currentBanner.cta_text || 'Explore Packages'}
                 </Button>
               </Link>
 
-              {/* Placed near Plan Your Trip (under the orange button on mobile) */}
-              <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
+              <Button
+                variant="white"
+                size="sm"
+                onClick={handleOpenTripModal}
+                className="w-[150px] sm:w-auto text-[11px] sm:text-xs font-bold shadow-xs px-3 sm:px-4 py-1 sm:py-2 h-7.5 sm:h-9.5 rounded-lg sm:rounded-xl text-[#082C43] hover:bg-white/95 cursor-pointer whitespace-nowrap shrink-0 justify-center"
+              >
+                Plan Your Trip
+              </Button>
+
+              <Link to="/group-tours" className="w-[150px] sm:w-auto inline-block">
                 <Button
                   variant="white"
                   size="sm"
-                  onClick={handleOpenTripModal}
-                  className="flex-1 sm:flex-initial text-[11px] sm:text-xs font-bold shadow-xs px-3 sm:px-4 py-1.5 sm:py-2 h-8 sm:h-9.5 rounded-xl text-[#082C43] hover:bg-white/95 cursor-pointer whitespace-nowrap shrink-0 justify-center"
+                  className="w-full sm:w-auto text-[11px] sm:text-xs font-bold shadow-xs px-3 sm:px-4 py-1 sm:py-2 h-7.5 sm:h-9.5 rounded-lg sm:rounded-xl text-[#082C43] hover:bg-white/95 cursor-pointer whitespace-nowrap shrink-0 justify-center"
                 >
-                  Plan Your Trip
+                  Group Tours
                 </Button>
-
-                <Link to="/group-tours" className="flex-1 sm:flex-initial">
-                  <Button
-                    variant="white"
-                    size="sm"
-                    className="w-full sm:w-auto text-[11px] sm:text-xs font-bold shadow-xs px-3 sm:px-4 py-1.5 sm:py-2 h-8 sm:h-9.5 rounded-xl text-[#082C43] hover:bg-white/95 cursor-pointer whitespace-nowrap shrink-0 justify-center"
-                  >
-                    Group Tours
-                  </Button>
-                </Link>
-              </div>
+              </Link>
             </div>
           </div>
         </div>
@@ -893,10 +903,12 @@ export const Home: React.FC = () => {
             </div>
           </div>
 
-          {/* Destinations Grid */}
+          {/* Destinations Grid: 6 cards on mobile, 8 cards on desktop */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {filteredDestinations.slice(0, 8).map((dest) => (
-              <DestinationCard key={dest.id} destination={dest} />
+            {displayedDestinations.slice(0, 8).map((dest, idx) => (
+              <div key={dest.id} className={idx >= 6 ? 'hidden sm:block' : ''}>
+                <DestinationCard destination={dest} />
+              </div>
             ))}
           </div>
 
@@ -1097,7 +1109,7 @@ export const Home: React.FC = () => {
           {/* Section Header matching tripbygenie.in & user specification */}
           <div className="text-center max-w-5xl mx-auto space-y-2 mb-5 sm:mb-6">
             <h2 className="text-xl sm:text-2xl md:text-[28px] lg:text-[32px] font-extrabold text-[#082C43] font-display flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
-              <span className="text-[#D93F3F]">MICE -</span>
+              <span className="text-[#D93F3F]">MICE<span className="hidden sm:inline"> -</span></span>
               <span>Meetings, Incentives, Conferences & Exhibitions</span>
             </h2>
             <p className="text-xs sm:text-sm text-[#173247]/80 leading-relaxed max-w-2xl mx-auto">
@@ -1337,19 +1349,19 @@ export const Home: React.FC = () => {
                 ))}
               </div>
 
-              <div className="pt-3 flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4 w-full">
+              <div className="pt-3 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3 w-full">
                 <Button
                   variant="primary"
                   size="sm"
                   onClick={handleOpenTripModal}
-                  className="shadow-md font-bold text-[11px] sm:text-xs py-2 sm:py-2.5 px-3.5 sm:px-5 rounded-xl w-full sm:w-auto justify-center h-8.5 sm:h-auto"
+                  className="shadow-md font-bold text-[11px] sm:text-xs py-1 sm:py-2 px-3 sm:px-4 rounded-lg sm:rounded-xl w-auto self-start sm:self-auto justify-center h-7.5 sm:h-9"
                 >
-                  <Send className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1.5" />
+                  <Send className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1.5" />
                   Get Free Trip Quotation
                 </Button>
-                <a href="tel:+914446071374" className="w-full sm:w-auto block sm:inline-block">
-                  <Button variant="outline" size="sm" className="border-[#082C43] text-[#082C43] font-bold text-[11px] sm:text-xs py-2 sm:py-2.5 px-3.5 sm:px-5 rounded-xl w-full sm:w-auto justify-center h-8.5 sm:h-auto">
-                    <PhoneCall className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1.5 text-[#55C9BD]" />
+                <a href="tel:+914446071374" className="w-auto self-start sm:self-auto inline-block">
+                  <Button variant="outline" size="sm" className="border-[#082C43] text-[#082C43] font-bold text-[11px] sm:text-xs py-1 sm:py-2 px-3 sm:px-4 rounded-lg sm:rounded-xl w-auto justify-center h-7.5 sm:h-9">
+                    <PhoneCall className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1.5 text-[#55C9BD]" />
                     Call +91 (44) 46071374
                   </Button>
                 </a>

@@ -1559,6 +1559,106 @@ app.put('/api/admin/leads/:id', authenticate, authorize(['admin', 'manager']), (
   res.json(updated);
 });
 
+// Helper functions for Lead Eligibility & Role-Based Assignment
+function getLeadEnquiryType(lead) {
+  if (!lead) return 'domestic';
+  const dest = (lead.interested_destination || lead.destination || '').toLowerCase();
+  const cat = (lead.category || '').toLowerCase();
+  const src = (lead.lead_source || lead.source || '').toLowerCase();
+  const pref = (lead.travel_preference || '').toLowerCase();
+
+  const isTravels =
+    lead.service_type ||
+    ['flight', 'bus', 'car', 'cab', 'transfer', 'insurance', 'visa', 'webcheckin', 'hotel'].includes(pref) ||
+    dest.startsWith('flight:') ||
+    dest.startsWith('bus:') ||
+    dest.startsWith('car rental:') ||
+    dest.startsWith('airport transfer:') ||
+    dest.startsWith('visa consultation:') ||
+    dest.startsWith('travel insurance:') ||
+    dest.startsWith('web check-in:') ||
+    dest.startsWith('service:') ||
+    dest.includes('cab') ||
+    dest.includes('tempo') ||
+    dest.includes('taxi') ||
+    dest.includes('car rental') ||
+    src.includes('service enquiry') ||
+    src.includes('travels') ||
+    src.includes('cab') ||
+    cat.includes('travels') ||
+    cat.includes('cab') ||
+    cat.includes('vehicle');
+
+  if (isTravels) return 'travels';
+
+  const internationalTokens = [
+    'bali', 'dubai', 'maldives', 'singapore', 'thailand', 'vietnam', 'malaysia', 'paris',
+    'switzerland', 'europe', 'london', 'uk', 'united kingdom', 'alaska', 'america', 'usa',
+    'canada', 'japan', 'australia', 'new zealand', 'fiji', 'mauritius', 'seychelles',
+    'turkey', 'greece', 'italy', 'germany', 'france', 'austria', 'netherlands', 'spain',
+    'egypt', 'morocco', 'south africa', 'kenya', 'zimbabwe', 'tanzania', 'qatar', 'uae',
+    'oman', 'jordan', 'uzbekistan', 'kazakhstan', 'cambodia', 'philippines', 'indonesia',
+    'hong kong', 'china', 'russia', 'south korea', 'sri lanka', 'madagascar'
+  ];
+
+  const isInternational =
+    cat.includes('international') ||
+    src.includes('international') ||
+    dest.includes('international') ||
+    internationalTokens.some((token) => dest.includes(token));
+
+  if (isInternational) return 'international';
+
+  return 'domestic';
+}
+
+function checkLeadStaffEligibility(staffUser, staffProfile, leadType) {
+  const role = staffUser.role || staffProfile.role_type || 'staff';
+  const roleType = staffProfile.role_type || (role === 'operations' ? 'operations' : 'sales');
+
+  const departments = Array.isArray(staffProfile.departments) && staffProfile.departments.length > 0
+    ? staffProfile.departments
+    : (staffProfile.department ? staffProfile.department.split(',').map((s) => s.trim()) : []);
+
+  const designations = Array.isArray(staffProfile.designations) && staffProfile.designations.length > 0
+    ? staffProfile.designations
+    : (staffProfile.designation ? staffProfile.designation.split(',').map((s) => s.trim()) : []);
+
+  const hasInternational =
+    departments.some((d) => d.toLowerCase().includes('international')) ||
+    designations.some((d) => d.toLowerCase().includes('international'));
+
+  const isOpsStaff =
+    role === 'operations' ||
+    roleType === 'operations' ||
+    designations.some((d) => d.toLowerCase().includes('operation')) ||
+    (staffProfile.designation && staffProfile.designation.toLowerCase().includes('operation'));
+
+  // 1. Operation staff can ONLY be assigned to travels enquiry
+  if (isOpsStaff) {
+    if (leadType !== 'travels') {
+      return {
+        eligible: false,
+        reason: 'Operation staff can only be assigned to travels and logistics enquiries.'
+      };
+    }
+    return { eligible: true };
+  }
+
+  // 2. Cannot assign international package enquiry to domestic tour management staff
+  if (leadType === 'international') {
+    if (!hasInternational) {
+      return {
+        eligible: false,
+        reason: 'Cannot assign International package enquiry to domestic tour management staff.'
+      };
+    }
+    return { eligible: true };
+  }
+
+  return { eligible: true };
+}
+
 // Admin Assign / Reassign Leads to Staff (Single or Bulk)
 app.post('/api/admin/leads/assign', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const agencyId = req.user.agency_id;
@@ -1569,8 +1669,27 @@ app.post('/api/admin/leads/assign', authenticate, authorize(['admin', 'manager']
   }
 
   const staffUser = staff_id ? db.findById('users', staff_id) : null;
+  const staffProfile = staffUser ? (db.findOne('staff_profiles', (sp) => sp.user_id === staffUser.id) || {}) : {};
   const staffName = staffUser ? staffUser.name : 'Unassigned';
   const newStatus = staff_id ? 'Assigned' : 'Unassigned';
+
+  // Server-side validation of lead assignment eligibility
+  if (staffUser) {
+    for (const id of lead_ids) {
+      const lead = db.findById('leads', id);
+      if (lead) {
+        const leadType = getLeadEnquiryType(lead);
+        const check = checkLeadStaffEligibility(staffUser, staffProfile, leadType);
+        if (!check.eligible) {
+          return res.status(400).json({
+            error: check.reason,
+            reason: check.reason,
+            lead_id: id
+          });
+        }
+      }
+    }
+  }
 
   const updatedLeads = [];
   for (const id of lead_ids) {
@@ -1663,10 +1782,36 @@ app.post('/api/admin/leads/flush', authenticate, authorize(['admin', 'manager'])
 // Admin Staff Management (CRUD)
 app.get('/api/admin/staff', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const agencyId = req.user.agency_id;
-  const staffUsers = db.findAll('users', (u) => (u.agency_id === agencyId || !u.agency_id) && (u.role === 'staff' || u.role === 'sales'));
+  const staffUsers = db.findAll('users', (u) => (u.agency_id === agencyId || !u.agency_id) && (u.role === 'staff' || u.role === 'sales' || u.role === 'operations'));
 
   const enrichedStaff = staffUsers.map((staff) => {
-    const profile = db.findOne('staff_profiles', (sp) => sp.user_id === staff.id) || {};
+    let profile = db.findOne('staff_profiles', (sp) => sp.user_id === staff.id);
+    if (!profile) {
+      const isOps = staff.role === 'operations';
+      profile = {
+        user_id: staff.id,
+        employee_id: staff.display_id || (isOps ? 'TG-OPS-100' : 'TG-EMP-100'),
+        role_type: isOps ? 'operations' : 'sales',
+        department: isOps ? 'Travel & Transportation Operations' : 'Holidays & International',
+        departments: [isOps ? 'Travel & Transportation Operations' : 'Holidays & International'],
+        designation: isOps ? 'Operations Executive' : 'Travel Consultant',
+        designations: [isOps ? 'Operations Executive' : 'Travel Consultant'],
+        assigned_leads_count: 0,
+        converted_leads_count: 0,
+        rating: 5.0
+      };
+    } else {
+      // Ensure departments & designations arrays are present
+      if (!Array.isArray(profile.departments) || profile.departments.length === 0) {
+        profile.departments = profile.department ? profile.department.split(',').map((s) => s.trim()) : [profile.role_type === 'operations' ? 'Travel & Transportation Operations' : 'Holidays & International'];
+      }
+      if (!Array.isArray(profile.designations) || profile.designations.length === 0) {
+        profile.designations = profile.designation ? profile.designation.split(',').map((s) => s.trim()) : [profile.role_type === 'operations' ? 'Operations Executive' : 'Travel Consultant'];
+      }
+      if (!profile.role_type) {
+        profile.role_type = staff.role === 'operations' ? 'operations' : 'sales';
+      }
+    }
     const assignedLeads = db.findAll('leads', (l) => l.assigned_staff_id === staff.id);
     const convertedLeads = assignedLeads.filter((l) => l.status === 'Converted');
     const { password_hash, ...safeStaff } = staff;
@@ -1681,13 +1826,46 @@ app.get('/api/admin/staff', authenticate, authorize(['admin', 'manager']), (req,
   res.json(enrichedStaff);
 });
 
-// Admin Create Staff Account
-app.post('/api/admin/staff', authenticate, authorize(['admin', 'manager']), (req, res) => {
-  const agencyId = req.user.agency_id;
-  const { name, email, phone, department, designation, password, employee_id } = req.body;
+// Helper to generate sequential standard employee ID: TBG_SAL_001 or TBG_OPE_001
+function getNextStandardEmployeeId(isOps, agencyId) {
+  const prefix = isOps ? 'TBG_OPE_' : 'TBG_SAL_';
+  const allProfiles = db.findAll('staff_profiles', (p) => !agencyId || p.agency_id === agencyId || p.agency_id === 'agency_travel_genie');
+  const allUsers = db.findAll('users', (u) => !agencyId || u.agency_id === agencyId || u.agency_id === 'agency_travel_genie');
 
-  if (!name || !email || !password) {
-    return res.status(400).json({ error: 'Name, email, and temporary password are required.' });
+  const nums = [];
+  allProfiles.forEach((p) => {
+    if (p.employee_id && p.employee_id.startsWith(prefix)) {
+      const n = parseInt(p.employee_id.replace(prefix, ''), 10);
+      if (!isNaN(n)) nums.push(n);
+    }
+  });
+  allUsers.forEach((u) => {
+    if (u.display_id && u.display_id.startsWith(prefix)) {
+      const n = parseInt(u.display_id.replace(prefix, ''), 10);
+      if (!isNaN(n)) nums.push(n);
+    }
+  });
+
+  const nextNum = nums.length > 0 ? Math.max(...nums) + 1 : 1;
+  return `${prefix}${String(nextNum).padStart(3, '0')}`;
+}
+
+function generateAutoPassword() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let randomPart = '';
+  for (let i = 0; i < 4; i++) {
+    randomPart += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return `TBG#${Math.floor(1000 + Math.random() * 9000)}!${randomPart}`;
+}
+
+// Admin Create Staff Account
+app.post('/api/admin/staff', authenticate, authorize(['admin', 'manager']), async (req, res) => {
+  const agencyId = req.user.agency_id;
+  const { name, email, phone, role_type, role, department, departments, designation, designations, password, employee_id } = req.body;
+
+  if (!name || !email) {
+    return res.status(400).json({ error: 'Employee name and email are required.' });
   }
 
   const existing = db.findOne('users', (u) => u.email.toLowerCase() === email.toLowerCase());
@@ -1695,13 +1873,33 @@ app.post('/api/admin/staff', authenticate, authorize(['admin', 'manager']), (req
     return res.status(400).json({ error: 'A user with this email already exists.' });
   }
 
+  const isOps = (role_type === 'operations' || role === 'operations' || (designation && designation.toLowerCase() === 'operations'));
+  const effectiveRoleType = isOps ? 'operations' : 'sales';
+  const effectiveRole = effectiveRoleType;
+  const effectiveDesignation = isOps ? 'Operations' : 'Sales';
+
+  const effectiveEmployeeId = (employee_id && employee_id.trim())
+    ? employee_id.trim()
+    : getNextStandardEmployeeId(isOps, agencyId);
+
+  const effectivePassword = password || generateAutoPassword();
+
+  const deptList = Array.isArray(departments) && departments.length > 0
+    ? departments
+    : (department ? department.split(',').map((s) => s.trim()) : (isOps ? ['Travel & Transportation Operations'] : ['Holidays & International']));
+
+  const desigList = Array.isArray(designations) && designations.length > 0
+    ? designations
+    : [effectiveDesignation];
+
   const newStaff = db.insert('users', {
     agency_id: agencyId,
-    role: 'staff',
+    role: effectiveRole,
+    display_id: effectiveEmployeeId,
     name,
     email: email.toLowerCase(),
     phone: phone || '',
-    password_hash: bcrypt.hashSync(password, 10),
+    password_hash: bcrypt.hashSync(effectivePassword, 10),
     status: 'active',
     avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80'
   });
@@ -1709,40 +1907,90 @@ app.post('/api/admin/staff', authenticate, authorize(['admin', 'manager']), (req
   const profile = db.insert('staff_profiles', {
     user_id: newStaff.id,
     agency_id: agencyId,
-    employee_id: employee_id || `TG-EMP-${Math.floor(100 + Math.random() * 900)}`,
-    department: department || 'Holidays',
-    designation: designation || 'Travel Consultant',
+    employee_id: effectiveEmployeeId,
+    role_type: effectiveRoleType,
+    department: deptList.join(', '),
+    departments: deptList,
+    designation: effectiveDesignation,
+    designations: desigList,
     assigned_leads_count: 0,
     converted_leads_count: 0,
     rating: 5.0
   });
 
+  const baseUrl = process.env.APP_URL || 'http://localhost:3000';
+  const invitationLink = `${baseUrl}/login?email=${encodeURIComponent(email.toLowerCase())}&role=${effectiveRole}`;
+
+  // Dispatch Invitation Email with credentials in background
+  emailService.sendStaffInvitationEmail({
+    agency_id: agencyId || 'agency_travel_genie',
+    to: email.toLowerCase(),
+    name,
+    employee_id: effectiveEmployeeId,
+    designation: effectiveDesignation,
+    temporary_password: effectivePassword,
+    app_url: baseUrl
+  }).catch((emailErr) => {
+    console.warn('[EMAIL DISPATCH ERROR]', emailErr.message || emailErr);
+  });
+
   const { password_hash, ...safeStaff } = newStaff;
-  res.status(201).json({ ...safeStaff, profile });
+  res.status(201).json({
+    ...safeStaff,
+    profile,
+    invitation_link: invitationLink,
+    temporary_password: effectivePassword
+  });
 });
 
 // Admin Toggle Staff Status
 app.put('/api/admin/staff/:id', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const staff = db.findById('users', req.params.id);
-  if (!staff || staff.agency_id !== req.user.agency_id || staff.role !== 'staff') {
+  if (!staff || (staff.agency_id && staff.agency_id !== req.user.agency_id) || (staff.role !== 'staff' && staff.role !== 'sales' && staff.role !== 'operations')) {
     return res.status(404).json({ error: 'Staff member not found.' });
   }
 
-  const { status, name, phone, department, designation, password } = req.body;
+  const { status, name, phone, role_type, role, department, departments, designation, designations, password, employee_id } = req.body;
   const updateData = {};
   if (status) updateData.status = status;
   if (name) updateData.name = name;
   if (phone) updateData.phone = phone;
+  if (employee_id && employee_id.trim()) updateData.display_id = employee_id.trim();
+  if (role_type || role) {
+    updateData.role = (role_type === 'operations' || role === 'operations') ? 'operations' : 'sales';
+  }
   if (password) updateData.password_hash = bcrypt.hashSync(password, 10);
 
-  const updatedUser = db.update('users', staff.id, updateData);
+  const updatedUser = Object.keys(updateData).length > 0 ? db.update('users', staff.id, updateData) : staff;
 
   let profile = db.findOne('staff_profiles', (sp) => sp.user_id === staff.id);
-  if (profile && (department || designation)) {
-    profile = db.update('staff_profiles', profile.id, {
-      department: department || profile.department,
-      designation: designation || profile.designation
-    });
+  if (profile) {
+    const profileUpdates = {};
+    if (employee_id && employee_id.trim()) {
+      profileUpdates.employee_id = employee_id.trim();
+    }
+    if (role_type || role) {
+      profileUpdates.role_type = (role_type === 'operations' || role === 'operations') ? 'operations' : 'sales';
+    }
+    if (departments) {
+      profileUpdates.departments = Array.isArray(departments) ? departments : [departments];
+      profileUpdates.department = profileUpdates.departments.join(', ');
+    } else if (department) {
+      profileUpdates.department = department;
+      profileUpdates.departments = department.split(',').map((s) => s.trim());
+    }
+
+    if (designations) {
+      profileUpdates.designations = Array.isArray(designations) ? designations : [designations];
+      profileUpdates.designation = profileUpdates.designations.join(', ');
+    } else if (designation) {
+      profileUpdates.designation = designation;
+      profileUpdates.designations = designation.split(',').map((s) => s.trim());
+    }
+
+    if (Object.keys(profileUpdates).length > 0) {
+      profile = db.update('staff_profiles', profile.id, profileUpdates);
+    }
   }
 
   const { password_hash, ...safeStaff } = updatedUser;

@@ -142,17 +142,19 @@ export const Contact: React.FC = () => {
       </section>
 
       {/* Main Content */}
-      <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 pt-14">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+      <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 pt-10 sm:pt-14">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
           {/* Contact Details Column */}
-          <div className="lg:col-span-5 space-y-6">
-            <div>
-              <h2 className="text-2xl font-bold text-[#082C43] font-display">
+          <div className="lg:col-span-5">
+            <div className="bg-white rounded-2xl sm:rounded-3xl border border-[#EFE7DA] p-6 sm:p-8 shadow-xl">
+              <h3 className="text-xl font-bold text-[#082C43] font-display mb-1">
                 Headquarters & Regional Offices
-              </h2>
-            </div>
+              </h3>
+              <p className="text-xs text-[#173247]/70 mb-6">
+                Visit our office or reach our customer reservation consultants directly.
+              </p>
 
-            <div className="p-6 rounded-2xl bg-white border border-[#EFE7DA] shadow-xs space-y-5">
+              <div className="space-y-5">
               {/* Head Office Address */}
               <div className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-[#FF795C] shrink-0 mt-0.5" />
@@ -268,10 +270,11 @@ export const Contact: React.FC = () => {
               </div>
             </div>
           </div>
+        </div>
 
           {/* Contact Form */}
           <div className="lg:col-span-7">
-            <div className="bg-white rounded-3xl border border-[#EFE7DA] p-8 shadow-xl">
+            <div className="bg-white rounded-2xl sm:rounded-3xl border border-[#EFE7DA] p-6 sm:p-8 shadow-xl">
               <h3 className="text-xl font-bold text-[#082C43] font-display mb-1">
                 Send Us An Online Message
               </h3>

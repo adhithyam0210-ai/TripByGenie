@@ -392,6 +392,86 @@ B2B Partnership Team`;
       activation_link: activationLink
     };
   }
+
+  /**
+   * Send Staff Consultant / Operations Onboarding Invitation with Credentials
+   */
+  async sendStaffInvitationEmail({ agency_id, to, name, employee_id, designation, temporary_password, app_url }) {
+    const baseUrl = app_url || process.env.APP_URL || 'http://localhost:3000';
+    const isOps = designation && designation.toLowerCase().includes('operation');
+    const dashboardType = isOps ? 'Operations Dashboard' : 'Sales Dashboard';
+    const loginLink = `${baseUrl}/login?email=${encodeURIComponent(to)}&role=${isOps ? 'operations' : 'staff'}`;
+    const companyName = 'Trip by Genie';
+    const subject = `Welcome to ${companyName} – Your ${designation} Account Credentials & Access Link`;
+
+    const content = `Dear ${name},
+
+Welcome to the ${companyName} Team!
+Your staff account has been provisioned with ${designation} designation and access to the ${dashboardType}.
+
+Your Official Account Credentials:
+• Employee ID: ${employee_id}
+• Corporate Email: ${to}
+• Designation: ${designation} (${dashboardType})
+• Temporary Password: ${temporary_password}
+
+Direct Access & Login Link:
+${loginLink}
+
+Please log in using the temporary credentials above. You can update your password under your profile settings upon initial login.
+
+Key Responsibilities & System Access:
+${isOps 
+  ? '• Operations Execution: Manage vehicle fleet allocations, transfers, booking logistics, and travels enquiries.'
+  : '• Sales Management: Manage traveler inquiries, design custom holiday itineraries, and issue tour quotations.'}
+
+Best Regards,
+${companyName} Management & Operations Team`;
+
+    console.log(`[EMAIL DISPATCH] Sent Staff Account Invitation to ${to} (Employee ID: ${employee_id}, Designation: ${designation})`);
+
+    await this.sendMail({
+      to,
+      subject,
+      text: content,
+      html: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #EFE7DA; border-radius: 16px; background-color: #FFFDF8;">
+        <h2 style="color: #082C43; margin-top: 0;">Welcome to ${companyName}!</h2>
+        <p style="color: #333; line-height: 1.6;">Dear <strong>${name}</strong>,</p>
+        <p style="color: #333; line-height: 1.6;">Your staff employee account has been created by Management. You have been assigned to the <strong>${designation}</strong> department with full access to the <strong>${dashboardType}</strong>.</p>
+        
+        <div style="background-color: #F8F1E7; padding: 18px; border-radius: 12px; margin: 20px 0; border-left: 4px solid #17648A;">
+          <p style="margin: 4px 0; color: #082C43;"><strong>Employee ID:</strong> <span style="font-family: monospace; font-size: 14px; font-weight: bold; color: #17648A;">${employee_id}</span></p>
+          <p style="margin: 4px 0; color: #082C43;"><strong>Corporate Email:</strong> ${to}</p>
+          <p style="margin: 4px 0; color: #082C43;"><strong>Designation:</strong> ${designation}</p>
+          <p style="margin: 4px 0; color: #082C43;"><strong>Temporary Password:</strong> <code style="background: #fff; padding: 2px 6px; border-radius: 4px; font-weight: bold; color: #D946EF;">${temporary_password}</code></p>
+        </div>
+
+        <div style="text-align: center; margin: 30px 0;">
+          <a href="${loginLink}" style="background-color: #FF795C; color: white; padding: 14px 28px; text-decoration: none; font-weight: bold; border-radius: 12px; display: inline-block;">Log In to Staff Portal</a>
+        </div>
+
+        <p style="color: #666; font-size: 12px; line-height: 1.5;">Direct link:<br/><a href="${loginLink}" style="color: #17648A;">${loginLink}</a></p>
+        <p style="color: #888; font-size: 11px;">(Please change your password after initial sign-in under Profile Settings.)</p>
+        
+        <hr style="border: none; border-top: 1px solid #EFE7DA; margin: 24px 0;" />
+        <p style="color: #999; font-size: 11px; margin-bottom: 0;">${companyName} Management Team</p>
+      </div>`
+    });
+
+    const log = db.logEmail(agency_id, to, subject, 'STAFF_ACCOUNT_INVITATION', 'DELIVERED', {
+      employee_id,
+      employee_name: name,
+      designation,
+      login_link: loginLink
+    });
+
+    return {
+      success: true,
+      email_id: log.id,
+      subject,
+      login_link: loginLink
+    };
+  }
 }
 
 const emailService = new EmailService();

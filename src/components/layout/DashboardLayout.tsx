@@ -179,11 +179,9 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
-  const [isAgencyDropdownOpen, setIsAgencyDropdownOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [isSignOutConfirmOpen, setIsSignOutConfirmOpen] = useState(false);
   const [notifications, setNotifications] = useState<AppNotification[]>([]);
-  const [agenciesList, setAgenciesList] = useState<any[]>([]);
 
   // Grouped management dropdowns for Manager and Admin
   const [managementDropdowns, setManagementDropdowns] = useState<Record<string, boolean>>({
@@ -229,7 +227,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   useEffect(() => {
     setIsMobileSidebarOpen(false);
     fetchNotifications();
-    fetchAgencies();
   }, [location.pathname]);
 
   // Reset any global overflow lock on initial mount and route change
@@ -260,25 +257,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       setNotifications(data);
     } catch (e) {
       // ignore
-    }
-  };
-
-  const fetchAgencies = async () => {
-    try {
-      const data = await api.getAgencies();
-      setAgenciesList(data);
-    } catch (e) {
-      // ignore
-    }
-  };
-
-  const handleSwitchAgency = async (agencyId: string) => {
-    try {
-      await switchAgency(agencyId);
-      setIsAgencyDropdownOpen(false);
-      success('Switched agency context successfully!');
-    } catch (err: any) {
-      error(err.message || 'Failed to switch agency');
     }
   };
 
@@ -767,43 +745,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                   <span>Public Website</span>
                   <ExternalLink className="w-3 h-3 opacity-70" />
                 </Link>
-
-                {/* Multi-Agency Switcher (Tenant isolation test helper) */}
-                <div className="relative">
-                  <button
-                    onClick={() => setIsAgencyDropdownOpen(!isAgencyDropdownOpen)}
-                    className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-[#EFE7DA] bg-[#F8F1E7]/50 hover:bg-[#F8F1E7] text-xs font-semibold text-[#485264] transition-colors cursor-pointer"
-                  >
-                    <Building2 className="w-3.5 h-3.5 text-[#17648A]" />
-                    <span className="hidden md:inline truncate max-w-[130px]">
-                      {agency?.name ? agency.name.split(' ')[0] : 'Agency'}
-                    </span>
-                    <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
-                  </button>
-
-                  {isAgencyDropdownOpen && (
-                    <div className="absolute right-0 top-full mt-1.5 w-64 bg-white rounded-xl shadow-xl border border-[#EFE7DA] p-2 z-40 text-xs">
-                      <div className="px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                        Switch Agency Tenant
-                      </div>
-                      {agenciesList.map((a) => (
-                        <button
-                          key={a.id}
-                          onClick={() => handleSwitchAgency(a.id)}
-                          className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg hover:bg-[#F8F1E7] text-left cursor-pointer transition-colors"
-                        >
-                          <div>
-                            <div className="font-bold text-[#485264]">{a.name}</div>
-                            <div className="text-[10px] text-slate-400">{a.slug}</div>
-                          </div>
-                          {agency?.id === a.id && (
-                            <Check className="w-4 h-4 text-[#55C9BD] shrink-0" />
-                          )}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
 
                 {/* Quick Demo Switcher Pill (1-click test of all 6 roles) */}
                 <div className="hidden xl:flex items-center gap-1 bg-[#F8F1E7] p-1 rounded-xl border border-[#EFE7DA] text-xs">

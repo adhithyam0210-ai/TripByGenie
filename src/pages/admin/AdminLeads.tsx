@@ -12,7 +12,12 @@ import {
   ChevronDown,
   CheckSquare,
   Square,
-  Filter
+  Filter,
+  AlertCircle,
+  CheckCircle2,
+  ShieldAlert,
+  Globe,
+  Car
 } from 'lucide-react';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { StatusBadge } from '../../components/common/Badge';
@@ -22,6 +27,11 @@ import { Pagination } from '../../components/common/Pagination';
 import { api } from '../../services/api';
 import { Lead, User } from '../../types';
 import { useToast } from '../../context/ToastContext';
+import {
+  getLeadEnquiryType,
+  checkStaffLeadEligibility,
+  checkStaffBatchEligibility
+} from '../../utils/leadEligibility';
 
 export const AdminLeads: React.FC = () => {
   const { success, error } = useToast();
@@ -154,6 +164,18 @@ export const AdminLeads: React.FC = () => {
       return;
     }
 
+    if (assignStaffId) {
+      const targetStaff = staffList.find((s) => s.id === assignStaffId);
+      const targetLeads = leads.filter((l) => selectedLeadIds.includes(l.id));
+      if (targetStaff && targetLeads.length > 0) {
+        const check = checkStaffBatchEligibility(targetStaff, targetLeads);
+        if (!check.eligible) {
+          error(check.reason || 'Selected staff is not eligible for these enquiries.');
+          return;
+        }
+      }
+    }
+
     try {
       await api.assignLeads({
         lead_ids: selectedLeadIds,
@@ -175,6 +197,20 @@ export const AdminLeads: React.FC = () => {
     if (!createForm.customer_name) {
       error('Customer name is required.');
       return;
+    }
+
+    if (createForm.assigned_staff_id) {
+      const targetStaff = staffList.find((s) => s.id === createForm.assigned_staff_id);
+      if (targetStaff) {
+        const check = checkStaffLeadEligibility(targetStaff, {
+          interested_destination: createForm.interested_destination,
+          notes: createForm.notes
+        });
+        if (!check.eligible) {
+          error(check.reason || 'Selected staff is not eligible for this enquiry.');
+          return;
+        }
+      }
     }
 
     try {
@@ -530,19 +566,53 @@ export const AdminLeads: React.FC = () => {
                 </div>
 
                 {/* Quick Reassignment from Drawer */}
-                <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs flex items-center justify-between">
-                  <span className="font-bold text-[#082C43]">Reassign Lead:</span>
+                <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs flex flex-col gap-2">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-[#082C43]">Reassign Lead:</span>
+                    <span className="text-[10px] font-semibold text-[#17648A] uppercase">
+                      {getLeadEnquiryType(selectedLead)} Enquiry
+                    </span>
+                  </div>
                   <select
                     value={selectedLead.assigned_staff_id || ''}
                     onChange={async (e) => {
                       const staffId = e.target.value;
+                      if (!staffId) {
+                        try {
+                          await api.assignLeads({
+                            lead_ids: [selectedLead.id],
+                            staff_id: '',
+                            notes: 'Unassigned via lead drawer.'
+                          });
+                          success('Lead unassigned.');
+                          loadLeads();
+                          setSelectedLead((prev) => prev ? {
+                            ...prev,
+                            assigned_staff_id: null,
+                            assigned_staff_name: 'Unassigned',
+                            status: 'Unassigned'
+                          } : null);
+                        } catch (err: any) {
+                          error(err.message || 'Failed to unassign lead.');
+                        }
+                        return;
+                      }
+
+                      const assignedStaff = staffList.find((s) => s.id === staffId);
+                      if (assignedStaff) {
+                        const check = checkStaffLeadEligibility(assignedStaff, selectedLead);
+                        if (!check.eligible) {
+                          error(check.reason || 'Staff member is not eligible for this enquiry.');
+                          return;
+                        }
+                      }
+
                       try {
                         await api.assignLeads({
                           lead_ids: [selectedLead.id],
                           staff_id: staffId,
                           notes: 'Reassigned via lead drawer.'
                         });
-                        const assignedStaff = staffList.find((s) => s.id === staffId);
                         const assignedName = assignedStaff ? assignedStaff.name : 'Unassigned';
                         success(`Lead reassigned to ${assignedName}.`);
                         loadLeads();
@@ -550,20 +620,24 @@ export const AdminLeads: React.FC = () => {
                           ...prev,
                           assigned_staff_id: staffId,
                           assigned_staff_name: assignedName,
-                          status: staffId ? 'Assigned' : 'Unassigned'
+                          status: 'Assigned'
                         } : null);
                       } catch (err: any) {
                         error(err.message || 'Failed to reassign lead.');
                       }
                     }}
-                    className="p-1.5 rounded-lg border border-[#EFE7DA] bg-white font-semibold text-xs"
+                    className="p-2 rounded-lg border border-[#EFE7DA] bg-white font-semibold text-xs text-[#082C43]"
                   >
                     <option value="">-- Unassigned --</option>
-                    {staffList.map((s) => (
-                      <option key={s.id} value={s.id}>
-                        {s.name} ({s.email.split('@')[0]})
-                      </option>
-                    ))}
+                    {staffList.map((s) => {
+                      const check = checkStaffLeadEligibility(s, selectedLead);
+                      return (
+                        <option key={s.id} value={s.id} disabled={!check.eligible}>
+                          {check.eligible ? '✓ ' : '✕ '} {s.name} ({s.profile?.role_type === 'operations' || s.role === 'operations' ? 'Ops' : 'Sales'} • {s.profile?.department || s.department || 'General'})
+                          {!check.eligible ? ` [Ineligible]` : ''}
+                        </option>
+                      );
+                    })}
                   </select>
                 </div>
 
@@ -590,53 +664,146 @@ export const AdminLeads: React.FC = () => {
       </div>
 
       {/* Bulk / Single Lead Assignment Modal */}
-      {isAssignModalOpen && (
-        <Modal
-          isOpen={isAssignModalOpen}
-          onClose={() => setIsAssignModalOpen(false)}
-          title={`Assign ${selectedLeadIds.length} Lead(s) to Staff Consultant`}
-          subtitle="Selected consultants receive immediate in-app notification."
-        >
-          <form onSubmit={handleAssignSubmit} className="space-y-4 text-xs">
-            <div>
-              <label className="font-bold text-[#082C43] block mb-1">Select Travel Consultant *</label>
-              <select
-                required
-                value={assignStaffId}
-                onChange={(e) => setAssignStaffId(e.target.value)}
-                className="w-full p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:outline-none"
-              >
-                <option value="">-- Select Staff Member --</option>
-                {staffList.map((s: any) => (
-                  <option key={s.id} value={s.id}>
-                    {s.name} • {s.department || 'Travel Desk'} {s.assignedLeadsCount !== undefined ? `(${s.assignedLeadsCount} leads active)` : ''}
-                  </option>
-                ))}
-              </select>
-            </div>
+      {isAssignModalOpen && (() => {
+        const selectedLeads = leads.filter((l) => selectedLeadIds.includes(l.id));
+        const leadTypes = Array.from(new Set(selectedLeads.map((l) => getLeadEnquiryType(l))));
+        const selectedStaffObj = staffList.find((s) => s.id === assignStaffId);
+        const selectedStaffEligibility = selectedStaffObj ? checkStaffBatchEligibility(selectedStaffObj, selectedLeads) : null;
 
-            <div>
-              <label className="font-bold text-[#082C43] block mb-1">Assignment Directive / Notes</label>
-              <textarea
-                rows={3}
-                placeholder="Priority honeymoon lead, contact client immediately on WhatsApp..."
-                value={assignNotes}
-                onChange={(e) => setAssignNotes(e.target.value)}
-                className="w-full p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:outline-none resize-none"
-              />
-            </div>
+        return (
+          <Modal
+            isOpen={isAssignModalOpen}
+            onClose={() => setIsAssignModalOpen(false)}
+            title={`Assign ${selectedLeadIds.length} Lead(s) to Staff Member`}
+            subtitle="Smart assignment enforces departmental credentials and role-specific access rules."
+            maxWidth="lg"
+          >
+            <form onSubmit={handleAssignSubmit} className="space-y-4 text-xs">
+              {/* Lead Context & Policy Notice Banner */}
+              <div className="p-3 bg-[#F8F1E7]/50 rounded-xl border border-[#EFE7DA] space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-[#082C43] uppercase text-[11px] tracking-wider">
+                    Enquiry Scope & Constraints
+                  </span>
+                  <div className="flex flex-wrap gap-1.5">
+                    {leadTypes.map((t) => (
+                      <span
+                        key={t}
+                        className={`px-2 py-0.5 rounded-md font-bold text-[10px] uppercase border ${
+                          t === 'international'
+                            ? 'bg-blue-100 text-blue-800 border-blue-200'
+                            : t === 'travels'
+                            ? 'bg-purple-100 text-purple-800 border-purple-200'
+                            : 'bg-amber-100 text-amber-800 border-amber-200'
+                        }`}
+                      >
+                        {t === 'international' ? '🌍 International Package' : t === 'travels' ? '🚗 Travels & Transport' : '🏔️ Domestic Tour'}
+                      </span>
+                    ))}
+                  </div>
+                </div>
 
-            <div className="pt-2 flex justify-end gap-2">
-              <Button type="button" variant="ghost" size="sm" onClick={() => setIsAssignModalOpen(false)}>
-                Cancel
-              </Button>
-              <Button type="submit" variant="primary" size="sm" leftIcon={<UserCheck className="w-3.5 h-3.5" />}>
-                Confirm Assignment
-              </Button>
-            </div>
-          </form>
-        </Modal>
-      )}
+                <div className="text-[11px] text-slate-600 leading-relaxed space-y-1">
+                  {leadTypes.includes('international') && (
+                    <p className="text-blue-700">
+                      • <strong>International Package Policy:</strong> Can ONLY be assigned to staff in <em>Holidays & International</em>. Staff assigned strictly to domestic tours cannot accept this enquiry.
+                    </p>
+                  )}
+                  {leadTypes.includes('travels') && (
+                    <p className="text-purple-700">
+                      • <strong>Travels Enquiry Policy:</strong> Operations staff manage cab rentals, tempo travels, and vehicle logistics.
+                    </p>
+                  )}
+                  {!leadTypes.includes('travels') && (
+                    <p className="text-slate-500">
+                      • <strong>Operations Staff Restriction:</strong> Operations staff can ONLY be assigned to travels and logistics enquiries.
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <label className="font-bold text-[#082C43] block mb-1">Select Staff Member *</label>
+                <select
+                  required
+                  value={assignStaffId}
+                  onChange={(e) => setAssignStaffId(e.target.value)}
+                  className="w-full p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:outline-none font-semibold text-xs text-[#082C43]"
+                >
+                  <option value="">-- Select Eligible Staff Member --</option>
+                  {staffList.map((s: any) => {
+                    const check = checkStaffBatchEligibility(s, selectedLeads);
+                    const isOps = s.role === 'operations' || s.profile?.role_type === 'operations';
+                    return (
+                      <option
+                        key={s.id}
+                        value={s.id}
+                        disabled={!check.eligible}
+                        className={!check.eligible ? 'text-slate-400 bg-slate-100' : 'text-[#082C43] font-semibold'}
+                      >
+                        {check.eligible ? '✓ ' : '✕ [Ineligible] '}
+                        {s.name} • {isOps ? 'Operations' : 'Sales'} • {s.profile?.department || s.department || 'Travel Desk'}
+                        {!check.eligible ? ` (${check.badgeLabel})` : ''}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+
+              {/* Dynamic Eligibility Feedback Box */}
+              {selectedStaffObj && (
+                selectedStaffEligibility?.eligible ? (
+                  <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 mt-0.5 shrink-0" />
+                    <div>
+                      <strong className="block text-xs">Eligible for Lead Allocation</strong>
+                      <span className="text-[11px] text-emerald-700 leading-normal">
+                        {selectedStaffObj.name} holds all verified credentials required to manage this enquiry.
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-rose-800 flex items-start gap-2.5">
+                    <ShieldAlert className="w-4 h-4 text-rose-600 mt-0.5 shrink-0" />
+                    <div>
+                      <strong className="block text-xs">Assignment Restricted by Policy</strong>
+                      <span className="text-[11px] text-rose-700 leading-normal">
+                        {selectedStaffEligibility?.reason}
+                      </span>
+                    </div>
+                  </div>
+                )
+              )}
+
+              <div>
+                <label className="font-bold text-[#082C43] block mb-1">Assignment Directive / Notes</label>
+                <textarea
+                  rows={2}
+                  placeholder="Priority lead, contact client immediately on WhatsApp..."
+                  value={assignNotes}
+                  onChange={(e) => setAssignNotes(e.target.value)}
+                  className="w-full p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:outline-none resize-none"
+                />
+              </div>
+
+              <div className="pt-2 flex justify-end gap-2">
+                <Button type="button" variant="ghost" size="sm" onClick={() => setIsAssignModalOpen(false)}>
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  variant="primary"
+                  size="sm"
+                  disabled={!assignStaffId || (selectedStaffEligibility !== null && !selectedStaffEligibility.eligible)}
+                  leftIcon={<UserCheck className="w-3.5 h-3.5" />}
+                >
+                  Confirm Assignment
+                </Button>
+              </div>
+            </form>
+          </Modal>
+        );
+      })()}
 
       {/* Create Direct Lead Modal */}
       {isCreateModalOpen && (
@@ -687,7 +854,7 @@ export const AdminLeads: React.FC = () => {
                 <label className="font-bold text-[#082C43] block mb-1">Interested Destination</label>
                 <input
                   type="text"
-                  placeholder="e.g. Kashmir, Switzerland"
+                  placeholder="e.g. Kashmir, Switzerland, Cab Rental"
                   value={createForm.interested_destination}
                   onChange={(e) => setCreateForm({ ...createForm, interested_destination: e.target.value })}
                   className="w-full p-2 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8]"
@@ -722,11 +889,18 @@ export const AdminLeads: React.FC = () => {
                   className="w-full p-2 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8]"
                 >
                   <option value="">Leave Unassigned</option>
-                  {staffList.map((s) => (
-                    <option key={s.id} value={s.id}>
-                      {s.name}
-                    </option>
-                  ))}
+                  {staffList.map((s) => {
+                    const check = checkStaffLeadEligibility(s, {
+                      interested_destination: createForm.interested_destination,
+                      notes: createForm.notes
+                    });
+                    return (
+                      <option key={s.id} value={s.id} disabled={!check.eligible}>
+                        {check.eligible ? '✓ ' : '✕ '} {s.name} ({s.profile?.role_type === 'operations' || s.role === 'operations' ? 'Ops' : 'Sales'})
+                        {!check.eligible ? ' [Ineligible]' : ''}
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
             </div>
