@@ -365,14 +365,16 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
           </div>
 
           {/* Desktop Navigation Links — Compact Blue Pill Buttons */}
-            <nav className="hidden xl:flex items-center gap-2 2xl:gap-3">
-              {/* 1. Home */}
-              <Link
-                to="/"
-                onClick={handleHomeClick}
-                      ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-sm'
-                      : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
-                    }`}
+          <nav className="hidden xl:flex items-center gap-2 2xl:gap-3">
+            {/* 1. Home */}
+            <Link
+              to="/"
+              onClick={handleHomeClick}
+              className={`px-4 py-2 2xl:px-4.5 2xl:py-2.5 rounded-full text-[13px] 2xl:text-sm font-bold tracking-tight transition-all shadow-xs flex items-center justify-center whitespace-nowrap ${
+                location.pathname === '/'
+                  ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-sm'
+                  : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
+              }`}
             >
               Home
             </Link>
@@ -380,10 +382,11 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
             {/* 2. About Us */}
             <Link
               to="/about"
-                className = {`px-4 py-2 2xl:px-4.5 2xl:py-2.5 rounded-full text-[13px] 2xl:text-sm font-bold tracking-tight transition-all shadow-xs flex items-center justify-center whitespace-nowrap ${location.pathname === '/about'
-                    ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-sm'
-                    : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
-                  }`}
+              className={`px-4 py-2 2xl:px-4.5 2xl:py-2.5 rounded-full text-[13px] 2xl:text-sm font-bold tracking-tight transition-all shadow-xs flex items-center justify-center whitespace-nowrap ${
+                location.pathname === '/about'
+                  ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-sm'
+                  : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
+              }`}
             >
               About Us
             </Link>
@@ -393,9 +396,11 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
               <button
                 type="button"
                 onClick={() => setActiveDropdown(activeDropdown === 'packages' ? null : 'packages')}
-                      ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-sm'
-                      : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
-                    }`}
+                className={`px-4 py-2 2xl:px-4.5 2xl:py-2.5 rounded-full text-[13px] 2xl:text-sm font-bold tracking-tight transition-all shadow-xs flex items-center gap-1.5 justify-center whitespace-nowrap ${
+                  location.pathname === '/packages' || activeDropdown === 'packages'
+                    ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-sm'
+                    : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
+                }`}
               >
                 <span>Packages</span>
                 <span className="text-[10px] 2xl:text-[11px] transform translate-y-[0.5px]">▼</span>
@@ -475,9 +480,11 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
               <button
                 type="button"
                 onClick={() => setActiveDropdown(activeDropdown === 'india' ? null : 'india')}
-          ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-sm'
-          : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
-        }`}
+                className={`px-4 py-2 2xl:px-4.5 2xl:py-2.5 rounded-full text-[13px] 2xl:text-sm font-bold tracking-tight transition-all shadow-xs flex items-center gap-1.5 justify-center whitespace-nowrap ${
+                  location.pathname === '/destinations' || activeDropdown === 'india'
+                    ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-sm'
+                    : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
+                }`}
               >
                 <span>India</span>
                 <span className="text-[10px] 2xl:text-[11px] transform translate-y-[0.5px]">▼</span>
@@ -517,7 +524,7 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
                           {col.spots.map((spot) => (
                             <li key={spot}>
                               <Link
-                                to={`/ destinations / ${getDestinationSlug(spot)}`}
+                                to={`/destinations/${getDestinationSlug(spot)}`}
                                 onClick={() => setActiveDropdown(null)}
                                 className="text-xs text-gray-700 hover:text-[#FF795C] hover:translate-x-1 transition-all flex items-center justify-between py-0.5 group"
                               >
@@ -554,104 +561,106 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
               <button
                 type="button"
                 onClick={() => setActiveDropdown(activeDropdown === 'honeymoon' ? null : 'honeymoon')}
-  className = {`px-4 py-2 2xl:px-4.5 2xl:py-2.5 rounded-full text-[13px] 2xl:text-sm font-bold tracking-tight transition-all shadow-xs flex items-center gap-1.5 justify-center whitespace-nowrap ${location.pathname === '/honeymoon' || activeDropdown === 'honeymoon'
-      ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-sm'
-      : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
-    }`
-}
+                className={`px-4 py-2 2xl:px-4.5 2xl:py-2.5 rounded-full text-[13px] 2xl:text-sm font-bold tracking-tight transition-all shadow-xs flex items-center gap-1.5 justify-center whitespace-nowrap ${
+                  location.pathname === '/honeymoon' || activeDropdown === 'honeymoon'
+                    ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-sm'
+                    : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
+                }`}
               >
                 <span>Honeymoon</span>
                 <span className="text-[10px] 2xl:text-[11px] transform translate-y-[0.5px]">▼</span>
-              </button >
+              </button>
 
-  { activeDropdown === 'honeymoon' && (
-    <div
-      className="dropdown-scroll-box absolute top-full mt-2 right-0 2xl:left-1/2 2xl:-translate-x-1/2 w-[620px] max-w-[calc(100vw-32px)] max-h-[calc(100vh-100px)] overflow-y-auto overscroll-contain bg-white rounded-3xl shadow-2xl border border-[#EFE7DA] p-6 animate-in fade-in slide-in-from-top-2 duration-200 text-[#082C43] z-50"
-      style={{ overscrollBehavior: 'contain', scrollbarWidth: 'thin' }}
-      onWheel={(e) => e.stopPropagation()}
-    >
-      <div className="flex items-center justify-between border-b border-gray-100 pb-3 mb-4">
-        <div className="flex items-center gap-2">
-          <Heart className="w-5 h-5 text-rose-500 fill-rose-500" />
-          <span className="text-sm font-bold uppercase tracking-wider text-[#082C43]">
-            Handpicked Honeymoon Packages
-          </span>
-        </div>
-        <Link
-          to="/honeymoon"
-          onClick={() => setActiveDropdown(null)}
-          className="text-xs font-bold text-[#FF795C] hover:underline"
-        >
-          All Honeymoon Tours →
-        </Link>
-      </div>
+              {activeDropdown === 'honeymoon' && (
+                <div
+                  className="dropdown-scroll-box absolute top-full mt-2 right-0 2xl:left-1/2 2xl:-translate-x-1/2 w-[620px] max-w-[calc(100vw-32px)] max-h-[calc(100vh-100px)] overflow-y-auto overscroll-contain bg-white rounded-3xl shadow-2xl border border-[#EFE7DA] p-6 animate-in fade-in slide-in-from-top-2 duration-200 text-[#082C43] z-50"
+                  style={{ overscrollBehavior: 'contain', scrollbarWidth: 'thin' }}
+                  onWheel={(e) => e.stopPropagation()}
+                >
+                  <div className="flex items-center justify-between border-b border-gray-100 pb-3 mb-4">
+                    <div className="flex items-center gap-2">
+                      <Heart className="w-5 h-5 text-rose-500 fill-rose-500" />
+                      <span className="text-sm font-bold uppercase tracking-wider text-[#082C43]">
+                        Handpicked Honeymoon Packages
+                      </span>
+                    </div>
+                    <Link
+                      to="/honeymoon"
+                      onClick={() => setActiveDropdown(null)}
+                      className="text-xs font-bold text-[#FF795C] hover:underline"
+                    >
+                      All Honeymoon Tours →
+                    </Link>
+                  </div>
 
-      <div className="grid grid-cols-2 gap-6">
-        {honeymoonDestinations.map((col) => (
-          <div key={col.type} className="space-y-2">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-[#17648A] border-b border-gray-100 pb-1">
-              {col.type}
-            </h4>
-            <ul className="space-y-1">
-              {col.spots.map((spot) => (
-                <li key={spot}>
-                  <Link
-                    to={`/destinations/${getDestinationSlug(spot)}`}
-                    onClick={() => setActiveDropdown(null)}
-                    className="text-xs text-gray-700 hover:text-[#FF795C] hover:translate-x-1 transition-all flex items-center justify-between py-0.5 group"
-                  >
-                    <span>{spot}</span>
-                    <span className="text-[10px] text-gray-300 group-hover:text-[#FF795C]">›</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-    </div>
-  )}
-            </div >
+                  <div className="grid grid-cols-2 gap-6">
+                    {honeymoonDestinations.map((col) => (
+                      <div key={col.type} className="space-y-2">
+                        <h4 className="text-xs font-bold uppercase tracking-wider text-[#17648A] border-b border-gray-100 pb-1">
+                          {col.type}
+                        </h4>
+                        <ul className="space-y-1">
+                          {col.spots.map((spot) => (
+                            <li key={spot}>
+                              <Link
+                                to={`/destinations/${getDestinationSlug(spot)}`}
+                                onClick={() => setActiveDropdown(null)}
+                                className="text-xs text-gray-700 hover:text-[#FF795C] hover:translate-x-1 transition-all flex items-center justify-between py-0.5 group"
+                              >
+                                <span>{spot}</span>
+                                <span className="text-[10px] text-gray-300 group-hover:text-[#FF795C]">›</span>
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
 
-  {/* 6. Tickets Bookings (Direct link button, no dropdown) */ }
-  < Link
-to = "/services"
-onClick = {() => setActiveDropdown(null)}
-      ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-sm'
-      : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
-    }`}
+            {/* 6. Tickets Bookings (Direct link button, no dropdown) */}
+            <Link
+              to="/services"
+              onClick={() => setActiveDropdown(null)}
+              className={`px-4 py-2 2xl:px-4.5 2xl:py-2.5 rounded-full text-[13px] 2xl:text-sm font-bold tracking-tight transition-all shadow-xs flex items-center justify-center whitespace-nowrap ${
+                location.pathname === '/services'
+                  ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-sm'
+                  : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
+              }`}
             >
               Tickets Bookings
             </Link>
 
-            {/* 8. Contact Us */}
+            {/* 7. Contact Us */}
             <Link
               to="/contact"
-  className = {`px-4 py-2 2xl:px-4.5 2xl:py-2.5 rounded-full text-[13px] 2xl:text-sm font-bold tracking-tight transition-all shadow-xs flex items-center justify-center whitespace-nowrap ${location.pathname === '/contact'
-      ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-sm'
-      : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
-    }`
-}
+              className={`px-4 py-2 2xl:px-4.5 2xl:py-2.5 rounded-full text-[13px] 2xl:text-sm font-bold tracking-tight transition-all shadow-xs flex items-center justify-center whitespace-nowrap ${
+                location.pathname === '/contact'
+                  ? 'bg-[#003b73] text-white ring-2 ring-white/30 shadow-sm'
+                  : 'bg-[#004c8f] hover:bg-[#003d73] text-white'
+              }`}
             >
-  Contact Us
-            </Link >
-          </nav >
+              Contact Us
+            </Link>
+          </nav>
 
-  {/* Right Action: Plan Trip CTA */ }
-  < div className = "hidden lg:flex items-center gap-2.5 shrink-0" >
-    <Button
-      variant="primary"
-      size="sm"
-      onClick={onOpenTripModal}
-      className="shadow-md shadow-[#FF795C]/25 text-xs sm:text-[13px] font-bold whitespace-nowrap shrink-0 h-9 sm:h-9.5 px-4 sm:px-5 inline-flex items-center gap-2 rounded-full"
-    >
-      <Send className="w-3.5 h-3.5 shrink-0" />
-      <span className="whitespace-nowrap">Plan Your Trip</span>
-    </Button>
-          </div >
+          {/* Right Action: Plan Trip CTA */}
+          <div className="hidden lg:flex items-center gap-2.5 shrink-0">
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={onOpenTripModal}
+              className="shadow-md shadow-[#FF795C]/25 text-xs sm:text-[13px] font-bold whitespace-nowrap shrink-0 h-9 sm:h-9.5 px-4 sm:px-5 inline-flex items-center gap-2 rounded-full"
+            >
+              <Send className="w-3.5 h-3.5 shrink-0" />
+              <span className="whitespace-nowrap">Plan Your Trip</span>
+            </Button>
+          </div>
 
-  {/* Mobile Menu Actions & Hamburger */ }
-  < div className = "flex xl:hidden items-center gap-1.5 sm:gap-2" >
+          {/* Mobile Menu Actions & Hamburger */}
+          <div className="flex xl:hidden items-center gap-1.5 sm:gap-2">
             <button
               type="button"
               onClick={onOpenTripModal}
@@ -669,19 +678,17 @@ onClick = {() => setActiveDropdown(null)}
             >
               {isMobileMenuOpen ? <X className="w-6 h-6 text-[#FF795C]" /> : <Menu className="w-6 h-6 text-[#082C43]" />}
             </button>
-          </div >
-        </div >
-      </header >
+          </div>
+        </div>
+      </header>
 
-  {/* Spacer to preserve document layout flow under the fixed navbar */ }
-  < div className = "h-[72px] sm:h-[76px] md:h-[80px] lg:h-[84px] shrink-0 pointer-events-none" aria - hidden="true" />
+      {/* Spacer to preserve document layout flow under the fixed navbar */}
+      <div className="h-[72px] sm:h-[76px] md:h-[80px] lg:h-[84px] shrink-0 pointer-events-none" aria-hidden="true" />
 
-
-    {/* ======================================================== */ }
-{/* MOBILE NAVIGATION DRAWER (Full Categories & Phone)       */ }
-{/* ======================================================== */ }
-{
-  isMobileMenuOpen && (
+      {/* ======================================================== */}
+      {/* MOBILE NAVIGATION DRAWER (Full Categories & Phone)       */}
+      {/* ======================================================== */}
+      {isMobileMenuOpen && (
     <div
       className="xl:hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex justify-end animate-in fade-in overscroll-contain"
       style={{ overscrollBehavior: 'contain' }}
