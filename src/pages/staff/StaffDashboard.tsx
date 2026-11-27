@@ -116,13 +116,13 @@ export const StaffDashboard: React.FC = () => {
               </div>
 
               <div className="py-4 space-y-3">
-                {dashboardData?.followUpsDueToday?.length === 0 ? (
+                {(!dashboardData?.followUpsDueToday || dashboardData.followUpsDueToday.length === 0) ? (
                   <div className="text-center py-8 text-xs text-slate-400">
                     <CheckCircle2 className="w-8 h-8 text-emerald-400 mx-auto mb-2" />
                     <span>Great job! All follow-ups for today are up to date.</span>
                   </div>
                 ) : (
-                  dashboardData?.followUpsDueToday?.map((lead: any) => (
+                  (dashboardData.followUpsDueToday || []).map((lead: any) => (
                     <div
                       key={lead.id}
                       className="p-3.5 rounded-xl border border-amber-200 bg-amber-50/50 flex items-center justify-between"
@@ -172,7 +172,7 @@ export const StaffDashboard: React.FC = () => {
               </div>
 
               <div className="py-4 space-y-3">
-                {dashboardData?.assignedLeads?.slice(0, 4).map((lead: any) => (
+                {(dashboardData?.assignedLeads || []).slice(0, 4).map((lead: any) => (
                   <div
                     key={lead.id}
                     className="p-3.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] flex items-center justify-between"

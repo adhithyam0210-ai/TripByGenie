@@ -1560,10 +1560,19 @@ export const api = {
     try {
       return await request<any>('/staff/dashboard');
     } catch {
+      const assigned = fallbackData.leads.slice(0, 6);
+      const followUps = assigned.filter((l: any) => l.follow_up_date);
       return {
-        assigned_leads: fallbackData.leads.slice(0, 6),
-        follow_ups_due: fallbackData.leads.slice(0, 3),
-        recent_bookings: fallbackData.bookings.slice(0, 3)
+        stats: {
+          my_leads: assigned.length,
+          new_leads: assigned.filter((l: any) => l.status === 'Assigned' || l.status === 'New').length,
+          follow_ups_due: followUps.length,
+          quotations_sent: assigned.filter((l: any) => l.status === 'Quotation Sent').length,
+          converted_leads: assigned.filter((l: any) => l.status === 'Converted').length
+        },
+        assignedLeads: assigned,
+        followUpsDueToday: followUps,
+        recentQuotations: []
       };
     }
   },
