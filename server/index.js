@@ -31,9 +31,13 @@ app.use('/api/v1', v1Routes);
 app.use('/api/privacy', require('./src/routes/v1/privacy.routes'));
 
 // Uploads directory
-const uploadDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
+const uploadDir = process.env.VERCEL ? path.join('/tmp', 'uploads') : path.join(__dirname, 'uploads');
+try {
+  if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+  }
+} catch (e) {
+  console.warn('[STORAGE] Read-only filesystem detected, uploads directory deferred:', e.message);
 }
 app.use('/uploads', express.static(uploadDir, {
   setHeaders: (res, filePath) => {
@@ -1902,12 +1906,7 @@ app.post('/api/admin/staff', authenticate, authorize(['admin', 'manager']), asyn
   }
 
   const existing = db.findOne('users', (u) => u && u.email && u.email.toLowerCase() === email.toLowerCase());
-  if (existing) {
-    const existingProfile = db.findOne('staff_profiles', (sp) => sp.user_id === existing.id);
-    if (existingProfile && existing.status === 'active' && (existing.role === 'staff' || existing.role === 'sales' || existing.role === 'operations')) {
-      return res.status(400).json({ error: 'An active staff member with this email already exists.' });
-    }
-  }
+  // If an existing staff user is re-created, we gracefully update their password, designation, and re-dispatch onboarding
 
   const isOps = (role_type === 'operations' || role === 'operations' || (designation && designation.toLowerCase() === 'operations'));
   const effectiveRoleType = isOps ? 'operations' : 'sales';

@@ -95,9 +95,17 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
     let errorMsg = 'An error occurred';
     try {
       const errData = await response.json();
-      errorMsg = errData.error || errData.message || errorMsg;
+      if (typeof errData?.error === 'string') {
+        errorMsg = errData.error;
+      } else if (typeof errData?.error?.message === 'string') {
+        errorMsg = errData.error.message;
+      } else if (typeof errData?.message === 'string') {
+        errorMsg = errData.message;
+      } else if (typeof errData?.error?.code === 'string') {
+        errorMsg = errData.error.code;
+      }
     } catch (e) {
-      errorMsg = response.statusText || errorMsg;
+      errorMsg = response.statusText || `Request failed (${response.status})`;
     }
     throw new Error(errorMsg);
   }
@@ -866,7 +874,14 @@ export const api = {
       } catch {}
       return res;
     } catch (err: any) {
-      if (err.message && !err.message.includes('Failed to fetch') && !err.message.includes('NetworkError') && !err.message.includes('Load failed')) {
+      const msg = String(err?.message || '');
+      const isValidationInputError =
+        msg.includes('name and email are required') ||
+        msg.includes('valid email') ||
+        msg.includes('Please enter') ||
+        msg.includes('Invalid credentials');
+
+      if (isValidationInputError) {
         throw err;
       }
       console.warn('Backend staff creation unavailable or static deployment, using client-side fallback:', err);

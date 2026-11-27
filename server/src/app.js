@@ -18,9 +18,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Uploads static directory
-const uploadDir = path.join(__dirname, '../uploads');
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
+const uploadDir = process.env.VERCEL ? path.join('/tmp', 'uploads') : path.join(__dirname, '../uploads');
+try {
+  if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+  }
+} catch (e) {
+  console.warn('[STORAGE] Read-only filesystem detected, uploads directory deferred:', e.message);
 }
 app.use('/uploads', express.static(uploadDir));
 
