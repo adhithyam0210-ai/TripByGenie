@@ -1553,7 +1553,8 @@ app.post('/api/admin/leads', authenticate, authorize(['admin', 'manager']), (req
 // Admin Lead Details & Activity Timeline
 app.get('/api/admin/leads/:id', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const lead = db.findById('leads', req.params.id);
-  if (!lead || lead.agency_id !== req.user.agency_id) {
+  const agencyId = req.user.agency_id;
+  if (!lead || (lead.agency_id && lead.agency_id !== agencyId && lead.agency_id !== 'agency_travel_genie' && agencyId)) {
     return res.status(404).json({ error: 'Lead not found.' });
   }
 
@@ -1564,6 +1565,7 @@ app.get('/api/admin/leads/:id', authenticate, authorize(['admin', 'manager']), (
   const pkg = lead.interested_package_id ? db.findById('packages', lead.interested_package_id) : null;
 
   res.json({
+    ...lead,
     lead,
     activities,
     quotations,
@@ -1638,6 +1640,12 @@ function getLeadEnquiryType(lead) {
     'hong kong', 'china', 'russia', 'south korea', 'sri lanka', 'madagascar'
   ];
 
+  const isHoneymoon = cat.includes('honeymoon') || dest.includes('honeymoon') || src.includes('honeymoon');
+  if (isHoneymoon) return 'honeymoon';
+
+  const isCorporate = cat.includes('corporate') || cat.includes('mice') || dest.includes('corporate') || dest.includes('mice') || src.includes('corporate') || src.includes('mice');
+  if (isCorporate) return 'corporate';
+
   const isInternational =
     cat.includes('international') ||
     src.includes('international') ||
@@ -1650,6 +1658,14 @@ function getLeadEnquiryType(lead) {
 }
 
 function checkLeadStaffEligibility(staffUser, staffProfile, leadType) {
+  // 1. Only active and authorized staff can receive assignments
+  if (staffUser.status !== 'active') {
+    return {
+      eligible: false,
+      reason: `Staff member ${staffUser.name} is currently inactive and cannot receive lead assignments.`
+    };
+  }
+
   const role = staffUser.role || staffProfile.role_type || 'staff';
   const roleType = staffProfile.role_type || (role === 'operations' ? 'operations' : 'sales');
 
@@ -1662,8 +1678,16 @@ function checkLeadStaffEligibility(staffUser, staffProfile, leadType) {
     : (staffProfile.designation ? staffProfile.designation.split(',').map((s) => s.trim()) : []);
 
   const hasInternational =
-    departments.some((d) => d.toLowerCase().includes('international')) ||
-    designations.some((d) => d.toLowerCase().includes('international'));
+    departments.some((d) => d.toLowerCase().includes('international') || d.toLowerCase().includes('holiday')) ||
+    designations.some((d) => d.toLowerCase().includes('international') || d.toLowerCase().includes('holiday'));
+
+  const hasHoneymoon =
+    departments.some((d) => d.toLowerCase().includes('honeymoon') || d.toLowerCase().includes('international') || d.toLowerCase().includes('holiday')) ||
+    designations.some((d) => d.toLowerCase().includes('honeymoon') || d.toLowerCase().includes('international') || d.toLowerCase().includes('holiday'));
+
+  const hasCorporate =
+    departments.some((d) => d.toLowerCase().includes('corporate') || d.toLowerCase().includes('mice')) ||
+    designations.some((d) => d.toLowerCase().includes('corporate') || d.toLowerCase().includes('mice'));
 
   const isOpsStaff =
     role === 'operations' ||
@@ -1671,7 +1695,7 @@ function checkLeadStaffEligibility(staffUser, staffProfile, leadType) {
     designations.some((d) => d.toLowerCase().includes('operation')) ||
     (staffProfile.designation && staffProfile.designation.toLowerCase().includes('operation'));
 
-  // 1. Operation staff can ONLY be assigned to travels enquiry
+  // 2. Operation staff can ONLY be assigned to travels enquiry
   if (isOpsStaff) {
     if (leadType !== 'travels') {
       return {
@@ -1682,9 +1706,9 @@ function checkLeadStaffEligibility(staffUser, staffProfile, leadType) {
     return { eligible: true };
   }
 
-  // 2. Cannot assign international package enquiry to domestic tour management staff
-  if (leadType === 'international') {
-    if (!hasInternational) {
+  // 3. Department validation for package requirements
+  if (leadType === 'international' || leadType === 'honeymoon') {
+    if (!hasInternational && !hasHoneymoon) {
       return {
         eligible: false,
         reason: 'Cannot assign International package enquiry to domestic tour management staff.'
@@ -1693,30 +1717,58 @@ function checkLeadStaffEligibility(staffUser, staffProfile, leadType) {
     return { eligible: true };
   }
 
+  if (leadType === 'corporate') {
+    if (!hasCorporate) {
+      return {
+        eligible: false,
+        reason: 'Corporate enquiries require Corporate & MICE department staff.'
+      };
+    }
+    return { eligible: true };
+  }
+
   return { eligible: true };
 }
 
-// Admin Assign / Reassign Leads to Staff (Single or Bulk)
+// Admin Assign / Reassign Leads to Staff (Single, Multi-Staff, or Bulk)
 app.post('/api/admin/leads/assign', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const agencyId = req.user.agency_id;
-  const { lead_ids, staff_id, notes } = req.body;
+  const { lead_ids, staff_id, secondary_staff_ids, team_ids, notes } = req.body;
 
   if (!lead_ids || !Array.isArray(lead_ids) || lead_ids.length === 0) {
     return res.status(400).json({ error: 'Please provide at least one lead ID.' });
   }
 
-  const staffUser = staff_id ? db.findById('users', staff_id) : null;
-  const staffProfile = staffUser ? (db.findOne('staff_profiles', (sp) => sp.user_id === staffUser.id) || {}) : {};
-  const staffName = staffUser ? staffUser.name : 'Unassigned';
-  const newStatus = staff_id ? 'Assigned' : 'Unassigned';
+  const primaryStaff = staff_id ? db.findById('users', staff_id) : null;
+  const primaryProfile = primaryStaff ? (db.findOne('staff_profiles', (sp) => sp.user_id === primaryStaff.id) || {}) : {};
+  const primaryName = primaryStaff ? primaryStaff.name : 'Unassigned';
+  const newStatus = primaryStaff ? 'Assigned' : 'Unassigned';
 
-  // Server-side validation of lead assignment eligibility
-  if (staffUser) {
-    for (const id of lead_ids) {
-      const lead = db.findById('leads', id);
-      if (lead) {
-        const leadType = getLeadEnquiryType(lead);
-        const check = checkLeadStaffEligibility(staffUser, staffProfile, leadType);
+  // Support multi-staff assignment (supporting / secondary team members)
+  const secondaryIds = Array.isArray(secondary_staff_ids)
+    ? secondary_staff_ids
+    : (Array.isArray(team_ids) ? team_ids : []);
+
+  const supportingStaffList = [];
+  for (const sId of secondaryIds) {
+    if (sId && (!primaryStaff || sId !== primaryStaff.id)) {
+      const sUser = db.findById('users', sId);
+      if (sUser) {
+        const sProf = db.findOne('staff_profiles', (sp) => sp.user_id === sUser.id) || {};
+        supportingStaffList.push({ user: sUser, profile: sProf });
+      }
+    }
+  }
+
+  // Server-side validation of lead assignment eligibility for all assigned staff
+  for (const id of lead_ids) {
+    const lead = db.findById('leads', id);
+    if (lead) {
+      const leadType = getLeadEnquiryType(lead);
+
+      // Validate primary staff
+      if (primaryStaff) {
+        const check = checkLeadStaffEligibility(primaryStaff, primaryProfile, leadType);
         if (!check.eligible) {
           return res.status(400).json({
             error: check.reason,
@@ -1725,7 +1777,48 @@ app.post('/api/admin/leads/assign', authenticate, authorize(['admin', 'manager']
           });
         }
       }
+
+      // Validate supporting staff
+      for (const { user: sUser, profile: sProf } of supportingStaffList) {
+        const check = checkLeadStaffEligibility(sUser, sProf, leadType);
+        if (!check.eligible) {
+          return res.status(400).json({
+            error: `Supporting staff ${sUser.name}: ${check.reason}`,
+            reason: check.reason,
+            lead_id: id
+          });
+        }
+      }
     }
+  }
+
+  // Construct assigned team roster (clearly identifiable primary owner + supporting members)
+  const assignedTeamRoster = [];
+  if (primaryStaff) {
+    const deptList = Array.isArray(primaryProfile.departments) && primaryProfile.departments.length > 0
+      ? primaryProfile.departments
+      : (primaryProfile.department ? [primaryProfile.department] : []);
+    assignedTeamRoster.push({
+      staff_id: primaryStaff.id,
+      staff_name: primaryStaff.name,
+      role: primaryStaff.role,
+      departments: deptList,
+      is_primary: true,
+      assigned_at: new Date().toISOString()
+    });
+  }
+  for (const { user: sUser, profile: sProf } of supportingStaffList) {
+    const deptList = Array.isArray(sProf.departments) && sProf.departments.length > 0
+      ? sProf.departments
+      : (sProf.department ? [sProf.department] : []);
+    assignedTeamRoster.push({
+      staff_id: sUser.id,
+      staff_name: sUser.name,
+      role: sUser.role,
+      departments: deptList,
+      is_primary: false,
+      assigned_at: new Date().toISOString()
+    });
   }
 
   const updatedLeads = [];
@@ -1738,38 +1831,58 @@ app.post('/api/admin/leads/assign', authenticate, authorize(['admin', 'manager']
       const effectiveAgencyId = lead.agency_id || agencyId || 'agency_travel_genie';
 
       const updated = db.update('leads', id, {
-        assigned_staff_id: staff_id || null,
-        assigned_staff_name: staffName,
-        assigned_sales_executive: staffName,
+        assigned_staff_id: primaryStaff ? primaryStaff.id : null,
+        assigned_staff_name: primaryName,
+        assigned_sales_executive: primaryName,
+        assigned_team: assignedTeamRoster,
         status: (lead.status === 'New' || lead.status === 'NEW' || lead.status === 'Unassigned' || lead.status === 'UNASSIGNED') ? newStatus : lead.status
       });
 
-      // 1. Record in lead_assignments table
+      // 1. Record primary assignment in lead_assignments table
       db.insert('lead_assignments', {
         agency_id: effectiveAgencyId,
         lead_id: id,
         assigned_by: req.user.id,
         assigned_by_name: req.user.name,
-        staff_id: staff_id || null,
-        staff_name: staffName,
+        staff_id: primaryStaff ? primaryStaff.id : null,
+        staff_name: primaryName,
+        is_primary: true,
         previous_staff_id: prevStaff || null,
         previous_staff_name: prevStaffName || 'Unassigned',
         notes: notes || '',
         assigned_at: new Date().toISOString()
       });
 
+      // Record supporting staff assignments in lead_assignments table
+      for (const { user: sUser } of supportingStaffList) {
+        db.insert('lead_assignments', {
+          agency_id: effectiveAgencyId,
+          lead_id: id,
+          assigned_by: req.user.id,
+          assigned_by_name: req.user.name,
+          staff_id: sUser.id,
+          staff_name: sUser.name,
+          is_primary: false,
+          previous_staff_id: null,
+          previous_staff_name: 'None',
+          notes: `Supporting team member assignment: ${notes || ''}`,
+          assigned_at: new Date().toISOString()
+        });
+      }
+
       // 2. Record status history
       if (prevStatus !== updated.status) {
-        db.recordLeadStatusHistory(effectiveAgencyId, id, prevStatus, updated.status, req.user.id, `Lead assigned to ${staffName}. ${notes || ''}`);
+        db.recordLeadStatusHistory(effectiveAgencyId, id, prevStatus, updated.status, req.user.id, `Lead assigned to ${primaryName}. ${notes || ''}`);
       }
 
       // 3. Record in lead_activities
-      db.recordActivity(id, req.user.id, 'assignment', `Assigned to ${staffName} by Admin/Manager. ${notes || ''}`);
+      db.recordActivity(id, req.user.id, 'assignment', `Assigned to ${primaryName} (Team: ${assignedTeamRoster.map(m => m.staff_name).join(', ')}) by Admin/Manager. ${notes || ''}`);
 
       // 4. Record audit log
       db.recordAuditLog(effectiveAgencyId, req.user.id, 'ASSIGN_LEAD', 'lead', id, {
-        staff_id,
-        staff_name: staffName,
+        primary_staff_id: primaryStaff ? primaryStaff.id : null,
+        primary_staff_name: primaryName,
+        team: assignedTeamRoster,
         previous_staff_id: prevStaff,
         notes
       });
@@ -1778,11 +1891,15 @@ app.post('/api/admin/leads/assign', authenticate, authorize(['admin', 'manager']
     }
   }
 
-  // Notify assigned staff
-  if (staff_id) {
+  // Notify all assigned staff members immediately
+  const notifyStaffIds = new Set();
+  if (primaryStaff) notifyStaffIds.add(primaryStaff.id);
+  for (const { user: sUser } of supportingStaffList) notifyStaffIds.add(sUser.id);
+
+  for (const staffIdToNotify of notifyStaffIds) {
     db.createNotification(
       agencyId || 'agency_travel_genie',
-      staff_id,
+      staffIdToNotify,
       'Leads Assigned',
       `You have been assigned ${updatedLeads.length} lead(s) by Operations Manager.`,
       'info',
@@ -1792,7 +1909,8 @@ app.post('/api/admin/leads/assign', authenticate, authorize(['admin', 'manager']
 
   res.json({
     success: true,
-    message: `Successfully assigned ${updatedLeads.length} lead(s) to ${staffName}.`,
+    message: `Successfully assigned ${updatedLeads.length} lead(s) to ${primaryName}.`,
+    assigned_team: assignedTeamRoster,
     leads: updatedLeads
   });
 });
@@ -3288,7 +3406,7 @@ app.get('/api/staff/dashboard', authenticate, authorize(['staff', 'sales', 'mana
   });
 });
 
-// Staff Assigned Leads (Strict isolation: only leads assigned to this staff, or all for admin/manager)
+// Staff Assigned Leads (Strict isolation: only leads assigned to this staff or team, or all for admin/manager)
 app.get('/api/staff/leads', authenticate, authorize(['staff', 'sales', 'manager', 'admin']), (req, res) => {
   const staffId = req.user.id;
   const agencyId = req.user.agency_id;
@@ -3297,13 +3415,14 @@ app.get('/api/staff/leads', authenticate, authorize(['staff', 'sales', 'manager'
 
   let leads = isManagerOrAdmin
     ? db.findAll('leads', (l) => !l.agency_id || l.agency_id === agencyId || l.agency_id === 'agency_travel_genie')
-    : db.findAll('leads', (l) => (!l.agency_id || l.agency_id === agencyId || l.agency_id === 'agency_travel_genie') && l.assigned_staff_id === staffId);
+    : db.findAll('leads', (l) => (!l.agency_id || l.agency_id === agencyId || l.agency_id === 'agency_travel_genie') && (l.assigned_staff_id === staffId || (Array.isArray(l.assigned_team) && l.assigned_team.some((m) => m.staff_id === staffId))));
 
   if (status && status !== 'all') {
-    if (status === 'New Assigned' || status === 'Assigned') {
-      leads = leads.filter((l) => l.status === 'Assigned' || l.status === 'New Assigned');
+    const sLower = status.toLowerCase();
+    if (sLower === 'new assigned' || sLower === 'assigned') {
+      leads = leads.filter((l) => (l.status || '').toLowerCase() === 'assigned' || (l.status || '').toLowerCase() === 'new assigned');
     } else {
-      leads = leads.filter((l) => l.status === status);
+      leads = leads.filter((l) => (l.status || '').toLowerCase() === sLower);
     }
   }
 
@@ -3327,8 +3446,13 @@ app.get('/api/staff/leads/:id', authenticate, authorize(['staff', 'sales', 'mana
   const lead = db.findById('leads', req.params.id);
   const isManagerOrAdmin = ['admin', 'manager'].includes(req.user.role);
 
-  if (!lead || (!isManagerOrAdmin && lead.assigned_staff_id !== staffId)) {
-    return res.status(403).json({ error: 'Access denied. You can only view leads assigned to you.' });
+  if (!lead) {
+    return res.status(404).json({ error: 'Lead not found.' });
+  }
+
+  const isAssigned = lead.assigned_staff_id === staffId || (Array.isArray(lead.assigned_team) && lead.assigned_team.some((m) => m.staff_id === staffId));
+  if (!isManagerOrAdmin && !isAssigned) {
+    return res.status(403).json({ error: 'Access denied: You are not assigned to this lead.' });
   }
 
   const activities = db.findAll('lead_activities', (a) => a.lead_id === lead.id);
@@ -3336,22 +3460,62 @@ app.get('/api/staff/leads/:id', authenticate, authorize(['staff', 'sales', 'mana
 
   const quotations = db.findAll('quotations', (q) => q.lead_id === lead.id);
   const pkg = lead.interested_package_id ? db.findById('packages', lead.interested_package_id) : null;
+  const conversionRequests = db.findAll('booking_conversion_requests', (cr) => cr.lead_id === lead.id);
 
-  res.json({ lead, activities, quotations, package: pkg });
+  res.json({ lead, activities, quotations, package: pkg, conversion_requests: conversionRequests });
 });
 
-// Staff Update Lead Status, Notes & Follow-up
+// Staff Update Lead Status, Notes & Follow-up (Strict Workflow Engine)
 app.put('/api/staff/leads/:id/status', authenticate, authorize(['staff', 'sales', 'manager', 'admin']), (req, res) => {
   const staffId = req.user.id;
   const lead = db.findById('leads', req.params.id);
   const isManagerOrAdmin = ['admin', 'manager'].includes(req.user.role);
 
-  if (!lead || (!isManagerOrAdmin && lead.assigned_staff_id !== staffId)) {
-    return res.status(403).json({ error: 'Access denied.' });
+  if (!lead) {
+    return res.status(404).json({ error: 'Lead not found.' });
   }
 
-  const { status, notes, follow_up_date, lost_reason } = req.body;
+  const isAssigned = lead.assigned_staff_id === staffId || (Array.isArray(lead.assigned_team) && lead.assigned_team.some((m) => m.staff_id === staffId));
+  if (!isManagerOrAdmin && !isAssigned) {
+    return res.status(403).json({ error: 'Access denied: You are not authorized to update this lead.' });
+  }
+
+  const { status, notes, follow_up_date, lost_reason, reason, cancellation_reason } = req.body;
   const oldStatus = lead.status;
+  const effectiveReason = (reason || lost_reason || cancellation_reason || notes || '').trim();
+
+  // 1. Prevent invalid transitions from terminal states without Manager authorization
+  const isTerminal = oldStatus === 'Converted' || oldStatus === 'Cancelled';
+  if (isTerminal && !isManagerOrAdmin) {
+    return res.status(400).json({
+      error: 'Cannot modify a confirmed converted or cancelled lead without Manager authorization.'
+    });
+  }
+
+  // 2. Reason requirement for Lost / Dropped leads
+  if (status && (status.toLowerCase().includes('lost') || status.toLowerCase().includes('dropped'))) {
+    if (!effectiveReason) {
+      return res.status(400).json({
+        error: 'A reason is required when marking a lead as Lost / Dropped.'
+      });
+    }
+  }
+
+  // 3. Reason requirement for Cancelled leads
+  if (status && status.toLowerCase().includes('cancel')) {
+    if (!effectiveReason) {
+      return res.status(400).json({
+        error: 'A cancellation reason is required when cancelling a lead.'
+      });
+    }
+  }
+
+  // 4. Staff cannot approve their own booking conversion directly via /status
+  if ((status === 'Converted' || status === 'Converted to Booking') && !isManagerOrAdmin) {
+    return res.status(400).json({
+      error: 'To convert a lead to booking, please submit a booking conversion request with payment evidence for Manager verification.'
+    });
+  }
 
   const updatePayload = {
     status: status || lead.status,
@@ -3359,16 +3523,19 @@ app.put('/api/staff/leads/:id/status', authenticate, authorize(['staff', 'sales'
     follow_up_date: follow_up_date !== undefined ? follow_up_date : lead.follow_up_date
   };
 
-  if (lost_reason) {
-    updatePayload.lost_reason = lost_reason;
-    updatePayload.notes = `${lead.notes || ''} | Reason Lost: ${lost_reason}`.trim();
+  if (lost_reason || reason) {
+    updatePayload.lost_reason = lost_reason || reason;
+  }
+  if (cancellation_reason) {
+    updatePayload.cancellation_reason = cancellation_reason;
   }
 
   const updated = db.update('leads', lead.id, updatePayload);
 
   if (status && status !== oldStatus) {
-    db.recordActivity(lead.id, staffId, 'status_change', `Staff ${req.user.name} changed status to '${status}'. ${notes ? `Note: ${notes}` : ''} ${lost_reason ? `Reason: ${lost_reason}` : ''}`);
-    db.recordLeadStatusHistory(req.user.agency_id, lead.id, oldStatus, status, staffId, notes || lost_reason || '');
+    const actionDesc = `Staff ${req.user.name} changed status from '${oldStatus}' to '${status}'. ${effectiveReason ? `Reason/Note: ${effectiveReason}` : ''}`.trim();
+    db.recordActivity(lead.id, staffId, 'status_change', actionDesc);
+    db.recordLeadStatusHistory(req.user.agency_id || 'agency_travel_genie', lead.id, oldStatus, status, staffId, effectiveReason);
   } else if (notes) {
     db.recordActivity(lead.id, staffId, 'note', `Staff ${req.user.name} added note: ${notes}`);
   }
@@ -3376,35 +3543,56 @@ app.put('/api/staff/leads/:id/status', authenticate, authorize(['staff', 'sales'
   res.json(updated);
 });
 
-// Staff Log Customer Interaction (Call notes, preferences, WhatsApp, Meetings)
+// Staff Log Customer Interaction (Calls, Messages, WhatsApp, Notes, Preferences)
 app.post('/api/staff/leads/:id/interactions', authenticate, authorize(['staff', 'sales', 'manager', 'admin']), (req, res) => {
   const staffId = req.user.id;
-  const agencyId = req.user.agency_id;
+  const agencyId = req.user.agency_id || 'agency_travel_genie';
   const lead = db.findById('leads', req.params.id);
   const isManagerOrAdmin = ['admin', 'manager'].includes(req.user.role);
 
-  if (!lead || (!isManagerOrAdmin && lead.assigned_staff_id !== staffId)) {
-    return res.status(403).json({ error: 'Access denied.' });
+  if (!lead) {
+    return res.status(404).json({ error: 'Lead not found.' });
   }
 
-  const { channel = 'CALL', summary, customer_response, follow_up_date, preferences } = req.body;
-  if (!summary) {
-    return res.status(400).json({ error: 'Interaction summary is required.' });
+  const isAssigned = lead.assigned_staff_id === staffId || (Array.isArray(lead.assigned_team) && lead.assigned_team.some((m) => m.staff_id === staffId));
+  if (!isManagerOrAdmin && !isAssigned) {
+    return res.status(403).json({ error: 'Access denied: You are not assigned to this lead.' });
   }
 
+  const { interaction_type, channel = 'CALL', notes, summary, customer_response, follow_up_date, requirements, preferences } = req.body;
+  const finalSummary = (notes || summary || requirements || customer_response || '').trim();
+  if (!finalSummary) {
+    return res.status(400).json({ error: 'Interaction details or summary are required.' });
+  }
+
+  const finalChannel = interaction_type || channel || 'CALL';
   const interaction = db.insert('customer_interactions', {
     agency_id: agencyId,
     lead_id: lead.id,
     staff_id: staffId,
     staff_name: req.user.name,
-    channel,
-    summary,
+    channel: finalChannel,
+    summary: finalSummary,
     customer_response: customer_response || '',
-    preferences: preferences || null,
+    preferences: preferences || requirements || null,
     created_at: new Date().toISOString()
   });
 
-  db.recordActivity(lead.id, staffId, 'interaction', `[${channel}] ${summary} ${customer_response ? `| Customer Response: ${customer_response}` : ''}`);
+  const activityRecord = db.insert('lead_activities', {
+    lead_id: lead.id,
+    user_id: staffId,
+    user_name: req.user.name,
+    activity_type: finalChannel.toLowerCase(),
+    description: `[${finalChannel.toUpperCase()}] by ${req.user.name}: ${finalSummary} ${customer_response ? `| Customer Response: ${customer_response}` : ''}`.trim(),
+    metadata: {
+      interaction_id: interaction.id,
+      channel: finalChannel,
+      customer_response: customer_response || '',
+      requirements: requirements || preferences || '',
+      follow_up_date: follow_up_date || null
+    },
+    created_at: new Date().toISOString()
+  });
 
   if (follow_up_date) {
     db.update('leads', lead.id, { follow_up_date });
@@ -3413,13 +3601,18 @@ app.post('/api/staff/leads/:id/interactions', authenticate, authorize(['staff', 
       lead_id: lead.id,
       staff_id: staffId,
       scheduled_date: follow_up_date,
-      notes: summary,
+      notes: finalSummary,
       status: 'SCHEDULED',
       created_at: new Date().toISOString()
     });
   }
 
-  res.status(201).json(interaction);
+  res.status(201).json({
+    success: true,
+    message: 'Interaction recorded successfully.',
+    activity: activityRecord,
+    interaction
+  });
 });
 
 // Staff Create & Dispatch Quotation (With Itinerary, GST, Advance % and Version History)
@@ -3829,22 +4022,217 @@ app.post('/api/payments/verify-advance', async (req, res) => {
   });
 });
 
-// Staff Convert Lead to Confirmed Booking
-app.post('/api/staff/leads/:id/convert', authenticate, authorize(['staff', 'sales', 'manager', 'admin']), (req, res) => {
+// ==========================================
+// 5.6 B2C BOOKING CONVERSION & PAYMENT VERIFICATION WORKFLOW
+// ==========================================
+
+// Private Payment Proof Upload (Restricted & Non-public)
+const paymentProofsDir = path.join(__dirname, 'uploads', 'payment_proofs');
+if (!fs.existsSync(paymentProofsDir)) {
+  fs.mkdirSync(paymentProofsDir, { recursive: true });
+}
+
+const paymentProofStorage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, paymentProofsDir),
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname).toLowerCase();
+    cb(null, `proof-${Date.now()}-${uuidv4().substring(0, 8)}${ext}`);
+  }
+});
+
+const uploadPaymentProof = multer({
+  storage: paymentProofStorage,
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
+  fileFilter: (req, file, cb) => {
+    const allowed = ['.jpg', '.jpeg', '.png', '.pdf', '.webp'];
+    const ext = path.extname(file.originalname).toLowerCase();
+    if (allowed.includes(ext)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Invalid file type. Only JPG, PNG, WEBP, and PDF documents are permitted for payment proof.'));
+    }
+  }
+});
+
+// Staff Upload Payment Proof Evidence
+app.post('/api/staff/leads/:id/upload-payment-proof', authenticate, authorize(['staff', 'sales', 'manager', 'admin']), uploadPaymentProof.single('file'), (req, res) => {
   const staffId = req.user.id;
-  const agencyId = req.user.agency_id;
   const lead = db.findById('leads', req.params.id);
   const isManagerOrAdmin = ['admin', 'manager'].includes(req.user.role);
 
-  if (!lead || (!isManagerOrAdmin && lead.assigned_staff_id !== staffId)) {
-    return res.status(403).json({ error: 'Access denied.' });
+  if (!lead) {
+    return res.status(404).json({ error: 'Lead not found.' });
   }
 
-  const { total_amount, advance_amount, payment_method, payment_proof, travel_start_date, travel_end_date, special_requests } = req.body;
-  const tot = Number(total_amount);
-  const adv = Number(advance_amount) || 0;
-  const bal = Math.max(0, tot - adv);
+  const isAssigned = lead.assigned_staff_id === staffId || (Array.isArray(lead.assigned_team) && lead.assigned_team.some((m) => m.staff_id === staffId));
+  if (!isManagerOrAdmin && !isAssigned) {
+    return res.status(403).json({ error: 'Access denied: You are not assigned to this lead.' });
+  }
 
+  if (!req.file) {
+    return res.status(400).json({ error: 'Please select a valid payment proof file to upload.' });
+  }
+
+  const evidenceRecord = db.insert('payment_evidence', {
+    agency_id: lead.agency_id || 'agency_travel_genie',
+    lead_id: lead.id,
+    uploader_id: req.user.id,
+    uploader_name: req.user.name,
+    file_name: req.file.filename,
+    original_name: req.file.originalname,
+    file_size: req.file.size,
+    file_path: `/private/payment_proofs/${req.file.filename}`,
+    mime_type: req.file.mimetype,
+    verified: false,
+    created_at: new Date().toISOString()
+  });
+
+  res.status(201).json({
+    success: true,
+    message: 'Payment proof uploaded securely.',
+    evidence: evidenceRecord,
+    proof_url: `/private/payment_proofs/${req.file.filename}`
+  });
+});
+
+// Staff Initiate Booking Conversion Request (Handover to Manager) OR Direct Manager Conversion
+app.post('/api/staff/leads/:id/convert', authenticate, authorize(['staff', 'sales', 'manager', 'admin']), (req, res) => {
+  const staffId = req.user.id;
+  const agencyId = req.user.agency_id || 'agency_travel_genie';
+  const lead = db.findById('leads', req.params.id);
+  const isManagerOrAdmin = ['admin', 'manager'].includes(req.user.role);
+
+  if (!lead) {
+    return res.status(404).json({ error: 'Lead not found.' });
+  }
+
+  const isAssigned = lead.assigned_staff_id === staffId || (Array.isArray(lead.assigned_team) && lead.assigned_team.some((m) => m.staff_id === staffId));
+  if (!isManagerOrAdmin && !isAssigned) {
+    return res.status(403).json({ error: 'Access denied: You are not authorized to convert this lead.' });
+  }
+
+  const {
+    total_amount,
+    advance_amount,
+    payment_method,
+    payment_proof,
+    transaction_reference,
+    travel_start_date,
+    travel_end_date,
+    travelers_count,
+    special_requests,
+    notes
+  } = req.body;
+
+  const tot = Number(total_amount);
+  if (!tot || tot <= 0) {
+    return res.status(400).json({ error: 'Total package amount is required and must be greater than zero.' });
+  }
+
+  const adv = Number(advance_amount) || 0;
+  if (adv < 0) {
+    return res.status(400).json({ error: 'Advance amount cannot be negative.' });
+  }
+
+  const bal = Math.max(0, tot - adv);
+  const ref = transaction_reference || payment_proof || '';
+
+  if (adv > 0 && !ref) {
+    return res.status(400).json({ error: 'Transaction reference or payment proof is required when advance payment is recorded.' });
+  }
+
+  // 1. Record payment evidence in immutable payment_evidence table
+  const evidenceRecord = db.insert('payment_evidence', {
+    agency_id: agencyId,
+    lead_id: lead.id,
+    uploader_id: req.user.id,
+    uploader_name: req.user.name,
+    amount: adv,
+    payment_method: payment_method || 'UPI',
+    transaction_reference: ref,
+    payment_proof: payment_proof || ref,
+    notes: special_requests || notes || '',
+    verified: isManagerOrAdmin,
+    uploaded_at: new Date().toISOString()
+  });
+
+  // 2. If called by Staff (Sales Consultant):
+  // Create a Booking Conversion Request for Manager Verification & Approval (Enforces Strict Separation of Duties)
+  if (!isManagerOrAdmin) {
+    const convRequestId = db.generateUniqueCode('booking_conversion_requests', 'CR', true);
+    const convRequest = db.insert('booking_conversion_requests', {
+      id: convRequestId,
+      agency_id: agencyId,
+      lead_id: lead.id,
+      staff_id: req.user.id,
+      staff_name: req.user.name,
+      customer_id: lead.customer_id || null,
+      customer_name: lead.customer_name,
+      customer_email: lead.customer_email,
+      customer_phone: lead.customer_phone,
+      package_id: lead.interested_package_id || null,
+      package_title: lead.interested_destination,
+      travel_start_date: travel_start_date || lead.travel_date || new Date().toISOString().split('T')[0],
+      travel_end_date: travel_end_date || '',
+      travelers_count: travelers_count || lead.travelers_count || 2,
+      total_amount: tot,
+      advance_amount: adv,
+      balance_amount: bal,
+      payment_method: payment_method || 'UPI',
+      transaction_reference: ref,
+      payment_proof: payment_proof || ref,
+      evidence_id: evidenceRecord.id,
+      notes: special_requests || notes || lead.notes || '',
+      status: 'PENDING_APPROVAL',
+      submitted_at: new Date().toISOString()
+    });
+
+    // Update lead status to Converted to Booking with conversion request linked
+    db.update('leads', lead.id, {
+      status: 'Converted to Booking',
+      conversion_request_id: convRequest.id,
+      conversion_status: 'PENDING_APPROVAL'
+    });
+
+    db.recordActivity(
+      lead.id,
+      staffId,
+      'conversion_request',
+      `Staff ${req.user.name} submitted Booking Conversion Request #${convRequest.id} with ₹${adv.toLocaleString('en-IN')} advance payment proof for Manager verification.`
+    );
+
+    db.recordLeadStatusHistory(
+      agencyId,
+      lead.id,
+      lead.status,
+      'Converted to Booking',
+      staffId,
+      `Conversion request submitted with ₹${adv.toLocaleString('en-IN')} payment proof awaiting Manager approval.`
+    );
+
+    // Notify Managers immediately
+    const managers = db.findAll('users', (u) => (u.agency_id === agencyId || u.agency_id === 'agency_travel_genie') && (u.role === 'admin' || u.role === 'manager'));
+    for (const mgr of managers) {
+      db.createNotification(
+        agencyId,
+        mgr.id,
+        'Booking Conversion Request',
+        `Staff ${req.user.name} submitted conversion request for Lead #${lead.id} (${lead.customer_name} - ${lead.interested_destination}). Advance deposit: ₹${adv.toLocaleString('en-IN')}. Verify payment proof.`,
+        'warning',
+        '/manager/bookings'
+      );
+    }
+
+    return res.status(201).json({
+      success: true,
+      pending_approval: true,
+      message: 'Booking conversion request submitted successfully. Awaiting Manager payment verification and approval.',
+      conversion_request: convRequest
+    });
+  }
+
+  // 3. If called directly by Manager / Admin:
+  // Immediately verify payment and provision confirmed booking
   const bookingNum = `BK-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
 
   const newBooking = db.insert('bookings', {
@@ -3856,23 +4244,25 @@ app.post('/api/staff/leads/:id/convert', authenticate, authorize(['staff', 'sale
     customer_email: lead.customer_email,
     customer_phone: lead.customer_phone,
     agent_id: null,
+    sales_executive_id: staffId,
+    sales_executive_name: req.user.name,
     package_id: lead.interested_package_id,
     package_title: lead.interested_destination,
     travel_start_date: travel_start_date || lead.travel_date || new Date().toISOString().split('T')[0],
     travel_end_date: travel_end_date || '',
-    travelers_count: lead.travelers_count || 2,
+    travelers_count: travelers_count || lead.travelers_count || 2,
     total_amount: tot,
     advance_amount: adv,
     balance_amount: bal,
     payment_method: payment_method || 'UPI',
-    payment_proof: payment_proof || '',
+    payment_proof: ref,
     payment_status: bal === 0 ? 'Paid' : (adv > 0 ? 'Partial' : 'Pending'),
     booking_status: 'Confirmed',
     special_requests: special_requests || lead.notes,
+    verified_by_manager_id: req.user.id,
     created_at: new Date().toISOString()
   });
 
-  // If advance was paid, record payment
   if (adv > 0) {
     db.insert('payments', {
       agency_id: agencyId,
@@ -3880,11 +4270,13 @@ app.post('/api/staff/leads/:id/convert', authenticate, authorize(['staff', 'sale
       amount: adv,
       payment_type: 'Advance',
       payment_method: payment_method || 'UPI',
-      transaction_reference: payment_proof || `CONV-PAY-${Date.now()}`,
-      payment_proof: payment_proof || '',
+      transaction_reference: ref || `CONV-PAY-${Date.now()}`,
+      payment_proof: ref,
       payment_date: new Date().toISOString(),
-      notes: `Advance payment recorded during lead conversion. Proof/Ref: ${payment_proof || 'Verified by Sales'}`,
-      status: 'Completed'
+      notes: `Advance payment verified by Manager ${req.user.name}. Ref: ${ref}`,
+      status: 'Completed',
+      verified_by: req.user.id,
+      verified_at: new Date().toISOString()
     });
 
     const subtotal = Math.round(adv / 1.05);
@@ -3941,38 +4333,404 @@ app.post('/api/staff/leads/:id/convert', authenticate, authorize(['staff', 'sale
     });
   }
 
-  // Audit booking status change
   db.insert('booking_status_history', {
     agency_id: agencyId,
     booking_id: newBooking.id,
     from_status: 'QUOTATION_PENDING',
     to_status: 'CONFIRMED',
     changed_by: req.user.id,
-    notes: `Lead converted to confirmed booking #${bookingNum} with ₹${adv} advance deposit.`,
+    notes: `Lead converted directly by Manager ${req.user.name} into confirmed booking #${bookingNum} with ₹${adv} advance deposit.`,
     created_at: new Date().toISOString()
   });
 
-  // Update lead status to 'Converted'
-  db.update('leads', lead.id, { status: 'Converted' });
+  db.update('leads', lead.id, {
+    status: 'Converted',
+    booking_id: newBooking.id,
+    conversion_status: 'APPROVED'
+  });
   db.recordActivity(lead.id, staffId, 'status_change', `Lead successfully CONVERTED to confirmed Booking #${bookingNum}!`);
-
-  // Notify Admin, Manager, and Operations Executive
-  const opsStaff = db.findAll('users', (u) => u.agency_id === agencyId && (u.role === 'admin' || u.role === 'manager' || u.role === 'operations'));
-  for (const staffMember of opsStaff) {
-    db.createNotification(
-      agencyId,
-      staffMember.id,
-      'New Confirmed Booking for Execution!',
-      `Staff ${req.user.name} converted lead #${lead.id} into confirmed booking #${bookingNum} (${lead.interested_destination}). Operational arrangements initialized.`,
-      'success',
-      staffMember.role === 'operations' ? '/operations/bookings' : '/admin/bookings'
-    );
-  }
 
   res.status(201).json({
     success: true,
     message: 'Lead converted successfully!',
     booking: newBooking
+  });
+});
+
+// Manager List All Booking Conversion Requests
+app.get('/api/admin/bookings/conversion-requests', authenticate, authorize(['admin', 'manager']), (req, res) => {
+  const agencyId = req.user.agency_id;
+  const { status } = req.query;
+
+  let requests = db.findAll('booking_conversion_requests', (cr) => !cr.agency_id || cr.agency_id === agencyId || cr.agency_id === 'agency_travel_genie');
+  if (status && status !== 'all') {
+    requests = requests.filter((cr) => (cr.status || '').toUpperCase() === status.toUpperCase());
+  }
+
+  requests.sort((a, b) => new Date(b.submitted_at || b.created_at) - new Date(a.submitted_at || a.created_at));
+  res.json(requests);
+});
+
+// Staff List Their Own Conversion Requests
+app.get('/api/staff/conversion-requests', authenticate, authorize(['staff', 'sales', 'manager', 'admin']), (req, res) => {
+  const staffId = req.user.id;
+  const isManagerOrAdmin = ['admin', 'manager'].includes(req.user.role);
+
+  let requests = isManagerOrAdmin
+    ? db.findAll('booking_conversion_requests')
+    : db.findAll('booking_conversion_requests', (cr) => cr.staff_id === staffId);
+
+  requests.sort((a, b) => new Date(b.submitted_at || b.created_at) - new Date(a.submitted_at || a.created_at));
+  res.json(requests);
+});
+
+// Manager Get Single Conversion Request Details
+app.get('/api/admin/bookings/conversion-requests/:id', authenticate, authorize(['admin', 'manager']), (req, res) => {
+  const cr = db.findById('booking_conversion_requests', req.params.id);
+  if (!cr) {
+    return res.status(404).json({ error: 'Conversion request not found.' });
+  }
+
+  const lead = db.findById('leads', cr.lead_id);
+  const evidence = cr.evidence_id ? db.findById('payment_evidence', cr.evidence_id) : null;
+  res.json({ conversion_request: cr, lead, evidence });
+});
+
+// Manager Approve Booking Conversion (Verifies Payment & Provisions Booking)
+app.post('/api/admin/bookings/conversion-requests/:id/approve', authenticate, authorize(['admin', 'manager']), (req, res) => {
+  const agencyId = req.user.agency_id || 'agency_travel_genie';
+  const cr = db.findById('booking_conversion_requests', req.params.id);
+
+  if (!cr) {
+    return res.status(404).json({ error: 'Conversion request not found.' });
+  }
+
+  if (cr.status === 'APPROVED') {
+    return res.status(400).json({ error: 'Conversion request has already been approved.' });
+  }
+
+  const lead = db.findById('leads', cr.lead_id);
+  if (!lead) {
+    return res.status(404).json({ error: 'Linked lead record not found.' });
+  }
+
+  const { verification_notes, verified_amount } = req.body;
+  const adv = verified_amount !== undefined ? Number(verified_amount) : Number(cr.advance_amount);
+  const tot = Number(cr.total_amount);
+  const bal = Math.max(0, tot - adv);
+  const bookingNum = `BK-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
+
+  // 1. Create Confirmed Booking Record
+  const newBooking = db.insert('bookings', {
+    agency_id: agencyId,
+    booking_number: bookingNum,
+    lead_id: lead.id,
+    customer_id: lead.customer_id,
+    customer_name: cr.customer_name,
+    customer_email: cr.customer_email,
+    customer_phone: cr.customer_phone,
+    agent_id: null,
+    sales_executive_id: cr.staff_id,
+    sales_executive_name: cr.staff_name,
+    package_id: cr.package_id,
+    package_title: cr.package_title,
+    travel_start_date: cr.travel_start_date || new Date().toISOString().split('T')[0],
+    travel_end_date: cr.travel_end_date || '',
+    travelers_count: cr.travelers_count || 2,
+    total_amount: tot,
+    advance_amount: adv,
+    balance_amount: bal,
+    payment_method: cr.payment_method || 'UPI',
+    payment_proof: cr.payment_proof || cr.transaction_reference,
+    payment_status: bal === 0 ? 'Paid' : (adv > 0 ? 'Partial' : 'Pending'),
+    booking_status: 'Confirmed',
+    special_requests: cr.notes,
+    verified_by_manager_id: req.user.id,
+    verified_by_manager_name: req.user.name,
+    verified_at: new Date().toISOString(),
+    created_at: new Date().toISOString()
+  });
+
+  // 2. Insert Verified Payment
+  if (adv > 0) {
+    db.insert('payments', {
+      agency_id: agencyId,
+      booking_id: newBooking.id,
+      amount: adv,
+      payment_type: 'Advance',
+      payment_method: cr.payment_method || 'UPI',
+      transaction_reference: cr.transaction_reference || `CONV-VERIF-${Date.now()}`,
+      payment_proof: cr.payment_proof || cr.transaction_reference,
+      payment_date: new Date().toISOString(),
+      notes: `Advance payment verified and approved by Manager ${req.user.name}. ${verification_notes || ''}`.trim(),
+      status: 'Completed',
+      verified_by: req.user.id,
+      verified_at: new Date().toISOString()
+    });
+
+    const subtotal = Math.round(adv / 1.05);
+    const tax = adv - subtotal;
+    db.insert('invoices', {
+      agency_id: agencyId,
+      invoice_number: `TG-INV-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`,
+      booking_id: newBooking.id,
+      customer_id: lead.customer_id,
+      customer_name: cr.customer_name,
+      invoice_date: new Date().toISOString().split('T')[0],
+      subtotal,
+      cgst: Math.round(tax / 2),
+      sgst: Math.round(tax / 2),
+      igst: 0,
+      total_amount: adv,
+      payment_status: bal === 0 ? 'Paid' : 'Partial',
+      pdf_url: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80',
+      created_at: new Date().toISOString()
+    });
+  }
+
+  // 3. Operational arrangements & task checklist initialization
+  db.insert('operations_arrangements', {
+    agency_id: agencyId,
+    booking_id: newBooking.id,
+    trip_status: 'Booking Received',
+    hotel_name: 'Pending Hotel Allocation',
+    room_category: 'Standard / As per quotation',
+    meal_plan: 'Breakfast included',
+    vehicle_type: 'AC Sedan / SUV as per group size',
+    special_instructions: cr.notes || '',
+    dossier_generated: false,
+    updated_at: new Date().toISOString()
+  });
+
+  const opsChecklist = [
+    { title: 'Verify Passenger Identification & Passport Copies', priority: 'High', due_days: 2 },
+    { title: 'Confirm Hotel Accommodations & Room Vouchers', priority: 'High', due_days: 5 },
+    { title: 'Arrange Airport & Local Transportation Logistics', priority: 'Medium', due_days: 7 },
+    { title: 'Generate Consolidated Travel Itinerary Dossier', priority: 'High', due_days: 10 }
+  ];
+  const nowMs = Date.now();
+  for (const item of opsChecklist) {
+    db.insert('operations_tasks', {
+      agency_id: agencyId,
+      booking_id: newBooking.id,
+      task_title: item.title,
+      due_date: new Date(nowMs + item.due_days * 86400000).toISOString().split('T')[0],
+      status: 'PENDING',
+      priority: item.priority,
+      assigned_executive: 'usr_operations_karthik',
+      created_at: new Date().toISOString()
+    });
+  }
+
+  // 4. Update Conversion Request Status to APPROVED
+  db.update('booking_conversion_requests', cr.id, {
+    status: 'APPROVED',
+    approved_by: req.user.id,
+    approved_by_name: req.user.name,
+    approved_at: new Date().toISOString(),
+    booking_id: newBooking.id,
+    booking_number: bookingNum,
+    verification_notes: verification_notes || ''
+  });
+
+  // 5. Update Lead Status to Converted
+  db.update('leads', lead.id, {
+    status: 'Converted',
+    booking_id: newBooking.id,
+    conversion_status: 'APPROVED'
+  });
+
+  db.recordLeadStatusHistory(
+    agencyId,
+    lead.id,
+    'Converted to Booking',
+    'Converted',
+    req.user.id,
+    `Manager ${req.user.name} verified advance payment and approved booking #${bookingNum}.`
+  );
+
+  db.recordActivity(
+    lead.id,
+    req.user.id,
+    'approval',
+    `Manager ${req.user.name} approved booking conversion! Confirmed Booking #${bookingNum} created with verified payment.`
+  );
+
+  db.recordAuditLog(agencyId, req.user.id, 'APPROVE_BOOKING_CONVERSION', 'booking', newBooking.id, {
+    conversion_request_id: cr.id,
+    booking_number: bookingNum,
+    lead_id: lead.id,
+    advance_amount: adv,
+    total_amount: tot
+  });
+
+  // 6. Notify Staff
+  if (cr.staff_id) {
+    db.createNotification(
+      agencyId,
+      cr.staff_id,
+      'Conversion Request Approved!',
+      `Manager ${req.user.name} verified payment and approved booking #${bookingNum} for ${cr.customer_name}. Account creation is now eligible.`,
+      'success',
+      '/staff/bookings'
+    );
+  }
+
+  res.json({
+    success: true,
+    message: `Booking #${bookingNum} successfully approved and confirmed!`,
+    booking: newBooking
+  });
+});
+
+// Manager Reject Booking Conversion Request
+app.post('/api/admin/bookings/conversion-requests/:id/reject', authenticate, authorize(['admin', 'manager']), (req, res) => {
+  const agencyId = req.user.agency_id || 'agency_travel_genie';
+  const cr = db.findById('booking_conversion_requests', req.params.id);
+
+  if (!cr) {
+    return res.status(404).json({ error: 'Conversion request not found.' });
+  }
+
+  const { rejection_reason } = req.body;
+  if (!rejection_reason || !rejection_reason.trim()) {
+    return res.status(400).json({ error: 'Rejection reason is required.' });
+  }
+
+  db.update('booking_conversion_requests', cr.id, {
+    status: 'REJECTED',
+    rejection_reason: rejection_reason.trim(),
+    rejected_by: req.user.id,
+    rejected_by_name: req.user.name,
+    rejected_at: new Date().toISOString()
+  });
+
+  const lead = db.findById('leads', cr.lead_id);
+  if (lead) {
+    db.update('leads', lead.id, {
+      status: 'Negotiation',
+      conversion_status: 'REJECTED'
+    });
+
+    db.recordActivity(
+      lead.id,
+      req.user.id,
+      'rejection',
+      `Manager ${req.user.name} rejected conversion request: ${rejection_reason.trim()}`
+    );
+
+    db.recordLeadStatusHistory(
+      agencyId,
+      lead.id,
+      'Converted to Booking',
+      'Negotiation',
+      req.user.id,
+      `Conversion rejected by Manager. Reason: ${rejection_reason.trim()}`
+    );
+  }
+
+  if (cr.staff_id) {
+    db.createNotification(
+      agencyId,
+      cr.staff_id,
+      'Conversion Request Rejected',
+      `Manager ${req.user.name} rejected conversion request for ${cr.customer_name}. Reason: ${rejection_reason.trim()}`,
+      'warning',
+      '/staff/leads'
+    );
+  }
+
+  res.json({
+    success: true,
+    message: 'Conversion request rejected.',
+    rejection_reason: rejection_reason.trim()
+  });
+});
+
+// Manager Request Additional Information on Conversion Request
+app.post('/api/admin/bookings/conversion-requests/:id/request-info', authenticate, authorize(['admin', 'manager']), (req, res) => {
+  const agencyId = req.user.agency_id || 'agency_travel_genie';
+  const cr = db.findById('booking_conversion_requests', req.params.id);
+
+  if (!cr) {
+    return res.status(404).json({ error: 'Conversion request not found.' });
+  }
+
+  const { request_notes } = req.body;
+  if (!request_notes || !request_notes.trim()) {
+    return res.status(400).json({ error: 'Information request notes are required.' });
+  }
+
+  db.update('booking_conversion_requests', cr.id, {
+    status: 'NEEDS_INFO',
+    info_requested: request_notes.trim(),
+    info_requested_by: req.user.id,
+    info_requested_at: new Date().toISOString()
+  });
+
+  const lead = db.findById('leads', cr.lead_id);
+  if (lead) {
+    db.update('leads', lead.id, { conversion_status: 'NEEDS_INFO' });
+    db.recordActivity(
+      lead.id,
+      req.user.id,
+      'request_info',
+      `Manager ${req.user.name} requested additional evidence: ${request_notes.trim()}`
+    );
+  }
+
+  if (cr.staff_id) {
+    db.createNotification(
+      agencyId,
+      cr.staff_id,
+      'Additional Information Requested',
+      `Manager ${req.user.name} requested additional information on conversion for ${cr.customer_name}: ${request_notes.trim()}`,
+      'info',
+      '/staff/leads'
+    );
+  }
+
+  res.json({
+    success: true,
+    message: 'Additional information requested from staff.',
+    info_requested: request_notes.trim()
+  });
+});
+
+// Manager Revoke Customer Invitation
+app.post('/api/admin/customers/revoke-invitation', authenticate, authorize(['admin', 'manager']), (req, res) => {
+  const agencyId = req.user.agency_id || 'agency_travel_genie';
+  const { invitation_id, email } = req.body;
+
+  if (!invitation_id && !email) {
+    return res.status(400).json({ error: 'Either invitation_id or email is required to revoke an invitation.' });
+  }
+
+  const invitations = db.findAll('customer_account_invitations', (inv) => {
+    if (invitation_id) return inv.id === invitation_id;
+    if (email) return inv.email.toLowerCase() === email.toLowerCase() && !inv.is_used;
+    return false;
+  });
+
+  if (invitations.length === 0) {
+    return res.status(404).json({ error: 'No active invitation found to revoke.' });
+  }
+
+  for (const inv of invitations) {
+    db.update('customer_account_invitations', inv.id, {
+      is_used: true,
+      notes: `Revoked by Manager ${req.user.name} at ${new Date().toISOString()}`
+    });
+  }
+
+  db.recordAuditLog(agencyId, req.user.id, 'REVOKE_CUSTOMER_INVITATION', 'invitation', invitation_id || email, {
+    revoked_count: invitations.length,
+    email
+  });
+
+  res.json({
+    success: true,
+    message: `Successfully revoked ${invitations.length} invitation(s).`
   });
 });
 
