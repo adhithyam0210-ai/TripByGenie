@@ -30,6 +30,7 @@ import { api } from '../../services/api';
 import { useToast } from '../../context/ToastContext';
 import { useAuth } from '../../context/AuthContext';
 import { TravelService } from '../../types';
+import { getTodayIST } from '../../utils/dateValidation';
 
 
 const countryCodes = [
@@ -702,8 +703,15 @@ export const ServiceEnquiryModal: React.FC<ServiceEnquiryModalProps> = ({
                 <input
                   type="date"
                   required
+                  min={getTodayIST()}
                   value={flightDepartDate}
-                  onChange={(e) => setFlightDepartDate(e.target.value)}
+                  onChange={(e) => {
+                    const newDep = e.target.value;
+                    setFlightDepartDate(newDep);
+                    if (flightReturnDate && flightReturnDate < newDep) {
+                      setFlightReturnDate('');
+                    }
+                  }}
                   className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"
                 />
               </div>
@@ -715,6 +723,7 @@ export const ServiceEnquiryModal: React.FC<ServiceEnquiryModalProps> = ({
                   </label>
                   <input
                     type="date"
+                    min={flightDepartDate || getTodayIST()}
                     required={flightTripType === 'Round Trip'}
                     value={flightReturnDate}
                     onChange={(e) => setFlightReturnDate(e.target.value)}
@@ -836,7 +845,7 @@ export const ServiceEnquiryModal: React.FC<ServiceEnquiryModalProps> = ({
                     onClick={() => setBusTripType(t)}
                     className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all ${
                       busTripType === t
-                        ? 'bg-[#FF795C] text-white shadow-xs'
+                        ? 'bg-[#FF0000] text-white shadow-xs'
                         : 'text-gray-600 hover:text-gray-900'
                     }`}
                   >
@@ -910,8 +919,15 @@ export const ServiceEnquiryModal: React.FC<ServiceEnquiryModalProps> = ({
                 <input
                   type="date"
                   required
+                  min={getTodayIST()}
                   value={busDepartDate}
-                  onChange={(e) => setBusDepartDate(e.target.value)}
+                  onChange={(e) => {
+                    const newDep = e.target.value;
+                    setBusDepartDate(newDep);
+                    if (busReturnDate && busReturnDate < newDep) {
+                      setBusReturnDate('');
+                    }
+                  }}
                   className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"
                 />
               </div>
@@ -923,6 +939,7 @@ export const ServiceEnquiryModal: React.FC<ServiceEnquiryModalProps> = ({
                   </label>
                   <input
                     type="date"
+                    min={busDepartDate || getTodayIST()}
                     required={busTripType === 'Round Trip'}
                     value={busReturnDate}
                     onChange={(e) => setBusReturnDate(e.target.value)}
@@ -1069,8 +1086,15 @@ export const ServiceEnquiryModal: React.FC<ServiceEnquiryModalProps> = ({
                 <input
                   type="date"
                   required
+                  min={getTodayIST()}
                   value={carPickupDate}
-                  onChange={(e) => setCarPickupDate(e.target.value)}
+                  onChange={(e) => {
+                    const newPickup = e.target.value;
+                    setCarPickupDate(newPickup);
+                    if (carReturnDate && carReturnDate < newPickup) {
+                      setCarReturnDate('');
+                    }
+                  }}
                   className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"
                 />
               </div>
@@ -1081,6 +1105,7 @@ export const ServiceEnquiryModal: React.FC<ServiceEnquiryModalProps> = ({
                 </label>
                 <input
                   type="date"
+                  min={carPickupDate || getTodayIST()}
                   value={carReturnDate}
                   onChange={(e) => setCarReturnDate(e.target.value)}
                   className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"
@@ -1172,6 +1197,7 @@ export const ServiceEnquiryModal: React.FC<ServiceEnquiryModalProps> = ({
                 </label>
                 <input
                   type="date"
+                  min={getTodayIST()}
                   value={cruiseDate}
                   onChange={(e) => setCruiseDate(e.target.value)}
                   className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"
@@ -1264,8 +1290,15 @@ export const ServiceEnquiryModal: React.FC<ServiceEnquiryModalProps> = ({
                 <input
                   type="date"
                   required
+                  min={getTodayIST()}
                   value={hotelCheckIn}
-                  onChange={(e) => setHotelCheckIn(e.target.value)}
+                  onChange={(e) => {
+                    const newCheckIn = e.target.value;
+                    setHotelCheckIn(newCheckIn);
+                    if (hotelCheckOut && hotelCheckOut < newCheckIn) {
+                      setHotelCheckOut('');
+                    }
+                  }}
                   className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"
                 />
               </div>
@@ -1277,6 +1310,7 @@ export const ServiceEnquiryModal: React.FC<ServiceEnquiryModalProps> = ({
                 <input
                   type="date"
                   required
+                  min={hotelCheckIn || getTodayIST()}
                   value={hotelCheckOut}
                   onChange={(e) => setHotelCheckOut(e.target.value)}
                   className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"
@@ -1394,6 +1428,7 @@ export const ServiceEnquiryModal: React.FC<ServiceEnquiryModalProps> = ({
                 <input
                   type="date"
                   required
+                  min={getTodayIST()}
                   value={visaTravelDate}
                   onChange={(e) => setVisaTravelDate(e.target.value)}
                   className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"
@@ -1507,6 +1542,7 @@ export const ServiceEnquiryModal: React.FC<ServiceEnquiryModalProps> = ({
                 <input
                   type="date"
                   required
+                  min={getTodayIST()}
                   value={transferDate}
                   onChange={(e) => setTransferDate(e.target.value)}
                   className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"
@@ -1600,8 +1636,15 @@ export const ServiceEnquiryModal: React.FC<ServiceEnquiryModalProps> = ({
                 <input
                   type="date"
                   required
+                  min={getTodayIST()}
                   value={insurStartDate}
-                  onChange={(e) => setInsurStartDate(e.target.value)}
+                  onChange={(e) => {
+                    const newStart = e.target.value;
+                    setInsurStartDate(newStart);
+                    if (insurEndDate && insurEndDate < newStart) {
+                      setInsurEndDate('');
+                    }
+                  }}
                   className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"
                 />
               </div>
@@ -1613,6 +1656,7 @@ export const ServiceEnquiryModal: React.FC<ServiceEnquiryModalProps> = ({
                 <input
                   type="date"
                   required
+                  min={insurStartDate || getTodayIST()}
                   value={insurEndDate}
                   onChange={(e) => setInsurEndDate(e.target.value)}
                   className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"
@@ -1692,6 +1736,7 @@ export const ServiceEnquiryModal: React.FC<ServiceEnquiryModalProps> = ({
                 <input
                   type="date"
                   required
+                  min={getTodayIST()}
                   value={checkinDate}
                   onChange={(e) => setCheckinDate(e.target.value)}
                   className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"
@@ -1771,6 +1816,7 @@ export const ServiceEnquiryModal: React.FC<ServiceEnquiryModalProps> = ({
                 </label>
                 <input
                   type="date"
+                  min={getTodayIST()}
                   value={genDate}
                   onChange={(e) => setGenDate(e.target.value)}
                   className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"

@@ -74,6 +74,13 @@ export const AdminAgents: React.FC = () => {
       return;
     }
 
+    const cleanEmail = formData.email.trim().toLowerCase();
+    const isDuplicate = agents.some((a) => (a.email && a.email.trim().toLowerCase() === cleanEmail) || (a.user?.email && a.user.email.trim().toLowerCase() === cleanEmail));
+    if (isDuplicate) {
+      error(`An agent account with email '${cleanEmail}' already exists. Duplicate emails are not allowed.`);
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       const res = await api.createAdminAgent(formData);
@@ -725,7 +732,7 @@ export const AdminAgents: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => copyToClipboard(invitationModalData.activationLink)}
-                  className="px-3.5 py-2.5 bg-[#FF795C] hover:bg-[#e0654a] text-white rounded-lg font-bold text-xs flex items-center gap-1.5 whitespace-nowrap cursor-pointer transition-colors shadow-sm"
+                  className="px-3.5 py-2.5 bg-[#FF0000] hover:bg-[#D90000] text-white rounded-lg font-bold text-xs flex items-center gap-1.5 whitespace-nowrap cursor-pointer transition-colors shadow-sm"
                 >
                   {copiedLink ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
                   {copiedLink ? 'Copied!' : 'Copy Link'}

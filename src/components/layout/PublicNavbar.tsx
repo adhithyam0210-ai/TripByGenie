@@ -19,10 +19,13 @@ import {
   Globe2,
   Calendar,
   Layers,
-  Search
+  Search,
+  LogIn,
+  UserCheck
 } from 'lucide-react';
 import { Button } from '../common/Button';
 import { BrandLogo } from '../common/BrandLogo';
+import { useAuth } from '../../context/AuthContext';
 
 interface PublicNavbarProps {
   onOpenTripModal?: () => void;
@@ -31,6 +34,7 @@ interface PublicNavbarProps {
 export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { user, isAuthenticated, role, getRoleDashboardPath } = useAuth();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -442,10 +446,10 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
                               <Link
                                 to={`/ destinations / ${getDestinationSlug(c)}`}
                                 onClick={() => setActiveDropdown(null)}
-                                className="text-xs text-gray-700 hover:text-[#FF795C] hover:translate-x-1 transition-all flex items-center justify-between py-0.5 group"
+                                className="text-xs text-gray-700 hover:text-[#FF0000] hover:translate-x-1 transition-all flex items-center justify-between py-0.5 group"
                               >
                                 <span>{c}</span>
-                                <span className="text-[10px] text-gray-300 group-hover:text-[#FF795C]">›</span>
+                                <span className="text-[10px] text-gray-300 group-hover:text-[#FF0000]">›</span>
                               </Link>
                             </li>
                           ))}
@@ -466,7 +470,7 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
                         setActiveDropdown(null);
                         if (onOpenTripModal) onOpenTripModal();
                       }}
-                      className="text-xs font-bold text-[#082C43] hover:text-[#FF795C] underline cursor-pointer"
+                      className="text-xs font-bold text-[#082C43] hover:text-[#FF0000] underline cursor-pointer"
                     >
                       Customise Trip Now
                     </button>
@@ -526,10 +530,10 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
                               <Link
                                 to={`/destinations/${getDestinationSlug(spot)}`}
                                 onClick={() => setActiveDropdown(null)}
-                                className="text-xs text-gray-700 hover:text-[#FF795C] hover:translate-x-1 transition-all flex items-center justify-between py-0.5 group"
+                                className="text-xs text-gray-700 hover:text-[#FF0000] hover:translate-x-1 transition-all flex items-center justify-between py-0.5 group"
                               >
                                 <span>{spot}</span>
-                                <span className="text-[10px] text-gray-300 group-hover:text-[#FF795C]">›</span>
+                                <span className="text-[10px] text-gray-300 group-hover:text-[#FF0000]">›</span>
                               </Link>
                             </li>
                           ))}
@@ -605,10 +609,10 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
                               <Link
                                 to={`/destinations/${getDestinationSlug(spot)}`}
                                 onClick={() => setActiveDropdown(null)}
-                                className="text-xs text-gray-700 hover:text-[#FF795C] hover:translate-x-1 transition-all flex items-center justify-between py-0.5 group"
+                                className="text-xs text-gray-700 hover:text-[#FF0000] hover:translate-x-1 transition-all flex items-center justify-between py-0.5 group"
                               >
                                 <span>{spot}</span>
-                                <span className="text-[10px] text-gray-300 group-hover:text-[#FF795C]">›</span>
+                                <span className="text-[10px] text-gray-300 group-hover:text-[#FF0000]">›</span>
                               </Link>
                             </li>
                           ))}
@@ -646,13 +650,20 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
             </Link>
           </nav>
 
-          {/* Right Action: Plan Trip CTA */}
-          <div className="hidden lg:flex items-center gap-2.5 shrink-0">
+          {/* Right Action: Login & Plan Trip CTA */}
+          <div className="hidden lg:flex items-center gap-2 shrink-0">
+            <Link
+              to="/login"
+              className="h-9 sm:h-9.5 px-3.5 sm:px-4 rounded-full text-xs sm:text-[13px] font-bold text-[#082C43] bg-white border border-[#E2E8F0] hover:bg-[#F8FAFC] hover:border-[#082C43] shadow-xs flex items-center justify-center transition-all"
+            >
+              <span className="whitespace-nowrap">Login</span>
+            </Link>
+
             <Button
               variant="primary"
               size="sm"
               onClick={onOpenTripModal}
-              className="shadow-md shadow-[#FF795C]/25 text-xs sm:text-[13px] font-bold whitespace-nowrap shrink-0 h-9 sm:h-9.5 px-4 sm:px-5 inline-flex items-center gap-2 rounded-full"
+              className="shadow-md shadow-[#FF0000]/25 text-xs sm:text-[13px] font-bold whitespace-nowrap shrink-0 h-9 sm:h-9.5 px-4 sm:px-5 inline-flex items-center gap-2 rounded-full"
             >
               <Send className="w-3.5 h-3.5 shrink-0" />
               <span className="whitespace-nowrap">Plan Your Trip</span>
@@ -661,10 +672,16 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
 
           {/* Mobile Menu Actions & Hamburger */}
           <div className="flex xl:hidden items-center gap-1.5 sm:gap-2">
+            <Link
+              to="/login"
+              className="text-xs bg-white text-[#082C43] border border-[#E2E8F0] px-3 py-1.5 rounded-lg font-bold transition-all shadow-xs flex items-center justify-center"
+            >
+              <span>Login</span>
+            </Link>
             <button
               type="button"
               onClick={onOpenTripModal}
-              className="text-xs bg-[#FF795C] hover:bg-[#e06348] text-white px-2.5 py-1.5 rounded-lg font-bold transition-all shadow-xs"
+              className="text-xs bg-[#FF0000] hover:bg-[#D90000] text-white px-2.5 py-1.5 rounded-lg font-bold transition-all shadow-xs"
             >
               Plan Trip
             </button>
@@ -754,7 +771,7 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({ onOpenTripModal }) =
                             key={c}
                             to={`/destinations/${getDestinationSlug(c)}`}
                             onClick={() => setIsMobileMenuOpen(false)}
-                            className="hover:text-[#FF795C] py-0.5"
+                            className="hover:text-[#FF0000] py-0.5"
                           >
                             {c}
                           </Link>

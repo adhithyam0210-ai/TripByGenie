@@ -28,7 +28,11 @@ import {
   Clock,
   Briefcase,
   Video,
-  X
+  X,
+  TrendingUp,
+  Zap,
+  Percent,
+  Handshake
 } from 'lucide-react';
 import { api } from '../../services/api';
 import { HeroBanner, Destination, Package, Testimonial, TravelService } from '../../types';
@@ -39,6 +43,7 @@ import { TravelPatternBg } from '../../components/travel/TravelPatternBg';
 import { Button } from '../../components/common/Button';
 import { Badge } from '../../components/common/Badge';
 import { EmiEnquiryModal } from '../../components/travel/EmiEnquiryModal';
+import { B2BPartnerEnquiryModal } from '../../components/b2b/B2BPartnerEnquiryModal';
 import { resolveMediaUrl } from '../../utils/mediaUrl';
 import { fallbackData } from '../../data/fallbackData';
 
@@ -52,6 +57,7 @@ export const Home: React.FC = () => {
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [isEmiModalOpen, setIsEmiModalOpen] = useState(false);
+  const [isB2BModalOpen, setIsB2BModalOpen] = useState(false);
   const [customVideoInput, setCustomVideoInput] = useState('');
   const [destinations, setDestinations] = useState<Destination[]>((fallbackData.destinations || []) as any);
   const [selectedRegion, setSelectedRegion] = useState('all');
@@ -772,7 +778,7 @@ export const Home: React.FC = () => {
                 <Button
                   variant="primary"
                   size="sm"
-                  className="w-full sm:w-auto shadow-md shadow-[#FF795C]/30 text-[11px] sm:text-xs font-bold px-3 sm:px-4 py-1 sm:py-2 h-7.5 sm:h-9.5 rounded-lg sm:rounded-xl cursor-pointer justify-center"
+                  className="w-full sm:w-auto shadow-md shadow-[#FF0000]/30 text-[11px] sm:text-xs font-bold px-3 sm:px-4 py-1 sm:py-2 h-7.5 sm:h-9.5 rounded-lg sm:rounded-xl cursor-pointer justify-center"
                 >
                   {currentBanner.cta_text || 'Explore Packages'}
                 </Button>
@@ -909,13 +915,13 @@ export const Home: React.FC = () => {
                 </div>
 
                 <div className="p-5">
-                  <h3 className="text-lg font-bold text-[#082C43] group-hover:text-[#FF795C] transition-colors font-display">
+                  <h3 className="text-lg font-bold text-[#082C43] group-hover:text-[#FF0000] transition-colors font-display">
                     {cat.title}
                   </h3>
                   <p className="text-xs text-gray-500 mt-1 line-clamp-2">
                     {cat.desc}
                   </p>
-                  <div className="mt-4 flex items-center justify-between text-xs font-bold text-[#17648A] group-hover:text-[#FF795C]">
+                  <div className="mt-4 flex items-center justify-between text-xs font-bold text-[#17648A] group-hover:text-[#FF0000]">
                     <span>View Itineraries & Pricing</span>
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </div>
@@ -1173,6 +1179,75 @@ export const Home: React.FC = () => {
                 </div>
               );
             })}
+          </div>
+        </div>
+      </section>
+
+      {/* ======================================================== */}
+      {/* SECTION 5.9: B2B TRAVEL PARTNER PROGRAM BANNER           */}
+      {/* (Buy Travel Packages in Bulk – At Exclusive B2B Rates)   */}
+      {/* ======================================================== */}
+      <section className="py-6 sm:py-10 bg-gradient-to-b from-white via-[#F8FBFF] to-white relative border-t border-[#E2E8F0]">
+        <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
+          <div className="w-full max-w-[1140px] lg:max-w-[1240px] xl:max-w-[1300px] mx-auto rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 border border-slate-200/90 relative group bg-white">
+            {/* Banner Image Container with Interactive Overlay */}
+            <div className="relative w-full overflow-hidden">
+              <img
+                src="/images/b2b/b2b-partner-banner.jpg"
+                alt="Buy Travel Packages in Bulk – At Exclusive B2B Rates"
+                className="w-full h-auto object-cover select-none group-hover:scale-[1.01] transition-transform duration-700 cursor-pointer"
+                onClick={() => setIsB2BModalOpen(true)}
+                loading="lazy"
+              />
+
+              {/* Interactive Hit Target & Positioned 'Become a Travel Partner' button */}
+              <div className="absolute inset-0 flex flex-col justify-end p-3 sm:p-5 md:p-6 lg:p-7 pointer-events-none">
+                <div className="max-w-xl pointer-events-auto">
+                  {/* Desktop & Tablet Interactive Button Trigger positioned slightly lower */}
+                  <div className="hidden sm:block sm:mb-1 md:mb-1.5 lg:mb-2">
+                    <button
+                      type="button"
+                      onClick={() => setIsB2BModalOpen(true)}
+                      className="inline-flex items-center gap-2 sm:gap-2.5 px-6 sm:px-7 md:px-8 py-2.5 sm:py-3 rounded-full bg-[#082C43] hover:bg-[#044A9C] text-white text-xs sm:text-sm md:text-base font-bold shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer ring-2 ring-white/50 group/btn"
+                    >
+                      <span>Become a Travel Partner</span>
+                      <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-white group-hover/btn:translate-x-1 transition-transform" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Mobile View: High-Performance Touch-Optimized Layout */}
+            <div className="block sm:hidden bg-gradient-to-r from-[#082C43] to-[#044A9C] text-white p-4 space-y-3.5">
+              <div className="grid grid-cols-2 gap-2 text-center text-xs">
+                <div className="p-2.5 rounded-xl bg-white/10 backdrop-blur-xs flex flex-col items-center gap-1 border border-white/10">
+                  <Percent className="w-4 h-4 text-[#F59E0B]" />
+                  <span className="font-bold">Wholesale Pricing</span>
+                </div>
+                <div className="p-2.5 rounded-xl bg-white/10 backdrop-blur-xs flex flex-col items-center gap-1 border border-white/10">
+                  <Handshake className="w-4 h-4 text-[#55C9BD]" />
+                  <span className="font-bold">Dedicated Support</span>
+                </div>
+                <div className="p-2.5 rounded-xl bg-white/10 backdrop-blur-xs flex flex-col items-center gap-1 border border-white/10">
+                  <Zap className="w-4 h-4 text-[#F59E0B]" />
+                  <span className="font-bold">Instant Booking</span>
+                </div>
+                <div className="p-2.5 rounded-xl bg-white/10 backdrop-blur-xs flex flex-col items-center gap-1 border border-white/10">
+                  <TrendingUp className="w-4 h-4 text-[#55C9BD]" />
+                  <span className="font-bold">Grow Business</span>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setIsB2BModalOpen(true)}
+                className="w-full py-3 rounded-full bg-[#FF0000] hover:bg-[#D90000] text-white text-xs font-bold shadow-lg flex items-center justify-center gap-2 cursor-pointer active:scale-95 transition-all"
+              >
+                <span>Become a Travel Partner</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         </div>
       </section>
@@ -1480,7 +1555,7 @@ export const Home: React.FC = () => {
                         <button
                           type="button"
                           onClick={() => setSelectedStory(test)}
-                          className="shrink-0 text-xs font-bold text-[#FF795C] hover:text-white bg-[#FF795C]/10 hover:bg-[#FF795C] px-3 py-1.5 rounded-full transition-all cursor-pointer flex items-center gap-1 shadow-none border border-[#FF795C]/25"
+                          className="shrink-0 text-xs font-bold text-[#FF0000] hover:text-white bg-[#FF0000]/10 hover:bg-[#FF0000] px-3 py-1.5 rounded-full transition-all cursor-pointer flex items-center gap-1 shadow-none border border-[#FF0000]/25"
                         >
                           Read Story
                         </button>
@@ -1663,6 +1738,12 @@ export const Home: React.FC = () => {
       <EmiEnquiryModal
         isOpen={isEmiModalOpen}
         onClose={() => setIsEmiModalOpen(false)}
+      />
+
+      {/* B2B Travel Partner Wholesale Enquiry Modal */}
+      <B2BPartnerEnquiryModal
+        isOpen={isB2BModalOpen}
+        onClose={() => setIsB2BModalOpen(false)}
       />
     </div>
   );

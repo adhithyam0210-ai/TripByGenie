@@ -5,6 +5,7 @@ import { Button } from '../common/Button';
 import { api } from '../../services/api';
 import { useToast } from '../../context/ToastContext';
 import { useAuth } from '../../context/AuthContext';
+import { getTodayIST, isTodayOrFutureDate } from '../../utils/dateValidation';
 
 interface CustomTripModalProps {
   isOpen: boolean;
@@ -103,10 +104,7 @@ export const CustomTripModal: React.FC<CustomTripModalProps> = ({
       }
     } else if (field === 'travel_date') {
       if (trimmed) {
-        const selectedDate = new Date(trimmed);
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        if (selectedDate < today) {
+        if (!isTodayOrFutureDate(trimmed)) {
           err = 'Travel date cannot be in the past';
         }
       }
@@ -190,7 +188,7 @@ export const CustomTripModal: React.FC<CustomTripModalProps> = ({
     }
   };
 
-  const todayStr = new Date().toISOString().split('T')[0];
+  const todayStr = getTodayIST();
 
   return (
     <Modal

@@ -40,6 +40,7 @@ import { AppNotification } from '../../types';
 import { BrandLogo } from '../common/BrandLogo';
 import { Modal } from '../common/Modal';
 import { Button } from '../common/Button';
+import { ChangePasswordModal } from '../common/ChangePasswordModal';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -146,12 +147,13 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   subtitle,
   actions
 }) => {
-  const { user, agency, role, logout, switchAgency, demoLogin } = useAuth();
+  const { user, agency, role, logout, switchAgency, demoLogin, isAdminSession, getRoleDashboardPath } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const { success, error } = useToast();
 
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(() => {
     try {
       return localStorage.getItem('tg_sidebar_collapsed') === 'true';
@@ -159,6 +161,16 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       return false;
     }
   });
+
+  const handleRoleSwitch = async (targetRole: any) => {
+    try {
+      const switchedRole = await demoLogin(targetRole);
+      const targetPath = getRoleDashboardPath(switchedRole);
+      navigate(targetPath);
+    } catch (err) {
+      console.error('Failed to switch role:', err);
+    }
+  };
 
   const toggleSidebarCollapse = () => {
     setIsSidebarCollapsed((prev) => {
@@ -717,13 +729,22 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                     </div>
                   </div>
 
-                  <button
-                    onClick={() => setIsSignOutConfirmOpen(true)}
-                    title="Sign Out"
-                    className="p-1.5 rounded-lg text-white/60 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
-                  >
-                    <LogOut className="w-4 h-4" />
-                  </button>
+                  <div className="flex items-center gap-1">
+                    <button
+                      onClick={() => setIsPasswordModalOpen(true)}
+                      title="Change Password"
+                      className="p-1.5 rounded-lg text-white/60 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                    >
+                      <KeyRound className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => setIsSignOutConfirmOpen(true)}
+                      title="Sign Out"
+                      className="p-1.5 rounded-lg text-white/60 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                    >
+                      <LogOut className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
 
                 <Link
@@ -776,58 +797,60 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                   <ExternalLink className="w-3 h-3 opacity-70" />
                 </Link>
 
-                {/* Quick Demo Switcher Pill (1-click test of all 6 roles) */}
-                <div className="hidden xl:flex items-center gap-1 bg-[#F8F1E7] p-1 rounded-xl border border-[#EFE7DA] text-xs">
-                  <span className="text-[10px] font-bold text-[#17648A] px-1.5 uppercase tracking-wider">Switch Role:</span>
-                  <button
-                    type="button"
-                    onClick={() => demoLogin('admin')}
-                    className={`px-2 py-0.5 rounded-lg font-bold transition-colors cursor-pointer ${role === 'admin' ? 'bg-[#485264] text-white shadow-xs' : 'text-[#485264] hover:bg-white'
-                      }`}
-                  >
-                    Admin
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => demoLogin('manager')}
-                    className={`px-2 py-0.5 rounded-lg font-bold transition-colors cursor-pointer ${role === 'manager' ? 'bg-purple-700 text-white shadow-xs' : 'text-[#082C43] hover:bg-white'
-                      }`}
-                  >
-                    Manager
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => demoLogin('staff')}
-                    className={`px-2 py-0.5 rounded-lg font-bold transition-colors cursor-pointer ${role === 'staff' || role === 'sales' ? 'bg-teal-700 text-white shadow-xs' : 'text-[#082C43] hover:bg-white'
-                      }`}
-                  >
-                    Sales
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => demoLogin('operations')}
-                    className={`px-2 py-0.5 rounded-lg font-bold transition-colors cursor-pointer ${role === 'operations' ? 'bg-blue-700 text-white shadow-xs' : 'text-[#082C43] hover:bg-white'
-                      }`}
-                  >
-                    Operations
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => demoLogin('agent')}
-                    className={`px-2 py-0.5 rounded-lg font-bold transition-colors cursor-pointer ${role === 'agent' ? 'bg-amber-600 text-white shadow-xs' : 'text-[#082C43] hover:bg-white'
-                      }`}
-                  >
-                    Agent
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => demoLogin('customer')}
-                    className={`px-2 py-0.5 rounded-lg font-bold transition-colors cursor-pointer ${role === 'customer' ? 'bg-emerald-700 text-white shadow-xs' : 'text-[#082C43] hover:bg-white'
-                      }`}
-                  >
-                    Customer
-                  </button>
-                </div>
+                {/* Quick Role Switcher Pill - EXCLUSIVELY AVAILABLE FOR ADMIN SESSION */}
+                {(isAdminSession || role === 'admin') && (
+                  <div className="hidden xl:flex items-center gap-1 bg-[#F8F1E7] p-1 rounded-xl border border-[#EFE7DA] text-xs">
+                    <span className="text-[10px] font-bold text-[#17648A] px-1.5 uppercase tracking-wider">Switch Role:</span>
+                    <button
+                      type="button"
+                      onClick={() => handleRoleSwitch('admin')}
+                      className={`px-2 py-0.5 rounded-lg font-bold transition-colors cursor-pointer ${role === 'admin' ? 'bg-[#485264] text-white shadow-xs' : 'text-[#485264] hover:bg-white'
+                        }`}
+                    >
+                      Admin
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleRoleSwitch('manager')}
+                      className={`px-2 py-0.5 rounded-lg font-bold transition-colors cursor-pointer ${role === 'manager' ? 'bg-purple-700 text-white shadow-xs' : 'text-[#082C43] hover:bg-white'
+                        }`}
+                    >
+                      Manager
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleRoleSwitch('staff')}
+                      className={`px-2 py-0.5 rounded-lg font-bold transition-colors cursor-pointer ${role === 'staff' || role === 'sales' ? 'bg-teal-700 text-white shadow-xs' : 'text-[#082C43] hover:bg-white'
+                        }`}
+                    >
+                      Sales
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleRoleSwitch('operations')}
+                      className={`px-2 py-0.5 rounded-lg font-bold transition-colors cursor-pointer ${role === 'operations' ? 'bg-blue-700 text-white shadow-xs' : 'text-[#082C43] hover:bg-white'
+                        }`}
+                    >
+                      Operations
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleRoleSwitch('agent')}
+                      className={`px-2 py-0.5 rounded-lg font-bold transition-colors cursor-pointer ${role === 'agent' ? 'bg-amber-600 text-white shadow-xs' : 'text-[#082C43] hover:bg-white'
+                        }`}
+                    >
+                      Agent
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleRoleSwitch('customer')}
+                      className={`px-2 py-0.5 rounded-lg font-bold transition-colors cursor-pointer ${role === 'customer' ? 'bg-emerald-700 text-white shadow-xs' : 'text-[#082C43] hover:bg-white'
+                        }`}
+                    >
+                      Customer
+                    </button>
+                  </div>
+                )}
 
                 {/* Notifications Bell */}
                 <div className="relative">
@@ -995,103 +1018,105 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                   </span>
                 </div>
 
-                {/* Quick Role Switcher (Mobile testing helper) */}
-                <div className="mb-2 p-2 rounded-xl bg-[#3B4353]/70 border border-white/10 shrink-0">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#55C9BD] block mb-1.5">
-                    Switch Portal Role:
-                  </span>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 text-xs">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setIsMobileSidebarOpen(false);
-                        demoLogin('admin');
-                      }}
-                      className={`p-2 rounded-lg font-bold text-left flex items-center gap-1.5 transition-all cursor-pointer ${role === 'admin'
-                          ? 'bg-[#2563EB] text-white shadow-xs'
-                          : 'bg-white/5 hover:bg-white/10 text-white/90'
-                        }`}
-                    >
-                      <Shield className="w-3.5 h-3.5 shrink-0" />
-                      <span className="truncate">Admin</span>
-                    </button>
+                {/* Quick Role Switcher (Mobile testing helper - visible for admin session) */}
+                {(isAdminSession || role === 'admin') && (
+                  <div className="mb-2 p-2 rounded-xl bg-[#3B4353]/70 border border-white/10 shrink-0">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#55C9BD] block mb-1.5">
+                      Switch Portal Role:
+                    </span>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 text-xs">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsMobileSidebarOpen(false);
+                          handleRoleSwitch('admin');
+                        }}
+                        className={`p-2 rounded-lg font-bold text-left flex items-center gap-1.5 transition-all cursor-pointer ${role === 'admin'
+                            ? 'bg-[#2563EB] text-white shadow-xs'
+                            : 'bg-white/5 hover:bg-white/10 text-white/90'
+                          }`}
+                      >
+                        <Shield className="w-3.5 h-3.5 shrink-0" />
+                        <span className="truncate">Admin</span>
+                      </button>
 
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setIsMobileSidebarOpen(false);
-                        demoLogin('manager');
-                      }}
-                      className={`p-2 rounded-lg font-bold text-left flex items-center gap-1.5 transition-all cursor-pointer ${role === 'manager'
-                          ? 'bg-purple-600 text-white shadow-xs'
-                          : 'bg-white/5 hover:bg-white/10 text-white/90'
-                        }`}
-                    >
-                      <ShieldCheck className="w-3.5 h-3.5 shrink-0" />
-                      <span className="truncate">Manager</span>
-                    </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsMobileSidebarOpen(false);
+                          handleRoleSwitch('manager');
+                        }}
+                        className={`p-2 rounded-lg font-bold text-left flex items-center gap-1.5 transition-all cursor-pointer ${role === 'manager'
+                            ? 'bg-purple-600 text-white shadow-xs'
+                            : 'bg-white/5 hover:bg-white/10 text-white/90'
+                          }`}
+                      >
+                        <ShieldCheck className="w-3.5 h-3.5 shrink-0" />
+                        <span className="truncate">Manager</span>
+                      </button>
 
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setIsMobileSidebarOpen(false);
-                        demoLogin('staff');
-                      }}
-                      className={`p-2 rounded-lg font-bold text-left flex items-center gap-1.5 transition-all cursor-pointer ${role === 'staff' || role === 'sales'
-                          ? 'bg-teal-600 text-white shadow-xs'
-                          : 'bg-white/5 hover:bg-white/10 text-white/90'
-                        }`}
-                    >
-                      <UserCheck className="w-3.5 h-3.5 shrink-0" />
-                      <span className="truncate">Staff CRM</span>
-                    </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsMobileSidebarOpen(false);
+                          handleRoleSwitch('staff');
+                        }}
+                        className={`p-2 rounded-lg font-bold text-left flex items-center gap-1.5 transition-all cursor-pointer ${role === 'staff' || role === 'sales'
+                            ? 'bg-teal-600 text-white shadow-xs'
+                            : 'bg-white/5 hover:bg-white/10 text-white/90'
+                          }`}
+                      >
+                        <UserCheck className="w-3.5 h-3.5 shrink-0" />
+                        <span className="truncate">Staff CRM</span>
+                      </button>
 
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setIsMobileSidebarOpen(false);
-                        demoLogin('operations');
-                      }}
-                      className={`p-2 rounded-lg font-bold text-left flex items-center gap-1.5 transition-all cursor-pointer ${role === 'operations'
-                          ? 'bg-blue-600 text-white shadow-xs'
-                          : 'bg-white/5 hover:bg-white/10 text-white/90'
-                        }`}
-                    >
-                      <Building2 className="w-3.5 h-3.5 shrink-0" />
-                      <span className="truncate">Logistics</span>
-                    </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsMobileSidebarOpen(false);
+                          handleRoleSwitch('operations');
+                        }}
+                        className={`p-2 rounded-lg font-bold text-left flex items-center gap-1.5 transition-all cursor-pointer ${role === 'operations'
+                            ? 'bg-blue-600 text-white shadow-xs'
+                            : 'bg-white/5 hover:bg-white/10 text-white/90'
+                          }`}
+                      >
+                        <Building2 className="w-3.5 h-3.5 shrink-0" />
+                        <span className="truncate">Logistics</span>
+                      </button>
 
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setIsMobileSidebarOpen(false);
-                        demoLogin('agent');
-                      }}
-                      className={`p-2 rounded-lg font-bold text-left flex items-center gap-1.5 transition-all cursor-pointer ${role === 'agent'
-                          ? 'bg-amber-500 text-white shadow-xs'
-                          : 'bg-white/5 hover:bg-white/10 text-white/90'
-                        }`}
-                    >
-                      <Briefcase className="w-3.5 h-3.5 shrink-0" />
-                      <span className="truncate">B2B Agent</span>
-                    </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsMobileSidebarOpen(false);
+                          handleRoleSwitch('agent');
+                        }}
+                        className={`p-2 rounded-lg font-bold text-left flex items-center gap-1.5 transition-all cursor-pointer ${role === 'agent'
+                            ? 'bg-amber-500 text-white shadow-xs'
+                            : 'bg-white/5 hover:bg-white/10 text-white/90'
+                          }`}
+                      >
+                        <Briefcase className="w-3.5 h-3.5 shrink-0" />
+                        <span className="truncate">B2B Agent</span>
+                      </button>
 
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setIsMobileSidebarOpen(false);
-                        demoLogin('customer');
-                      }}
-                      className={`p-2 rounded-lg font-bold text-left flex items-center gap-1.5 transition-all cursor-pointer ${role === 'customer'
-                          ? 'bg-emerald-600 text-white shadow-xs'
-                          : 'bg-white/5 hover:bg-white/10 text-white/90'
-                        }`}
-                    >
-                      <Users className="w-3.5 h-3.5 shrink-0" />
-                      <span className="truncate">Customer</span>
-                    </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsMobileSidebarOpen(false);
+                          handleRoleSwitch('customer');
+                        }}
+                        className={`p-2 rounded-lg font-bold text-left flex items-center gap-1.5 transition-all cursor-pointer ${role === 'customer'
+                            ? 'bg-emerald-600 text-white shadow-xs'
+                            : 'bg-white/5 hover:bg-white/10 text-white/90'
+                          }`}
+                      >
+                        <Users className="w-3.5 h-3.5 shrink-0" />
+                        <span className="truncate">Customer</span>
+                      </button>
+                    </div>
                   </div>
-                </div>
+                )}
 
                 {/* Mobile Navigation Links */}
                 <nav className="py-2 space-y-2 flex-1 min-h-0 overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
@@ -1363,6 +1388,12 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               </div>
             </Modal>
           )}
+
+          <ChangePasswordModal
+            isOpen={isPasswordModalOpen}
+            onClose={() => setIsPasswordModalOpen(false)}
+            userRole={role ? role.toUpperCase() : undefined}
+          />
         </div>
         );
 };

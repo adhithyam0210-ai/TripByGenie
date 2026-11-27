@@ -220,7 +220,7 @@ export const AgentDocuments: React.FC = () => {
                   href={previewDoc.invoice_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-[#082C43] text-white hover:bg-[#FF795C]"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-[#082C43] text-white hover:bg-[#FF0000]"
                 >
                   <Download className="w-3.5 h-3.5" />
                   <span>Download PDF</span>

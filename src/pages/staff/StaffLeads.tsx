@@ -10,7 +10,9 @@ import {
   CheckCircle,
   FileText,
   Plus,
-  ArrowRight
+  ArrowRight,
+  Key,
+  ShieldCheck
 } from 'lucide-react';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { StatusBadge } from '../../components/common/Badge';
@@ -19,6 +21,7 @@ import { Modal } from '../../components/common/Modal';
 import { api } from '../../services/api';
 import { Lead, Quotation } from '../../types';
 import { useToast } from '../../context/ToastContext';
+import { getTodayIST } from '../../utils/dateValidation';
 
 export const StaffLeads: React.FC = () => {
   const { success, error } = useToast();
@@ -58,6 +61,11 @@ export const StaffLeads: React.FC = () => {
     travel_start_date: '',
     special_requests: ''
   });
+
+  // Customer Login Modal
+  const [isCreateLoginModalOpen, setIsCreateLoginModalOpen] = useState(false);
+  const [tempPassword, setTempPassword] = useState('');
+  const [isCreatingLogin, setIsCreatingLogin] = useState(false);
 
   useEffect(() => {
     loadLeads();
@@ -156,6 +164,32 @@ export const StaffLeads: React.FC = () => {
       handleSelectLead({ ...selectedLead, status: 'Converted' });
     } catch (err: any) {
       error(err.message || 'Failed to convert lead.');
+    }
+  };
+
+  const handleOpenCreateLogin = (lead: Lead) => {
+    const randomPin = Math.floor(1000 + Math.random() * 9000);
+    setTempPassword(`Genie@${randomPin}`);
+    setIsCreateLoginModalOpen(true);
+  };
+
+  const handleCreateCustomerLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedLead) return;
+
+    setIsCreatingLogin(true);
+    try {
+      await api.createCustomerLoginForLead(selectedLead.id, {
+        temp_password: tempPassword.trim()
+      });
+      success(`Customer credentials generated! Invitation link sent to ${selectedLead.customer_email}.`);
+      setIsCreateLoginModalOpen(false);
+      handleSelectLead(selectedLead);
+      loadLeads();
+    } catch (err: any) {
+      error(err.message || 'Failed to provision customer credentials.');
+    } finally {
+      setIsCreatingLogin(false);
     }
   };
 
@@ -324,7 +358,7 @@ export const StaffLeads: React.FC = () => {
             </div>
 
             {/* Action Buttons */}
-            <div className="grid grid-cols-3 gap-2 pt-1">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
               <Button
                 variant="outline"
                 size="sm"
@@ -348,6 +382,15 @@ export const StaffLeads: React.FC = () => {
                 onClick={() => setIsConvertModalOpen(true)}
               >
                 Convert Booking
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="text-xs font-bold border-amber-300 bg-amber-50/60 hover:bg-amber-100 text-amber-900"
+                leftIcon={<Key className="w-3.5 h-3.5 text-amber-600" />}
+                onClick={() => handleOpenCreateLogin(selectedLead)}
+              >
+                Create Login ID & Pass
               </Button>
             </div>
 
@@ -406,7 +449,7 @@ export const StaffLeads: React.FC = () => {
               <label className="font-bold text-[#082C43] block mb-1">Next Follow-Up Date (Today or Future)</label>
               <input
                 type="date"
-                min={new Date().toISOString().split('T')[0]}
+                min={getTodayIST()}
                 value={followUpDate}
                 onChange={(e) => setFollowUpDate(e.target.value)}
                 className="w-full p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:outline-none"
@@ -586,6 +629,7 @@ export const StaffLeads: React.FC = () => {
               <input
                 type="date"
                 required
+                min={getTodayIST()}
                 value={convertForm.travel_start_date}
                 onChange={(e) => setConvertForm({ ...convertForm, travel_start_date: e.target.value })}
                 className="w-full p-2 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8]"
@@ -608,6 +652,66 @@ export const StaffLeads: React.FC = () => {
               </Button>
               <Button type="submit" variant="turquoise" size="sm" leftIcon={<CheckCircle className="w-3.5 h-3.5" />}>
                 Confirm & Create Booking
+              </Button>
+            </div>
+          </form>
+        </Modal>
+      )}
+
+      {/* Create Customer Login & Send Invitation Link Modal */}
+      {isCreateLoginModalOpen && selectedLead && (
+        <Modal
+          isOpen={isCreateLoginModalOpen}
+          onClose={() => setIsCreateLoginModalOpen(false)}
+          title="Create Customer Login & Dispatch Invitation"
+          subtitle={`Provision official customer portal ID and password for ${selectedLead.customer_name}`}
+        >
+          <form onSubmit={handleCreateCustomerLogin} className="space-y-4 text-xs">
+            <div className="p-3 rounded-xl bg-blue-50 border border-blue-200 text-blue-900 space-y-1">
+              <p className="font-bold flex items-center gap-1.5">
+                <ShieldCheck className="w-4 h-4 text-[#0070E0]" />
+                Customer Verification Approved
+              </p>
+              <p className="text-[11px] text-blue-800">
+                As the assigned sales executive, if you feel this prospective client is a worthwhile customer, provision their credentials below. An official Customer ID, temporary password, and onboarding invitation link will be sent directly to <strong>{selectedLead.customer_email}</strong>.
+              </p>
+            </div>
+
+            <div>
+              <label className="font-bold text-[#082C43] block mb-1">Customer Email Address</label>
+              <input
+                type="email"
+                disabled
+                value={selectedLead.customer_email || ''}
+                className="w-full p-2.5 rounded-xl border border-slate-200 bg-slate-100 text-slate-700 font-semibold"
+              />
+            </div>
+
+            <div>
+              <label className="font-bold text-[#082C43] block mb-1">Temporary Portal Password *</label>
+              <input
+                type="text"
+                required
+                value={tempPassword}
+                onChange={(e) => setTempPassword(e.target.value)}
+                placeholder="e.g. Genie@4829"
+                className="w-full p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] font-mono text-sm font-bold text-slate-800"
+              />
+              <p className="text-[10px] text-slate-400 mt-1">Customer can use this temporary password or change it inside their portal profile.</p>
+            </div>
+
+            <div className="flex justify-end gap-2 pt-2 border-t border-[#EFE7DA]">
+              <Button type="button" variant="ghost" size="sm" onClick={() => setIsCreateLoginModalOpen(false)}>
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                variant="primary"
+                size="sm"
+                disabled={isCreatingLogin}
+                leftIcon={<Send className="w-3.5 h-3.5" />}
+              >
+                {isCreatingLogin ? 'Generating & Sending...' : 'Generate ID & Send Invitation'}
               </Button>
             </div>
           </form>

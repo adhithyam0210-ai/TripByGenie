@@ -29,6 +29,7 @@ import { Badge } from '../../components/common/Badge';
 import { api } from '../../services/api';
 import { Package, Destination, PackageItinerary } from '../../types';
 import { useToast } from '../../context/ToastContext';
+import { getTodayIST } from '../../utils/dateValidation';
 
 interface EditableDay {
   day_number: number;
@@ -853,6 +854,7 @@ export const AdminPackages: React.FC<AdminPackagesProps> = ({ initialViewMode })
                         </label>
                         <input
                           type="date"
+                          min={getTodayIST()}
                           value={formData.upcoming_date}
                           onChange={(e) => setFormData({ ...formData, upcoming_date: e.target.value })}
                           className="w-full p-2 rounded-xl border border-[#EFE7DA] bg-white font-medium text-xs text-[#082C43]"

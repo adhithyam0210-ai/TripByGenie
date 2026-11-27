@@ -18,6 +18,7 @@ import { Modal } from '../../components/common/Modal';
 import { api } from '../../services/api';
 import { Package, AgentCustomer, B2BPricingCalculation } from '../../types';
 import { useToast } from '../../context/ToastContext';
+import { getTodayIST } from '../../utils/dateValidation';
 
 export const AgentMarketplace: React.FC = () => {
   const { success, error } = useToast();
@@ -380,7 +381,7 @@ export const AgentMarketplace: React.FC = () => {
                 <input
                   type="date"
                   required
-                  min={new Date().toISOString().split('T')[0]}
+                  min={getTodayIST()}
                   value={purchaseForm.travel_date}
                   onChange={(e) => setPurchaseForm({ ...purchaseForm, travel_date: e.target.value })}
                   className="w-full p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"

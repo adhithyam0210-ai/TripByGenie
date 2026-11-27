@@ -267,9 +267,9 @@ export const PackageDetail: React.FC = () => {
       {/* Top Breadcrumb Header */}
       <div className="bg-[#F8F1E7] border-b border-[#EFE7DA] py-3 px-4 sm:px-8 text-xs text-[#173247]/70">
         <div className="max-w-[1600px] w-full mx-auto flex items-center gap-2">
-          <Link to="/" className="hover:text-[#FF795C]">Home</Link>
+          <Link to="/" className="hover:text-[#FF0000]">Home</Link>
           <span>/</span>
-          <Link to="/packages" className="hover:text-[#FF795C]">Packages</Link>
+          <Link to="/packages" className="hover:text-[#FF0000]">Packages</Link>
           <span>/</span>
           <span className="text-[#082C43] font-bold truncate max-w-xs">{pkg.title}</span>
         </div>
@@ -654,8 +654,8 @@ export const PackageDetail: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2">
-                  <div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="min-w-0">
                     <label className="text-[11px] font-bold text-slate-700 block mb-1">
                       Travel Date
                     </label>
@@ -668,10 +668,10 @@ export const PackageDetail: React.FC = () => {
                         setBookingForm((prev) => ({ ...prev, travelDate: val }));
                         if (hasAttemptedSubmit) validateField('travelDate', val);
                       }}
-                      className={`w-full text-xs p-2.5 rounded-xl border bg-[#FFFDF8] focus:outline-none transition-colors ${
+                      className={`w-full text-xs p-2.5 rounded-xl border bg-[#FFFDF8] focus:outline-none transition-colors appearance-none [-webkit-appearance:none] ${
                         formErrors.travelDate
                           ? 'border-red-400 focus:border-red-500 bg-red-50/15'
-                          : 'border-[#EFE7DA] focus:border-[#FF795C]'
+                          : 'border-[#EFE7DA] focus:border-[#FF0000]'
                       }`}
                     />
                     {formErrors.travelDate && (
@@ -680,14 +680,14 @@ export const PackageDetail: React.FC = () => {
                       </p>
                     )}
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <label className="text-[11px] font-bold text-slate-700 block mb-1">
                       Guests
                     </label>
                     <select
                       value={bookingForm.travelers}
                       onChange={(e) => setBookingForm((prev) => ({ ...prev, travelers: e.target.value }))}
-                      className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"
+                      className="w-full text-xs p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF0000] focus:outline-none"
                     >
                       <option value="1">1 Traveler</option>
                       <option value="2">2 Travelers</option>
@@ -701,7 +701,7 @@ export const PackageDetail: React.FC = () => {
                   type="submit"
                   variant="primary"
                   size="lg"
-                  className="w-full text-sm font-bold shadow-md shadow-[#FF795C]/25"
+                  className="w-full text-sm font-bold shadow-md shadow-[#FF0000]/25"
                   isLoading={isSubmittingBooking}
                   leftIcon={<Send className="w-4 h-4" />}
                 >

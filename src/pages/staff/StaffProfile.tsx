@@ -1,10 +1,12 @@
-import React from 'react';
-import { UserCheck, ShieldCheck, Mail, Phone, Award, Building } from 'lucide-react';
+import React, { useState } from 'react';
+import { UserCheck, ShieldCheck, Mail, Phone, Award, Building, Lock, KeyRound } from 'lucide-react';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
+import { ChangePasswordModal } from '../../components/common/ChangePasswordModal';
 import { useAuth } from '../../context/AuthContext';
 
 export const StaffProfile: React.FC = () => {
   const { user, agency } = useAuth();
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 
   return (
     <DashboardLayout
@@ -38,6 +40,26 @@ export const StaffProfile: React.FC = () => {
           </div>
         </div>
 
+        {/* Password Security Option */}
+        <div className="p-4 rounded-2xl border border-blue-100 bg-blue-50/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-[#0070E0]/15 text-[#0070E0] flex items-center justify-center shrink-0">
+              <KeyRound className="w-4 h-4" />
+            </div>
+            <div>
+              <h4 className="text-xs font-bold text-[#082C43]">Account Password & Credentials</h4>
+              <p className="text-[11px] text-slate-500">Update your employee login password anytime</p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => setIsPasswordModalOpen(true)}
+            className="px-4 py-2 rounded-xl bg-[#0070E0] hover:bg-[#005bb8] text-white text-xs font-bold shadow-xs transition-all cursor-pointer w-full sm:w-auto text-center"
+          >
+            Change Password
+          </button>
+        </div>
+
         <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-2">
           <h4 className="font-bold text-[#082C43] flex items-center gap-1.5">
             <ShieldCheck className="w-4 h-4 text-emerald-600" />
@@ -48,6 +70,12 @@ export const StaffProfile: React.FC = () => {
           </p>
         </div>
       </div>
+
+      <ChangePasswordModal
+        isOpen={isPasswordModalOpen}
+        onClose={() => setIsPasswordModalOpen(false)}
+        userRole="Staff Consultant"
+      />
     </DashboardLayout>
   );
 };

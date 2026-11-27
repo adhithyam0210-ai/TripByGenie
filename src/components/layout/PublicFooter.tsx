@@ -283,7 +283,7 @@ export const PublicFooter: React.FC = () => {
               href="https://www.bing.com/alink/link?url=http%3a%2f%2fwww.infyjob.com%2f&source=serp-local&h=AqfNRw%2fLIwgRJ5YXYELs66wKkrsxcmWODXNMHK94ScM%3d&p=lw_magsmlt&ig=DCFE1EA07E3F41948DE611F0897CE1DA&ypid=YNF64209535624FD94"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#55C9BD] hover:text-[#FF795C] font-semibold transition-colors"
+              className="text-[#55C9BD] hover:text-[#FF0000] font-semibold transition-colors"
             >
               Infyjob Technology Solutions (OPC) Private Limited
             </a>

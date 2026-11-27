@@ -133,7 +133,7 @@ export const PackageCard: React.FC<PackageCardProps> = ({
             )}
           </div>
 
-          <h3 className="text-base font-bold text-[#082C43] group-hover:text-[#FF795C] transition-colors line-clamp-2 mb-2 font-display">
+          <h3 className="text-base font-bold text-[#082C43] group-hover:text-[#FF0000] transition-colors line-clamp-2 mb-2 font-display">
             {pkgTitle}
           </h3>
 

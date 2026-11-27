@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { User, Phone, Mail, FileText, MapPin, Save, ShieldCheck } from 'lucide-react';
+import { User, Phone, Mail, FileText, MapPin, Save, ShieldCheck, Lock, KeyRound } from 'lucide-react';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { Button } from '../../components/common/Button';
+import { ChangePasswordModal } from '../../components/common/ChangePasswordModal';
 import { api } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
@@ -20,6 +21,7 @@ export const CustomerProfile: React.FC = () => {
   });
   const [isSaving, setIsSaving] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 
   useEffect(() => {
     loadProfile();
@@ -166,7 +168,16 @@ export const CustomerProfile: React.FC = () => {
             />
           </div>
 
-          <div className="pt-4 flex justify-end">
+          <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-[#EFE7DA]">
+            <button
+              type="button"
+              onClick={() => setIsPasswordModalOpen(true)}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-blue-200 bg-blue-50/70 hover:bg-blue-100/70 text-[#0070E0] text-xs font-bold transition-all cursor-pointer w-full sm:w-auto justify-center"
+            >
+              <KeyRound className="w-4 h-4 text-[#0070E0]" />
+              <span>Change Account Password</span>
+            </button>
+
             <Button
               type="submit"
               variant="primary"
@@ -179,6 +190,12 @@ export const CustomerProfile: React.FC = () => {
           </div>
         </form>
       </div>
+
+      <ChangePasswordModal
+        isOpen={isPasswordModalOpen}
+        onClose={() => setIsPasswordModalOpen(false)}
+        userRole="Traveler"
+      />
     </DashboardLayout>
   );
 };

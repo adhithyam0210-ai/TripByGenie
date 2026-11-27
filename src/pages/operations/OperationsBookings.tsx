@@ -23,6 +23,7 @@ import { Modal } from '../../components/common/Modal';
 import { api } from '../../services/api';
 import { useToast } from '../../context/ToastContext';
 import { TripOperationalStatus } from '../../types';
+import { getTodayIST } from '../../utils/dateValidation';
 
 export const OperationsBookings: React.FC = () => {
   const { success, error } = useToast();
@@ -561,8 +562,16 @@ export const OperationsBookings: React.FC = () => {
                       </label>
                       <input
                         type="date"
+                        min={getTodayIST()}
                         value={hotelForm.hotel_check_in}
-                        onChange={(e) => setHotelForm({ ...hotelForm, hotel_check_in: e.target.value })}
+                        onChange={(e) => {
+                          const newCheckIn = e.target.value;
+                          setHotelForm((prev) => ({
+                            ...prev,
+                            hotel_check_in: newCheckIn,
+                            ...(prev.hotel_check_out && prev.hotel_check_out < newCheckIn ? { hotel_check_out: '' } : {})
+                          }));
+                        }}
                         className="w-full text-xs px-3 py-2 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"
                       />
                     </div>
@@ -572,6 +581,7 @@ export const OperationsBookings: React.FC = () => {
                       </label>
                       <input
                         type="date"
+                        min={hotelForm.hotel_check_in || getTodayIST()}
                         value={hotelForm.hotel_check_out}
                         onChange={(e) => setHotelForm({ ...hotelForm, hotel_check_out: e.target.value })}
                         className="w-full text-xs px-3 py-2 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"
@@ -708,7 +718,7 @@ export const OperationsBookings: React.FC = () => {
                       size="sm"
                       onClick={handleGenerateDossier}
                       disabled={isSubmitting}
-                      className="flex items-center gap-1.5 bg-[#FF795C]"
+                      className="flex items-center gap-1.5 bg-[#FF0000] hover:bg-[#D90000]"
                     >
                       <FileCheck className="w-3.5 h-3.5" />
                       <span>Compile Consolidated Travel Dossier</span>

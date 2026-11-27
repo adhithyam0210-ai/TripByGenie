@@ -184,7 +184,7 @@ export const App: React.FC = () => {
       {/* Auth Pages */}
       <Route 
         path="/login" 
-        element={authRedirect ? <Navigate to={authRedirect} replace /> : <Login />} 
+        element={<Login />} 
       />
       <Route 
         path="/staff-login" 
@@ -192,7 +192,7 @@ export const App: React.FC = () => {
       />
       <Route 
         path="/signup" 
-        element={authRedirect ? <Navigate to={authRedirect} replace /> : <Signup />} 
+        element={<Signup />} 
       />
       <Route 
         path="/activate-account" 

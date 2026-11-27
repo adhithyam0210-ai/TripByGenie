@@ -103,9 +103,9 @@ export const DestinationDetail: React.FC = () => {
       {/* Top Breadcrumb Header */}
       <div className="bg-[#F8F1E7] border-b border-[#EFE7DA] py-3 px-4 sm:px-8 text-xs text-[#173247]/70">
         <div className="max-w-[1600px] w-full mx-auto flex items-center gap-2">
-          <Link to="/" className="hover:text-[#FF795C] transition-colors">Home</Link>
+          <Link to="/" className="hover:text-[#FF0000] transition-colors">Home</Link>
           <span>/</span>
-          <Link to="/destinations" className="hover:text-[#FF795C] transition-colors">Destinations</Link>
+          <Link to="/destinations" className="hover:text-[#FF0000] transition-colors">Destinations</Link>
           <span>/</span>
           <span className="text-[#082C43] font-bold">{destination.name} Tour Packages</span>
         </div>
@@ -116,7 +116,7 @@ export const DestinationDetail: React.FC = () => {
         <div className="mb-6">
           <Link
             to="/destinations"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#082C43] hover:text-[#FF795C] transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#082C43] hover:text-[#FF0000] transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Back to All Destinations</span>
@@ -247,7 +247,7 @@ export const DestinationDetail: React.FC = () => {
                   setSelectedPackage(null);
                   setIsTripModalOpen(true);
                 }}
-                className="text-xs font-bold shadow-md shadow-[#FF795C]/20 whitespace-nowrap shrink-0 px-3.5 py-2"
+                className="text-xs font-bold shadow-md shadow-[#FF0000]/20 whitespace-nowrap shrink-0 px-3.5 py-2"
               >
                 Custom Quote
               </Button>

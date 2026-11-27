@@ -120,7 +120,7 @@ export const DestinationCard: React.FC<DestinationCardProps> = ({ destination })
           <span>{destination.country}</span>
         </div>
 
-        <h3 className="text-2xl font-bold text-white group-hover:text-[#FF795C] transition-colors font-display">
+        <h3 className="text-2xl font-bold text-white group-hover:text-[#FF0000] transition-colors font-display">
           {destination.name}
         </h3>
 

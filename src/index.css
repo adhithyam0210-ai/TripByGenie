@@ -7,8 +7,8 @@
   --color-cream: #F8FAFC;
   --color-ivory: #FFFFFF;
   --color-beige: #E2E8F0;
-  --color-coral: #FF795C;
-  --color-coral-dark: #E66346;
+  --color-coral: #FF0000;
+  --color-coral-dark: #D90000;
   --color-turquoise: #55C9BD;
   --color-turquoise-dark: #40B5A9;
   --color-brand-text: #0F2231;
@@ -24,9 +24,15 @@
   --color-ocean-blue: #17648A;
   --color-warm-cream: #F8FAFC;
   --color-ivory: #FFFFFF;
-  --color-coral: #FF795C;
+  --color-coral: #FF0000;
   --color-turquoise: #55C9BD;
   --color-text: #0F2231;
+}
+
+/* Hide default browser password reveal and clear buttons (removes double eye icon in Edge/IE) */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none !important;
 }
 
 html {
@@ -46,6 +52,19 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+}
+
+/* iOS Safari Date Input Normalization (prevents input overflow & clipping) */
+input[type="date"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  min-width: 0;
+  max-width: 100%;
+}
+
+input[type="date"]::-webkit-date-and-time-value {
+  text-align: left;
 }
 
 /* Global utility enhancements: clean crisp background & razor-sharp hairline borders */

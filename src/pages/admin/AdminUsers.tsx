@@ -252,6 +252,13 @@ export const AdminUsers: React.FC = () => {
       error('Please complete Name, Email, and Password.');
       return;
     }
+    const cleanEmail = formData.email.trim().toLowerCase();
+    const isDuplicate = users.some((u) => u.email && u.email.trim().toLowerCase() === cleanEmail);
+    if (isDuplicate) {
+      error(`An account with email '${cleanEmail}' already exists. Duplicate emails are not allowed.`);
+      return;
+    }
+
     const formattedPhone = formData.phone.trim()
       ? `${formData.phoneExtension} ${formData.phone.trim()}`
       : '';
@@ -399,7 +406,7 @@ export const AdminUsers: React.FC = () => {
         <Button
           variant="primary"
           size="sm"
-          className="shadow-md shadow-[#FF795C]/25 text-xs font-bold whitespace-nowrap shrink-0 px-3.5 py-2 inline-flex items-center gap-1.5"
+          className="shadow-md shadow-[#FF0000]/25 text-xs font-bold whitespace-nowrap shrink-0 px-3.5 py-2 inline-flex items-center gap-1.5"
           onClick={handleOpenCreateModal}
         >
           <Plus className="w-4 h-4 shrink-0" />
@@ -657,7 +664,7 @@ export const AdminUsers: React.FC = () => {
                             <button
                               type="button"
                               onClick={() => handleSwitchToUser(u)}
-                              className="p-1.5 rounded-lg border border-[#EFE7DA] bg-white hover:bg-[#F8F1E7] text-[#082C43] hover:text-[#FF795C] transition-colors"
+                              className="p-1.5 rounded-lg border border-[#EFE7DA] bg-white hover:bg-[#F8F1E7] text-[#082C43] hover:text-[#FF0000] transition-colors"
                               title={`Switch / Login as ${u.name}`}
                             >
                               <LogIn className="w-3.5 h-3.5" />

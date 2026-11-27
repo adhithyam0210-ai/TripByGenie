@@ -29,6 +29,7 @@ import { Pagination } from '../../components/common/Pagination';
 import { api } from '../../services/api';
 import { Lead, User } from '../../types';
 import { useToast } from '../../context/ToastContext';
+import { getTodayIST } from '../../utils/dateValidation';
 import {
   getLeadEnquiryType,
   checkStaffLeadEligibility,
@@ -54,6 +55,8 @@ export const AdminLeads: React.FC = () => {
   // Selected lead for detail drawer
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [leadDetails, setLeadDetails] = useState<any>(null);
+  const [modalSelectedStaffId, setModalSelectedStaffId] = useState<string>('');
+  const [isAssigningFromModal, setIsAssigningFromModal] = useState<boolean>(false);
 
   // Modals
   const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
@@ -151,11 +154,72 @@ export const AdminLeads: React.FC = () => {
 
   const handleSelectLeadDetail = async (lead: Lead) => {
     setSelectedLead(lead);
+    setModalSelectedStaffId(lead.assigned_staff_id || '');
     try {
       const details = await api.getAdminLeadDetails(lead.id);
       setLeadDetails(details);
     } catch (e) {
       console.error(e);
+    }
+  };
+
+  const handleConfirmLeadAssign = async () => {
+    if (!selectedLead) return;
+
+    if (!modalSelectedStaffId) {
+      // Unassign lead
+      setIsAssigningFromModal(true);
+      try {
+        await api.assignLeads({
+          lead_ids: [selectedLead.id],
+          staff_id: '',
+          notes: 'Unassigned via lead details modal.'
+        });
+        success('Lead unassigned successfully.');
+        loadLeads();
+        setSelectedLead((prev) => prev ? {
+          ...prev,
+          assigned_staff_id: null,
+          assigned_staff_name: 'Unassigned',
+          status: 'New'
+        } : null);
+      } catch (err: any) {
+        error(err.message || 'Failed to unassign lead.');
+      } finally {
+        setIsAssigningFromModal(false);
+      }
+      return;
+    }
+
+    const assignedStaff = staffList.find((s) => s.id === modalSelectedStaffId);
+    if (assignedStaff) {
+      const check = checkStaffLeadEligibility(assignedStaff, selectedLead);
+      if (!check.eligible) {
+        error(check.reason || 'Staff member is not eligible for this enquiry.');
+        return;
+      }
+    }
+
+    setIsAssigningFromModal(true);
+    try {
+      await api.assignLeads({
+        lead_ids: [selectedLead.id],
+        staff_id: modalSelectedStaffId,
+        notes: 'Assigned via lead details modal.'
+      });
+      const assignedName = assignedStaff ? assignedStaff.name : 'Unassigned';
+      success(`Lead successfully assigned to ${assignedName}!`);
+      loadLeads();
+      setSelectedLead((prev) => prev ? {
+        ...prev,
+        assigned_staff_id: modalSelectedStaffId,
+        assigned_staff_name: assignedName,
+        status: 'Assigned'
+      } : null);
+    } catch (err: any) {
+      error(err.message || 'Failed to assign lead.');
+    } finally {
+      setIsAssigningFromModal(false);
     }
   };
 
@@ -510,67 +574,19 @@ export const AdminLeads: React.FC = () => {
                 )}
               </div>
 
-              {/* Quick Reassignment from Popup */}
+              {/* Lead Assignment / Reassignment */}
               <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs flex flex-col gap-2">
                 <div className="flex items-center justify-between">
-                  <span className="font-bold text-[#082C43]">Reassign Lead:</span>
+                  <span className="font-bold text-[#082C43]">
+                    {selectedLead.assigned_staff_id ? 'Reassign Lead:' : 'Assign Lead:'}
+                  </span>
                   <span className="text-[10px] font-semibold text-[#17648A] uppercase">
                     {getLeadEnquiryType(selectedLead)} Enquiry
                   </span>
                 </div>
                 <select
-                  value={selectedLead.assigned_staff_id || ''}
-                  onChange={async (e) => {
-                    const staffId = e.target.value;
-                    if (!staffId) {
-                      try {
-                        await api.assignLeads({
-                          lead_ids: [selectedLead.id],
-                          staff_id: '',
-                          notes: 'Unassigned via lead modal.'
-                        });
-                        success('Lead unassigned.');
-                        loadLeads();
-                        setSelectedLead((prev) => prev ? {
-                          ...prev,
-                          assigned_staff_id: null,
-                          assigned_staff_name: 'Unassigned',
-                          status: 'Unassigned'
-                        } : null);
-                      } catch (err: any) {
-                        error(err.message || 'Failed to unassign lead.');
-                      }
-                      return;
-                    }
-
-                    const assignedStaff = staffList.find((s) => s.id === staffId);
-                    if (assignedStaff) {
-                      const check = checkStaffLeadEligibility(assignedStaff, selectedLead);
-                      if (!check.eligible) {
-                        error(check.reason || 'Staff member is not eligible for this enquiry.');
-                        return;
-                      }
-                    }
-
-                    try {
-                      await api.assignLeads({
-                        lead_ids: [selectedLead.id],
-                        staff_id: staffId,
-                        notes: 'Reassigned via lead modal.'
-                      });
-                      const assignedName = assignedStaff ? assignedStaff.name : 'Unassigned';
-                      success(`Lead reassigned to ${assignedName}.`);
-                      loadLeads();
-                      setSelectedLead((prev) => prev ? {
-                        ...prev,
-                        assigned_staff_id: staffId,
-                        assigned_staff_name: assignedName,
-                        status: 'Assigned'
-                      } : null);
-                    } catch (err: any) {
-                      error(err.message || 'Failed to reassign lead.');
-                    }
-                  }}
+                  value={modalSelectedStaffId}
+                  onChange={(e) => setModalSelectedStaffId(e.target.value)}
                   className="p-2 rounded-lg border border-[#EFE7DA] bg-white font-semibold text-xs text-[#082C43]"
                 >
                   <option value="">-- Unassigned --</option>
@@ -607,9 +623,15 @@ export const AdminLeads: React.FC = () => {
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-[#EFE7DA] flex justify-end">
-                <Button variant="outline" size="sm" onClick={() => setSelectedLead(null)}>
-                  Close
+              <div className="pt-3 border-t border-[#EFE7DA] flex items-center justify-end gap-2">
+                <Button
+                  variant="primary"
+                  size="sm"
+                  onClick={handleConfirmLeadAssign}
+                  isLoading={isAssigningFromModal}
+                  className="bg-[#0070E0] hover:bg-[#005bb8] text-white font-bold"
+                >
+                  Confirm Assignment
                 </Button>
               </div>
             </div>
@@ -821,6 +843,7 @@ export const AdminLeads: React.FC = () => {
                 <label className="font-bold text-[#082C43] block mb-1">Travel Date</label>
                 <input
                   type="date"
+                  min={getTodayIST()}
                   value={createForm.travel_date}
                   onChange={(e) => setCreateForm({ ...createForm, travel_date: e.target.value })}
                   className="w-full p-2 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8]"

@@ -105,7 +105,7 @@ export const ActivateAccount: React.FC = () => {
         <BrandLogo size="md" to="/" />
         <Link
           to="/login"
-          className="text-xs font-bold text-[#082C43] hover:text-[#FF795C] transition-colors"
+          className="text-xs font-bold text-[#082C43] hover:text-[#FF0000] transition-colors"
         >
           Already activated? Log in →
         </Link>

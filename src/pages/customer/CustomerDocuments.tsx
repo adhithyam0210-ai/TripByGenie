@@ -23,6 +23,7 @@ import { Modal } from '../../components/common/Modal';
 import { api } from '../../services/api';
 import { TravelDocument } from '../../types';
 import { useToast } from '../../context/ToastContext';
+import { getTodayIST } from '../../utils/dateValidation';
 
 export const CustomerDocuments: React.FC = () => {
   const { success, error } = useToast();
@@ -296,7 +297,7 @@ export const CustomerDocuments: React.FC = () => {
                     {/* Header: Icon, Category & Status */}
                     <div className="flex items-start justify-between gap-2 mb-3">
                       <div className="flex items-center gap-2.5">
-                        <div className="p-2.5 rounded-xl bg-[#F8F1E7] group-hover:bg-[#FF795C]/10 transition-colors shrink-0">
+                        <div className="p-2.5 rounded-xl bg-[#F8F1E7] group-hover:bg-[#FF0000]/10 transition-colors shrink-0">
                           {Icon}
                         </div>
                         <div>
@@ -312,7 +313,7 @@ export const CustomerDocuments: React.FC = () => {
                     </div>
 
                     {/* Document Title */}
-                    <h4 className="text-sm font-bold text-[#082C43] group-hover:text-[#FF795C] transition-colors leading-snug line-clamp-2">
+                    <h4 className="text-sm font-bold text-[#082C43] group-hover:text-[#FF0000] transition-colors leading-snug line-clamp-2">
                       {doc.title}
                     </h4>
 
@@ -355,7 +356,7 @@ export const CustomerDocuments: React.FC = () => {
                         href={doc.file_url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-bold bg-[#082C43] text-white hover:bg-[#FF795C] transition-colors shadow-xs"
+                        className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-bold bg-[#082C43] text-white hover:bg-[#FF0000] transition-colors shadow-xs"
                       >
                         <Download className="w-3.5 h-3.5" />
                         <span>Download</span>
@@ -413,6 +414,7 @@ export const CustomerDocuments: React.FC = () => {
               </label>
               <input
                 type="date"
+                min={getTodayIST()}
                 value={docExpiry}
                 onChange={(e) => setDocExpiry(e.target.value)}
                 className="w-full text-xs px-3 py-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"
@@ -512,7 +514,7 @@ export const CustomerDocuments: React.FC = () => {
                     href={previewDoc.file_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-[#FF795C] text-white hover:opacity-90 shadow-sm"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-[#FF0000] text-white hover:opacity-90 shadow-sm"
                   >
                     <Download className="w-3.5 h-3.5" />
                     <span>Download Original</span>

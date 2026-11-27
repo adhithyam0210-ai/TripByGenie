@@ -168,7 +168,7 @@ export const Contact: React.FC = () => {
                       href={mapsLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-xs font-bold text-[#004c8f] hover:text-[#FF795C] hover:underline transition-colors"
+                      className="inline-flex items-center gap-1 text-xs font-bold text-[#004c8f] hover:text-[#FF0000] hover:underline transition-colors"
                     >
                       <span>Open in Google Maps</span>
                       <ArrowUpRight className="w-3.5 h-3.5" />
@@ -188,14 +188,14 @@ export const Contact: React.FC = () => {
                   <div className="flex flex-wrap items-center gap-3 pt-1">
                     <a
                       href={`tel:${phone1Clean}`}
-                      className="text-xs font-bold text-[#082C43] hover:text-[#FF795C] hover:underline bg-[#F8F1E7] px-3 py-1.5 rounded-lg border border-[#EFE7DA] transition-colors inline-flex items-center gap-1.5"
+                      className="text-xs font-bold text-[#082C43] hover:text-[#FF0000] hover:underline bg-[#F8F1E7] px-3 py-1.5 rounded-lg border border-[#EFE7DA] transition-colors inline-flex items-center gap-1.5"
                     >
                       <Phone className="w-3 h-3 text-[#55C9BD]" />
                       {phone1}
                     </a>
                     <a
                       href={`tel:${phone2Clean}`}
-                      className="text-xs font-bold text-[#082C43] hover:text-[#FF795C] hover:underline bg-[#F8F1E7] px-3 py-1.5 rounded-lg border border-[#EFE7DA] transition-colors inline-flex items-center gap-1.5"
+                      className="text-xs font-bold text-[#082C43] hover:text-[#FF0000] hover:underline bg-[#F8F1E7] px-3 py-1.5 rounded-lg border border-[#EFE7DA] transition-colors inline-flex items-center gap-1.5"
                     >
                       <Phone className="w-3 h-3 text-[#55C9BD]" />
                       {phone2}
@@ -238,14 +238,14 @@ export const Contact: React.FC = () => {
                   <div className="flex flex-wrap items-center gap-3 pt-1">
                     <a
                       href={`mailto:${primaryEmail}`}
-                      className="text-xs font-bold text-[#17648A] hover:text-[#FF795C] hover:underline bg-[#F8F1E7] px-3 py-1.5 rounded-lg border border-[#EFE7DA] transition-colors inline-flex items-center gap-1.5"
+                      className="text-xs font-bold text-[#17648A] hover:text-[#FF0000] hover:underline bg-[#F8F1E7] px-3 py-1.5 rounded-lg border border-[#EFE7DA] transition-colors inline-flex items-center gap-1.5"
                     >
                       <Mail className="w-3 h-3 text-[#17648A]" />
                       {primaryEmail}
                     </a>
                     <a
                       href={`mailto:${secondaryEmail}`}
-                      className="text-xs font-bold text-[#17648A] hover:text-[#FF795C] hover:underline bg-[#F8F1E7] px-3 py-1.5 rounded-lg border border-[#EFE7DA] transition-colors inline-flex items-center gap-1.5"
+                      className="text-xs font-bold text-[#17648A] hover:text-[#FF0000] hover:underline bg-[#F8F1E7] px-3 py-1.5 rounded-lg border border-[#EFE7DA] transition-colors inline-flex items-center gap-1.5"
                     >
                       <Mail className="w-3 h-3 text-[#17648A]" />
                       {secondaryEmail}
@@ -412,7 +412,7 @@ export const Contact: React.FC = () => {
                   type="submit"
                   variant="primary"
                   size="lg"
-                  className="w-full text-sm font-bold shadow-md shadow-[#FF795C]/25"
+                  className="w-full text-sm font-bold shadow-md shadow-[#FF0000]/25"
                   isLoading={isSubmitting}
                   leftIcon={<Send className="w-4 h-4" />}
                 >

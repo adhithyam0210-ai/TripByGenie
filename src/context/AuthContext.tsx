@@ -8,13 +8,14 @@ interface AuthContextType {
   agency: Agency | null;
   token: string | null;
   role: UserRole | null;
+  isAdminSession: boolean;
   isAuthenticated: boolean;
   isLoading: boolean;
   loading: boolean;
   currentAgency: Agency | null;
   login: (email: string, password: string) => Promise<UserRole>;
   demoLogin: (role: UserRole, agency_slug?: string) => Promise<UserRole>;
-  register: (data: any) => Promise<void>;
+  register: (data: any) => Promise<any>;
   logout: () => void;
   switchAgency: (agency_id: string) => Promise<void>;
   updateUser: (updatedUser: Partial<User>) => void;
@@ -48,6 +49,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [agency, setAgency] = useState<Agency | null>(null);
   const [token, setToken] = useState<string | null>(getAuthToken());
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isAdminSession, setIsAdminSession] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem('tg_admin_session') === 'true';
+    } catch {
+      return false;
+    }
+  });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -62,12 +70,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUser(data.user);
         setAgency(data.agency);
         setToken(storedToken);
+        if (data.user?.role === 'admin') {
+          setIsAdminSession(true);
+          try {
+            localStorage.setItem('tg_admin_session', 'true');
+          } catch {}
+        }
       } catch (err) {
         console.warn('Session expired or invalid:', err);
         removeAuthToken();
         setUser(null);
         setAgency(null);
         setToken(null);
+        setIsAdminSession(false);
+        try {
+          localStorage.removeItem('tg_admin_session');
+        } catch {}
       } finally {
         setIsLoading(false);
       }
@@ -83,6 +101,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setToken(data.token);
       setUser(data.user);
       setAgency(data.agency);
+      const isAdm = data.user.role === 'admin';
+      setIsAdminSession(isAdm);
+      try {
+        if (isAdm) {
+          localStorage.setItem('tg_admin_session', 'true');
+        } else {
+          localStorage.removeItem('tg_admin_session');
+        }
+      } catch {}
       return data.user.role;
     } finally {
       setIsLoading(false);
@@ -97,20 +124,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setToken(data.token);
       setUser(data.user);
       setAgency(data.agency);
+      // Keep admin session active during role switching for testing
       return data.user.role;
     } finally {
       setIsLoading(false);
     }
   };
 
-  const register = async (data: any): Promise<void> => {
+  const register = async (data: any): Promise<any> => {
     setIsLoading(true);
     try {
       const res = await api.register(data);
-      setAuthToken(res.token);
-      setToken(res.token);
-      setUser(res.user);
-      setAgency(res.agency);
+      if (res.token) {
+        setAuthToken(res.token);
+        setToken(res.token);
+        setUser(res.user);
+        setAgency(res.agency);
+      }
+      return res;
     } finally {
       setIsLoading(false);
     }
@@ -121,6 +152,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setToken(null);
     setUser(null);
     setAgency(null);
+    setIsAdminSession(false);
+    try {
+      localStorage.removeItem('tg_admin_session');
+    } catch {}
     navigate('/login');
   };
 
@@ -151,6 +186,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         currentAgency: agency,
         token,
         role: user ? user.role : null,
+        isAdminSession,
         isAuthenticated: !!user,
         isLoading,
         loading: isLoading,

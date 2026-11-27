@@ -13,19 +13,23 @@ import {
   CheckCircle,
   AlertCircle,
   Users,
-  Send
+  Send,
+  Lock,
+  KeyRound
 } from 'lucide-react';
 import { api } from '../../services/api';
 import { Button } from '../../components/common/Button';
+import { ChangePasswordModal } from '../../components/common/ChangePasswordModal';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 
 export const AdminSettings: React.FC = () => {
-  const { currentAgency, switchAgency, agencies } = useAuth();
+  const { currentAgency, switchAgency, agencies, user, role } = useAuth();
   const { showToast } = useToast();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -178,6 +182,31 @@ export const AdminSettings: React.FC = () => {
             </Button>
           </Link>
         </div>
+      </div>
+
+      {/* Profile & Security Credentials Card */}
+      <div className="bg-white p-5 rounded-2xl border border-[#EFE7DA] shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-3.5">
+          <div className="w-11 h-11 rounded-2xl bg-[#0070E0]/15 text-[#0070E0] flex items-center justify-center shrink-0">
+            <KeyRound className="w-5 h-5" />
+          </div>
+          <div>
+            <h3 className="font-bold text-sm text-[#082C43]">
+              {role === 'manager' ? 'Operations Manager Credentials' : 'Administrator Credentials'}
+            </h3>
+            <p className="text-xs text-slate-500">
+              Logged in as <strong className="text-[#082C43]">{user?.name}</strong> ({user?.email}). Update your account login password anytime.
+            </p>
+          </div>
+        </div>
+        <button
+          type="button"
+          onClick={() => setIsPasswordModalOpen(true)}
+          className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-blue-200 bg-blue-50/70 hover:bg-blue-100/70 text-[#0070E0] text-xs font-bold transition-all cursor-pointer shrink-0"
+        >
+          <Lock className="w-4 h-4" />
+          <span>Change Password</span>
+        </button>
       </div>
 
       {/* Settings Form */}
@@ -411,6 +440,12 @@ export const AdminSettings: React.FC = () => {
         </div>
       </div>
     </div>
+
+    <ChangePasswordModal
+      isOpen={isPasswordModalOpen}
+      onClose={() => setIsPasswordModalOpen(false)}
+      userRole={role === 'manager' ? 'Operations Manager' : 'Administrator'}
+    />
     </DashboardLayout>
   );
 };

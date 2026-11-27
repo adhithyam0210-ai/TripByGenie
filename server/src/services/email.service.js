@@ -164,6 +164,53 @@ Trip by Genie Travel Experience Team`;
   }
 
   /**
+   * Send B2B Partner Enquiry Acknowledgement to Applicant
+   */
+  async sendB2BEnquiryAcknowledgement({ agency_id, to, company_name, contact_person, enquiry_id }) {
+    const subject = `B2B Partner Enquiry Received: ${enquiry_id} - ${company_name}`;
+    const content = `Dear ${contact_person},
+
+Thank you for your interest in partnering with TripByGenie!
+We have received your B2B Travel Partner enquiry on behalf of ${company_name}.
+
+Enquiry Reference: ${enquiry_id}
+Status: Received (Under Business Review)
+
+Our B2B Partnerships & Wholesale Division will review your agency details and contact you shortly to complete the partner verification process.
+
+Best regards,
+TripByGenie B2B Wholesale & Partnerships Team`;
+
+    await this.sendMail({
+      to,
+      subject,
+      text: content,
+      html: `<div style="font-family: Arial, sans-serif; padding: 24px; color: #1e293b; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 12px;">
+        <div style="background-color: #082C43; padding: 18px 24px; border-radius: 8px; margin-bottom: 20px;">
+          <h2 style="color: #ffffff; margin: 0; font-size: 20px;">TripByGenie B2B Travel Partner Program</h2>
+        </div>
+        <p>Dear <strong>${contact_person}</strong>,</p>
+        <p>Thank you for submitting a B2B Travel Partner enquiry on behalf of <strong>${company_name}</strong>.</p>
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin: 16px 0;">
+          <p style="margin: 0 0 8px 0;"><strong>Enquiry Reference:</strong> <span style="color: #044A9C; font-weight: bold;">${enquiry_id}</span></p>
+          <p style="margin: 0;"><strong>Status:</strong> New Enquiry (Awaiting Partner Verification)</p>
+        </div>
+        <p>Our B2B wholesale specialist will review your company profile, requirements, and contact you shortly for onboarding and exclusive wholesale rate access.</p>
+        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 24px 0;" />
+        <p style="font-size: 12px; color: #64748b; margin: 0;">TripByGenie Tours & Travels • Wholesale Partnerships</p>
+      </div>`
+    });
+
+    const log = db.logEmail(agency_id, to, subject, 'B2B_ENQUIRY_ACKNOWLEDGEMENT', 'DELIVERED', {
+      enquiry_id,
+      company_name,
+      contact_person
+    });
+
+    return { success: true, email_id: log.id, subject };
+  }
+
+  /**
    * Send Quotation to Customer
    */
   async sendQuotationEmail({ agency_id, to, name, quote_number, destination, total_amount, required_advance, valid_until }) {

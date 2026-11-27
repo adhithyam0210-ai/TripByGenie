@@ -1,394 +1,320 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation, useSearchParams } from 'react-router-dom';
-import { Mail, Lock, LogIn, Shield, ShieldCheck, User, Briefcase, UserCheck, KeyRound, Building2, CheckCircle2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Mail, Lock, Eye, EyeOff, ArrowRight, AlertCircle } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
-import { Button } from '../../components/common/Button';
-import { TravelPatternBg } from '../../components/travel/TravelPatternBg';
 import { BrandLogo } from '../../components/common/BrandLogo';
 
 export const Login: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [searchParams] = useSearchParams();
-  const { login, demoLogin, getRoleDashboardPath } = useAuth();
-  const { success, error } = useToast();
+  const { login, getRoleDashboardPath } = useAuth();
+  const { success } = useToast();
 
-  const [activeTab, setActiveTab] = useState<'admin' | 'manager' | 'staff' | 'operations' | 'agent' | 'customer'>(() => {
-    const r = searchParams.get('role')?.toLowerCase();
-    if (r === 'staff' || r === 'sales' || r === 'operations' || r === 'agent' || r === 'admin' || r === 'customer' || r === 'manager') {
-      return (r === 'sales' ? 'staff' : r) as any;
-    }
-    return 'admin';
-  });
-
-  const [email, setEmail] = useState('');
+  const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    const r = searchParams.get('role')?.toLowerCase();
-    if (r === 'staff' || r === 'sales' || r === 'operations' || r === 'agent' || r === 'admin' || r === 'customer' || r === 'manager') {
-      setActiveTab((r === 'sales' ? 'staff' : r) as any);
-    }
-    const prefill = searchParams.get('email') || searchParams.get('identifier');
-    if (prefill) {
-      setEmail(prefill);
-    }
-  }, [searchParams]);
+  const [errors, setErrors] = useState<{ identifier?: string; password?: string; general?: string }>({});
+  const [touched, setTouched] = useState<{ identifier?: boolean; password?: boolean }>({});
 
   const from = (location.state as any)?.from?.pathname;
 
+  const validateField = (field: 'identifier' | 'password', value: string) => {
+    let errorMsg = '';
+    const trimmed = value.trim();
+
+    if (field === 'identifier') {
+      if (!trimmed) {
+        errorMsg = 'Email or mobile number is required.';
+      } else if (trimmed.includes('@')) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(trimmed)) {
+          errorMsg = 'Please enter a valid email address (e.g. name@domain.com).';
+        }
+      } else {
+        const digits = trimmed.replace(/\D/g, '');
+        if (digits.length < 10 || digits.length > 15) {
+          errorMsg = 'Please enter a valid 10-digit mobile number or email.';
+        }
+      }
+    } else if (field === 'password') {
+      if (!value) {
+        errorMsg = 'Password is required.';
+      } else if (value.length < 6) {
+        errorMsg = 'Password must be at least 6 characters.';
+      }
+    }
+
+    return errorMsg;
+  };
+
+  const handleBlur = (field: 'identifier' | 'password') => {
+    setTouched((prev) => ({ ...prev, [field]: true }));
+    const val = field === 'identifier' ? identifier : password;
+    const msg = validateField(field, val);
+    setErrors((prev) => ({ ...prev, [field]: msg }));
+  };
+
+  const handleChange = (field: 'identifier' | 'password', val: string) => {
+    if (field === 'identifier') setIdentifier(val);
+    else setPassword(val);
+
+    if (errors.general) {
+      setErrors((prev) => ({ ...prev, general: undefined }));
+    }
+
+    if (touched[field]) {
+      const msg = validateField(field, val);
+      setErrors((prev) => ({ ...prev, [field]: msg }));
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !password) {
-      error('Please enter both email and password.');
+    setTouched({ identifier: true, password: true });
+
+    const idError = validateField('identifier', identifier);
+    const passError = validateField('password', password);
+
+    if (idError || passError) {
+      setErrors({
+        identifier: idError,
+        password: passError
+      });
       return;
     }
 
+    setErrors({});
     setIsLoading(true);
     try {
-      const userRole = await login(email, password);
-      success(`Welcome back! Logged in successfully.`);
+      const userRole = await login(identifier.trim(), password);
+      success('Welcome back! Logged in successfully.');
       navigate(from || getRoleDashboardPath(userRole));
     } catch (err: any) {
-      error(err.message || 'Login failed. Please check your credentials.');
+      setErrors({
+        general: err.message || 'Invalid credentials. Please verify your email/phone and password.'
+      });
     } finally {
       setIsLoading(false);
     }
   };
-
-  const handleDemoLogin = async (role: 'admin' | 'manager' | 'staff' | 'operations' | 'agent' | 'customer', agencySlug?: string) => {
-    setIsLoading(true);
-    try {
-      const userRole = await demoLogin(role as any, agencySlug);
-      success(`Switched to demo ${role.toUpperCase()} account.`);
-      navigate(getRoleDashboardPath(userRole));
-    } catch (err: any) {
-      error(err.message || 'Demo login failed.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // Role info configuration for intuitive mobile & desktop UX
-  const roleConfig = {
-    admin: {
-      label: 'Super Admin',
-      badge: 'Executive',
-      icon: Shield,
-      color: '#FF795C',
-      bgLight: 'bg-[#FF795C]/10 text-[#082C43] border-[#FF795C]/30',
-      activeTabClass: 'bg-[#082C43] text-white shadow-md',
-      desc: 'Super Admin control: Provision IDs, manage all roles, finances, branches & global system settings.',
-      sampleEmail: 'admin@travelgenie.com'
-    },
-    manager: {
-      label: 'Manager',
-      badge: 'Management',
-      icon: ShieldCheck,
-      color: '#8B5CF6',
-      bgLight: 'bg-purple-500/10 text-purple-900 border-purple-500/30',
-      activeTabClass: 'bg-purple-800 text-white shadow-md',
-      desc: 'Operations & branch management: Lead distribution to sales, catalog, bookings & agent approvals.',
-      sampleEmail: 'manager@travelgenie.com'
-    },
-    staff: {
-      label: 'Sales Executive',
-      badge: 'Sales CRM',
-      icon: UserCheck,
-      color: '#55C9BD',
-      bgLight: 'bg-[#55C9BD]/10 text-[#082C43] border-[#55C9BD]/40',
-      activeTabClass: 'bg-[#082C43] text-white shadow-md',
-      desc: 'Assigned customer leads pipeline, customized quotations, follow-up calendar & booking conversions.',
-      sampleEmail: 'priya.staff@travelgenie.com'
-    },
-    operations: {
-      label: 'Operations Exec',
-      badge: 'Logistics',
-      icon: Building2,
-      color: '#3B82F6',
-      bgLight: 'bg-blue-500/10 text-blue-900 border-blue-500/30',
-      activeTabClass: 'bg-blue-800 text-white shadow-md',
-      desc: 'Booking execution: Hotel confirmations, chauffeur/vehicle dispatch, voucher uploads & travel dossiers.',
-      sampleEmail: 'operations@travelgenie.com'
-    },
-    agent: {
-      label: 'B2B Agent',
-      badge: 'Wholesale',
-      icon: Briefcase,
-      color: '#F59E0B',
-      bgLight: 'bg-amber-500/10 text-amber-900 border-amber-500/30',
-      activeTabClass: 'bg-[#082C43] text-white shadow-md',
-      desc: 'B2B volume tiered pricing, wholesale package orders, client vouchers & wallet credit ledger.',
-      sampleEmail: 'vikram.agent@globetrotters.com'
-    },
-    customer: {
-      label: 'Customer',
-      badge: 'Traveler',
-      icon: User,
-      color: '#10B981',
-      bgLight: 'bg-emerald-500/10 text-emerald-900 border-emerald-500/30',
-      activeTabClass: 'bg-[#082C43] text-white shadow-md',
-      desc: 'Personal trips, Digital Document Wallet, e-tickets, payment receipts & 24/7 support tickets.',
-      sampleEmail: 'ananya.customer@gmail.com'
-    }
-  };
-
-  const currentRole = roleConfig[activeTab];
-  const CurrentIcon = currentRole.icon;
 
   return (
-    <div className="min-h-screen bg-[#F8F1E7]/60 flex flex-col justify-center py-10 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-      <TravelPatternBg variant="cream" opacity={0.05} />
+    <div className="min-h-screen bg-[#F0F6FF] flex items-center justify-center p-3 sm:p-6 lg:p-10 font-sans selection:bg-[#0070E0] selection:text-white">
+      {/* Fullsize Container matching desktop widescreen design */}
+      <div className="w-full max-w-6xl xl:max-w-7xl bg-white rounded-3xl sm:rounded-[36px] shadow-2xl border border-slate-100 overflow-hidden grid grid-cols-1 lg:grid-cols-12 min-h-[620px] lg:min-h-[680px]">
+        
+        {/* Left Side: Destination Showcase & Inspiration */}
+        <div className="lg:col-span-6 bg-gradient-to-br from-[#EBF4FF] via-[#F2F8FF] to-white p-6 sm:p-10 lg:p-14 flex flex-col justify-between relative overflow-hidden border-b lg:border-b-0 lg:border-r border-slate-100">
+          {/* Subtle decorative background */}
+          <div className="absolute inset-0 bg-[radial-gradient(#C3DCFF_1px,transparent_1px)] [background-size:16px_16px] opacity-40 pointer-events-none" />
 
-      <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10 text-center">
-        <div className="bg-white px-4 py-3 rounded-2xl shadow-sm inline-block mb-3 border border-[#EFE7DA]">
-          <BrandLogo size="lg" to="/" />
-        </div>
-        <h2 className="text-xl sm:text-2xl font-bold text-[#082C43] font-display">
-          Unified Portal Sign In
-        </h2>
-        <p className="text-xs text-[#173247]/70 mt-1 max-w-sm mx-auto">
-          Dedicated sign-in access for Travel Genie Staff, B2B Agents, Administrators & Clients
-        </p>
-      </div>
-
-      <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-md relative z-10">
-        <div className="bg-white py-6 sm:py-8 px-5 sm:px-8 shadow-2xl rounded-3xl border border-[#EFE7DA]">
-          
-          {/* Mobile-Friendly Role Navigation Tabs */}
-          <div className="mb-5">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#17648A] block mb-2">
-              Select Your Access Role:
-            </span>
-            <div className="grid grid-cols-3 sm:grid-cols-6 gap-1 p-1 bg-[#F8F1E7] rounded-2xl border border-[#EFE7DA]">
-              {(['admin', 'manager', 'staff', 'operations', 'agent', 'customer'] as const).map((r) => {
-                const conf = roleConfig[r];
-                const Icon = conf.icon;
-                const isSelected = activeTab === r;
-                return (
-                  <button
-                    key={r}
-                    type="button"
-                    onClick={() => {
-                      setActiveTab(r);
-                      setEmail(conf.sampleEmail);
-                      setPassword('password123');
-                    }}
-                    className={`flex flex-col sm:flex-row items-center justify-center gap-1 py-2 px-1 rounded-xl text-[11px] font-bold transition-all cursor-pointer ${
-                      isSelected
-                        ? 'bg-[#082C43] text-white shadow-sm ring-1 ring-black/10'
-                        : 'text-[#082C43]/70 hover:text-[#082C43] hover:bg-white/60'
-                    }`}
-                  >
-                    <Icon className="w-3.5 h-3.5 shrink-0" />
-                    <span className="truncate">{conf.label.replace('Super ', '').replace(' Executive', '').replace(' Exec', '')}</span>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Active Role Explainer Banner */}
-            <div className={`mt-3 p-3 rounded-2xl border flex items-start gap-2.5 text-xs ${currentRole.bgLight}`}>
-              <CurrentIcon className="w-4 h-4 shrink-0 mt-0.5 text-[#082C43]" />
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <span className="font-bold text-[#082C43]">{currentRole.label}</span>
-                  <span className="text-[9px] uppercase font-bold px-1.5 py-0.2 rounded bg-black/10">
-                    {currentRole.badge}
-                  </span>
-                </div>
-                <p className="text-[11px] opacity-80 mt-0.5 leading-snug">
-                  {currentRole.desc}
-                </p>
-              </div>
-            </div>
+          {/* Top Logo */}
+          <div className="relative z-10 flex items-center justify-center lg:justify-start">
+            <BrandLogo size="lg" to="/" />
           </div>
 
-          {/* Quick 1-Click Demo Login Button for Selected Role */}
-          <button
-            type="button"
-            onClick={() => handleDemoLogin(activeTab)}
-            disabled={isLoading}
-            className="w-full mb-4 py-2.5 px-3 rounded-xl border border-dashed border-[#17648A] bg-[#17648A]/5 hover:bg-[#17648A]/10 text-[#082C43] font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer shadow-2xs"
-          >
-            <KeyRound className="w-4 h-4 text-[#FF795C]" />
-            <span>1-Click Test Sign In as {currentRole.label}</span>
-          </button>
-
-          <div className="relative flex items-center justify-center mb-4">
-            <div className="border-t border-[#EFE7DA] w-full" />
-            <span className="bg-white px-2 text-[10px] uppercase font-bold text-slate-400 shrink-0">
-              or enter credentials
-            </span>
-            <div className="border-t border-[#EFE7DA] w-full" />
-          </div>
-
-          <form onSubmit={handleSubmit} className="space-y-3.5">
-            <div>
-              <label className="text-xs font-bold text-[#082C43] block mb-1">
-                {activeTab === 'agent' ? 'Agent ID or Registered Email' : 'Email Address or Username'}
-              </label>
-              <div className="relative">
-                <Mail className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-                <input
-                  type="text"
-                  required
-                  placeholder={currentRole.sampleEmail}
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full text-xs pl-9 pr-3 py-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="text-xs font-bold text-[#082C43] block mb-1">
-                Password
-              </label>
-              <div className="relative">
-                <Lock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-                <input
-                  type="password"
-                  required
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full text-xs pl-9 pr-3 py-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:border-[#FF795C] focus:outline-none"
-                />
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between text-xs pt-1">
-              <label className="flex items-center gap-1.5 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                  className="rounded border-[#EFE7DA] text-[#FF795C] focus:ring-[#FF795C]"
-                />
-                <span className="text-[#173247]/80 font-medium">Remember me</span>
-              </label>
-              <a
-                href="#forgot"
-                onClick={(e) => {
-                  e.preventDefault();
-                  alert('For password resets, contact support at info@tripbygenie.com or use the 1-Click test login above.');
-                }}
-                className="text-[#17648A] hover:underline font-semibold"
-              >
-                Forgot password?
-              </a>
-            </div>
-
-            <Button
-              type="submit"
-              variant="primary"
-              size="lg"
-              className="w-full text-sm font-bold shadow-md shadow-[#FF795C]/25"
-              isLoading={isLoading}
-              leftIcon={<LogIn className="w-4 h-4" />}
+          {/* Center Imagery: Overlapping travel cards with flight path */}
+          <div className="relative my-8 sm:my-12 flex items-center justify-center">
+            <svg
+              className="absolute -top-4 w-72 sm:w-84 h-36 sm:h-44 pointer-events-none text-[#0284C7] opacity-60"
+              viewBox="0 0 300 150"
+              fill="none"
+              stroke="currentColor"
             >
-              Sign In to {currentRole.label}
-            </Button>
-          </form>
+              <path
+                d="M 20 110 Q 150 -10 270 30"
+                strokeWidth="2"
+                strokeDasharray="5,5"
+              />
+            </svg>
 
-          {/* Quick Demo Accounts Grid (1-Click for all 4 roles) */}
-          <div className="mt-6 pt-5 border-t border-[#EFE7DA]">
-            <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#17648A] mb-3">
-              <KeyRound className="w-3.5 h-3.5 text-[#FF795C]" />
-              <span>Direct 1-Click Role Switcher</span>
+            {/* Travel Card 1 */}
+            <div className="relative z-10 w-48 sm:w-64 h-36 sm:h-44 rounded-2xl overflow-hidden shadow-lg border-2 border-white transform -rotate-3 transition-transform hover:rotate-0 duration-300">
+              <img
+                src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=600&q=80"
+                alt="Mountain & Fjord Adventure"
+                className="w-full h-full object-cover"
+              />
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
-              <button
-                type="button"
-                onClick={() => handleDemoLogin('admin')}
-                className="flex items-center gap-2 p-2 rounded-xl border border-[#082C43]/20 bg-[#082C43]/5 hover:bg-[#082C43] hover:text-white font-semibold transition-all text-left cursor-pointer group"
-              >
-                <Shield className="w-3.5 h-3.5 text-[#FF795C] shrink-0" />
-                <div className="truncate">
-                  <span className="block font-bold truncate">Super Admin</span>
-                  <span className="text-[10px] text-slate-500 group-hover:text-inherit">Aditya (Admin)</span>
-                </div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleDemoLogin('manager')}
-                className="flex items-center gap-2 p-2 rounded-xl border border-purple-500/30 bg-purple-500/5 hover:bg-purple-700 hover:text-white font-semibold transition-all text-left cursor-pointer group"
-              >
-                <ShieldCheck className="w-3.5 h-3.5 text-purple-600 shrink-0" />
-                <div className="truncate">
-                  <span className="block font-bold truncate">Manager CRM</span>
-                  <span className="text-[10px] text-slate-500 group-hover:text-inherit">Rajesh (Operations)</span>
-                </div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleDemoLogin('staff')}
-                className="flex items-center gap-2 p-2 rounded-xl border border-[#55C9BD]/30 bg-[#55C9BD]/5 hover:bg-[#55C9BD] hover:text-[#082C43] font-semibold transition-all text-left cursor-pointer group"
-              >
-                <UserCheck className="w-3.5 h-3.5 text-[#17648A] shrink-0" />
-                <div className="truncate">
-                  <span className="block font-bold truncate">Staff CRM</span>
-                  <span className="text-[10px] text-slate-500 group-hover:text-inherit">Priya (Consultant)</span>
-                </div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleDemoLogin('agent')}
-                className="flex items-center gap-2 p-2 rounded-xl border border-amber-500/30 bg-amber-500/5 hover:bg-amber-600 hover:text-white font-semibold transition-all text-left cursor-pointer group"
-              >
-                <Briefcase className="w-3.5 h-3.5 text-amber-500 shrink-0" />
-                <div className="truncate">
-                  <span className="block font-bold truncate">B2B Agent</span>
-                  <span className="text-[10px] text-slate-500 group-hover:text-inherit">Vikram (Partner)</span>
-                </div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleDemoLogin('customer')}
-                className="flex items-center gap-2 p-2 rounded-xl border border-emerald-500/30 bg-emerald-500/5 hover:bg-emerald-600 hover:text-white font-semibold transition-all text-left cursor-pointer group col-span-2 sm:col-span-1"
-              >
-                <User className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                <div className="truncate">
-                  <span className="block font-bold truncate">Customer Hub</span>
-                  <span className="text-[10px] text-slate-500 group-hover:text-inherit">Ananya (Traveler)</span>
-                </div>
-              </button>
-            </div>
-
-            {/* Multi-Agency 2 Demo */}
-            <div className="mt-2.5">
-              <button
-                type="button"
-                onClick={() => handleDemoLogin('admin', 'voyage-bliss')}
-                className="w-full flex items-center justify-between p-2 rounded-xl border border-[#55C9BD]/30 bg-[#55C9BD]/10 hover:bg-[#55C9BD] hover:text-[#041D30] font-semibold text-xs transition-all cursor-pointer"
-              >
-                <span className="flex items-center gap-1.5 font-bold">
-                  <Building2 className="w-3.5 h-3.5 text-[#17648A]" />
-                  <span>Agency 2: Voyage Bliss (Multi-Tenant)</span>
-                </span>
-                <span className="text-[10px] bg-black/10 px-1.5 py-0.5 rounded font-bold">
-                  Isolated Admin
-                </span>
-              </button>
+            {/* Travel Card 2 */}
+            <div className="relative z-20 w-52 sm:w-68 h-40 sm:h-48 -ml-12 sm:-ml-16 mt-6 rounded-2xl overflow-hidden shadow-xl border-2 border-white transform rotate-3 transition-transform hover:rotate-0 duration-300">
+              <img
+                src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80"
+                alt="Santorini Coastal Getaway"
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
 
-          <div className="mt-5 text-center text-xs text-[#173247]/70">
-            Don't have an account?{' '}
-            <Link to="/signup" className="text-[#FF795C] font-bold hover:underline">
-              Create Customer Account
-            </Link>
+          {/* Bottom Heading & Subtitle */}
+          <div className="relative z-10 text-center lg:text-left mt-auto">
+            <h2 className="text-xl sm:text-2xl font-black text-[#082C43] tracking-tight">
+              Explore the World with{' '}
+              <span className="text-[#082C43]">Trip</span>
+              <span className="text-[#004C8F]">BY</span>
+              <span className="text-[#FF0000]">Genie</span>
+            </h2>
+            <p className="text-xs sm:text-[13px] text-slate-500 mt-1.5 max-w-md mx-auto lg:mx-0 leading-relaxed font-medium">
+              Discover amazing destinations, plan your perfect trip and experience more with us.
+            </p>
           </div>
         </div>
+
+        {/* Right Side: Clean Login Form */}
+        <div className="lg:col-span-6 p-6 sm:p-10 lg:p-14 flex flex-col justify-center bg-white relative">
+          <div className="w-full max-w-md mx-auto">
+            
+            {/* Header Title & Subtitle */}
+            <div className="text-center lg:text-left mb-6 sm:mb-8">
+              <h1 className="text-2xl sm:text-3xl font-black text-[#082C43] tracking-tight">
+                Welcome to{' '}
+                <span className="text-[#082C43]">Trip</span>
+                <span className="text-[#004C8F]">BY</span>
+                <span className="text-[#FF0000]">Genie</span>
+              </h1>
+              <p className="text-xs sm:text-sm text-slate-500 mt-2 leading-relaxed">
+                Login to access exclusive travel deals, manage your bookings, and plan your dream vacation hassle-free!
+              </p>
+            </div>
+
+            {/* General Server Error Banner */}
+            {errors.general && (
+              <div className="p-3.5 rounded-2xl bg-red-50 border border-red-200 text-red-700 text-xs font-semibold flex items-start gap-2.5 mb-5 animate-in fade-in zoom-in-95">
+                <AlertCircle className="w-4 h-4 text-red-500 shrink-0 mt-0.5" />
+                <span className="leading-snug">{errors.general}</span>
+              </div>
+            )}
+
+            {/* Login Form with Autofill Guards */}
+            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-4.5" autoComplete="off" noValidate>
+              {/* Dummy hidden inputs to trap aggressive browser autofills */}
+              <input type="text" name="fake_user" tabIndex={-1} className="hidden" aria-hidden="true" autoComplete="off" />
+              <input type="password" name="fake_pass" tabIndex={-1} className="hidden" aria-hidden="true" autoComplete="off" />
+              
+              {/* Email or Phone field */}
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                  Email or Mobile Number <span className="text-red-500">*</span>
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                    <Mail className="w-4.5 h-4.5" />
+                  </div>
+                  <input
+                    type="text"
+                    name="login_identifier"
+                    value={identifier}
+                    onChange={(e) => handleChange('identifier', e.target.value)}
+                    onBlur={() => handleBlur('identifier')}
+                    placeholder="e.g. rahul@example.com or +91 98765 43210"
+                    autoComplete="off"
+                    autoCapitalize="off"
+                    autoCorrect="off"
+                    spellCheck="false"
+                    className={`w-full pl-10 pr-4 py-3 sm:py-3.5 text-xs sm:text-sm rounded-xl border ${
+                      errors.identifier
+                        ? 'border-red-400 bg-red-50/20 text-slate-900 focus:ring-2 focus:ring-red-400/20 focus:border-red-500'
+                        : 'border-slate-200 bg-[#FAFCFF] focus:bg-white text-slate-800 focus:ring-2 focus:ring-[#0070E0]/20 focus:border-[#0070E0]'
+                    } placeholder-slate-400 focus:outline-none transition-all font-medium`}
+                  />
+                </div>
+                {/* Inline Error for Identifier */}
+                {errors.identifier && (
+                  <p className="text-[11px] font-semibold text-red-500 flex items-center gap-1.5 mt-1.5 animate-in fade-in">
+                    <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                    <span>{errors.identifier}</span>
+                  </p>
+                )}
+              </div>
+
+              {/* Password field with single show/hide toggle */}
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                  Password <span className="text-red-500">*</span>
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                    <Lock className="w-4.5 h-4.5" />
+                  </div>
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    name="login_pass"
+                    value={password}
+                    onChange={(e) => handleChange('password', e.target.value)}
+                    onBlur={() => handleBlur('password')}
+                    placeholder="Enter your password"
+                    autoComplete="new-password"
+                    autoCapitalize="off"
+                    autoCorrect="off"
+                    spellCheck="false"
+                    className={`w-full pl-10 pr-11 py-3 sm:py-3.5 text-xs sm:text-sm rounded-xl border ${
+                      errors.password
+                        ? 'border-red-400 bg-red-50/20 text-slate-900 focus:ring-2 focus:ring-red-400/20 focus:border-red-500'
+                        : 'border-slate-200 bg-[#FAFCFF] focus:bg-white text-slate-800 focus:ring-2 focus:ring-[#0070E0]/20 focus:border-[#0070E0]'
+                    } placeholder-slate-400 focus:outline-none transition-all font-medium`}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 cursor-pointer"
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="w-4.5 h-4.5" />
+                    ) : (
+                      <Eye className="w-4.5 h-4.5" />
+                    )}
+                  </button>
+                </div>
+                {/* Inline Error for Password */}
+                {errors.password && (
+                  <p className="text-[11px] font-semibold text-red-500 flex items-center gap-1.5 mt-1.5 animate-in fade-in">
+                    <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                    <span>{errors.password}</span>
+                  </p>
+                )}
+
+                <div className="flex justify-end mt-1.5">
+                  <button
+                    type="button"
+                    onClick={() => setErrors((prev) => ({ ...prev, general: 'Please contact your Travel Genie manager or support to reset your password.' }))}
+                    className="text-[11px] sm:text-xs text-[#0070E0] font-semibold hover:underline cursor-pointer"
+                  >
+                    Forgot Password?
+                  </button>
+                </div>
+              </div>
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full py-3.5 px-6 rounded-xl bg-[#0070E0] hover:bg-[#005bb5] text-white text-sm font-bold shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99] disabled:opacity-50 mt-1"
+              >
+                <span>{isLoading ? 'Signing In...' : 'Log In'}</span>
+                {!isLoading && <ArrowRight className="w-4 h-4" />}
+              </button>
+            </form>
+
+            {/* Don't have an account? Sign Up Link */}
+            <div className="mt-8 pt-6 border-t border-slate-100 text-center">
+              <p className="text-xs sm:text-sm text-slate-600 font-medium">
+                Don't have an account?{' '}
+                <Link
+                  to="/signup"
+                  className="text-[#0070E0] hover:text-[#005bb5] font-bold hover:underline ml-1"
+                >
+                  Sign Up
+                </Link>
+              </p>
+            </div>
+
+          </div>
+        </div>
+
       </div>
     </div>
   );

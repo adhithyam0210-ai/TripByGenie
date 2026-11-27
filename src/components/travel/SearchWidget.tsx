@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, MapPin, Calendar, Users, Compass, Tag } from 'lucide-react';
 import { Button } from '../common/Button';
+import { getTodayIST } from '../../utils/dateValidation';
 
 interface SearchWidgetProps {
   compact?: boolean;
@@ -99,7 +100,7 @@ export const SearchWidget: React.FC<SearchWidgetProps> = ({ compact = false, cla
           </label>
           <input
             type="date"
-            min={new Date().toISOString().split('T')[0]}
+            min={getTodayIST()}
             value={travelDate}
             onChange={(e) => setTravelDate(e.target.value)}
             className="w-full text-sm font-semibold text-[#082C43] bg-transparent focus:outline-none cursor-pointer"

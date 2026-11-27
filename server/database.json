@@ -78,9 +78,9 @@
       "status": "active",
       "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
       "created_at": "2026-01-01T10:00:00.000Z",
-      "updated_at": "2026-11-27T09:48:45.544Z",
+      "updated_at": "2026-11-27T11:06:52.524Z",
       "branch_id": "br_chennai_hq",
-      "last_login_at": "2026-11-27T09:48:45.542Z"
+      "last_login_at": "2026-11-27T11:06:52.521Z"
     },
     {
       "id": "usr_manager_genie",
@@ -108,11 +108,11 @@
       "status": "active",
       "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80",
       "created_at": "2026-01-05T10:00:00.000Z",
-      "updated_at": "2026-11-27T09:48:45.795Z",
+      "updated_at": "2026-11-27T11:06:53.006Z",
       "display_id": "TBG_SAL_001",
       "branch_id": "br_chennai_hq",
       "reporting_manager_id": "usr_manager_genie",
-      "last_login_at": "2026-11-27T09:48:45.795Z"
+      "last_login_at": "2026-11-27T11:06:53.006Z"
     },
     {
       "id": "usr_staff_rahul",
@@ -2956,6 +2956,32 @@
       "updated_at": "2026-11-27T09:48:53.877Z",
       "activated_at": "2026-11-27T09:48:53.103Z",
       "last_login_at": "2026-11-27T09:48:53.877Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "role": "agent",
+      "name": "Ramesh Kumar",
+      "email": "contact.ramesh_1795775615950@voyageexpress.com",
+      "phone": "+91 9822215950",
+      "password_hash": "",
+      "status": "pending",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
+      "created_at": "2026-11-27T10:33:40.171Z",
+      "id": "use_da1a123923",
+      "updated_at": "2026-11-27T10:33:40.172Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "role": "agent",
+      "name": "Ramesh Kumar",
+      "email": "contact.ramesh_1795777612324@voyageexpress.com",
+      "phone": "+91 9822212324",
+      "password_hash": "",
+      "status": "pending",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
+      "created_at": "2026-11-27T11:07:05.346Z",
+      "id": "use_404e7a4066",
+      "updated_at": "2026-11-27T11:07:05.346Z"
     }
   ],
   "staff_profiles": [
@@ -3631,6 +3657,36 @@
       "created_at": "2026-11-27T09:48:20.167Z",
       "id": "age_0b821610a1",
       "updated_at": "2026-11-27T09:48:24.969Z"
+    },
+    {
+      "user_id": "use_da1a123923",
+      "agency_id": "agency_travel_genie",
+      "company_name": "Voyage Express Wholesale 1795775615950",
+      "agent_id": "B2B-2026-0036",
+      "wholesale_discount_pct": 12,
+      "credit_limit": 500000,
+      "total_purchases": 0,
+      "total_sales": 0,
+      "total_margin": 0,
+      "status": "pending",
+      "created_at": "2026-11-27T10:33:40.305Z",
+      "id": "age_d860ef4f6f",
+      "updated_at": "2026-11-27T10:33:40.348Z"
+    },
+    {
+      "user_id": "use_404e7a4066",
+      "agency_id": "agency_travel_genie",
+      "company_name": "Voyage Express Wholesale 1795777612324",
+      "agent_id": "B2B-2026-0037",
+      "wholesale_discount_pct": 12,
+      "credit_limit": 500000,
+      "total_purchases": 0,
+      "total_sales": 0,
+      "total_margin": 0,
+      "status": "pending",
+      "created_at": "2026-11-27T11:07:06.101Z",
+      "id": "age_1933f50cb3",
+      "updated_at": "2026-11-27T11:07:06.204Z"
     }
   ],
   "customer_profiles": [
@@ -71188,6 +71244,25 @@
   ],
   "leads": [
     {
+      "id": "lead_pn83s3uel",
+      "agency_id": "agency_travel_genie",
+      "customer_id": "cust_nithin",
+      "customer_name": "Nithin",
+      "customer_email": "nithin@gmail.com",
+      "customer_phone": "+91 9876543210",
+      "interested_destination": "Direct Traveler Registration",
+      "travel_date": "",
+      "travelers_count": 2,
+      "budget": "Flexible",
+      "lead_source": "New User Sign Up",
+      "status": "New",
+      "assigned_staff_id": null,
+      "assigned_staff_name": "Unassigned",
+      "follow_up_date": null,
+      "notes": "New customer self-signup. Manager: Assign to Sales Executive to verify travel preferences and issue official Customer ID & Credentials.",
+      "created_at": "2026-11-27T16:52:11.435Z"
+    },
+    {
       "id": "ENQ-2026-0101",
       "agency_id": "agency_travel_genie",
       "enquiry_id": "ENQ-2026-0101",
@@ -74245,6 +74320,184 @@
       "conversion_request_id": "CR-2026-0018",
       "conversion_status": "APPROVED",
       "booking_id": "boo_d97f9f8e2a"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "enquiry_id": "B2B-ENQ-2026-00001",
+      "lead_type": "B2B_PARTNER",
+      "company_name": "Voyage Express Wholesale 1795775615950",
+      "business_type": "Travel Agency",
+      "gst_number": "07AAAAA1111A1Z9",
+      "business_reg_number": "U74999DL2024PTC123456",
+      "years_in_business": "3–5 Years",
+      "customer_name": "Voyage Express Wholesale 1795775615950 (Ramesh Kumar)",
+      "contact_person": "Ramesh Kumar",
+      "designation": "Managing Director",
+      "customer_email": "contact.ramesh_1795775615950@voyageexpress.com",
+      "business_email": "b2b.partner_1795775615950@voyageexpress.com",
+      "customer_phone": "9822215950",
+      "whatsapp_number": "+91 9822215950",
+      "city": "Sector 62, Noida",
+      "state": "Uttar Pradesh",
+      "country": "India",
+      "interested_destination": "Dubai, Switzerland, Bali, Singapore",
+      "interested_categories": [
+        "International Tour Packages",
+        "Corporate Travel",
+        "Honeymoon Packages"
+      ],
+      "expected_monthly_bookings": "11–25 Bookings",
+      "travellers_per_booking": "3–5 Travellers",
+      "budget": "₹15 Lakhs – ₹30 Lakhs",
+      "travel_type": "B2B Wholesale",
+      "partnership_type": "Wholesale Package Purchase",
+      "lead_source": "B2B Partner Portal",
+      "status": "Converted to Partner",
+      "assigned_staff_id": "usr_staff_priya",
+      "assigned_staff_name": "Priya Nair",
+      "follow_up_date": null,
+      "notes": "B2B PARTNER ENQUIRY DETAILS\nCompany: Voyage Express Wholesale 1795775615950 (Travel Agency)\nYears in Business: 3–5 Years\nGSTIN: 07AAAAA1111A1Z9\nReg No: U74999DL2024PTC123456\nContact: Ramesh Kumar (Managing Director)\nEmail: contact.ramesh_1795775615950@voyageexpress.com | Business Email: b2b.partner_1795775615950@voyageexpress.com\nPhone: 9822215950 | WhatsApp: +91 9822215950\nLocation: Sector 62, Noida, Uttar Pradesh, India\nPackage Categories: International Tour Packages, Corporate Travel, Honeymoon Packages\nPreferred Destinations: Dubai, Switzerland, Bali, Singapore\nMonthly Bookings: 11–25 Bookings\nTravellers per Booking: 3–5 Travellers\nEstimated Monthly Volume: ₹15 Lakhs – ₹30 Lakhs\nPartnership Type: Wholesale Package Purchase\nSource: Google Search\nRequirements: Looking for exclusive wholesale packages with confirmed seat allocations for group departures.",
+      "documents": [],
+      "privacy_consent": true,
+      "communication_consent": true,
+      "created_at": "2026-11-27T10:33:36.553Z",
+      "id": "lea_c4e7923beb",
+      "updated_at": "2026-11-27T10:33:39.940Z",
+      "assigned_sales_executive": "Priya Nair",
+      "assigned_team": [
+        {
+          "staff_id": "usr_staff_priya",
+          "staff_name": "Priya Nair",
+          "role": "staff",
+          "departments": [
+            "Holidays & International",
+            "Honeymoon Specialists"
+          ],
+          "is_primary": true,
+          "assigned_at": "2026-11-27T10:33:38.514Z"
+        }
+      ],
+      "conversion_request_id": "PCR-2026-0019",
+      "conversion_status": "APPROVED"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "enquiry_id": "B2B-ENQ-2026-00002",
+      "lead_type": "B2B_PARTNER",
+      "company_name": "Voyage Express Wholesale 1795777612324",
+      "business_type": "Travel Agency",
+      "gst_number": "07AAAAA1111A1Z9",
+      "business_reg_number": "U74999DL2024PTC123456",
+      "years_in_business": "3–5 Years",
+      "customer_name": "Voyage Express Wholesale 1795777612324 (Ramesh Kumar)",
+      "contact_person": "Ramesh Kumar",
+      "designation": "Managing Director",
+      "customer_email": "contact.ramesh_1795777612324@voyageexpress.com",
+      "business_email": "b2b.partner_1795777612324@voyageexpress.com",
+      "customer_phone": "9822212324",
+      "whatsapp_number": "+91 9822212324",
+      "city": "Sector 62, Noida",
+      "state": "Uttar Pradesh",
+      "country": "India",
+      "interested_destination": "Dubai, Switzerland, Bali, Singapore",
+      "interested_categories": [
+        "International Tour Packages",
+        "Corporate Travel",
+        "Honeymoon Packages"
+      ],
+      "expected_monthly_bookings": "11–25 Bookings",
+      "travellers_per_booking": "3–5 Travellers",
+      "budget": "₹15 Lakhs – ₹30 Lakhs",
+      "travel_type": "B2B Wholesale",
+      "partnership_type": "Wholesale Package Purchase",
+      "lead_source": "B2B Partner Portal",
+      "status": "Converted to Partner",
+      "assigned_staff_id": "usr_staff_priya",
+      "assigned_staff_name": "Priya Nair",
+      "follow_up_date": null,
+      "notes": "B2B PARTNER ENQUIRY DETAILS\nCompany: Voyage Express Wholesale 1795777612324 (Travel Agency)\nYears in Business: 3–5 Years\nGSTIN: 07AAAAA1111A1Z9\nReg No: U74999DL2024PTC123456\nContact: Ramesh Kumar (Managing Director)\nEmail: contact.ramesh_1795777612324@voyageexpress.com | Business Email: b2b.partner_1795777612324@voyageexpress.com\nPhone: 9822212324 | WhatsApp: +91 9822212324\nLocation: Sector 62, Noida, Uttar Pradesh, India\nPackage Categories: International Tour Packages, Corporate Travel, Honeymoon Packages\nPreferred Destinations: Dubai, Switzerland, Bali, Singapore\nMonthly Bookings: 11–25 Bookings\nTravellers per Booking: 3–5 Travellers\nEstimated Monthly Volume: ₹15 Lakhs – ₹30 Lakhs\nPartnership Type: Wholesale Package Purchase\nSource: Google Search\nRequirements: Looking for exclusive wholesale packages with confirmed seat allocations for group departures.",
+      "documents": [],
+      "privacy_consent": true,
+      "communication_consent": true,
+      "created_at": "2026-11-27T11:06:53.329Z",
+      "id": "lea_a6bedea969",
+      "updated_at": "2026-11-27T11:07:03.582Z",
+      "assigned_sales_executive": "Priya Nair",
+      "assigned_team": [
+        {
+          "staff_id": "usr_staff_priya",
+          "staff_name": "Priya Nair",
+          "role": "staff",
+          "departments": [
+            "Holidays & International",
+            "Honeymoon Specialists"
+          ],
+          "is_primary": true,
+          "assigned_at": "2026-11-27T11:06:56.417Z"
+        }
+      ],
+      "conversion_request_id": "PCR-2026-0020",
+      "conversion_status": "APPROVED"
+    },
+    {
+      "id": "lead_0ugrv87jz",
+      "agency_id": "agency_travel_genie",
+      "customer_id": "use_c819b0a987",
+      "customer_name": "Ramesh Sharma",
+      "customer_email": "ramesh.paid_1795458419670@example.com",
+      "customer_phone": "9876543210",
+      "interested_destination": "Direct Traveler Registration",
+      "interested_package_id": null,
+      "travel_date": "",
+      "travelers_count": 2,
+      "budget": "Flexible",
+      "lead_source": "New User Sign Up",
+      "status": "New",
+      "assigned_staff_id": null,
+      "assigned_staff_name": "Unassigned",
+      "follow_up_date": null,
+      "notes": "New customer self-signup. Manager: Assign to Sales Executive to verify travel preferences and issue official Customer ID & Credentials.",
+      "created_at": "2026-11-27T16:22:37.551Z"
+    },
+    {
+      "id": "lead_48jjwvr78",
+      "agency_id": "agency_travel_genie",
+      "customer_id": "use_ea6bb81016",
+      "customer_name": "ADHITHYA M",
+      "customer_email": "2224084@saec.ac.in",
+      "customer_phone": "+91 9361814601",
+      "interested_destination": "Direct Traveler Registration",
+      "interested_package_id": null,
+      "travel_date": "",
+      "travelers_count": 2,
+      "budget": "Flexible",
+      "lead_source": "New User Sign Up",
+      "status": "New",
+      "assigned_staff_id": null,
+      "assigned_staff_name": "Unassigned",
+      "follow_up_date": null,
+      "notes": "New customer self-signup. Manager: Assign to Sales Executive to verify travel preferences and issue official Customer ID & Credentials.",
+      "created_at": "2026-11-27T16:22:37.554Z"
+    },
+    {
+      "id": "lead_mig2lh20d",
+      "agency_id": "agency_travel_genie",
+      "customer_id": "use_b47a34b8c3",
+      "customer_name": "Zomato Regional Marketing Meet",
+      "customer_email": "cr9092819654@gmail.com",
+      "customer_phone": "",
+      "interested_destination": "Direct Traveler Registration",
+      "interested_package_id": null,
+      "travel_date": "",
+      "travelers_count": 2,
+      "budget": "Flexible",
+      "lead_source": "New User Sign Up",
+      "status": "New",
+      "assigned_staff_id": null,
+      "assigned_staff_name": "Unassigned",
+      "follow_up_date": null,
+      "notes": "New customer self-signup. Manager: Assign to Sales Executive to verify travel preferences and issue official Customer ID & Credentials.",
+      "created_at": "2026-11-27T16:22:37.554Z"
     }
   ],
   "lead_activities": [
@@ -77329,6 +77582,131 @@
       "id": "lea_7a0413d82d",
       "created_at": "2026-11-27T09:48:50.641Z",
       "updated_at": "2026-11-27T09:48:50.641Z"
+    },
+    {
+      "lead_id": "lea_c4e7923beb",
+      "user_id": "system",
+      "activity_type": "status_change",
+      "description": "B2B Partner Enquiry #B2B-ENQ-2026-00001 submitted by Voyage Express Wholesale 1795775615950. Awaiting sales verification.",
+      "id": "lea_540cbc216c",
+      "created_at": "2026-11-27T10:33:36.650Z",
+      "updated_at": "2026-11-27T10:33:36.650Z"
+    },
+    {
+      "lead_id": "lea_c4e7923beb",
+      "user_id": "usr_admin_genie",
+      "activity_type": "assignment",
+      "description": "Assigned to Priya Nair (Team: Priya Nair) by Admin/Manager. ",
+      "id": "lea_f143d0edd3",
+      "created_at": "2026-11-27T10:33:38.697Z",
+      "updated_at": "2026-11-27T10:33:38.697Z"
+    },
+    {
+      "lead_id": "lea_c4e7923beb",
+      "user_id": "usr_staff_priya",
+      "activity_type": "status_change",
+      "description": "Staff Priya Nair changed status from 'Assigned' to 'Contacted'.",
+      "id": "lea_3f1f0d68a6",
+      "created_at": "2026-11-27T10:33:39.022Z",
+      "updated_at": "2026-11-27T10:33:39.022Z"
+    },
+    {
+      "lead_id": "lea_c4e7923beb",
+      "user_id": "usr_staff_priya",
+      "activity_type": "status_change",
+      "description": "Staff Priya Nair changed status from 'Contacted' to 'Business Verification'.",
+      "id": "lea_91bffc2fbf",
+      "created_at": "2026-11-27T10:33:39.276Z",
+      "updated_at": "2026-11-27T10:33:39.276Z"
+    },
+    {
+      "lead_id": "lea_c4e7923beb",
+      "user_id": "usr_staff_priya",
+      "activity_type": "partner_conversion_request",
+      "description": "Staff Priya Nair submitted B2B Partner Conversion Request #PCR-2026-0019 for Manager verification.",
+      "id": "lea_d62d6e4bd3",
+      "created_at": "2026-11-27T10:33:39.584Z",
+      "updated_at": "2026-11-27T10:33:39.584Z"
+    },
+    {
+      "lead_id": "lea_c4e7923beb",
+      "user_id": "usr_admin_genie",
+      "activity_type": "partner_approved",
+      "description": "Manager Aditya Sharma (Super Admin) approved B2B Partner conversion for Voyage Express Wholesale 1795775615950. Ready for Agent ID provisioning.",
+      "id": "lea_8f8b24a6dd",
+      "created_at": "2026-11-27T10:33:40.010Z",
+      "updated_at": "2026-11-27T10:33:40.010Z"
+    },
+    {
+      "lead_id": "lea_a6bedea969",
+      "user_id": "system",
+      "activity_type": "status_change",
+      "description": "B2B Partner Enquiry #B2B-ENQ-2026-00002 submitted by Voyage Express Wholesale 1795777612324. Awaiting sales verification.",
+      "id": "lea_d982c44cbd",
+      "created_at": "2026-11-27T11:06:53.490Z",
+      "updated_at": "2026-11-27T11:06:53.490Z"
+    },
+    {
+      "lead_id": "lea_a6bedea969",
+      "user_id": "usr_admin_genie",
+      "activity_type": "assignment",
+      "description": "Assigned to Priya Nair (Team: Priya Nair) by Admin/Manager. ",
+      "id": "lea_f31a3f9f2f",
+      "created_at": "2026-11-27T11:06:58.102Z",
+      "updated_at": "2026-11-27T11:06:58.102Z"
+    },
+    {
+      "lead_id": "lea_a6bedea969",
+      "user_id": "usr_staff_priya",
+      "user_name": "Priya Nair",
+      "activity_type": "call",
+      "description": "[CALL] by Priya Nair: Introductory call with MD Ramesh Kumar. Discussed bulk Dubai & Switzerland group allocations.",
+      "metadata": {
+        "interaction_id": "cus_816886878d",
+        "channel": "CALL",
+        "customer_response": "",
+        "requirements": "",
+        "follow_up_date": null
+      },
+      "created_at": "2026-11-27T11:06:59.595Z",
+      "id": "lea_4faadbd182",
+      "updated_at": "2026-11-27T11:06:59.685Z"
+    },
+    {
+      "lead_id": "lea_a6bedea969",
+      "user_id": "usr_staff_priya",
+      "activity_type": "status_change",
+      "description": "Staff Priya Nair changed status from 'Assigned' to 'Contacted'.",
+      "id": "lea_4ebefd466a",
+      "created_at": "2026-11-27T11:07:00.099Z",
+      "updated_at": "2026-11-27T11:07:00.099Z"
+    },
+    {
+      "lead_id": "lea_a6bedea969",
+      "user_id": "usr_staff_priya",
+      "activity_type": "status_change",
+      "description": "Staff Priya Nair changed status from 'Contacted' to 'Business Verification'.",
+      "id": "lea_6f6a4efc45",
+      "created_at": "2026-11-27T11:07:00.887Z",
+      "updated_at": "2026-11-27T11:07:00.887Z"
+    },
+    {
+      "lead_id": "lea_a6bedea969",
+      "user_id": "usr_staff_priya",
+      "activity_type": "partner_conversion_request",
+      "description": "Staff Priya Nair submitted B2B Partner Conversion Request #PCR-2026-0020 for Manager verification.",
+      "id": "lea_9344ef8497",
+      "created_at": "2026-11-27T11:07:02.029Z",
+      "updated_at": "2026-11-27T11:07:02.029Z"
+    },
+    {
+      "lead_id": "lea_a6bedea969",
+      "user_id": "usr_admin_genie",
+      "activity_type": "partner_approved",
+      "description": "Manager Aditya Sharma (Super Admin) approved B2B Partner conversion for Voyage Express Wholesale 1795777612324. Ready for Agent ID provisioning.",
+      "id": "lea_9e20c96367",
+      "created_at": "2026-11-27T11:07:04.196Z",
+      "updated_at": "2026-11-27T11:07:04.196Z"
     }
   ],
   "quotations": [
@@ -93114,6 +93492,150 @@
       "id": "not_6934d6361a",
       "created_at": "2026-11-27T09:48:53.652Z",
       "updated_at": "2026-11-27T09:48:53.652Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "title": "New B2B Partner Enquiry",
+      "message": "New B2B partner application #B2B-ENQ-2026-00001 from Voyage Express Wholesale 1795775615950 (Ramesh Kumar). Awaiting review and assignment.",
+      "type": "info",
+      "link": "/admin/leads",
+      "is_read": false,
+      "id": "not_ffbc26c363",
+      "created_at": "2026-11-27T10:33:38.355Z",
+      "updated_at": "2026-11-27T10:33:38.355Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_manager_genie",
+      "title": "New B2B Partner Enquiry",
+      "message": "New B2B partner application #B2B-ENQ-2026-00001 from Voyage Express Wholesale 1795775615950 (Ramesh Kumar). Awaiting review and assignment.",
+      "type": "info",
+      "link": "/manager/leads",
+      "is_read": false,
+      "id": "not_5cccf3f6f6",
+      "created_at": "2026-11-27T10:33:38.430Z",
+      "updated_at": "2026-11-27T10:33:38.430Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_staff_priya",
+      "title": "Leads Assigned",
+      "message": "You have been assigned 1 lead(s) by Operations Manager.",
+      "type": "info",
+      "link": "/staff/leads",
+      "is_read": false,
+      "id": "not_751bd9a648",
+      "created_at": "2026-11-27T10:33:38.856Z",
+      "updated_at": "2026-11-27T10:33:38.856Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "title": "B2B Partner Conversion Request",
+      "message": "Staff Priya Nair submitted partner verification for Voyage Express Wholesale 1795775615950. Awaiting Manager approval to issue Agent credentials.",
+      "type": "warning",
+      "link": "/admin/leads",
+      "is_read": false,
+      "id": "not_67414c9389",
+      "created_at": "2026-11-27T10:33:39.657Z",
+      "updated_at": "2026-11-27T10:33:39.657Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_manager_genie",
+      "title": "B2B Partner Conversion Request",
+      "message": "Staff Priya Nair submitted partner verification for Voyage Express Wholesale 1795775615950. Awaiting Manager approval to issue Agent credentials.",
+      "type": "warning",
+      "link": "/manager/leads",
+      "is_read": false,
+      "id": "not_9f5555fa60",
+      "created_at": "2026-11-27T10:33:39.748Z",
+      "updated_at": "2026-11-27T10:33:39.748Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_staff_priya",
+      "title": "Partner Conversion Approved!",
+      "message": "Manager Aditya Sharma (Super Admin) approved B2B Partner conversion for Voyage Express Wholesale 1795775615950. Account provisioning is now unlocked.",
+      "type": "success",
+      "link": "/staff/leads",
+      "is_read": false,
+      "id": "not_2531e916ee",
+      "created_at": "2026-11-27T10:33:40.092Z",
+      "updated_at": "2026-11-27T10:33:40.092Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "title": "New B2B Partner Enquiry",
+      "message": "New B2B partner application #B2B-ENQ-2026-00002 from Voyage Express Wholesale 1795777612324 (Ramesh Kumar). Awaiting review and assignment.",
+      "type": "info",
+      "link": "/admin/leads",
+      "is_read": false,
+      "id": "not_a5fd414d7b",
+      "created_at": "2026-11-27T11:06:55.935Z",
+      "updated_at": "2026-11-27T11:06:55.935Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_manager_genie",
+      "title": "New B2B Partner Enquiry",
+      "message": "New B2B partner application #B2B-ENQ-2026-00002 from Voyage Express Wholesale 1795777612324 (Ramesh Kumar). Awaiting review and assignment.",
+      "type": "info",
+      "link": "/manager/leads",
+      "is_read": false,
+      "id": "not_83c42ce7b3",
+      "created_at": "2026-11-27T11:06:56.178Z",
+      "updated_at": "2026-11-27T11:06:56.178Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_staff_priya",
+      "title": "Leads Assigned",
+      "message": "You have been assigned 1 lead(s) by Operations Manager.",
+      "type": "info",
+      "link": "/staff/leads",
+      "is_read": false,
+      "id": "not_be2607d4be",
+      "created_at": "2026-11-27T11:06:58.768Z",
+      "updated_at": "2026-11-27T11:06:58.768Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "title": "B2B Partner Conversion Request",
+      "message": "Staff Priya Nair submitted partner verification for Voyage Express Wholesale 1795777612324. Awaiting Manager approval to issue Agent credentials.",
+      "type": "warning",
+      "link": "/admin/leads",
+      "is_read": false,
+      "id": "not_87f73f5813",
+      "created_at": "2026-11-27T11:07:02.451Z",
+      "updated_at": "2026-11-27T11:07:02.451Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_manager_genie",
+      "title": "B2B Partner Conversion Request",
+      "message": "Staff Priya Nair submitted partner verification for Voyage Express Wholesale 1795777612324. Awaiting Manager approval to issue Agent credentials.",
+      "type": "warning",
+      "link": "/manager/leads",
+      "is_read": false,
+      "id": "not_db8b04d3de",
+      "created_at": "2026-11-27T11:07:02.665Z",
+      "updated_at": "2026-11-27T11:07:02.665Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_staff_priya",
+      "title": "Partner Conversion Approved!",
+      "message": "Manager Aditya Sharma (Super Admin) approved B2B Partner conversion for Voyage Express Wholesale 1795777612324. Account provisioning is now unlocked.",
+      "type": "success",
+      "link": "/staff/leads",
+      "is_read": false,
+      "id": "not_6536805993",
+      "created_at": "2026-11-27T11:07:05.031Z",
+      "updated_at": "2026-11-27T11:07:05.031Z"
     }
   ],
   "travel_services": [
@@ -97418,6 +97940,104 @@
       "created_at": "2026-11-27T09:48:46.192Z",
       "id": "enq_6b200d713d",
       "updated_at": "2026-11-27T09:48:46.192Z"
+    },
+    {
+      "enquiry_id": "B2B-ENQ-2026-00001",
+      "enquiry_type": "b2b_partner",
+      "company_name": "Voyage Express Wholesale 1795775615950",
+      "business_type": "Travel Agency",
+      "business_email": "b2b.partner_1795775615950@voyageexpress.com",
+      "gst_number": "07AAAAA1111A1Z9",
+      "business_reg_number": "U74999DL2024PTC123456",
+      "years_in_business": "3–5 Years",
+      "customer_name": "Ramesh Kumar",
+      "contact_person": "Ramesh Kumar",
+      "designation": "Managing Director",
+      "customer_email": "contact.ramesh_1795775615950@voyageexpress.com",
+      "business_email_raw": "b2b.partner_1795775615950@voyageexpress.com",
+      "customer_phone": "9822215950",
+      "whatsapp_number": "+91 9822215950",
+      "city": "Sector 62, Noida",
+      "business_location": "Sector 62, Noida",
+      "state": "Uttar Pradesh",
+      "country": "India",
+      "destination": "Dubai, Switzerland, Bali, Singapore",
+      "interested_categories": [
+        "International Tour Packages",
+        "Corporate Travel",
+        "Honeymoon Packages"
+      ],
+      "preferred_destinations": [
+        "Dubai",
+        "Switzerland",
+        "Bali",
+        "Singapore"
+      ],
+      "expected_monthly_bookings": "11–25 Bookings",
+      "travellers_per_booking": "3–5 Travellers",
+      "estimated_monthly_volume": "₹15 Lakhs – ₹30 Lakhs",
+      "budget": "₹15 Lakhs – ₹30 Lakhs",
+      "partnership_type": "Wholesale Package Purchase",
+      "how_did_you_hear": "Google Search",
+      "additional_requirements": "Looking for exclusive wholesale packages with confirmed seat allocations for group departures.",
+      "documents": [],
+      "privacy_consent": true,
+      "privacy_consent_at": "2026-11-27T10:33:36.517Z",
+      "communication_consent": true,
+      "source": "B2B Partner Portal",
+      "status": "NEW",
+      "created_at": "2026-11-27T10:33:36.517Z",
+      "id": "enq_2a753b060f",
+      "updated_at": "2026-11-27T10:33:36.517Z"
+    },
+    {
+      "enquiry_id": "B2B-ENQ-2026-00002",
+      "enquiry_type": "b2b_partner",
+      "company_name": "Voyage Express Wholesale 1795777612324",
+      "business_type": "Travel Agency",
+      "business_email": "b2b.partner_1795777612324@voyageexpress.com",
+      "gst_number": "07AAAAA1111A1Z9",
+      "business_reg_number": "U74999DL2024PTC123456",
+      "years_in_business": "3–5 Years",
+      "customer_name": "Ramesh Kumar",
+      "contact_person": "Ramesh Kumar",
+      "designation": "Managing Director",
+      "customer_email": "contact.ramesh_1795777612324@voyageexpress.com",
+      "business_email_raw": "b2b.partner_1795777612324@voyageexpress.com",
+      "customer_phone": "9822212324",
+      "whatsapp_number": "+91 9822212324",
+      "city": "Sector 62, Noida",
+      "business_location": "Sector 62, Noida",
+      "state": "Uttar Pradesh",
+      "country": "India",
+      "destination": "Dubai, Switzerland, Bali, Singapore",
+      "interested_categories": [
+        "International Tour Packages",
+        "Corporate Travel",
+        "Honeymoon Packages"
+      ],
+      "preferred_destinations": [
+        "Dubai",
+        "Switzerland",
+        "Bali",
+        "Singapore"
+      ],
+      "expected_monthly_bookings": "11–25 Bookings",
+      "travellers_per_booking": "3–5 Travellers",
+      "estimated_monthly_volume": "₹15 Lakhs – ₹30 Lakhs",
+      "budget": "₹15 Lakhs – ₹30 Lakhs",
+      "partnership_type": "Wholesale Package Purchase",
+      "how_did_you_hear": "Google Search",
+      "additional_requirements": "Looking for exclusive wholesale packages with confirmed seat allocations for group departures.",
+      "documents": [],
+      "privacy_consent": true,
+      "privacy_consent_at": "2026-11-27T11:06:53.266Z",
+      "communication_consent": true,
+      "source": "B2B Partner Portal",
+      "status": "NEW",
+      "created_at": "2026-11-27T11:06:53.266Z",
+      "id": "enq_e55b90196a",
+      "updated_at": "2026-11-27T11:06:53.266Z"
     }
   ],
   "lead_assignments": [
@@ -98631,6 +99251,38 @@
       "id": "lea_59ae204d08",
       "created_at": "2026-11-27T09:48:48.127Z",
       "updated_at": "2026-11-27T09:48:48.127Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_c4e7923beb",
+      "assigned_by": "usr_admin_genie",
+      "assigned_by_name": "Aditya Sharma (Super Admin)",
+      "staff_id": "usr_staff_priya",
+      "staff_name": "Priya Nair",
+      "is_primary": true,
+      "previous_staff_id": null,
+      "previous_staff_name": "Unassigned",
+      "notes": "",
+      "assigned_at": "2026-11-27T10:33:38.547Z",
+      "id": "lea_3684715fa1",
+      "created_at": "2026-11-27T10:33:38.574Z",
+      "updated_at": "2026-11-27T10:33:38.574Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_a6bedea969",
+      "assigned_by": "usr_admin_genie",
+      "assigned_by_name": "Aditya Sharma (Super Admin)",
+      "staff_id": "usr_staff_priya",
+      "staff_name": "Priya Nair",
+      "is_primary": true,
+      "previous_staff_id": null,
+      "previous_staff_name": "Unassigned",
+      "notes": "",
+      "assigned_at": "2026-11-27T11:06:56.568Z",
+      "id": "lea_1970770ad6",
+      "created_at": "2026-11-27T11:06:57.012Z",
+      "updated_at": "2026-11-27T11:06:57.012Z"
     }
   ],
   "follow_ups": [
@@ -100000,6 +100652,19 @@
       "created_at": "2026-11-27T09:48:48.585Z",
       "id": "cus_7d95c48b0f",
       "updated_at": "2026-11-27T09:48:48.585Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_a6bedea969",
+      "staff_id": "usr_staff_priya",
+      "staff_name": "Priya Nair",
+      "channel": "CALL",
+      "summary": "Introductory call with MD Ramesh Kumar. Discussed bulk Dubai & Switzerland group allocations.",
+      "customer_response": "",
+      "preferences": null,
+      "created_at": "2026-11-27T11:06:59.246Z",
+      "id": "cus_816886878d",
+      "updated_at": "2026-11-27T11:06:59.247Z"
     }
   ],
   "package_pricing": [
@@ -104336,6 +105001,54 @@
       "created_at": "2026-11-27T09:48:20.095Z",
       "id": "b2b_74e75c4510",
       "updated_at": "2026-11-27T09:48:26.870Z"
+    },
+    {
+      "agent_id": "B2B-2026-0036",
+      "user_id": "use_da1a123923",
+      "agency_id": "agency_travel_genie",
+      "agent_name": "Ramesh Kumar",
+      "company_name": "Voyage Express Wholesale 1795775615950",
+      "email": "contact.ramesh_1795775615950@voyageexpress.com",
+      "phone": "+91 9822215950",
+      "business_address": "Sector 62, Noida, Uttar Pradesh",
+      "gst_number": "07AAAAA1111A1Z9",
+      "business_reg_number": "U74999DL2024PTC123456",
+      "contact_person": "Ramesh Kumar (Managing Director)",
+      "account_type": "WHOLESALE",
+      "account_status": "INVITATION_PENDING",
+      "invitation_status": "INVITATION_SENT",
+      "wholesale_discount_pct": 12,
+      "credit_limit": 500000,
+      "invitation_sent_at": "2026-11-27T10:33:40.211Z",
+      "activated_at": null,
+      "last_login_at": null,
+      "created_at": "2026-11-27T10:33:40.211Z",
+      "id": "b2b_a713a95f84",
+      "updated_at": "2026-11-27T10:33:40.246Z"
+    },
+    {
+      "agent_id": "B2B-2026-0037",
+      "user_id": "use_404e7a4066",
+      "agency_id": "agency_travel_genie",
+      "agent_name": "Ramesh Kumar",
+      "company_name": "Voyage Express Wholesale 1795777612324",
+      "email": "contact.ramesh_1795777612324@voyageexpress.com",
+      "phone": "+91 9822212324",
+      "business_address": "Sector 62, Noida, Uttar Pradesh",
+      "gst_number": "07AAAAA1111A1Z9",
+      "business_reg_number": "U74999DL2024PTC123456",
+      "contact_person": "Ramesh Kumar (Managing Director)",
+      "account_type": "WHOLESALE",
+      "account_status": "INVITATION_PENDING",
+      "invitation_status": "INVITATION_SENT",
+      "wholesale_discount_pct": 12,
+      "credit_limit": 500000,
+      "invitation_sent_at": "2026-11-27T11:07:05.469Z",
+      "activated_at": null,
+      "last_login_at": null,
+      "created_at": "2026-11-27T11:07:05.469Z",
+      "id": "b2b_d76eae7a3c",
+      "updated_at": "2026-11-27T11:07:05.580Z"
     }
   ],
   "agent_pricing": [
@@ -110840,6 +111553,98 @@
       "id": "aud_c6af3ef15d",
       "created_at": "2026-11-27T09:48:53.425Z",
       "updated_at": "2026-11-27T09:48:53.425Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "system",
+      "action": "CREATE_B2B_ENQUIRY",
+      "entity_type": "lead",
+      "entity_id": "lea_c4e7923beb",
+      "details": {
+        "enquiry_id": "B2B-ENQ-2026-00001",
+        "company_name": "Voyage Express Wholesale 1795775615950",
+        "contact_person": "Ramesh Kumar",
+        "business_email": "b2b.partner_1795775615950@voyageexpress.com"
+      },
+      "timestamp": "2026-11-27T10:33:36.842Z",
+      "id": "aud_c686c40468",
+      "created_at": "2026-11-27T10:33:36.873Z",
+      "updated_at": "2026-11-27T10:33:36.873Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "action": "ASSIGN_LEAD",
+      "entity_type": "lead",
+      "entity_id": "lea_c4e7923beb",
+      "details": {
+        "primary_staff_id": "usr_staff_priya",
+        "primary_staff_name": "Priya Nair",
+        "team": [
+          {
+            "staff_id": "usr_staff_priya",
+            "staff_name": "Priya Nair",
+            "role": "staff",
+            "departments": [
+              "Holidays & International",
+              "Honeymoon Specialists"
+            ],
+            "is_primary": true,
+            "assigned_at": "2026-11-27T10:33:38.514Z"
+          }
+        ],
+        "previous_staff_id": null
+      },
+      "timestamp": "2026-11-27T10:33:38.732Z",
+      "id": "aud_3f16b8ab6d",
+      "created_at": "2026-11-27T10:33:38.774Z",
+      "updated_at": "2026-11-27T10:33:38.774Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "system",
+      "action": "CREATE_B2B_ENQUIRY",
+      "entity_type": "lead",
+      "entity_id": "lea_a6bedea969",
+      "details": {
+        "enquiry_id": "B2B-ENQ-2026-00002",
+        "company_name": "Voyage Express Wholesale 1795777612324",
+        "contact_person": "Ramesh Kumar",
+        "business_email": "b2b.partner_1795777612324@voyageexpress.com"
+      },
+      "timestamp": "2026-11-27T11:06:53.825Z",
+      "id": "aud_250a5ef1f0",
+      "created_at": "2026-11-27T11:06:53.892Z",
+      "updated_at": "2026-11-27T11:06:53.892Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "action": "ASSIGN_LEAD",
+      "entity_type": "lead",
+      "entity_id": "lea_a6bedea969",
+      "details": {
+        "primary_staff_id": "usr_staff_priya",
+        "primary_staff_name": "Priya Nair",
+        "team": [
+          {
+            "staff_id": "usr_staff_priya",
+            "staff_name": "Priya Nair",
+            "role": "staff",
+            "departments": [
+              "Holidays & International",
+              "Honeymoon Specialists"
+            ],
+            "is_primary": true,
+            "assigned_at": "2026-11-27T11:06:56.417Z"
+          }
+        ],
+        "previous_staff_id": null
+      },
+      "timestamp": "2026-11-27T11:06:58.421Z",
+      "id": "aud_11dd0f9ccd",
+      "created_at": "2026-11-27T11:06:58.564Z",
+      "updated_at": "2026-11-27T11:06:58.564Z"
     }
   ],
   "system_settings": [
@@ -114627,6 +115432,94 @@
       "created_at": "2026-11-27T09:48:50.548Z",
       "id": "lea_254567b3b7",
       "updated_at": "2026-11-27T09:48:50.580Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_c4e7923beb",
+      "from_status": "NONE",
+      "to_status": "NEW",
+      "changed_by": "system",
+      "notes": "B2B Enquiry #B2B-ENQ-2026-00001 received.",
+      "created_at": "2026-11-27T10:33:36.734Z",
+      "id": "lea_a14eb056b5",
+      "updated_at": "2026-11-27T10:33:36.778Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_c4e7923beb",
+      "from_status": "New",
+      "to_status": "Assigned",
+      "changed_by": "usr_admin_genie",
+      "notes": "Lead assigned to Priya Nair. ",
+      "created_at": "2026-11-27T10:33:38.606Z",
+      "id": "lea_21691b353b",
+      "updated_at": "2026-11-27T10:33:38.633Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_c4e7923beb",
+      "from_status": "Assigned",
+      "to_status": "Contacted",
+      "changed_by": "usr_staff_priya",
+      "notes": "",
+      "created_at": "2026-11-27T10:33:39.058Z",
+      "id": "lea_17177342fd",
+      "updated_at": "2026-11-27T10:33:39.099Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_c4e7923beb",
+      "from_status": "Contacted",
+      "to_status": "Business Verification",
+      "changed_by": "usr_staff_priya",
+      "notes": "",
+      "created_at": "2026-11-27T10:33:39.334Z",
+      "id": "lea_edb5739ac1",
+      "updated_at": "2026-11-27T10:33:39.361Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_a6bedea969",
+      "from_status": "NONE",
+      "to_status": "NEW",
+      "changed_by": "system",
+      "notes": "B2B Enquiry #B2B-ENQ-2026-00002 received.",
+      "created_at": "2026-11-27T11:06:53.548Z",
+      "id": "lea_a9165550ca",
+      "updated_at": "2026-11-27T11:06:53.669Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_a6bedea969",
+      "from_status": "New",
+      "to_status": "Assigned",
+      "changed_by": "usr_admin_genie",
+      "notes": "Lead assigned to Priya Nair. ",
+      "created_at": "2026-11-27T11:06:57.550Z",
+      "id": "lea_761ac8148d",
+      "updated_at": "2026-11-27T11:06:57.893Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_a6bedea969",
+      "from_status": "Assigned",
+      "to_status": "Contacted",
+      "changed_by": "usr_staff_priya",
+      "notes": "",
+      "created_at": "2026-11-27T11:07:00.205Z",
+      "id": "lea_356b134885",
+      "updated_at": "2026-11-27T11:07:00.300Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_a6bedea969",
+      "from_status": "Contacted",
+      "to_status": "Business Verification",
+      "changed_by": "usr_staff_priya",
+      "notes": "",
+      "created_at": "2026-11-27T11:07:01.008Z",
+      "id": "lea_f4f97e0ed1",
+      "updated_at": "2026-11-27T11:07:01.103Z"
     }
   ],
   "email_logs": [
@@ -119837,6 +120730,74 @@
       "id": "ema_8105b90353",
       "created_at": "2026-11-27T09:48:52.894Z",
       "updated_at": "2026-11-27T09:48:52.894Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "to_email": "contact.ramesh_1795775615950@voyageexpress.com",
+      "subject": "B2B Partner Enquiry Received: B2B-ENQ-2026-00001 - Voyage Express Wholesale 1795775615950",
+      "template_name": "B2B_ENQUIRY_ACKNOWLEDGEMENT",
+      "status": "DELIVERED",
+      "metadata": {
+        "enquiry_id": "B2B-ENQ-2026-00001",
+        "company_name": "Voyage Express Wholesale 1795775615950",
+        "contact_person": "Ramesh Kumar"
+      },
+      "sent_at": "2026-11-27T10:33:38.241Z",
+      "id": "ema_fcc67b9857",
+      "created_at": "2026-11-27T10:33:38.283Z",
+      "updated_at": "2026-11-27T10:33:38.283Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "to_email": "contact.ramesh_1795775615950@voyageexpress.com",
+      "subject": "Welcome to Trip by Genie – Your B2B Agent Account Is Ready!",
+      "template_name": "AGENT_ACCOUNT_INVITATION",
+      "status": "DELIVERED",
+      "metadata": {
+        "agent_id": "B2B-2026-0036",
+        "agent_name": "Ramesh Kumar",
+        "company_name": "Voyage Express Wholesale 1795775615950",
+        "activation_link": "https://tripbygenie.vercel.app/activate-account?token=465f387d15a511626df3063bedf09201ef278f22a42adec2af3eb5bd6b32bfc6&type=b2b",
+        "activation_token_preview": "465f387d..."
+      },
+      "sent_at": "2026-11-27T10:33:41.810Z",
+      "id": "ema_a35ca6e5cb",
+      "created_at": "2026-11-27T10:33:41.854Z",
+      "updated_at": "2026-11-27T10:33:41.854Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "to_email": "contact.ramesh_1795777612324@voyageexpress.com",
+      "subject": "B2B Partner Enquiry Received: B2B-ENQ-2026-00002 - Voyage Express Wholesale 1795777612324",
+      "template_name": "B2B_ENQUIRY_ACKNOWLEDGEMENT",
+      "status": "DELIVERED",
+      "metadata": {
+        "enquiry_id": "B2B-ENQ-2026-00002",
+        "company_name": "Voyage Express Wholesale 1795777612324",
+        "contact_person": "Ramesh Kumar"
+      },
+      "sent_at": "2026-11-27T11:06:55.632Z",
+      "id": "ema_5dc538f917",
+      "created_at": "2026-11-27T11:06:55.722Z",
+      "updated_at": "2026-11-27T11:06:55.722Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "to_email": "contact.ramesh_1795777612324@voyageexpress.com",
+      "subject": "Welcome to Trip by Genie – Your B2B Agent Account Is Ready!",
+      "template_name": "AGENT_ACCOUNT_INVITATION",
+      "status": "DELIVERED",
+      "metadata": {
+        "agent_id": "B2B-2026-0037",
+        "agent_name": "Ramesh Kumar",
+        "company_name": "Voyage Express Wholesale 1795777612324",
+        "activation_link": "https://tripbygenie.vercel.app/activate-account?token=187c71b9a4097da98552088c0d5f4bffc9c67c2844a7f153913d247b430989ca&type=b2b",
+        "activation_token_preview": "187c71b9..."
+      },
+      "sent_at": "2026-11-27T11:07:08.169Z",
+      "id": "ema_95bf097906",
+      "created_at": "2026-11-27T11:07:08.511Z",
+      "updated_at": "2026-11-27T11:07:08.511Z"
     }
   ],
   "customer_account_invitations": [
@@ -122556,6 +123517,36 @@
       "created_at": "2026-11-27T09:48:22.314Z",
       "id": "age_60e92a5f54",
       "updated_at": "2026-11-27T09:48:24.447Z"
+    },
+    {
+      "agent_id": "B2B-2026-0036",
+      "b2b_agent_id": "b2b_a713a95f84",
+      "user_id": "use_da1a123923",
+      "email": "contact.ramesh_1795775615950@voyageexpress.com",
+      "token": "465f387d15a511626df3063bedf09201ef278f22a42adec2af3eb5bd6b32bfc6",
+      "token_hash": "ce68baa42936801231c090fc820f1d8f5f03345c74bcec96bf8aa3710e50433d",
+      "expires_at": "2026-11-29T10:33:40.382Z",
+      "is_used": false,
+      "used_at": null,
+      "created_by": "usr_admin_genie",
+      "created_at": "2026-11-27T10:33:40.382Z",
+      "id": "age_ce5fe2292f",
+      "updated_at": "2026-11-27T10:33:40.411Z"
+    },
+    {
+      "agent_id": "B2B-2026-0037",
+      "b2b_agent_id": "b2b_d76eae7a3c",
+      "user_id": "use_404e7a4066",
+      "email": "contact.ramesh_1795777612324@voyageexpress.com",
+      "token": "187c71b9a4097da98552088c0d5f4bffc9c67c2844a7f153913d247b430989ca",
+      "token_hash": "5f33e0de6bcf5eaf187b7f0401f9e68b5965e10a8702fef59d4f064106779c9a",
+      "expires_at": "2026-11-29T11:07:06.317Z",
+      "is_used": false,
+      "used_at": null,
+      "created_by": "usr_admin_genie",
+      "created_at": "2026-11-27T11:07:06.317Z",
+      "id": "age_83a46a204f",
+      "updated_at": "2026-11-27T11:07:06.413Z"
     }
   ],
   "agent_invitation_history": [
@@ -123755,6 +124746,34 @@
       "created_at": "2026-11-27T09:48:24.764Z",
       "id": "age_5a5e7c7504",
       "updated_at": "2026-11-27T09:48:24.823Z"
+    },
+    {
+      "agent_id": "B2B-2026-0036",
+      "action": "INVITATION_CREATED",
+      "performed_by": "usr_admin_genie",
+      "details": {
+        "agent_name": "Ramesh Kumar",
+        "company_name": "Voyage Express Wholesale 1795775615950",
+        "email": "contact.ramesh_1795775615950@voyageexpress.com",
+        "account_type": "WHOLESALE"
+      },
+      "created_at": "2026-11-27T10:33:40.445Z",
+      "id": "age_8750caf204",
+      "updated_at": "2026-11-27T10:33:40.475Z"
+    },
+    {
+      "agent_id": "B2B-2026-0037",
+      "action": "INVITATION_CREATED",
+      "performed_by": "usr_admin_genie",
+      "details": {
+        "agent_name": "Ramesh Kumar",
+        "company_name": "Voyage Express Wholesale 1795777612324",
+        "email": "contact.ramesh_1795777612324@voyageexpress.com",
+        "account_type": "WHOLESALE"
+      },
+      "created_at": "2026-11-27T11:07:06.533Z",
+      "id": "age_bbbfd26e0d",
+      "updated_at": "2026-11-27T11:07:06.631Z"
     }
   ],
   "agent_status_history": [
@@ -128912,6 +129931,54 @@
       "created_at": "2026-11-27T09:48:53.924Z",
       "id": "ref_672bc2eb7d",
       "updated_at": "2026-11-27T09:48:53.955Z"
+    },
+    {
+      "user_id": "usr_admin_genie",
+      "token_hash": "e030690a53533aa1c60b0b7b9ba59cc41b525fcfa40628e7a4ba837acb219f90",
+      "family_id": "68b56d26-c57f-4a1d-b39f-9a53e26cf898",
+      "is_revoked": false,
+      "expires_at": "2026-12-04T10:33:36.150Z",
+      "user_agent": "Unknown",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-11-27T10:33:36.150Z",
+      "id": "ref_2c05b5ad6a",
+      "updated_at": "2026-11-27T10:33:36.183Z"
+    },
+    {
+      "user_id": "usr_staff_priya",
+      "token_hash": "58bfdfa1f8541b62f6bf348200923569a5eb1cbb901cac60d294ea5286065ba9",
+      "family_id": "e564e52c-b018-4e78-b1cf-46d8bf8881c4",
+      "is_revoked": false,
+      "expires_at": "2026-12-04T10:33:36.388Z",
+      "user_agent": "Unknown",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-11-27T10:33:36.388Z",
+      "id": "ref_4adf8bfbd0",
+      "updated_at": "2026-11-27T10:33:36.432Z"
+    },
+    {
+      "user_id": "usr_admin_genie",
+      "token_hash": "687da17b5a06cba1419ce39a84a00a8c71cfef49efbb1430f8dbe7d492799917",
+      "family_id": "04f30115-fd88-4657-8686-0745c71e8d18",
+      "is_revoked": false,
+      "expires_at": "2026-12-04T11:06:52.591Z",
+      "user_agent": "Unknown",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-11-27T11:06:52.591Z",
+      "id": "ref_6f642144f6",
+      "updated_at": "2026-11-27T11:06:52.648Z"
+    },
+    {
+      "user_id": "usr_staff_priya",
+      "token_hash": "a7bc81cbd5c4ef093fecb9b47ba37ac5f791280b7be0c155a98c958b385df3b2",
+      "family_id": "535444fa-cf87-4a8b-b4b4-203d1cece165",
+      "is_revoked": false,
+      "expires_at": "2026-12-04T11:06:53.076Z",
+      "user_agent": "Unknown",
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-11-27T11:06:53.076Z",
+      "id": "ref_907f8f173e",
+      "updated_at": "2026-11-27T11:06:53.127Z"
     }
   ],
   "user_consents": [
@@ -129820,6 +130887,52 @@
       "booking_id": "boo_d97f9f8e2a",
       "booking_number": "BK-2026-1993",
       "verification_notes": "Verified ₹80,000 via ICICI Bank current account UPI settlement."
+    },
+    {
+      "id": "PCR-2026-0019",
+      "type": "B2B_PARTNER",
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_c4e7923beb",
+      "staff_id": "usr_staff_priya",
+      "staff_name": "Priya Nair",
+      "customer_name": "Voyage Express Wholesale 1795775615950 (Ramesh Kumar)",
+      "company_name": "Voyage Express Wholesale 1795775615950",
+      "customer_email": "contact.ramesh_1795775615950@voyageexpress.com",
+      "customer_phone": "9822215950",
+      "verification_notes": "Manager verified business credentials and approved Wholesale Partner onboarding.",
+      "business_docs_verified": true,
+      "wholesale_tier": "Standard Wholesale (Tier 1)",
+      "estimated_credit_limit": 500000,
+      "status": "APPROVED",
+      "submitted_at": "2026-11-27T10:33:39.430Z",
+      "created_at": "2026-11-27T10:33:39.430Z",
+      "updated_at": "2026-11-27T10:33:39.862Z",
+      "approved_by": "usr_admin_genie",
+      "approved_by_name": "Aditya Sharma (Super Admin)",
+      "approved_at": "2026-11-27T10:33:39.862Z"
+    },
+    {
+      "id": "PCR-2026-0020",
+      "type": "B2B_PARTNER",
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lea_a6bedea969",
+      "staff_id": "usr_staff_priya",
+      "staff_name": "Priya Nair",
+      "customer_name": "Voyage Express Wholesale 1795777612324 (Ramesh Kumar)",
+      "company_name": "Voyage Express Wholesale 1795777612324",
+      "customer_email": "contact.ramesh_1795777612324@voyageexpress.com",
+      "customer_phone": "9822212324",
+      "verification_notes": "Manager verified business credentials and approved Wholesale Partner onboarding.",
+      "business_docs_verified": true,
+      "wholesale_tier": "Standard Wholesale (Tier 1)",
+      "estimated_credit_limit": 500000,
+      "status": "APPROVED",
+      "submitted_at": "2026-11-27T11:07:01.347Z",
+      "created_at": "2026-11-27T11:07:01.348Z",
+      "updated_at": "2026-11-27T11:07:03.384Z",
+      "approved_by": "usr_admin_genie",
+      "approved_by_name": "Aditya Sharma (Super Admin)",
+      "approved_at": "2026-11-27T11:07:03.384Z"
     }
   ],
   "payment_evidence": [

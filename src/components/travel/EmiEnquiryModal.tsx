@@ -20,6 +20,7 @@ import { Button } from '../common/Button';
 import { api } from '../../services/api';
 import { useToast } from '../../context/ToastContext';
 import { useAuth } from '../../context/AuthContext';
+import { getTodayIST, isTodayOrFutureDate } from '../../utils/dateValidation';
 
 interface EmiEnquiryModalProps {
   isOpen: boolean;
@@ -163,10 +164,7 @@ export const EmiEnquiryModal: React.FC<EmiEnquiryModalProps> = ({
       }
     } else if (field === 'travel_date') {
       if (trimmed) {
-        const selectedDate = new Date(trimmed);
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        if (selectedDate < today) {
+        if (!isTodayOrFutureDate(trimmed)) {
           err = 'Travel date cannot be in the past';
         }
       }
@@ -262,7 +260,7 @@ export const EmiEnquiryModal: React.FC<EmiEnquiryModalProps> = ({
   };
 
   const monthlyEmi = calculateEmi();
-  const todayStr = new Date().toISOString().split('T')[0];
+  const todayStr = getTodayIST();
 
   return (
     <Modal
@@ -707,7 +705,7 @@ export const EmiEnquiryModal: React.FC<EmiEnquiryModalProps> = ({
             variant="primary"
             size="md"
             disabled={isSubmitting}
-            className="text-xs font-bold bg-[#FF795C] hover:bg-[#ff6442] text-white px-5 py-2.5 rounded-xl shadow-md"
+            className="text-xs font-bold bg-[#FF0000] hover:bg-[#D90000] text-white px-5 py-2.5 rounded-xl shadow-md"
           >
             {isSubmitting ? 'Submitting Application...' : 'Apply for 0% EMI Approval'}
           </Button>

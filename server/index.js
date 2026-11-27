@@ -12,6 +12,7 @@ const uuidv4 = () => crypto.randomUUID();
 const db = require('./db');
 const emailService = require('./src/services/email.service');
 const tokenService = require('./src/services/token.service');
+const { getTodayIST, isTodayOrFutureDate, isValidDateRange } = require('./src/utils/dateValidation');
 const { corsOptions, helmetMiddleware, authLimiter, enquiryLimiter, safePathResolver } = require('./src/middlewares/security.middleware');
 
 const app = express();
@@ -192,7 +193,16 @@ app.post('/api/auth/login', authLimiter, async (req, res) => {
   }
 
   const trimmed = (email || '').trim().toLowerCase();
-  let user = db.findOne('users', (u) => u.email.toLowerCase() === trimmed);
+  const digitsOnly = trimmed.replace(/\D/g, '');
+  let user = db.findOne('users', (u) => u.email && u.email.toLowerCase() === trimmed);
+  if (!user && digitsOnly.length >= 10) {
+    // Check if input is phone number
+    user = db.findOne('users', (u) => u.phone && u.phone.replace(/\D/g, '').endsWith(digitsOnly.slice(-10)));
+  }
+  if (!user) {
+    // Check if input is a Customer Code or Employee ID Code (e.g. CUS-2026-0001, SLS-XXXX, TBG_SAL_XXX)
+    user = db.findOne('users', (u) => (u.customer_code && u.customer_code.toLowerCase() === trimmed) || (u.employee_code && u.employee_code.toLowerCase() === trimmed));
+  }
   if (!user) {
     // Check if input is an Agent ID (e.g. B2B-2026-0001 or AGT-XXXX)
     const b2b = db.findOne('b2b_agents', (a) => a.agent_id && a.agent_id.toLowerCase() === trimmed);
@@ -207,7 +217,7 @@ app.post('/api/auth/login', authLimiter, async (req, res) => {
   }
 
   if (!user) {
-    return res.status(401).json({ error: 'Invalid email/Agent ID or password.' });
+    return res.status(401).json({ error: 'Invalid email, phone number, or password.' });
   }
 
   if (user.status === 'suspended') {
@@ -218,11 +228,11 @@ app.post('/api/auth/login', authLimiter, async (req, res) => {
     return res.status(403).json({ error: 'Your account has been deactivated. Please contact administrator.' });
   }
 
-  // Handle staff onboarding via direct login with invitation credentials:
+  // Handle customer, manager, and staff onboarding via direct login with invitation credentials:
   if (user.status === 'pending' || user.status === 'pending_activation') {
     const isMatch = bcrypt.compareSync(password, user.password_hash);
-    if (isMatch && (user.role === 'staff' || user.role === 'sales' || user.role === 'operations')) {
-      // First login with credentials automatically completes onboarding and activates staff account
+    if (isMatch) {
+      // First login with credentials automatically activates account
       db.update('users', user.id, {
         status: 'active',
         account_status: 'ACTIVE',
@@ -231,19 +241,23 @@ app.post('/api/auth/login', authLimiter, async (req, res) => {
       });
       user.status = 'active';
 
-      const staffProf = db.findOne('staff_profiles', (sp) => sp.user_id === user.id);
-      if (staffProf) {
-        db.update('staff_profiles', staffProf.id, { status: 'active', activated_at: new Date().toISOString() });
+      if (user.role === 'staff' || user.role === 'sales' || user.role === 'operations') {
+        const staffProf = db.findOne('staff_profiles', (sp) => sp.user_id === user.id);
+        if (staffProf) {
+          db.update('staff_profiles', staffProf.id, { status: 'active', activated_at: new Date().toISOString() });
+        }
+        const staffInv = db.findOne('staff_account_invitations', (inv) => inv.user_id === user.id && !inv.is_used);
+        if (staffInv) {
+          db.update('staff_account_invitations', staffInv.id, { is_used: true, used_at: new Date().toISOString() });
+        }
+      } else if (user.role === 'customer') {
+        const custInv = db.findOne('customer_account_invitations', (inv) => (inv.user_id === user.id || inv.email.toLowerCase() === user.email.toLowerCase()) && !inv.is_used);
+        if (custInv) {
+          db.update('customer_account_invitations', custInv.id, { is_used: true, used_at: new Date().toISOString() });
+        }
       }
-
-      const staffInv = db.findOne('staff_account_invitations', (inv) => inv.user_id === user.id && !inv.is_used);
-      if (staffInv) {
-        db.update('staff_account_invitations', staffInv.id, { is_used: true, used_at: new Date().toISOString() });
-      }
-    } else if (!isMatch) {
-      return res.status(401).json({ error: 'Invalid corporate email or password. Please verify the credentials sent in your onboarding email.' });
     } else {
-      return res.status(403).json({ error: 'Your account is pending onboarding. Please log in using your invitation credentials.' });
+      return res.status(401).json({ error: 'Invalid email, phone number, or password. If this is your first time logging in, please check the credentials sent to your email.' });
     }
   }
 
@@ -348,34 +362,87 @@ app.post('/api/auth/demo-login', (req, res) => {
   });
 });
 
-// Customer Registration (Auto-creates customer profile + lead if associated with enquiry)
+// Customer Registration (Auto-creates lead for Manager to assign to Sales, who then contacts & creates ID/pass)
 app.post('/api/auth/register', (req, res) => {
   const { name, email, phone, password, enquiry_data, agency_id } = req.body;
 
-  if (!name || !email || !password) {
-    return res.status(400).json({ error: 'Name, email, and password are required.' });
+  if (!name || !email) {
+    return res.status(400).json({ error: 'Name and email are required.' });
   }
 
-  const existing = db.findOne('users', (u) => u && u.email && u.email.toLowerCase() === email.toLowerCase());
-  if (existing) {
-    return res.status(400).json({ error: 'An account with this email already exists. Please log in.' });
-  }
-
+  const cleanEmail = email.trim().toLowerCase();
   const defaultAgency = agency_id ? db.findById('agencies', agency_id) : db.findAll('agencies')[0];
   const targetAgencyId = defaultAgency ? defaultAgency.id : 'agency_travel_genie';
 
+  const existing = db.findOne('users', (u) => u && u.email && u.email.toLowerCase() === cleanEmail);
+  if (existing) {
+    if (existing.status === 'pending_activation') {
+      // Ensure a CRM Lead exists for this pending customer so Manager/Admin can assign it
+      let existingLead = db.findOne('leads', (l) => l && l.customer_email && l.customer_email.toLowerCase() === cleanEmail);
+      if (!existingLead) {
+        existingLead = db.insert('leads', {
+          agency_id: existing.agency_id || targetAgencyId,
+          customer_id: existing.id,
+          customer_name: (name || existing.name || '').trim(),
+          customer_email: cleanEmail,
+          customer_phone: (phone || existing.phone || '').trim(),
+          interested_destination: enquiry_data?.destination || 'Direct Traveler Registration',
+          interested_package_id: enquiry_data?.package_id || null,
+          travel_date: enquiry_data?.travel_date || '',
+          travelers_count: enquiry_data?.travelers_count || 2,
+          budget: enquiry_data?.budget || 'Flexible',
+          lead_source: enquiry_data?.source || 'New User Sign Up',
+          status: 'New',
+          assigned_staff_id: null,
+          assigned_staff_name: 'Unassigned',
+          follow_up_date: null,
+          notes: `New customer self-signup. Manager: Assign to Sales Executive to verify travel preferences and issue official Customer ID & Credentials.`,
+          created_at: new Date().toISOString()
+        });
+
+        // Notify Managers & Admins
+        const managersAndAdmins = db.findAll('users', (u) => (u.agency_id === targetAgencyId || u.agency_id === 'agency_travel_genie') && ['admin', 'manager'].includes(u.role));
+        for (const staff of managersAndAdmins) {
+          db.createNotification(
+            targetAgencyId,
+            staff.id,
+            'New Customer Registration Lead',
+            `${name || existing.name} registered online. Lead is ready for Sales assignment in CRM Leads.`,
+            'info',
+            '/manager/leads'
+          );
+        }
+      }
+
+      return res.status(200).json({
+        success: true,
+        requires_verification: true,
+        message: 'Your request was submitted and our employee will contact you shortly.',
+        lead: existingLead
+      });
+    }
+    return res.status(400).json({ error: 'An account with this email already exists. Please log in.' });
+  }
+
+  const initialPassword = password ? password.trim() : `Genie@${Math.floor(1000 + Math.random() * 9000)}`;
+
+  // 1. Create user account with pending status until sales verifies & issues credentials
   const newUser = db.insert('users', {
     agency_id: targetAgencyId,
     role: 'customer',
-    name,
-    email: email.toLowerCase(),
-    phone: phone || '',
-    password_hash: bcrypt.hashSync(password, 10),
-    status: 'active',
-    avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80'
+    name: name.trim(),
+    email: cleanEmail,
+    phone: phone ? phone.trim() : '',
+    password_hash: bcrypt.hashSync(initialPassword, 10),
+    temp_password: initialPassword,
+    status: 'pending_activation',
+    account_status: 'PENDING_VERIFICATION',
+    activation_status: 'PENDING_SALES_CONTACT',
+    avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80',
+    created_at: new Date().toISOString()
   });
 
-  // Create customer profile
+  // 2. Create customer profile
   db.insert('customer_profiles', {
     user_id: newUser.id,
     agency_id: targetAgencyId,
@@ -385,50 +452,48 @@ app.post('/api/auth/register', (req, res) => {
     total_trips: 0
   });
 
-  // If registration was accompanied by a travel enquiry/package selection
-  let createdLead = null;
-  if (enquiry_data) {
-    createdLead = db.insert('leads', {
-      agency_id: targetAgencyId,
-      customer_id: newUser.id,
-      customer_name: name,
-      customer_email: email,
-      customer_phone: phone || '',
-      interested_destination: enquiry_data.destination || 'Not Specified',
-      interested_package_id: enquiry_data.package_id || null,
-      travel_date: enquiry_data.travel_date || '',
-      travelers_count: enquiry_data.travelers_count || 2,
-      budget: enquiry_data.budget || 'Flexible',
-      lead_source: enquiry_data.source || 'Website Registration',
-      status: 'New',
-      assigned_staff_id: null,
-      assigned_staff_name: 'Unassigned',
-      follow_up_date: null,
-      notes: enquiry_data.notes || 'Registered through travel enquiry workflow.',
-      created_at: new Date().toISOString()
-    });
+  // 3. Generate CRM Lead for Manager to distribute to Sales
+  const leadSource = enquiry_data?.source || 'New User Sign Up';
+  const createdLead = db.insert('leads', {
+    agency_id: targetAgencyId,
+    customer_id: newUser.id,
+    customer_name: name.trim(),
+    customer_email: cleanEmail,
+    customer_phone: phone ? phone.trim() : '',
+    interested_destination: enquiry_data?.destination || 'Direct Traveler Registration',
+    interested_package_id: enquiry_data?.package_id || null,
+    travel_date: enquiry_data?.travel_date || '',
+    travelers_count: enquiry_data?.travelers_count || 2,
+    budget: enquiry_data?.budget || 'Flexible',
+    lead_source: leadSource,
+    status: 'New',
+    assigned_staff_id: null,
+    assigned_staff_name: 'Unassigned',
+    follow_up_date: null,
+    notes: `New customer self-signup. Manager: Assign to Sales Executive to verify travel preferences and issue official Customer ID & Credentials.`,
+    created_at: new Date().toISOString()
+  });
 
-    // Notify admins of new lead
-    const admins = db.findAll('users', (u) => u.agency_id === targetAgencyId && u.role === 'admin');
-    for (const admin of admins) {
-      db.createNotification(
-        targetAgencyId,
-        admin.id,
-        'New Customer Registration & Enquiry',
-        `${name} registered and submitted an enquiry for ${enquiry_data.destination || 'a travel package'}.`,
-        'info',
-        '/admin/leads'
-      );
-    }
+  // 4. Notify Managers & Admins of new registration lead
+  const managersAndAdmins = db.findAll('users', (u) => (u.agency_id === targetAgencyId || u.agency_id === 'agency_travel_genie') && ['admin', 'manager'].includes(u.role));
+  for (const staff of managersAndAdmins) {
+    db.createNotification(
+      targetAgencyId,
+      staff.id,
+      'New Customer Registration Lead',
+      `${name} registered online. Lead is ready for Sales assignment in CRM Leads.`,
+      'info',
+      '/manager/leads'
+    );
   }
 
-  const token = generateToken(newUser);
-  const { password_hash, ...safeUser } = newUser;
+  const { password_hash, temp_password, ...safeUser } = newUser;
 
   res.status(201).json({
-    token,
+    success: true,
+    requires_verification: true,
+    message: 'Your request was submitted and our employee will contact you shortly.',
     user: safeUser,
-    agency: defaultAgency,
     lead: createdLead
   });
 });
@@ -440,6 +505,52 @@ app.get('/api/auth/me', authenticate, (req, res) => {
   res.json({
     user: safeUser,
     agency
+  });
+});
+
+// Change Password (Available for Manager, Staff, Agent, Customer, Admin)
+app.post('/api/auth/change-password', authenticate, (req, res) => {
+  const { old_password, new_password, confirm_password } = req.body;
+
+  if (!old_password || !new_password || !confirm_password) {
+    return res.status(400).json({ error: 'Current password, new password, and confirmation are required.' });
+  }
+
+  if (new_password !== confirm_password) {
+    return res.status(400).json({ error: 'New password and confirmation password do not match.' });
+  }
+
+  if (new_password.length < 6) {
+    return res.status(400).json({ error: 'New password must be at least 6 characters long.' });
+  }
+
+  const user = db.findById('users', req.user.id);
+  if (!user) {
+    return res.status(404).json({ error: 'User account not found.' });
+  }
+
+  // Verify old password (check password_hash or temp_password)
+  const isHashValid = user.password_hash ? bcrypt.compareSync(old_password, user.password_hash) : false;
+  const isTempValid = user.temp_password ? user.temp_password === old_password : false;
+
+  if (!isHashValid && !isTempValid) {
+    return res.status(400).json({ error: 'Current password is incorrect.' });
+  }
+
+  if (old_password === new_password) {
+    return res.status(400).json({ error: 'New password cannot be the same as your current password.' });
+  }
+
+  const newHash = bcrypt.hashSync(new_password, 10);
+  db.update('users', user.id, {
+    password_hash: newHash,
+    temp_password: null, // clear temporary password once changed
+    password_changed_at: new Date().toISOString()
+  });
+
+  res.json({
+    success: true,
+    message: 'Your password has been changed successfully!'
   });
 });
 
@@ -766,11 +877,18 @@ app.post('/api/public/enquiry', async (req, res) => {
 
   // Travel Date validation (optional)
   if (finalTravelDate) {
-    const selectedDate = new Date(finalTravelDate);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    if (selectedDate < today) {
-      return res.status(400).json({ error: 'Travel date cannot be in the past.' });
+    if (!isTodayOrFutureDate(finalTravelDate)) {
+      return res.status(400).json({ error: 'Travel departure date cannot be in the past (minimum selectable date is today IST).' });
+    }
+  }
+
+  // Return Date validation (optional)
+  if (return_date) {
+    if (!isTodayOrFutureDate(return_date)) {
+      return res.status(400).json({ error: 'Return date cannot be in the past.' });
+    }
+    if (finalTravelDate && !isValidDateRange(finalTravelDate, return_date)) {
+      return res.status(400).json({ error: 'Return date cannot be earlier than departure date.' });
     }
   }
 
@@ -915,6 +1033,433 @@ app.post('/api/public/enquiry', async (req, res) => {
     message: 'Your enquiry has been received. Our travel specialist will contact you shortly!',
     lead_id: newLead.id,
     enquiry_id: enquiryId
+  });
+});
+
+// ==========================================
+// B2B TRAVEL PARTNER ENQUIRY IMPLEMENTATION
+// ==========================================
+
+// Private B2B Partner Documents Storage
+const b2bDocsDir = path.join(__dirname, 'uploads', 'b2b_documents');
+if (!fs.existsSync(b2bDocsDir)) {
+  fs.mkdirSync(b2bDocsDir, { recursive: true });
+}
+
+const b2bDocStorage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, b2bDocsDir),
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname).toLowerCase();
+    cb(null, `b2b-doc-${Date.now()}-${uuidv4().substring(0, 8)}${ext}`);
+  }
+});
+
+const uploadB2BDocuments = multer({
+  storage: b2bDocStorage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB per file
+  fileFilter: (req, file, cb) => {
+    const allowed = ['.jpg', '.jpeg', '.png', '.pdf'];
+    const ext = path.extname(file.originalname).toLowerCase();
+    if (allowed.includes(ext)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Invalid file type. Only PDF, JPG, and PNG documents under 5MB are permitted.'));
+    }
+  }
+});
+
+// Helper for unique B2B Enquiry reference: B2B-ENQ-YYYY-XXXXX
+function generateB2BEnquiryCode() {
+  const currentYear = new Date().getFullYear();
+  const prefix = `B2B-ENQ-${currentYear}-`;
+  const existingEnquiries = db.getTable('enquiries') || [];
+  const b2bEnquiries = existingEnquiries.filter((e) => (e.enquiry_id || '').startsWith(prefix));
+  const seq = b2bEnquiries.length + 1;
+  let code = `${prefix}${String(seq).padStart(5, '0')}`;
+  let tries = 0;
+  while (existingEnquiries.some((e) => e.enquiry_id === code) && tries < 1000) {
+    tries++;
+    code = `${prefix}${String(seq + tries).padStart(5, '0')}`;
+  }
+  return code;
+}
+
+// B2B Travel Partner Enquiry Submission Endpoint
+app.post('/api/public/b2b-enquiry', (req, res, next) => {
+  uploadB2BDocuments.array('documents', 5)(req, res, (err) => {
+    if (err instanceof multer.MulterError) {
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        return res.status(400).json({ error: 'File size exceeds limit. Maximum allowed size is 5 MB per document.' });
+      }
+      return res.status(400).json({ error: `File upload error: ${err.message}` });
+    } else if (err) {
+      return res.status(400).json({ error: err.message });
+    }
+    next();
+  });
+}, async (req, res) => {
+  const {
+    company_name,
+    business_type,
+    business_email,
+    gst_number,
+    business_reg_number,
+    years_in_business,
+    contact_person,
+    designation,
+    custom_designation,
+    mobile_number,
+    whatsapp_number,
+    contact_email,
+    business_location,
+    state,
+    country,
+    interested_categories,
+    preferred_destinations,
+    expected_monthly_bookings,
+    travellers_per_booking,
+    estimated_monthly_volume,
+    partnership_type,
+    how_did_you_hear,
+    additional_requirements,
+    privacy_consent,
+    communication_consent,
+    agency_id
+  } = req.body;
+
+  const trimmedCompany = (company_name || '').trim();
+  const trimmedBusinessType = (business_type || '').trim();
+  const trimmedBusinessEmail = (business_email || '').trim().toLowerCase();
+  const trimmedContactPerson = (contact_person || '').trim();
+  const trimmedDesignation = (designation === 'Other' && custom_designation ? custom_designation : (designation || '')).trim();
+  const trimmedMobile = (mobile_number || '').trim();
+  const trimmedWhatsapp = (whatsapp_number || '').trim();
+  const trimmedContactEmail = (contact_email || '').trim().toLowerCase();
+  const trimmedLocation = (business_location || '').trim();
+  const trimmedState = (state || '').trim();
+  const trimmedCountry = (country || 'India').trim();
+  const trimmedGST = (gst_number || '').trim().toUpperCase();
+  const trimmedRegNo = (business_reg_number || '').trim();
+  const trimmedYears = (years_in_business || '').trim();
+  const trimmedMonthlyBookings = (expected_monthly_bookings || '').trim();
+  const trimmedPartnershipType = (partnership_type || '').trim();
+  const trimmedAdditionalReqs = (additional_requirements || '').trim();
+
+  // SECTION 01 VALIDATION
+  if (!trimmedCompany || trimmedCompany.length < 2 || trimmedCompany.length > 100) {
+    return res.status(400).json({ error: 'Company / Agency Name is required (2–100 characters).' });
+  }
+
+  const validBusinessTypes = [
+    'Travel Agency',
+    'Tour Operator',
+    'Travel Consultant',
+    'Online Travel Agency (OTA)',
+    'Corporate Travel Agency',
+    'Freelance Travel Agent',
+    'Other'
+  ];
+  if (!trimmedBusinessType || !validBusinessTypes.includes(trimmedBusinessType)) {
+    return res.status(400).json({ error: 'Please select a valid Business Type.' });
+  }
+
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  if (!trimmedBusinessEmail || !emailRegex.test(trimmedBusinessEmail)) {
+    return res.status(400).json({ error: 'Please provide a valid Business Email address.' });
+  }
+
+  if (trimmedGST) {
+    const gstinRegex = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
+    if (!gstinRegex.test(trimmedGST)) {
+      return res.status(400).json({ error: 'Invalid GSTIN format. Indian GST number must be exactly 15 alphanumeric characters (e.g. 07AAAAA1111A1Z9).' });
+    }
+  }
+
+  const validYears = [
+    'Just Starting',
+    'Less than 1 Year',
+    '1–3 Years',
+    '3–5 Years',
+    '5–10 Years',
+    'More than 10 Years'
+  ];
+  if (!trimmedYears || !validYears.includes(trimmedYears)) {
+    return res.status(400).json({ error: 'Please select your Years in Business.' });
+  }
+
+  // SECTION 02 VALIDATION
+  if (!trimmedContactPerson || trimmedContactPerson.length < 2 || trimmedContactPerson.length > 60) {
+    return res.status(400).json({ error: 'Contact Person Name is required (2–60 characters).' });
+  }
+
+  if (!trimmedDesignation) {
+    return res.status(400).json({ error: 'Please select or provide a Contact Designation.' });
+  }
+
+  if (!trimmedMobile) {
+    return res.status(400).json({ error: 'Mobile Number is required.' });
+  }
+  const mobileDigits = trimmedMobile.replace(/\D/g, '');
+  if (mobileDigits.length < 10) {
+    return res.status(400).json({ error: 'Mobile Number must contain at least 10 digits.' });
+  }
+
+  if (!trimmedContactEmail || !emailRegex.test(trimmedContactEmail)) {
+    return res.status(400).json({ error: 'Please provide a valid Contact Email address.' });
+  }
+
+  if (!trimmedLocation || trimmedLocation.length < 2) {
+    return res.status(400).json({ error: 'Business Location (City) is required (minimum 2 characters).' });
+  }
+
+  if (!trimmedState) {
+    return res.status(400).json({ error: 'State selection is required.' });
+  }
+
+  if (!trimmedCountry) {
+    return res.status(400).json({ error: 'Country selection is required.' });
+  }
+
+  // SECTION 03 VALIDATION
+  let categories = [];
+  if (Array.isArray(interested_categories)) {
+    categories = interested_categories.filter(Boolean);
+  } else if (typeof interested_categories === 'string' && interested_categories.trim()) {
+    try {
+      const parsed = JSON.parse(interested_categories);
+      categories = Array.isArray(parsed) ? parsed : [interested_categories];
+    } catch {
+      categories = interested_categories.split(',').map((s) => s.trim()).filter(Boolean);
+    }
+  }
+  if (categories.length === 0) {
+    return res.status(400).json({ error: 'Please select at least one Interested Package Category.' });
+  }
+
+  let destinations = [];
+  if (Array.isArray(preferred_destinations)) {
+    destinations = preferred_destinations.filter(Boolean);
+  } else if (typeof preferred_destinations === 'string' && preferred_destinations.trim()) {
+    try {
+      const parsed = JSON.parse(preferred_destinations);
+      destinations = Array.isArray(parsed) ? parsed : [preferred_destinations];
+    } catch {
+      destinations = preferred_destinations.split(',').map((s) => s.trim()).filter(Boolean);
+    }
+  }
+  destinations = Array.from(new Set(destinations));
+  if (destinations.length === 0) {
+    return res.status(400).json({ error: 'Please specify at least one Preferred Destination.' });
+  }
+
+  const validBookings = ['1–5 Bookings', '6–10 Bookings', '11–25 Bookings', '26–50 Bookings', '50+ Bookings'];
+  if (!trimmedMonthlyBookings || !validBookings.includes(trimmedMonthlyBookings)) {
+    return res.status(400).json({ error: 'Please select Expected Monthly Bookings.' });
+  }
+
+  const validPartnershipTypes = [
+    'Wholesale Package Purchase',
+    'Reseller Partnership',
+    'Bulk Group Booking',
+    'Long-term Business Partnership'
+  ];
+  if (!trimmedPartnershipType || !validPartnershipTypes.includes(trimmedPartnershipType)) {
+    return res.status(400).json({ error: 'Please select a Preferred Partnership Type.' });
+  }
+
+  // SECTION 04 VALIDATION
+  if (trimmedAdditionalReqs.length > 500) {
+    return res.status(400).json({ error: 'Additional requirements cannot exceed 500 characters.' });
+  }
+
+  const isConsentGiven = privacy_consent === true || privacy_consent === 'true' || privacy_consent === 1 || privacy_consent === '1';
+  if (!isConsentGiven) {
+    return res.status(400).json({ error: 'Privacy Policy consent is mandatory to process your business enquiry.' });
+  }
+
+  const isCommConsent = communication_consent === true || communication_consent === 'true' || communication_consent === 1 || communication_consent === '1';
+
+  // Process Uploaded Documents
+  const uploadedFiles = req.files || [];
+  const processedDocs = uploadedFiles.map((f) => ({
+    original_name: f.originalname,
+    file_name: f.filename,
+    file_size: f.size,
+    mime_type: f.mimetype,
+    storage_path: `/private/b2b_documents/${f.filename}`,
+    uploaded_at: new Date().toISOString()
+  }));
+
+  const targetAgencyId = agency_id || 'agency_travel_genie';
+
+  // -------------------------------------------------------------
+  // Accidental Duplicate Submission Prevention (30-second window)
+  // -------------------------------------------------------------
+  const thirtySecsAgo = new Date(Date.now() - 30 * 1000).toISOString();
+  const recentDuplicate = db.findOne('leads', (l) => {
+    const isSameEmail = (l.customer_email && l.customer_email.toLowerCase() === trimmedContactEmail) ||
+                        (l.business_email && l.business_email.toLowerCase() === trimmedBusinessEmail);
+    const isSameCompany = (l.company_name || '').toLowerCase() === trimmedCompany.toLowerCase();
+    const isRecent = l.created_at && l.created_at >= thirtySecsAgo;
+    return (isSameEmail || isSameCompany) && isRecent;
+  });
+
+  if (recentDuplicate) {
+    return res.status(201).json({
+      success: true,
+      duplicate: true,
+      message: 'Thank you! Your B2B enquiry has already been received and is currently under review by our team.',
+      lead_id: recentDuplicate.id,
+      enquiry_id: recentDuplicate.enquiry_id || recentDuplicate.id
+    });
+  }
+
+  // Generate Unique B2B Enquiry Reference
+  const enquiryRefId = generateB2BEnquiryCode();
+
+  // Structured summary notes
+  const structuredNotes = [
+    `B2B PARTNER ENQUIRY DETAILS`,
+    `Company: ${trimmedCompany} (${trimmedBusinessType})`,
+    `Years in Business: ${trimmedYears}`,
+    trimmedGST ? `GSTIN: ${trimmedGST}` : 'GSTIN: Not Registered',
+    trimmedRegNo ? `Reg No: ${trimmedRegNo}` : '',
+    `Contact: ${trimmedContactPerson} (${trimmedDesignation})`,
+    `Email: ${trimmedContactEmail}${trimmedBusinessEmail !== trimmedContactEmail ? ` | Business Email: ${trimmedBusinessEmail}` : ''}`,
+    `Phone: ${trimmedMobile}${trimmedWhatsapp ? ` | WhatsApp: ${trimmedWhatsapp}` : ''}`,
+    `Location: ${trimmedLocation}, ${trimmedState}, ${trimmedCountry}`,
+    `Package Categories: ${categories.join(', ')}`,
+    `Preferred Destinations: ${destinations.join(', ')}`,
+    `Monthly Bookings: ${trimmedMonthlyBookings}`,
+    travellers_per_booking ? `Travellers per Booking: ${travellers_per_booking}` : '',
+    estimated_monthly_volume ? `Estimated Monthly Volume: ${estimated_monthly_volume}` : '',
+    `Partnership Type: ${trimmedPartnershipType}`,
+    how_did_you_hear ? `Source: ${how_did_you_hear}` : '',
+    trimmedAdditionalReqs ? `Requirements: ${trimmedAdditionalReqs}` : '',
+    processedDocs.length > 0 ? `Uploaded Documents: ${processedDocs.map(d => d.original_name).join(', ')}` : ''
+  ].filter(Boolean).join('\n');
+
+  // 1. Insert into enquiries table
+  const newEnquiry = db.insert('enquiries', {
+    enquiry_id: enquiryRefId,
+    enquiry_type: 'b2b_partner',
+    company_name: trimmedCompany,
+    business_type: trimmedBusinessType,
+    business_email: trimmedBusinessEmail,
+    gst_number: trimmedGST,
+    business_reg_number: trimmedRegNo,
+    years_in_business: trimmedYears,
+    customer_name: trimmedContactPerson,
+    contact_person: trimmedContactPerson,
+    designation: trimmedDesignation,
+    customer_email: trimmedContactEmail,
+    business_email_raw: trimmedBusinessEmail,
+    customer_phone: trimmedMobile,
+    whatsapp_number: trimmedWhatsapp,
+    city: trimmedLocation,
+    business_location: trimmedLocation,
+    state: trimmedState,
+    country: trimmedCountry,
+    destination: destinations.join(', '),
+    interested_categories: categories,
+    preferred_destinations: destinations,
+    expected_monthly_bookings: trimmedMonthlyBookings,
+    travellers_per_booking: travellers_per_booking || '',
+    estimated_monthly_volume: estimated_monthly_volume || '',
+    budget: estimated_monthly_volume || 'Wholesale B2B Rates',
+    partnership_type: trimmedPartnershipType,
+    how_did_you_hear: how_did_you_hear || '',
+    additional_requirements: trimmedAdditionalReqs,
+    documents: processedDocs,
+    privacy_consent: true,
+    privacy_consent_at: new Date().toISOString(),
+    communication_consent: isCommConsent,
+    source: 'B2B Partner Portal',
+    status: 'NEW',
+    created_at: new Date().toISOString()
+  });
+
+  // 2. Insert into leads table
+  const newLead = db.insert('leads', {
+    agency_id: targetAgencyId,
+    enquiry_id: enquiryRefId,
+    lead_type: 'B2B_PARTNER',
+    company_name: trimmedCompany,
+    business_type: trimmedBusinessType,
+    gst_number: trimmedGST,
+    business_reg_number: trimmedRegNo,
+    years_in_business: trimmedYears,
+    customer_name: `${trimmedCompany} (${trimmedContactPerson})`,
+    contact_person: trimmedContactPerson,
+    designation: trimmedDesignation,
+    customer_email: trimmedContactEmail,
+    business_email: trimmedBusinessEmail,
+    customer_phone: trimmedMobile,
+    whatsapp_number: trimmedWhatsapp,
+    city: trimmedLocation,
+    state: trimmedState,
+    country: trimmedCountry,
+    interested_destination: destinations.join(', '),
+    interested_categories: categories,
+    expected_monthly_bookings: trimmedMonthlyBookings,
+    travellers_per_booking: travellers_per_booking || '',
+    budget: estimated_monthly_volume || 'Wholesale B2B Rates',
+    travel_type: 'B2B Wholesale',
+    partnership_type: trimmedPartnershipType,
+    lead_source: 'B2B Partner Portal',
+    status: 'New',
+    assigned_staff_id: null,
+    assigned_staff_name: 'Unassigned',
+    follow_up_date: null,
+    notes: structuredNotes,
+    documents: processedDocs,
+    privacy_consent: true,
+    communication_consent: isCommConsent,
+    created_at: new Date().toISOString()
+  });
+
+  // 3. Record activities & audit logs
+  db.recordActivity(newLead.id, 'system', 'status_change', `B2B Partner Enquiry #${enquiryRefId} submitted by ${trimmedCompany}. Awaiting sales verification.`);
+  db.recordLeadStatusHistory(targetAgencyId, newLead.id, 'NONE', 'NEW', 'system', `B2B Enquiry #${enquiryRefId} received.`);
+  db.recordAuditLog(targetAgencyId, 'system', 'CREATE_B2B_ENQUIRY', 'lead', newLead.id, {
+    enquiry_id: enquiryRefId,
+    company_name: trimmedCompany,
+    contact_person: trimmedContactPerson,
+    business_email: trimmedBusinessEmail
+  });
+
+  // 4. Dispatch Email Acknowledgement
+  try {
+    await emailService.sendB2BEnquiryAcknowledgement({
+      agency_id: targetAgencyId,
+      to: trimmedContactEmail,
+      company_name: trimmedCompany,
+      contact_person: trimmedContactPerson,
+      enquiry_id: enquiryRefId
+    });
+  } catch (mailErr) {
+    console.error('Failed to dispatch B2B acknowledgement email:', mailErr);
+  }
+
+  // 5. Notify Managers and Admins
+  const managersAndAdmins = db.findAll('users', (u) => u.agency_id === targetAgencyId && (u.role === 'admin' || u.role === 'manager'));
+  for (const staffMember of managersAndAdmins) {
+    db.createNotification(
+      targetAgencyId,
+      staffMember.id,
+      'New B2B Partner Enquiry',
+      `New B2B partner application #${enquiryRefId} from ${trimmedCompany} (${trimmedContactPerson}). Awaiting review and assignment.`,
+      'info',
+      staffMember.role === 'manager' ? '/manager/leads' : '/admin/leads'
+    );
+  }
+
+  // 6. Return response
+  res.status(201).json({
+    success: true,
+    message: 'Thank you for your interest in partnering with us! Your B2B enquiry has been successfully submitted. Our team will review your information and contact you shortly.',
+    enquiry_id: enquiryRefId,
+    lead_id: newLead.id
   });
 });
 
@@ -1218,9 +1763,10 @@ app.post('/api/admin/users', authenticate, authorize(['admin']), async (req, res
     return res.status(400).json({ error: 'Role, Name, Email, and Password are required.' });
   }
 
-  const existing = db.findOne('users', (u) => u && u.email && u.email.toLowerCase() === email.toLowerCase());
+  const cleanEmail = email.trim().toLowerCase();
+  const existing = db.findOne('users', (u) => u && u.email && u.email.toLowerCase() === cleanEmail);
   if (existing) {
-    return res.status(400).json({ error: 'A user with this email already exists.' });
+    return res.status(400).json({ error: `An account with email '${cleanEmail}' already exists (${existing.role || 'user'}). Duplicate emails are not allowed.` });
   }
 
   const prefixMap = {
@@ -1394,8 +1940,16 @@ app.put('/api/admin/users/:id', authenticate, authorize(['admin']), (req, res) =
   const user = db.findById('users', id);
   if (!user) return res.status(404).json({ error: 'User not found.' });
 
-  const { name, phone, status, role, agency_id, password } = req.body;
+  const { name, email, phone, status, role, agency_id, password } = req.body;
   const updates = {};
+  if (email && email.trim()) {
+    const cleanEmail = email.trim().toLowerCase();
+    const existing = db.findOne('users', (u) => u && u.id !== id && u.email && u.email.toLowerCase() === cleanEmail);
+    if (existing) {
+      return res.status(400).json({ error: `An account with email '${cleanEmail}' already exists (${existing.role || 'user'}). Duplicate emails are not allowed.` });
+    }
+    updates.email = cleanEmail;
+  }
   if (name) updates.name = name;
   if (phone !== undefined) updates.phone = phone;
   if (status) updates.status = status;
@@ -1611,6 +2165,13 @@ app.post('/api/admin/leads', authenticate, authorize(['admin', 'manager']), (req
     return res.status(400).json({ error: 'Customer name is required.' });
   }
 
+  if (travel_date && !isTodayOrFutureDate(travel_date)) {
+    return res.status(400).json({ error: 'Travel date cannot be in the past.' });
+  }
+  if (follow_up_date && !isTodayOrFutureDate(follow_up_date)) {
+    return res.status(400).json({ error: 'Follow-up date cannot be in the past.' });
+  }
+
   let staffName = 'Unassigned';
   let initialStatus = 'New';
   if (assigned_staff_id) {
@@ -1713,6 +2274,11 @@ function getLeadEnquiryType(lead) {
   const src = (lead.lead_source || lead.source || '').toLowerCase();
   const pref = (lead.travel_preference || '').toLowerCase();
 
+  // B2B Partner lead detection
+  if (lead.lead_type === 'B2B_PARTNER' || src.includes('b2b') || lead.partnership_type) {
+    return 'b2b';
+  }
+
   const isTravels =
     lead.service_type ||
     ['flight', 'bus', 'car', 'cab', 'transfer', 'insurance', 'visa', 'webcheckin', 'hotel'].includes(pref) ||
@@ -1801,6 +2367,17 @@ function checkLeadStaffEligibility(staffUser, staffProfile, leadType) {
     roleType === 'operations' ||
     designations.some((d) => d.toLowerCase().includes('operation')) ||
     (staffProfile.designation && staffProfile.designation.toLowerCase().includes('operation'));
+
+  // B2B Partner Leads: Handled by Sales / Corporate / Management consultants
+  if (leadType === 'b2b') {
+    if (isOpsStaff) {
+      return {
+        eligible: false,
+        reason: 'Operation staff cannot be assigned to B2B Partner enquiries.'
+      };
+    }
+    return { eligible: true };
+  }
 
   // 2. Operation staff can ONLY be assigned to travels enquiry
   if (isOpsStaff) {
@@ -2130,8 +2707,11 @@ app.post('/api/admin/staff', authenticate, authorize(['admin', 'manager']), asyn
     return res.status(400).json({ error: 'Employee name and email are required.' });
   }
 
-  const existing = db.findOne('users', (u) => u && u.email && u.email.toLowerCase() === email.toLowerCase());
-  // If an existing staff user is re-created, we gracefully update their password, designation, and re-dispatch onboarding
+  const cleanEmail = email.trim().toLowerCase();
+  const existing = db.findOne('users', (u) => u && u.email && u.email.toLowerCase() === cleanEmail);
+  if (existing) {
+    return res.status(400).json({ error: `An account with email '${cleanEmail}' already exists (${existing.role || 'user'}). Duplicate emails are not allowed.` });
+  }
 
   const isOps = (role_type === 'operations' || role === 'operations' || (designation && designation.toLowerCase() === 'operations'));
   const effectiveRoleType = isOps ? 'operations' : 'sales';
@@ -2296,8 +2876,16 @@ app.put('/api/admin/staff/:id', authenticate, authorize(['admin', 'manager']), (
     return res.status(404).json({ error: 'Staff member not found.' });
   }
 
-  const { status, name, phone, role_type, role, department, departments, designation, designations, password, employee_id } = req.body;
+  const { status, name, email, phone, role_type, role, department, departments, designation, designations, password, employee_id } = req.body;
   const updateData = {};
+  if (email && email.trim()) {
+    const cleanEmail = email.trim().toLowerCase();
+    const existing = db.findOne('users', (u) => u && u.id !== staff.id && u.email && u.email.toLowerCase() === cleanEmail);
+    if (existing) {
+      return res.status(400).json({ error: `An account with email '${cleanEmail}' already exists (${existing.role || 'user'}). Duplicate emails are not allowed.` });
+    }
+    updateData.email = cleanEmail;
+  }
   if (status) updateData.status = status;
   if (name) updateData.name = name;
   if (phone) updateData.phone = phone;
@@ -2518,9 +3106,9 @@ app.post('/api/admin/agents', authenticate, authorize(['admin', 'manager']), asy
   }
 
   const trimmedEmail = email.trim().toLowerCase();
-  const existingUser = db.findOne('users', (u) => u.email.toLowerCase() === trimmedEmail);
+  const existingUser = db.findOne('users', (u) => u && u.email && u.email.toLowerCase() === trimmedEmail);
   if (existingUser) {
-    return res.status(400).json({ error: 'A user with this email address already exists.' });
+    return res.status(400).json({ error: `An account with email '${trimmedEmail}' already exists (${existingUser.role || 'user'}). Duplicate emails are not allowed.` });
   }
 
   // 1. Generate Unique Agent ID (Format: B2B-YYYY-XXXX)
@@ -3807,6 +4395,10 @@ app.post('/api/staff/leads/:id/interactions', authenticate, authorize(['staff', 
     return res.status(400).json({ error: 'Interaction details or summary are required.' });
   }
 
+  if (follow_up_date && !isTodayOrFutureDate(follow_up_date)) {
+    return res.status(400).json({ error: 'Follow-up date cannot be in the past.' });
+  }
+
   const finalChannel = interaction_type || channel || 'CALL';
   const interaction = db.insert('customer_interactions', {
     agency_id: agencyId,
@@ -3988,6 +4580,151 @@ app.post('/api/staff/quotations', authenticate, authorize(['staff', 'admin', 'ma
   }
 
   res.status(201).json(newQuote);
+});
+
+// Staff Create Customer Login & Dispatch Invitation (for worthy leads)
+app.post('/api/staff/leads/:id/create-customer-login', authenticate, authorize(['staff', 'sales', 'manager', 'admin']), async (req, res) => {
+  const staffId = req.user.id;
+  const staffRole = req.user.role;
+  const agencyId = req.user.agency_id || 'agency_travel_genie';
+  const { temp_password } = req.body;
+
+  const lead = db.findById('leads', req.params.id);
+  if (!lead) {
+    return res.status(404).json({ error: 'Lead not found.' });
+  }
+
+  // Verify staff assignment: staff/sales must be assigned to this lead unless manager/admin
+  if (['staff', 'sales'].includes(staffRole) && lead.assigned_staff_id && lead.assigned_staff_id !== staffId) {
+    return res.status(403).json({ error: 'Access denied: This lead is assigned to another staff member.' });
+  }
+
+  const customerEmail = (lead.customer_email || '').trim().toLowerCase();
+  if (!customerEmail || !customerEmail.includes('@')) {
+    return res.status(400).json({ error: 'A valid customer email is required to create login credentials.' });
+  }
+
+  const finalTempPassword = (temp_password || '').trim() || `Genie@${Math.floor(1000 + Math.random() * 9000)}`;
+  const passwordHash = bcrypt.hashSync(finalTempPassword, 10);
+  const appUrl = req.headers.origin || 'http://localhost:3000';
+
+  let userRecord = db.findOne('users', (u) => u && u.email && u.email.toLowerCase() === customerEmail);
+  let customerCode = userRecord?.customer_code || db.generateUniqueCode('users', 'CUS', true);
+
+  if (userRecord) {
+    db.update('users', userRecord.id, {
+      password_hash: passwordHash,
+      temp_password: finalTempPassword,
+      status: 'active',
+      account_status: 'ACTIVE',
+      activation_status: 'ACTIVE',
+      customer_code: customerCode
+    });
+  } else {
+    userRecord = db.insert('users', {
+      agency_id: agencyId,
+      role: 'customer',
+      customer_code: customerCode,
+      name: lead.customer_name,
+      email: customerEmail,
+      phone: lead.customer_phone || '',
+      password_hash: passwordHash,
+      temp_password: finalTempPassword,
+      status: 'active',
+      account_status: 'ACTIVE',
+      activation_status: 'ACTIVE',
+      created_at: new Date().toISOString()
+    });
+  }
+
+  // Ensure customer profile exists
+  let custProfile = db.findOne('customer_profiles', (cp) => cp && cp.user_id === userRecord.id);
+  if (!custProfile) {
+    db.insert('customer_profiles', {
+      user_id: userRecord.id,
+      customer_code: customerCode,
+      agency_id: agencyId,
+      name: lead.customer_name,
+      email: customerEmail,
+      emergency_contact: lead.customer_phone || '',
+      preferred_currency: 'INR'
+    });
+  }
+
+  // Ensure customer directory record exists
+  let customerDir = db.findOne('customers', (c) => c && c.email && c.email.toLowerCase() === customerEmail);
+  if (!customerDir) {
+    db.insert('customers', {
+      id: customerCode,
+      customer_code: customerCode,
+      user_id: userRecord.id,
+      agency_id: agencyId,
+      name: lead.customer_name,
+      email: customerEmail,
+      phone: lead.customer_phone || '',
+      status: 'ACTIVE',
+      created_at: new Date().toISOString()
+    });
+  } else {
+    db.update('customers', customerDir.id, {
+      status: 'ACTIVE',
+      customer_code: customerCode
+    });
+  }
+
+  // Link lead to customer
+  db.update('leads', lead.id, {
+    customer_id: userRecord.id,
+    customer_code: customerCode,
+    notes: `${lead.notes ? lead.notes + '\n' : ''}[${new Date().toLocaleString()}] Customer portal credentials created by ${req.user.name}. Invitation link dispatched to ${customerEmail}.`
+  });
+
+  // Record lead activity
+  db.insert('lead_activities', {
+    lead_id: lead.id,
+    agency_id: agencyId,
+    user_id: req.user.id,
+    user_name: req.user.name,
+    type: 'CREDENTIALS_PROVISIONED',
+    description: `Staff ${req.user.name} created customer login ID (${customerCode}) and sent invitation link to ${customerEmail}.`,
+    created_at: new Date().toISOString()
+  });
+
+  // Record audit log
+  db.recordAuditLog(agencyId, req.user.id, 'CREATE_CUSTOMER_LOGIN_FOR_LEAD', 'lead', lead.id, {
+    customer_id: customerCode,
+    customer_email: customerEmail,
+    lead_id: lead.id
+  });
+
+  const loginUrl = `${appUrl}/login?email=${encodeURIComponent(customerEmail)}`;
+
+  // Send invitation email simulation
+  try {
+    if (typeof emailService.sendAccountActivationEmail === 'function') {
+      await emailService.sendAccountActivationEmail({
+        agency_id: agencyId,
+        to: customerEmail,
+        name: lead.customer_name,
+        customer_id: customerCode,
+        booking_id: lead.id,
+        activation_token: 'direct_login',
+        app_url: appUrl
+      });
+    }
+  } catch (mailErr) {
+    console.error('Failed to send onboarding email:', mailErr);
+  }
+
+  res.status(200).json({
+    success: true,
+    message: `Customer login created and invitation link dispatched to ${customerEmail}!`,
+    customer_id: customerCode,
+    email: customerEmail,
+    temp_password: finalTempPassword,
+    login_url: loginUrl,
+    account_status: 'ACTIVE'
+  });
 });
 
 // Staff Customer Trip Confirmation (Lead Status -> CUSTOMER_CONFIRMED -> PAYMENT_PENDING)
@@ -4376,6 +5113,19 @@ app.post('/api/staff/leads/:id/convert', authenticate, authorize(['staff', 'sale
     return res.status(400).json({ error: 'Advance amount cannot be negative.' });
   }
 
+  if (travel_start_date && !isTodayOrFutureDate(travel_start_date)) {
+    return res.status(400).json({ error: 'Departure/travel start date cannot be in the past.' });
+  }
+
+  if (travel_end_date) {
+    if (!isTodayOrFutureDate(travel_end_date)) {
+      return res.status(400).json({ error: 'Travel end date cannot be in the past.' });
+    }
+    if (travel_start_date && !isValidDateRange(travel_start_date, travel_end_date)) {
+      return res.status(400).json({ error: 'Travel end date cannot be earlier than travel start date.' });
+    }
+  }
+
   const bal = Math.max(0, tot - adv);
   const ref = transaction_reference || payment_proof || '';
 
@@ -4599,6 +5349,78 @@ app.post('/api/staff/leads/:id/convert', authenticate, authorize(['staff', 'sale
   });
 });
 
+// Staff Initiate B2B Partner Conversion Request (Handover to Manager for Business Verification Approval)
+app.post('/api/staff/leads/:id/convert-partner', authenticate, authorize(['staff', 'sales', 'manager', 'admin']), (req, res) => {
+  const staffId = req.user.id;
+  const agencyId = req.user.agency_id || 'agency_travel_genie';
+  const lead = db.findById('leads', req.params.id);
+  const isManagerOrAdmin = ['admin', 'manager'].includes(req.user.role);
+
+  if (!lead) {
+    return res.status(404).json({ error: 'Lead not found.' });
+  }
+
+  const { verification_notes, business_docs_verified, estimated_credit_limit, wholesale_tier } = req.body;
+
+  const convRequestId = db.generateUniqueCode('booking_conversion_requests', 'PCR', true);
+  const convRequest = db.insert('booking_conversion_requests', {
+    id: convRequestId,
+    type: 'B2B_PARTNER',
+    agency_id: agencyId,
+    lead_id: lead.id,
+    staff_id: staffId,
+    staff_name: req.user.name,
+    customer_name: lead.customer_name,
+    company_name: lead.company_name || lead.customer_name,
+    customer_email: lead.customer_email,
+    customer_phone: lead.customer_phone,
+    verification_notes: verification_notes || 'Business verification completed by sales staff.',
+    business_docs_verified: !!business_docs_verified,
+    wholesale_tier: wholesale_tier || 'Standard Wholesale (Tier 1)',
+    estimated_credit_limit: estimated_credit_limit || 0,
+    status: isManagerOrAdmin ? 'APPROVED' : 'PENDING_APPROVAL',
+    submitted_at: new Date().toISOString()
+  });
+
+  const nextStatus = isManagerOrAdmin ? 'Converted to Partner' : 'Business Verification';
+  db.update('leads', lead.id, {
+    status: nextStatus,
+    conversion_request_id: convRequest.id,
+    conversion_status: isManagerOrAdmin ? 'APPROVED' : 'PENDING_APPROVAL'
+  });
+
+  db.recordActivity(
+    lead.id,
+    staffId,
+    'partner_conversion_request',
+    `Staff ${req.user.name} submitted B2B Partner Conversion Request #${convRequest.id} for Manager verification.`
+  );
+
+  // Notify Managers
+  if (!isManagerOrAdmin) {
+    const managers = db.findAll('users', (u) => (u.agency_id === agencyId || u.agency_id === 'agency_travel_genie') && (u.role === 'admin' || u.role === 'manager'));
+    for (const mgr of managers) {
+      db.createNotification(
+        agencyId,
+        mgr.id,
+        'B2B Partner Conversion Request',
+        `Staff ${req.user.name} submitted partner verification for ${lead.company_name || lead.customer_name}. Awaiting Manager approval to issue Agent credentials.`,
+        'warning',
+        mgr.role === 'manager' ? '/manager/leads' : '/admin/leads'
+      );
+    }
+  }
+
+  res.status(201).json({
+    success: true,
+    conversion_request_id: convRequest.id,
+    status: convRequest.status,
+    message: isManagerOrAdmin
+      ? 'B2B Partner verified and approved. You may now provision the Agent Account.'
+      : 'Partner conversion request submitted for Manager approval.'
+  });
+});
+
 // Manager List All Booking Conversion Requests
 app.get('/api/admin/bookings/conversion-requests', authenticate, authorize(['admin', 'manager']), (req, res) => {
   const agencyId = req.user.agency_id;
@@ -4654,6 +5476,47 @@ app.post('/api/admin/bookings/conversion-requests/:id/approve', authenticate, au
   const lead = db.findById('leads', cr.lead_id);
   if (!lead) {
     return res.status(404).json({ error: 'Linked lead record not found.' });
+  }
+
+  // Handle B2B Partner Conversion Request Approval
+  if (cr.type === 'B2B_PARTNER') {
+    const { verification_notes } = req.body;
+    db.update('booking_conversion_requests', cr.id, {
+      status: 'APPROVED',
+      approved_by: req.user.id,
+      approved_by_name: req.user.name,
+      verification_notes: verification_notes || cr.verification_notes,
+      approved_at: new Date().toISOString()
+    });
+
+    db.update('leads', lead.id, {
+      status: 'Converted to Partner',
+      conversion_status: 'APPROVED'
+    });
+
+    db.recordActivity(
+      lead.id,
+      req.user.id,
+      'partner_approved',
+      `Manager ${req.user.name} approved B2B Partner conversion for ${cr.company_name || cr.customer_name}. Ready for Agent ID provisioning.`
+    );
+
+    // Notify Staff
+    db.createNotification(
+      agencyId,
+      cr.staff_id,
+      'Partner Conversion Approved!',
+      `Manager ${req.user.name} approved B2B Partner conversion for ${cr.company_name || cr.customer_name}. Account provisioning is now unlocked.`,
+      'success',
+      '/staff/leads'
+    );
+
+    return res.json({
+      success: true,
+      message: 'B2B Partner verified and approved. Manager can now create the B2B Agent account.',
+      lead_id: lead.id,
+      partner_approved: true
+    });
   }
 
   const { verification_notes, verified_amount } = req.body;
@@ -5032,19 +5895,13 @@ app.post('/api/admin/customers/create-login', authenticate, authorize(['admin', 
     return res.status(400).json({ error: 'A valid customer email address is required from the enquiry form.' });
   }
 
-  // 1. Mandatory Business Rule: Booking must be confirmed and have verified advance payment
+  // 1. Business Rule: Staff/Manager authorized creation (advance payment is optional for early customer onboarding)
   const isConfirmed = booking.booking_status === 'BOOKING_CONFIRMED' || booking.booking_status === 'Confirmed';
   const hasAdvance = (Number(booking.advance_amount) || 0) > 0 ||
     booking.payment_status === 'PARTIALLY_PAID' ||
     booking.payment_status === 'PAID' ||
     booking.payment_status === 'Partial' ||
     booking.payment_status === 'Paid';
-
-  if (!isConfirmed || !hasAdvance) {
-    return res.status(400).json({
-      error: 'Ineligible for account creation: Booking must be Confirmed and have a successfully verified advance payment.'
-    });
-  }
 
   const finalTempPassword = (temp_password || '').trim() || `Genie@${Math.floor(1000 + Math.random() * 9000)}`;
   const passwordHash = bcrypt.hashSync(finalTempPassword, 10);
@@ -5892,6 +6749,10 @@ app.post('/api/agent/purchase', authenticate, authorize(['agent']), (req, res) =
   const pkg = db.findById('packages', package_id);
   if (!pkg || pkg.agency_id !== agencyId) {
     return res.status(404).json({ error: 'Package not found.' });
+  }
+
+  if (travel_date && !isTodayOrFutureDate(travel_date)) {
+    return res.status(400).json({ error: 'Travel departure date cannot be in the past.' });
   }
 
   const profile = db.findOne('agent_profiles', (ap) => ap.user_id === agentId);

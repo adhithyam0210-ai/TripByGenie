@@ -1,4 +1,4 @@
-export type LeadEnquiryType = 'international' | 'domestic' | 'travels';
+export type LeadEnquiryType = 'international' | 'domestic' | 'travels' | 'b2b';
 
 export const SALES_DEPARTMENT_OPTIONS = [
   'Holidays & International',
@@ -38,6 +38,11 @@ export function getLeadEnquiryType(lead: any): LeadEnquiryType {
   const cat = (lead.category || '').toLowerCase();
   const src = (lead.lead_source || lead.source || '').toLowerCase();
   const pref = (lead.travel_preference || '').toLowerCase();
+
+  // B2B Partner lead detection
+  if (lead.lead_type === 'B2B_PARTNER' || src.includes('b2b') || lead.partnership_type) {
+    return 'b2b';
+  }
 
   // 1. Travels / Logistics enquiry (cabs, taxi, car rental, tempo, bus, flight, visa, transfer, web check-in, insurance)
   const isTravels =
@@ -105,6 +110,21 @@ export function checkStaffLeadEligibility(staff: any, lead: any): EligibilityRes
     roleType === 'operations' ||
     designations.some((d) => d.toLowerCase().includes('operation')) ||
     (profile.designation && profile.designation.toLowerCase().includes('operation'));
+
+  // B2B Partner Rule: Handled by Sales consultants (operations staff excluded)
+  if (leadType === 'b2b') {
+    if (isOperationsStaff) {
+      return {
+        eligible: false,
+        reason: 'Operation staff cannot be assigned to B2B Partner enquiries. Requires Sales / Wholesale Consultant.',
+        badgeLabel: 'Operations Staff (Excluded)'
+      };
+    }
+    return {
+      eligible: true,
+      badgeLabel: 'Sales Consultant'
+    };
+  }
 
   // Rule 1: Operations staff can ONLY be assigned to travels enquiry
   if (isOperationsStaff) {

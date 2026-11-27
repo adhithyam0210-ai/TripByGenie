@@ -40,9 +40,12 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
   }
 
   const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
     ...(options.headers as Record<string, string> || {})
   };
+
+  if (!(options.body instanceof FormData)) {
+    headers['Content-Type'] = 'application/json';
+  }
 
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
@@ -218,29 +221,77 @@ export const api = {
 
   register: async (data: any) => {
     try {
-      const res = await request<{ token: string; user: any; agency: any; lead?: any }>('/auth/register', {
+      const res = await request<{ success?: boolean; requires_verification?: boolean; message?: string; token?: string; user: any; agency?: any; lead?: any }>('/auth/register', {
         method: 'POST',
         body: JSON.stringify(data)
       });
-      localStorage.setItem('tg_token', res.token);
-      localStorage.setItem('tg_user', JSON.stringify(res.user));
-      localStorage.setItem('tg_agency', JSON.stringify(res.agency));
+      if (res.token) {
+        localStorage.setItem('tg_token', res.token);
+        localStorage.setItem('tg_user', JSON.stringify(res.user));
+        if (res.agency) localStorage.setItem('tg_agency', JSON.stringify(res.agency));
+      }
+      if (res.lead) {
+        try {
+          const localLeads = JSON.parse(localStorage.getItem('tg_local_leads') || '[]');
+          const idx = localLeads.findIndex((l: any) => l.id === res.lead.id || (l.customer_email && l.customer_email.toLowerCase() === (res.lead.customer_email || '').toLowerCase()));
+          if (idx >= 0) {
+            localLeads[idx] = { ...localLeads[idx], ...res.lead, status: 'New' };
+          } else {
+            localLeads.unshift({ ...res.lead, status: 'New' });
+          }
+          localStorage.setItem('tg_local_leads', JSON.stringify(localLeads));
+        } catch {}
+      }
       return res;
     } catch {
       const agency = fallbackData.agencies[0];
+      const customerName = data.name || 'Traveler';
+      const customerEmail = data.email || '';
+      const customerPhone = data.phone || '';
       const newUser = {
         id: `cust_${Date.now()}`,
-        name: data.name || 'Valued Customer',
-        email: data.email,
-        phone: data.phone || '',
+        agency_id: agency.id,
         role: 'customer',
-        agency_id: agency.id
+        name: customerName,
+        email: customerEmail,
+        phone: customerPhone,
+        avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80',
+        status: 'pending_activation'
       };
-      const token = `token_${newUser.id}`;
-      localStorage.setItem('tg_token', token);
-      localStorage.setItem('tg_user', JSON.stringify(newUser));
-      localStorage.setItem('tg_agency', JSON.stringify(agency));
-      return { token, user: newUser, agency };
+
+      const newLead = {
+        id: `lead_${Date.now()}`,
+        agency_id: agency.id,
+        customer_id: newUser.id,
+        customer_name: customerName,
+        customer_email: customerEmail,
+        customer_phone: customerPhone,
+        interested_destination: 'Direct Traveler Registration',
+        travel_date: '',
+        travelers_count: 2,
+        budget: 'Flexible',
+        lead_source: 'New User Sign Up',
+        status: 'New',
+        assigned_staff_id: null,
+        assigned_staff_name: 'Unassigned',
+        notes: 'New customer self-signup. Manager: Assign to Sales Executive to verify travel preferences and issue official Customer ID & Credentials.',
+        created_at: new Date().toISOString()
+      };
+
+      try {
+        const localLeads = JSON.parse(localStorage.getItem('tg_local_leads') || '[]');
+        localLeads.unshift(newLead);
+        localStorage.setItem('tg_local_leads', JSON.stringify(localLeads));
+      } catch {}
+
+      return {
+        success: true,
+        requires_verification: true,
+        message: 'Your request was submitted and our employee will contact you shortly.',
+        user: newUser,
+        lead: newLead,
+        agency
+      };
     }
   },
 
@@ -267,6 +318,12 @@ export const api = {
     request<{ token: string; user: any; agency: any }>('/auth/switch-agency', {
       method: 'POST',
       body: JSON.stringify({ agency_id })
+    }),
+
+  changePassword: (data: { old_password: string; new_password: string; confirm_password: string }) =>
+    request<{ success: boolean; message: string }>('/auth/change-password', {
+      method: 'POST',
+      body: JSON.stringify(data)
     }),
 
   getAgencies: async () => {
@@ -518,6 +575,50 @@ export const api = {
     }
   },
 
+  submitB2BEnquiry: async (data: FormData | any) => {
+    const isFormData = data instanceof FormData;
+    try {
+      return await request<{ success: boolean; message: string; enquiry_id: string; lead_id: string }>('/public/b2b-enquiry', {
+        method: 'POST',
+        body: isFormData ? data : JSON.stringify(data)
+      });
+    } catch (err: any) {
+      if (err.message && err.message.includes('400')) {
+        throw err;
+      }
+      // Local fallback for offline demo
+      const companyName = (isFormData ? data.get('company_name') : data.company_name) || 'Partner Agency';
+      const contactPerson = (isFormData ? data.get('contact_person') : data.contact_person) || 'Travel Partner';
+      const refId = `B2B-ENQ-${new Date().getFullYear()}-${Date.now().toString().slice(-5)}`;
+      const localLeads = JSON.parse(localStorage.getItem('tg_local_leads') || '[]');
+      const newLead = {
+        id: `lead_${Date.now()}`,
+        enquiry_id: refId,
+        lead_type: 'B2B_PARTNER',
+        customer_name: `${companyName} (${contactPerson})`,
+        lead_source: 'B2B Partner Portal',
+        status: 'New',
+        assigned_staff_id: null,
+        assigned_staff_name: 'Unassigned',
+        created_at: new Date().toISOString()
+      };
+      localLeads.unshift(newLead);
+      localStorage.setItem('tg_local_leads', JSON.stringify(localLeads));
+      return {
+        success: true,
+        enquiry_id: refId,
+        lead_id: newLead.id,
+        message: 'Thank you for your interest in partnering with us! Your B2B enquiry has been successfully submitted. Our team will review your information and contact you shortly.'
+      };
+    }
+  },
+
+  submitPartnerConversionRequest: (leadId: string, data: any) =>
+    request<{ success: boolean; conversion_request_id: string; status: string; message: string }>(`/staff/leads/${leadId}/convert-partner`, {
+      method: 'POST',
+      body: JSON.stringify(data)
+    }),
+
   submitContact: async (data: any) => {
     try {
       return await request<{ success: boolean; message: string }>('/public/contact', {
@@ -636,7 +737,17 @@ export const api = {
         const localLeads = JSON.parse(localStorage.getItem('tg_local_leads') || '[]');
         if (localLeads.length > 0 && res && Array.isArray(res.data)) {
           const existingIds = new Set(res.data.map((l: any) => l.id));
-          const missingLocals = localLeads.filter((l: any) => !existingIds.has(l.id)).map(normalizeLead);
+          let missingLocals = localLeads.filter((l: any) => !existingIds.has(l.id)).map(normalizeLead);
+
+          if (params?.status && params.status !== 'all') {
+            const sLower = params.status.toLowerCase();
+            if (sLower === 'unassigned' || sLower === 'new') {
+              missingLocals = missingLocals.filter((l: any) => !l.assigned_staff_id || (l.status && (l.status.toLowerCase() === 'new' || l.status.toLowerCase() === 'unassigned')));
+            } else {
+              missingLocals = missingLocals.filter((l: any) => (l.status || '').toLowerCase() === sLower);
+            }
+          }
+
           if (missingLocals.length > 0) {
             res.data = [...missingLocals, ...res.data];
             res.leads = res.data;
@@ -647,8 +758,36 @@ export const api = {
       return res;
     } catch {
       const localLeads = JSON.parse(localStorage.getItem('tg_local_leads') || '[]');
-      const combined = [...localLeads, ...fallbackData.leads].map(normalizeLead);
-      return { data: combined, leads: combined, total: combined.length, totalPages: 1 };
+      let combined = [...localLeads, ...(fallbackData.leads || [])].map(normalizeLead);
+
+      if (params?.status && params.status !== 'all') {
+        const sLower = params.status.toLowerCase();
+        if (sLower === 'unassigned' || sLower === 'new') {
+          combined = combined.filter((l: any) => !l.assigned_staff_id || (l.status && (l.status.toLowerCase() === 'new' || l.status.toLowerCase() === 'unassigned')));
+        } else {
+          combined = combined.filter((l: any) => (l.status || '').toLowerCase() === sLower);
+        }
+      }
+
+      if (params?.staff_id && params.staff_id !== 'all') {
+        combined = combined.filter((l: any) => l.assigned_staff_id === params.staff_id);
+      }
+
+      if (params?.source && params.source !== 'all') {
+        combined = combined.filter((l: any) => (l.lead_source || '').toLowerCase().includes(params.source.toLowerCase()));
+      }
+
+      if (params?.search && params.search.trim()) {
+        const q = params.search.trim().toLowerCase();
+        combined = combined.filter((l: any) =>
+          (l.customer_name && l.customer_name.toLowerCase().includes(q)) ||
+          (l.customer_email && l.customer_email.toLowerCase().includes(q)) ||
+          (l.customer_phone && l.customer_phone.toLowerCase().includes(q)) ||
+          (l.interested_destination && l.interested_destination.toLowerCase().includes(q))
+        );
+      }
+
+      return { data: combined, leads: combined, total: combined.length, totalPages: Math.ceil(combined.length / 15) || 1 };
     }
   },
   flushLeads: async () => {
@@ -1691,6 +1830,12 @@ export const api = {
       method: 'POST',
       body: JSON.stringify(data)
     }),
+  createCustomerLoginForLead: async (id: string, data?: { temp_password?: string }) => {
+    return await request<any>(`/staff/leads/${id}/create-customer-login`, {
+      method: 'POST',
+      body: JSON.stringify(data || {})
+    });
+  },
   convertLeadToBooking: async (id: string, data: any) => {
     try {
       const localLeads = JSON.parse(localStorage.getItem('tg_local_leads') || '[]');

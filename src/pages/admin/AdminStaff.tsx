@@ -230,6 +230,13 @@ export const AdminStaff: React.FC = () => {
       return;
     }
 
+    const cleanEmail = formData.email.trim().toLowerCase();
+    const isDuplicate = staff.some((s) => s.email && s.email.trim().toLowerCase() === cleanEmail);
+    if (isDuplicate) {
+      error(`An employee account with email '${cleanEmail}' already exists. Duplicate emails are not allowed.`);
+      return;
+    }
+
     const roleType = formData.designation.toLowerCase() as 'sales' | 'operations';
     const formattedPhone = formData.phone.trim() ? `${formData.phoneExtension} ${formData.phone.trim()}` : '';
 

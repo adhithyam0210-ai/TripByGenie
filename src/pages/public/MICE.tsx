@@ -403,7 +403,7 @@ export const MICE: React.FC = () => {
           <button
             type="button"
             onClick={handleWhatsAppDirect}
-            className="text-xs font-bold text-[#17648A] hover:text-[#FF795C] flex items-center gap-1 shrink-0"
+            className="text-xs font-bold text-[#17648A] hover:text-[#FF0000] flex items-center gap-1 shrink-0"
           >
             <span>Inquire for Other Locations</span>
             <ArrowRight className="w-3.5 h-3.5" />
