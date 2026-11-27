@@ -400,9 +400,10 @@ B2B Partnership Team`;
     const baseUrl = (app_url || process.env.APP_URL || 'http://localhost:3000').replace(/\/+$/, '');
     const isOps = designation && designation.toLowerCase().includes('operation');
     const dashboardType = isOps ? 'Operations Dashboard' : 'Sales Dashboard';
-    const staffLoginLink = `${baseUrl}/staff-login?email=${encodeURIComponent(to)}&role=${isOps ? 'operations' : 'sales'}`;
+    const staffLoginLink = `${baseUrl}/staff-login`;
     const companyName = 'Trip by Genie';
-    const subject = `Welcome Aboard! Your ${companyName} Staff Workspace Access (${designation})`;
+    const dispatchRef = `${employee_id}-${Date.now().toString(36).toUpperCase()}`;
+    const subject = `Welcome Aboard, ${name}! Your Staff Workspace Access [${employee_id}]`;
 
     const content = `Dear ${name},
 
@@ -422,11 +423,14 @@ Your Official Account Credentials:
 To access your staff workspace and activate your account, please sign in at:
 ${staffLoginLink}
 
+(Use your Corporate Email: ${to} and Temporary Password above to sign in)
+
 Wishing you exciting horizons and a memorable voyage with us!
 
 Best regards,
 ${companyName} Management & Operations Team
-Empowering Memorable Journeys Across India & The World`;
+Empowering Memorable Journeys Across India & The World
+[Ref: ${dispatchRef}]`;
 
     console.log(`[EMAIL DISPATCH] Sent Staff Account Invitation to ${to} (Employee ID: ${employee_id}, Designation: ${designation})`);
 
@@ -434,6 +438,9 @@ Empowering Memorable Journeys Across India & The World`;
       to,
       subject,
       text: content,
+      headers: {
+        'X-Entity-Ref-ID': dispatchRef
+      },
       html: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 28px; border: 1px solid #EFE7DA; border-radius: 18px; background-color: #FFFDF8; box-shadow: 0 4px 20px rgba(8, 44, 67, 0.05);">
         <div style="text-align: center; margin-bottom: 24px;">
           <h2 style="color: #082C43; margin: 0 0 6px 0; font-size: 24px; font-weight: 800;">Welcome to Trip by Genie!</h2>
@@ -450,26 +457,29 @@ Empowering Memorable Journeys Across India & The World`;
           Your staff account has been created with <strong>${designation}</strong> designation, providing full access to the <strong>${dashboardType}</strong>.
         </p>
         
-        <div style="background-color: #F8F1E7; padding: 20px; border-radius: 14px; margin: 24px 0; border-left: 4px solid #17648A;">
-          <p style="margin: 0 0 10px 0; color: #082C43; font-size: 14px; font-weight: bold;">Your Official Account Credentials:</p>
-          <p style="margin: 6px 0; color: #082C43; font-size: 13px;"><strong>Employee ID:</strong> <span style="font-family: monospace; font-size: 14px; font-weight: bold; color: #17648A;">${employee_id}</span></p>
-          <p style="margin: 6px 0; color: #082C43; font-size: 13px;"><strong>Corporate Email (Login ID):</strong> <span style="font-weight: bold; color: #082C43;">${to}</span></p>
-          <p style="margin: 6px 0; color: #082C43; font-size: 13px;"><strong>Designation:</strong> ${designation}</p>
-          <p style="margin: 6px 0; color: #082C43; font-size: 13px;"><strong>Temporary Password:</strong> <code style="background: #fff; padding: 3px 8px; border-radius: 6px; font-weight: bold; color: #9333EA; border: 1px solid #E9D5FF; font-size: 13px;">${temporary_password}</code></p>
+        <div style="background-color: #F8F1E7; padding: 24px; border-radius: 14px; margin: 24px 0; border-left: 4px solid #17648A;">
+          <p style="margin: 0 0 12px 0; color: #082C43; font-size: 15px; font-weight: bold;">Your Official Account Credentials:</p>
+          <p style="margin: 8px 0; color: #082C43; font-size: 13px;"><strong>Employee ID:</strong> <span style="font-family: monospace; font-size: 14px; font-weight: bold; color: #17648A;">${employee_id}</span></p>
+          <p style="margin: 8px 0; color: #082C43; font-size: 13px;"><strong>Corporate Email (Login ID):</strong> <span style="font-weight: bold; color: #082C43;">${to}</span></p>
+          <p style="margin: 8px 0; color: #082C43; font-size: 13px;"><strong>Designation:</strong> ${designation} (${dashboardType})</p>
+          <p style="margin: 8px 0; color: #082C43; font-size: 13px;"><strong>Temporary Password:</strong> <code style="background: #fff; padding: 4px 10px; border-radius: 6px; font-weight: bold; color: #9333EA; border: 1px solid #E9D5FF; font-size: 14px; letter-spacing: 0.5px;">${temporary_password}</code></p>
+          
+          <div style="text-align: center; margin: 24px 0 12px 0;">
+            <a href="${staffLoginLink}" style="background-color: #FF795C; background-image: linear-gradient(135deg, #FF795C 0%, #FF5733 100%); color: #ffffff; padding: 14px 32px; text-decoration: none; font-weight: bold; border-radius: 10px; display: inline-block; font-size: 15px; box-shadow: 0 4px 12px rgba(255, 87, 51, 0.35);">Log In to Staff Workspace &rarr;</a>
+          </div>
+          <p style="color: #718096; font-size: 11px; text-align: center; margin: 8px 0 0 0;">
+            Direct link: <a href="${staffLoginLink}" style="color: #17648A; word-break: break-all; font-size: 11px;">${staffLoginLink}</a>
+          </p>
         </div>
 
-        <div style="text-align: center; margin: 32px 0 24px 0;">
-          <a href="${staffLoginLink}" style="background-color: #FF795C; background-image: linear-gradient(135deg, #FF795C 0%, #FF5733 100%); color: #ffffff; padding: 15px 36px; text-decoration: none; font-weight: bold; border-radius: 12px; display: inline-block; font-size: 15px; box-shadow: 0 4px 14px rgba(255, 87, 51, 0.35);">Log In to Staff Workspace &rarr;</a>
-        </div>
-
-        <p style="color: #718096; font-size: 12px; text-align: center; line-height: 1.5; margin: 0 0 24px 0;">
+        <p style="color: #718096; font-size: 12px; text-align: center; line-height: 1.5; margin: 0 0 20px 0;">
           Use your Corporate Email (<strong>${to}</strong>) and the Temporary Password above to sign in. Upon your first login, your account will be activated.
         </p>
 
-        <hr style="border: none; border-top: 1px solid #EFE7DA; margin: 24px 0;" />
+        <hr style="border: none; border-top: 1px solid #EFE7DA; margin: 20px 0;" />
         <div style="text-align: center;">
           <p style="color: #082C43; font-size: 13px; font-weight: bold; margin: 0 0 4px 0;">Trip by Genie Management Team</p>
-          <p style="color: #A0AEC0; font-size: 11px; margin: 0;">Empowering Memorable Journeys Across India & The World</p>
+          <p style="color: #A0AEC0; font-size: 11px; margin: 0;">Empowering Memorable Journeys Across India & The World • Ref #${dispatchRef}</p>
         </div>
       </div>`
     });

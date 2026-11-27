@@ -550,7 +550,7 @@ Access & Login Link: ${provisionedStaff.invitation_link}`;
                 </span>
               </div>
               <p className="text-[11px] text-slate-500 mt-0.5">
-                Click on any employee to open their live performance analytics dashboard.
+                Manage staff accounts, departments, and onboarding status.
               </p>
             </div>
 
@@ -574,7 +574,6 @@ Access & Login Link: ${provisionedStaff.invitation_link}`;
                 <tr>
                   <th className="py-3 px-4">Employee</th>
                   <th className="py-3 px-4">Employee ID</th>
-                  <th className="py-3 px-4">Role & Access</th>
                   <th className="py-3 px-4">Departments</th>
                   <th className="py-3 px-4">Workload</th>
                   <th className="py-3 px-4">Status</th>
@@ -595,7 +594,6 @@ Access & Login Link: ${provisionedStaff.invitation_link}`;
                           ? profile.department.split(',').map((x: string) => x.trim())
                           : [isOps ? 'Travel & Transportation Operations' : 'Holidays & International'];
 
-                    const displayDesignation = isOps ? 'Operations' : 'Sales';
                     const displayEmpId = profile?.employee_id || s.display_id || (isOps ? 'TBG_OPE_001' : 'TBG_SAL_001');
 
                     const statusStr = (s.status || s.account_status || s.profile?.status || '').toLowerCase();
@@ -610,90 +608,47 @@ Access & Login Link: ${provisionedStaff.invitation_link}`;
 
                     return (
                       <tr key={s.id} className="hover:bg-[#F8F1E7]/30 transition-colors">
-                        {/* Employee Column - Profile picture removed; click opens analytics */}
+                        {/* Employee Column */}
                         <td className="py-3.5 px-4">
-                          <button
-                            type="button"
-                            disabled={isPending}
-                            onClick={() => !isPending && handleOpenAnalytics(s)}
-                            className={`text-left block ${
-                              isPending ? 'cursor-not-allowed opacity-75' : 'group cursor-pointer'
-                            }`}
-                            title={isPending ? 'Awaiting staff onboarding' : 'Click to view full analytics dashboard'}
-                          >
-                            <div className="flex items-center gap-1.5">
-                              <span className={`font-bold text-xs transition-colors ${
-                                isPending ? 'text-slate-600' : 'text-[#082C43] group-hover:text-[#17648A] group-hover:underline'
-                              }`}>
-                                {s.name}
-                              </span>
-                              <BarChart3 className={`w-3.5 h-3.5 transition-colors ${
-                                isPending ? 'text-slate-300' : 'text-slate-400 group-hover:text-[#17648A]'
-                              }`} />
-                            </div>
+                          <div>
+                            <button
+                              type="button"
+                              onClick={() => handleOpenAnalytics(s)}
+                              className="text-left font-bold text-xs text-[#082C43] hover:underline cursor-pointer block"
+                              title="Click to view staff performance analytics"
+                            >
+                              {s.name}
+                            </button>
                             <span className="text-[11px] text-slate-500 block">{s.email}</span>
                             {s.phone && (
                               <span className="text-[10px] text-slate-400 font-mono block">{s.phone}</span>
                             )}
-                          </button>
+                          </div>
                         </td>
 
                         {/* Employee ID */}
                         <td className="py-3.5 px-4">
-                          <span className="font-mono font-bold text-[#17648A] bg-[#17648A]/10 px-2.5 py-1 rounded-md text-[11px]">
+                          <span className="font-mono font-bold text-slate-700 text-xs">
                             {displayEmpId}
-                          </span>
-                        </td>
-
-                        {/* Designation & Access */}
-                        <td className="py-3.5 px-4">
-                          {isOps ? (
-                            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-purple-100 text-purple-800 border border-purple-200">
-                              <span className="w-1.5 h-1.5 rounded-full bg-purple-600"></span>
-                              Operations Dashboard
-                            </span>
-                          ) : (
-                            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
-                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
-                              Sales Dashboard
-                            </span>
-                          )}
-                          <span className="block text-[10px] font-semibold text-slate-500 mt-0.5">
-                            Designation: {displayDesignation}
                           </span>
                         </td>
 
                         {/* Departments */}
                         <td className="py-3.5 px-4">
-                          <div className="flex flex-wrap gap-1 max-w-xs">
+                          <div className="flex flex-col gap-1">
                             {depts.map((d: string) => (
-                              <span
-                                key={d}
-                                className={`text-[10px] font-semibold px-2 py-0.5 rounded-md border ${d.toLowerCase().includes('international')
-                                  ? 'bg-blue-50 text-blue-700 border-blue-200'
-                                  : d.toLowerCase().includes('domestic')
-                                    ? 'bg-amber-50 text-amber-700 border-amber-200'
-                                    : d.toLowerCase().includes('operations') || d.toLowerCase().includes('transport')
-                                      ? 'bg-purple-50 text-purple-700 border-purple-200'
-                                      : 'bg-slate-50 text-slate-700 border-slate-200'
-                                  }`}
-                              >
+                              <span key={d} className="text-[11.5px] text-slate-700 font-medium leading-snug block">
                                 {d}
                               </span>
                             ))}
                           </div>
                         </td>
 
-                        {/* Performance Workload: Active Leads & Closed Bookings */}
+                        {/* Performance Workload */}
                         <td className="py-3.5 px-4">
-                          <div className="flex items-center gap-2">
-                            <span className="font-bold text-[#082C43] bg-slate-100 px-2 py-0.5 rounded text-[11px]">
-                              {s.assignedLeadsCount || 0} Active
-                            </span>
-                            <span className="font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded text-[11px]">
-                              {s.convertedLeadsCount || 0} Closed
-                            </span>
-                          </div>
+                          <span className="text-xs text-slate-600 font-medium">
+                            <strong className="text-[#082C43]">{s.assignedLeadsCount || 0}</strong> Active &bull; <strong className="text-emerald-700">{s.convertedLeadsCount || 0}</strong> Closed
+                          </span>
                         </td>
 
                         {/* Status */}
@@ -719,20 +674,6 @@ Access & Login Link: ${provisionedStaff.invitation_link}`;
                         {/* Actions */}
                         <td className="py-3.5 px-4 text-right">
                           <div className="flex items-center justify-end gap-1.5">
-                            <button
-                              type="button"
-                              disabled={isPending}
-                              onClick={() => !isPending && handleOpenAnalytics(s)}
-                              className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                                isPending
-                                  ? 'text-slate-400 bg-slate-100/60 opacity-50 cursor-not-allowed border border-dashed border-slate-300'
-                                  : 'text-slate-700 bg-slate-100 hover:bg-slate-200 cursor-pointer'
-                              }`}
-                              title={isPending ? 'Action disabled: Awaiting staff onboarding' : 'View Performance Analytics'}
-                            >
-                              <BarChart3 className={`w-3.5 h-3.5 ${isPending ? 'text-slate-400' : 'text-[#17648A]'}`} />
-                              Analytics
-                            </button>
                             <button
                               type="button"
                               disabled={isPending}

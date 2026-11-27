@@ -919,7 +919,7 @@ export const api = {
         assignedLeadsCount: 0,
         convertedLeadsCount: 0,
         temporary_password: tempPass,
-        invitation_link: `${window.location.origin}/staff-login?email=${encodeURIComponent(data.email)}&role=${roleType}`
+        invitation_link: `${window.location.origin}/staff-login`
       };
 
       try {
@@ -1601,7 +1601,14 @@ export const api = {
       const localLeads = JSON.parse(localStorage.getItem('tg_local_leads') || '[]');
       const combined = [...localLeads, ...fallbackData.leads].map(normalizeLead);
       if (params?.status && params.status !== 'all') {
-        return combined.filter((l: any) => (l.status || '').toLowerCase() === params.status.toLowerCase());
+        const target = params.status.toLowerCase();
+        return combined.filter((l: any) => {
+          const s = (l.status || '').toLowerCase();
+          if (target === 'new assigned' || target === 'assigned') {
+            return s === 'assigned' || s === 'new assigned';
+          }
+          return s === target;
+        });
       }
       return combined;
     }

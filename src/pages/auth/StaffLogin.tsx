@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { Mail, Lock, LogIn, Eye, EyeOff, Compass, Plane, Globe2, Sparkles, ShieldCheck } from 'lucide-react';
+import { Mail, Lock, LogIn, Eye, EyeOff, Compass, Plane, Globe2, Sparkles, ShieldCheck, CheckCircle2 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
 import { BrandLogo } from '../../components/common/BrandLogo';
@@ -24,6 +24,10 @@ export const StaffLogin: React.FC = () => {
   useEffect(() => {
     if (urlEmail) {
       setEmail(urlEmail);
+      // Clean up credentials and parameters from browser address bar immediately
+      try {
+        window.history.replaceState({}, document.title, window.location.pathname);
+      } catch (e) {}
     }
   }, [urlEmail]);
 

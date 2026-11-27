@@ -2030,7 +2030,7 @@ app.post('/api/admin/staff', authenticate, authorize(['admin', 'manager']), asyn
   const baseUrl = (req.headers.origin && req.headers.origin.includes('localhost'))
     ? req.headers.origin.replace(/\/+$/, '')
     : (process.env.APP_URL ? process.env.APP_URL.replace(/\/+$/, '') : (req.headers.origin || 'http://localhost:3000').replace(/\/+$/, ''));
-  const staffLoginLink = `${baseUrl}/staff-login?email=${encodeURIComponent(email.toLowerCase())}&role=${effectiveRole}`;
+  const staffLoginLink = `${baseUrl}/staff-login`;
 
   // Await real email dispatch with staff login link and credentials
   let emailDispatched = false;
@@ -3300,7 +3300,11 @@ app.get('/api/staff/leads', authenticate, authorize(['staff', 'sales', 'manager'
     : db.findAll('leads', (l) => (!l.agency_id || l.agency_id === agencyId || l.agency_id === 'agency_travel_genie') && l.assigned_staff_id === staffId);
 
   if (status && status !== 'all') {
-    leads = leads.filter((l) => l.status === status);
+    if (status === 'New Assigned' || status === 'Assigned') {
+      leads = leads.filter((l) => l.status === 'Assigned' || l.status === 'New Assigned');
+    } else {
+      leads = leads.filter((l) => l.status === status);
+    }
   }
 
   if (search && search.trim()) {
@@ -3979,9 +3983,9 @@ app.get('/api/staff/follow-ups', authenticate, authorize(['staff', 'sales', 'man
 
   let leads;
   if (req.user.role === 'manager' || req.user.role === 'admin') {
-    leads = db.findAll('leads', (l) => l.agency_id === agencyId && l.follow_up_date);
+    leads = db.findAll('leads', (l) => (!l.agency_id || l.agency_id === agencyId || l.agency_id === 'agency_travel_genie') && l.follow_up_date);
   } else {
-    leads = db.findAll('leads', (l) => l.agency_id === agencyId && l.assigned_staff_id === staffId && l.follow_up_date);
+    leads = db.findAll('leads', (l) => (!l.agency_id || l.agency_id === agencyId || l.agency_id === 'agency_travel_genie') && l.assigned_staff_id === staffId && l.follow_up_date);
   }
   leads.sort((a, b) => new Date(a.follow_up_date) - new Date(b.follow_up_date));
   res.json(leads);
