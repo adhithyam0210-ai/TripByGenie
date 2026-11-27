@@ -302,7 +302,7 @@ export const App: React.FC = () => {
       <Route
         path="/staff/follow-ups"
         element={
-          <ProtectedRoute allowedRoles={['staff', 'sales', 'manager', 'admin']}>
+          <ProtectedRoute allowedRoles={['staff', 'sales']}>
             <StaffFollowUps />
           </ProtectedRoute>
         }

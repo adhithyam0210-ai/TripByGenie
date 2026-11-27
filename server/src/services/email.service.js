@@ -501,6 +501,194 @@ Empowering Memorable Journeys Across India & The World
       login_link: staffLoginLink
     };
   }
+
+  /**
+   * Send Operations Manager Onboarding Invitation with Credentials & Portal Link
+   */
+  async sendManagerInvitationEmail({ agency_id, to, name, employee_id, department, temporary_password, app_url }) {
+    const baseUrl = (app_url || process.env.APP_URL || 'http://localhost:3000').replace(/\/+$/, '');
+    const managerLoginLink = `${baseUrl}/login?email=${encodeURIComponent(to)}`;
+    const companyName = 'Trip by Genie';
+    const dispatchRef = `${employee_id}-${Date.now().toString(36).toUpperCase()}`;
+    const subject = `Welcome Aboard, ${name}! Your Manager Operations Access [${employee_id}]`;
+
+    const content = `Dear ${name},
+
+Welcome to Trip by Genie!
+We are proud to welcome you as a key leader in our Management & Operations team.
+
+Your Manager Account has been created with administrative access to the Manager Dashboard.
+
+Your Official Account Credentials:
+• Manager / Employee ID: ${employee_id}
+• Corporate Email (Login ID): ${to}
+• Portfolio / Division: ${department || 'Management & Operations'}
+• Temporary Password: ${temporary_password}
+
+To access your manager dashboard and get started, please sign in at:
+${managerLoginLink}
+
+Wishing you tremendous success leading the team and orchestrating unforgettable journeys!
+
+Best regards,
+${companyName} Super Admin & Executive Directorate
+[Ref: ${dispatchRef}]`;
+
+    console.log(`[EMAIL DISPATCH] Sent Manager Account Invitation to ${to} (Manager ID: ${employee_id})`);
+
+    const mailRes = await this.sendMail({
+      to,
+      subject,
+      text: content,
+      headers: {
+        'X-Entity-Ref-ID': dispatchRef
+      },
+      html: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 28px; border: 1px solid #EFE7DA; border-radius: 18px; background-color: #FFFDF8; box-shadow: 0 4px 20px rgba(8, 44, 67, 0.05);">
+        <div style="text-align: center; margin-bottom: 24px;">
+          <h2 style="color: #082C43; margin: 0 0 6px 0; font-size: 24px; font-weight: 800;">Welcome to Trip by Genie!</h2>
+          <p style="color: #9333EA; font-size: 13px; font-weight: bold; margin: 0; text-transform: uppercase; letter-spacing: 0.5px;">Executive & Operations Management</p>
+        </div>
+
+        <p style="color: #333; line-height: 1.6; font-size: 14px;">Dear <strong>${name}</strong>,</p>
+        <p style="color: #4A5568; line-height: 1.6; font-size: 14px;">
+          We are pleased to welcome you as an <strong>Operations Manager</strong> at <strong>Trip by Genie</strong>. Your leadership credentials and management workspace have been provisioned.
+        </p>
+
+        <div style="background-color: #F8F1E7; padding: 24px; border-radius: 14px; margin: 24px 0; border-left: 4px solid #9333EA;">
+          <p style="margin: 0 0 12px 0; color: #082C43; font-size: 15px; font-weight: bold;">Your Managerial Access Credentials:</p>
+          <p style="margin: 8px 0; color: #082C43; font-size: 13px;"><strong>Manager ID:</strong> <span style="font-family: monospace; font-size: 14px; font-weight: bold; color: #9333EA;">${employee_id}</span></p>
+          <p style="margin: 8px 0; color: #082C43; font-size: 13px;"><strong>Corporate Email:</strong> <span style="font-weight: bold; color: #082C43;">${to}</span></p>
+          <p style="margin: 8px 0; color: #082C43; font-size: 13px;"><strong>Portfolio:</strong> ${department || 'Management & Operations'}</p>
+          <p style="margin: 8px 0; color: #082C43; font-size: 13px;"><strong>Temporary Password:</strong> <code style="background: #fff; padding: 4px 10px; border-radius: 6px; font-weight: bold; color: #9333EA; border: 1px solid #E9D5FF; font-size: 14px;">${temporary_password}</code></p>
+          
+          <div style="text-align: center; margin: 24px 0 12px 0;">
+            <a href="${managerLoginLink}" style="background-color: #9333EA; color: #ffffff; padding: 14px 32px; text-decoration: none; font-weight: bold; border-radius: 10px; display: inline-block; font-size: 15px;">Log In to Manager Dashboard &rarr;</a>
+          </div>
+          <p style="color: #718096; font-size: 11px; text-align: center; margin: 8px 0 0 0;">
+            Direct link: <a href="${managerLoginLink}" style="color: #17648A; font-size: 11px;">${managerLoginLink}</a>
+          </p>
+        </div>
+
+        <p style="color: #718096; font-size: 12px; text-align: center; margin: 0 0 20px 0;">
+          Use your corporate email and temporary password to access your dashboard. You may update your password upon first login.
+        </p>
+
+        <hr style="border: none; border-top: 1px solid #EFE7DA; margin: 20px 0;" />
+        <div style="text-align: center;">
+          <p style="color: #082C43; font-size: 13px; font-weight: bold; margin: 0;">Trip by Genie Directorate</p>
+        </div>
+      </div>`
+    });
+
+    const log = db.logEmail(agency_id, to, subject, 'MANAGER_ACCOUNT_INVITATION', 'DELIVERED', {
+      employee_id,
+      name,
+      department,
+      login_link: managerLoginLink
+    });
+
+    return {
+      success: mailRes?.sent ?? true,
+      email_id: log.id,
+      subject,
+      login_link: managerLoginLink
+    };
+  }
+
+  /**
+   * Send Customer Welcome & Onboarding Email with Portal Credentials
+   */
+  async sendCustomerWelcomeEmail({ agency_id, to, name, customer_id, temporary_password, app_url }) {
+    const baseUrl = (app_url || process.env.APP_URL || 'http://localhost:3000').replace(/\/+$/, '');
+    const loginLink = `${baseUrl}/login?email=${encodeURIComponent(to)}`;
+    const companyName = 'Trip by Genie';
+    const dispatchRef = `${customer_id}-${Date.now().toString(36).toUpperCase()}`;
+    const subject = `Welcome to Trip by Genie, ${name}! Your Travel Account Is Ready [${customer_id}]`;
+
+    const content = `Dear ${name},
+
+Welcome to Trip by Genie!
+We are thrilled to welcome you to our travel family. Your customer travel account has been successfully created.
+
+You now have 24/7 access to your personal Customer Portal where you can:
+• Track holiday bookings and customized itineraries
+• Download confirmed travel vouchers, e-tickets, and hotel confirmations
+• Review payment receipts and invoices
+• Connect directly with your dedicated travel consultant
+
+Your Customer Portal Login Details:
+• Customer ID: ${customer_id}
+• Login ID (Email): ${to}
+• Temporary Password: ${temporary_password}
+
+To access your travel dashboard, please visit:
+${loginLink}
+
+Thank you for choosing Trip by Genie. We look forward to creating unforgettable travel memories for you!
+
+Warm regards,
+${companyName} Guest Relations & Concierge Desk
+[Ref: ${dispatchRef}]`;
+
+    console.log(`[EMAIL DISPATCH] Sent Customer Welcome Email to ${to} (Customer ID: ${customer_id})`);
+
+    const mailRes = await this.sendMail({
+      to,
+      subject,
+      text: content,
+      headers: {
+        'X-Entity-Ref-ID': dispatchRef
+      },
+      html: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 28px; border: 1px solid #EFE7DA; border-radius: 18px; background-color: #FFFDF8; box-shadow: 0 4px 20px rgba(8, 44, 67, 0.05);">
+        <div style="text-align: center; margin-bottom: 24px;">
+          <h2 style="color: #082C43; margin: 0 0 6px 0; font-size: 24px; font-weight: 800;">Welcome to Trip by Genie!</h2>
+          <p style="color: #FF795C; font-size: 13px; font-weight: bold; margin: 0; text-transform: uppercase; letter-spacing: 0.5px;">Your Journey Begins Here</p>
+        </div>
+
+        <p style="color: #333; line-height: 1.6; font-size: 14px;">Dear <strong>${name}</strong>,</p>
+        <p style="color: #4A5568; line-height: 1.6; font-size: 14px;">
+          Thank you for choosing <strong>Trip by Genie</strong>! Your customer travel account is now ready, giving you instant access to your personalized itineraries, booking documents, and trip concierge.
+        </p>
+
+        <div style="background-color: #F8F1E7; padding: 24px; border-radius: 14px; margin: 24px 0; border-left: 4px solid #10B981;">
+          <p style="margin: 0 0 12px 0; color: #082C43; font-size: 15px; font-weight: bold;">Your Customer Portal Credentials:</p>
+          <p style="margin: 8px 0; color: #082C43; font-size: 13px;"><strong>Customer ID:</strong> <span style="font-family: monospace; font-size: 14px; font-weight: bold; color: #10B981;">${customer_id}</span></p>
+          <p style="margin: 8px 0; color: #082C43; font-size: 13px;"><strong>Registered Email:</strong> <span style="font-weight: bold; color: #082C43;">${to}</span></p>
+          <p style="margin: 8px 0; color: #082C43; font-size: 13px;"><strong>Temporary Password:</strong> <code style="background: #fff; padding: 4px 10px; border-radius: 6px; font-weight: bold; color: #10B981; border: 1px solid #A7F3D0; font-size: 14px;">${temporary_password}</code></p>
+          
+          <div style="text-align: center; margin: 24px 0 12px 0;">
+            <a href="${loginLink}" style="background-color: #FF795C; background-image: linear-gradient(135deg, #FF795C 0%, #FF5733 100%); color: #ffffff; padding: 14px 32px; text-decoration: none; font-weight: bold; border-radius: 10px; display: inline-block; font-size: 15px; box-shadow: 0 4px 12px rgba(255, 87, 51, 0.35);">Access Customer Portal &rarr;</a>
+          </div>
+          <p style="color: #718096; font-size: 11px; text-align: center; margin: 8px 0 0 0;">
+            Direct link: <a href="${loginLink}" style="color: #17648A; font-size: 11px;">${loginLink}</a>
+          </p>
+        </div>
+
+        <p style="color: #718096; font-size: 12px; text-align: center; margin: 0 0 20px 0;">
+          Use your registered email and temporary password to sign in. You can reset your password anytime from your profile settings.
+        </p>
+
+        <hr style="border: none; border-top: 1px solid #EFE7DA; margin: 20px 0;" />
+        <div style="text-align: center;">
+          <p style="color: #082C43; font-size: 13px; font-weight: bold; margin: 0;">Trip by Genie Guest Relations</p>
+          <p style="color: #A0AEC0; font-size: 11px; margin: 0;">Ref #${dispatchRef}</p>
+        </div>
+      </div>`
+    });
+
+    const log = db.logEmail(agency_id, to, subject, 'CUSTOMER_WELCOME_EMAIL', 'DELIVERED', {
+      customer_id,
+      name,
+      login_link: loginLink
+    });
+
+    return {
+      success: mailRes?.sent ?? true,
+      email_id: log.id,
+      subject,
+      login_link: loginLink
+    };
+  }
 }
 
 const emailService = new EmailService();

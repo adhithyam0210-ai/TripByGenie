@@ -177,7 +177,9 @@ export const CustomTripModal: React.FC<CustomTripModalProps> = ({
         agency_id: agency?.id || 'agency_travel_genie'
       });
 
-      success('Trip enquiry submitted! Our travel consultant will contact you with a customized quote shortly.');
+      success('Our travel consultant will contact you with a customized quote shortly.', {
+        title: 'Trip Enquiry Submitted!'
+      });
       setFormData(getBlankFormData(initialDestination));
       setErrors({});
       onClose();

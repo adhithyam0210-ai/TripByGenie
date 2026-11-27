@@ -250,7 +250,9 @@ export const EmiEnquiryModal: React.FC<EmiEnquiryModalProps> = ({
         agency_id: agency?.id || 'agency_travel_genie'
       });
 
-      success('0% EMI Holiday Application submitted! Our financing specialist will contact you within 15 minutes for instant digital approval.');
+      success('Our financing specialist will contact you within 15 minutes for instant digital approval.', {
+        title: '0% EMI Application Submitted!'
+      });
       onClose();
     } catch (err: any) {
       error(err.message || 'Failed to submit loan application. Please try again.');

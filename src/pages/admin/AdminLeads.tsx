@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {
   Users,
+  Inbox,
+  FileText,
   Search,
   Plus,
   UserCheck,
@@ -41,7 +43,7 @@ export const AdminLeads: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   // Filters
-  const [statusFilter, setStatusFilter] = useState('all');
+  const [statusFilter, setStatusFilter] = useState('New');
   const [staffFilter, setStaffFilter] = useState('all');
   const [sourceFilter, setSourceFilter] = useState('all');
   const [search, setSearch] = useState('');
@@ -270,25 +272,6 @@ export const AdminLeads: React.FC = () => {
       subtitle="Complete pipeline oversight, bulk consultant assignment, and client communication timelines."
       actions={
         <div className="flex items-center gap-2">
-          {selectedLeadIds.length > 0 && (
-            <Button
-              variant="turquoise"
-              size="sm"
-              onClick={() => setIsAssignModalOpen(true)}
-              leftIcon={<UserCheck className="w-4 h-4" />}
-            >
-              Assign Selected ({selectedLeadIds.length})
-            </Button>
-          )}
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleFlushLeads}
-            className="text-rose-600 border-rose-200 hover:bg-rose-50"
-            leftIcon={<Trash2 className="w-3.5 h-3.5 text-rose-500" />}
-          >
-            Flush Leads
-          </Button>
           <Button
             variant="primary"
             size="sm"
@@ -325,9 +308,7 @@ export const AdminLeads: React.FC = () => {
               }}
               className="p-2 rounded-xl bg-[#F8F1E7]/50 border border-[#EFE7DA] font-semibold text-[#082C43] focus:outline-none"
             >
-              <option value="all">All Pipeline Stages</option>
               <option value="New">New Enquiries</option>
-              <option value="Unassigned">Unassigned Leads</option>
               <option value="Assigned">Assigned Leads</option>
               <option value="Contacted">Contacted Leads</option>
               <option value="Qualified">Qualified Leads</option>
@@ -355,312 +336,285 @@ export const AdminLeads: React.FC = () => {
                 </option>
               ))}
             </select>
-
-            <select
-              value={sourceFilter}
-              onChange={(e) => {
-                setSourceFilter(e.target.value);
-                setPage(1);
-              }}
-              className="p-2 rounded-xl bg-[#F8F1E7]/50 border border-[#EFE7DA] font-semibold text-[#082C43] focus:outline-none"
-            >
-              <option value="all">All Lead Sources</option>
-              <option value="Website Enquiry">Website Enquiry</option>
-              <option value="Customized Trip Form">Customized Trip Form</option>
-              <option value="Package Booking">Package Booking</option>
-              <option value="Agent Referral">Agent Referral</option>
-              <option value="Direct Admin Entry">Direct Admin</option>
-              <option value="Contact Form">Contact Form</option>
-            </select>
           </div>
         </div>
 
-        {/* Master Table and Detail Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* Table */}
-          <div className={`${selectedLead ? 'lg:col-span-7' : 'lg:col-span-12'} bg-white rounded-2xl border border-[#EFE7DA] shadow-xs overflow-hidden transition-all flex flex-col justify-between`}>
-            <div>
-              <div className="p-4 border-b border-[#EFE7DA] flex items-center justify-between text-xs font-semibold text-slate-500">
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={toggleSelectAll}
-                    className="flex items-center gap-1.5 text-[#082C43] font-bold cursor-pointer"
-                  >
-                    {selectedLeadIds.length > 0 && selectedLeadIds.length === leads.length ? (
-                      <CheckSquare className="w-4 h-4 text-[#FF795C]" />
-                    ) : (
-                      <Square className="w-4 h-4 text-slate-400" />
-                    )}
-                    <span>Select All</span>
-                  </button>
-                  <span>•</span>
-                  <span>Total Leads: {totalLeads}</span>
-                </div>
+        {/* Master Table */}
+        <div className="bg-white rounded-2xl border border-[#EFE7DA] shadow-xs overflow-hidden transition-all flex flex-col justify-between">
+          <div>
+            <div className="p-4 border-b border-[#EFE7DA] flex items-center justify-between text-xs font-semibold text-slate-500">
+              <span>Total Leads: {totalLeads}</span>
+            </div>
 
-                {selectedLeadIds.length > 0 && (
-                  <span className="text-[#FF795C] font-bold">
-                    {selectedLeadIds.length} lead(s) selected
-                  </span>
+            {/* Scrollable Table View - only the table body scrolls, pinned header */}
+            <div className="overflow-x-auto max-h-[calc(100vh-320px)] overflow-y-auto">
+              <table className="w-full text-xs text-left relative">
+                <thead className="sticky top-0 bg-[#F8F1E7] text-[#173247] uppercase font-bold border-b border-[#EFE7DA] z-10 shadow-xs">
+                  <tr>
+                    <th className="py-3 px-3">Lead / Client</th>
+                    <th className="py-3 px-3">Destination</th>
+                    <th className="py-3 px-3">Assigned Staff</th>
+                    <th className="py-3 px-3">Status</th>
+                    <th className="py-3 px-3 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#EFE7DA]">
+                  {leads.length === 0 ? (
+                    <tr>
+                      <td colSpan={5} className="py-16 px-4 text-center">
+                        {statusFilter === 'New' ? (
+                          <div className="max-w-md mx-auto space-y-3">
+                            <div className="w-12 h-12 rounded-2xl bg-sky-50 text-[#17648A] border border-sky-100 flex items-center justify-center mx-auto shadow-xs">
+                              <Inbox className="w-6 h-6" />
+                            </div>
+                            <div>
+                              <h4 className="text-base font-bold text-[#082C43] font-display">
+                                No New Enquiries
+                              </h4>
+                              <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                                All customer enquiries submitted through the travel website have been assigned to consultants. New visitor tour inquiries and custom trip requests will appear here automatically in real time.
+                              </p>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="max-w-md mx-auto space-y-3">
+                            <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 border border-amber-100 flex items-center justify-center mx-auto shadow-xs">
+                              <FileText className="w-6 h-6" />
+                            </div>
+                            <div>
+                              <h4 className="text-base font-bold text-[#082C43] font-display">
+                                No {statusFilter} Leads Found
+                              </h4>
+                              <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                                There are currently no leads in the "{statusFilter}" stage matching your active filter criteria.
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                      </td>
+                    </tr>
+                  ) : (
+                    leads.map((l) => {
+                      const isSelected = selectedLead?.id === l.id;
+
+                      return (
+                        <tr
+                          key={l.id}
+                          className={`transition-colors ${
+                            isSelected ? 'bg-[#FF795C]/10 font-medium' : 'hover:bg-[#F8F1E7]/30'
+                          }`}
+                        >
+                          <td
+                            className="py-3 px-3 cursor-pointer"
+                            onClick={() => handleSelectLeadDetail(l)}
+                          >
+                            {(l as any).enquiry_id && (
+                              <span className="text-[10px] text-[#FF795C] font-mono font-bold block">
+                                 {(l as any).enquiry_id}
+                              </span>
+                            )}
+                            <strong className="text-[#082C43] block">{l.customer_name || (l as any).name || 'Traveler'}</strong>
+                            <span className="text-[11px] text-slate-500">{l.customer_phone || l.customer_email || (l as any).phone || (l as any).email || 'No contact info'}</span>
+                          </td>
+                          <td
+                            className="py-3 px-3 font-semibold text-[#17648A] cursor-pointer"
+                            onClick={() => handleSelectLeadDetail(l)}
+                          >
+                            {l.interested_destination || (l as any).destination || 'Custom Tour'}
+                          </td>
+                          <td className="py-3 px-3">
+                            {l.assigned_staff_name ? (
+                              <span className="font-semibold text-slate-700">{l.assigned_staff_name}</span>
+                            ) : (
+                              <span className="text-amber-700 bg-amber-50 px-2 py-0.5 rounded font-bold">
+                                Unassigned
+                              </span>
+                            )}
+                          </td>
+                          <td className="py-3 px-3">
+                            <StatusBadge status={l.status || 'New'} />
+                          </td>
+                          <td className="py-3 px-3 text-right">
+                            <div className="flex items-center justify-end gap-1.5">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="text-xs"
+                                onClick={() => handleSelectLeadDetail(l)}
+                              >
+                                View
+                              </Button>
+                              <button
+                                onClick={() => handleDeleteLead(l.id)}
+                                className="p-1 text-slate-400 hover:text-rose-600 rounded transition-colors cursor-pointer"
+                                title="Delete Lead"
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <Pagination
+            currentPage={page}
+            totalPages={totalPages}
+            onPageChange={setPage}
+            totalItems={totalLeads}
+            pageSize={15}
+          />
+        </div>
+
+        {/* Lead Detail & Timeline Centered Popup Modal */}
+        {selectedLead && (
+          <Modal
+            isOpen={!!selectedLead}
+            onClose={() => setSelectedLead(null)}
+            title={`Lead Details • ${selectedLead.customer_name || (selectedLead as any).name || 'Traveler'}`}
+            maxWidth="2xl"
+          >
+            <div className="space-y-5 text-xs">
+              <div className="flex items-center justify-between pb-3 border-b border-[#EFE7DA]">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-base font-bold text-[#082C43] font-display">
+                      {selectedLead.customer_name || (selectedLead as any).name || 'Traveler'}
+                    </h3>
+                    <StatusBadge status={selectedLead.status || 'New'} />
+                  </div>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    {(selectedLead as any).enquiry_id ? `Enquiry #${(selectedLead as any).enquiry_id} • ` : ''}Lead #{selectedLead.id} • Source: {selectedLead.lead_source || (selectedLead as any).source || 'Website'}
+                  </p>
+                </div>
+              </div>
+
+              {/* Lead Parameters */}
+              <div className="p-4 rounded-xl bg-[#F8F1E7]/50 border border-[#EFE7DA] text-xs grid grid-cols-1 sm:grid-cols-2 gap-3 text-[#173247]">
+                <div><strong>Email:</strong> {selectedLead.customer_email || (selectedLead as any).email || 'Not provided'}</div>
+                <div><strong>Phone:</strong> {selectedLead.customer_phone || (selectedLead as any).phone || 'Not provided'}</div>
+                <div><strong>Destination:</strong> {selectedLead.interested_destination || (selectedLead as any).destination || 'Custom Tour'}</div>
+                <div><strong>Travel Date:</strong> {selectedLead.travel_date || (selectedLead as any).departure_date || 'Flexible'}</div>
+                <div><strong>Travelers:</strong> {selectedLead.travelers_count || 2} Guests</div>
+                <div><strong>Budget:</strong> {selectedLead.budget || 'Comfort'}</div>
+                <div className="sm:col-span-2"><strong>Assigned Consultant:</strong> {selectedLead.assigned_staff_name || 'Unassigned'}</div>
+                {(selectedLead.notes || (selectedLead as any).additional_requirements) && (
+                  <div className="sm:col-span-2 pt-2 border-t border-[#EFE7DA] text-slate-600">
+                    <strong>Notes:</strong> {selectedLead.notes || (selectedLead as any).additional_requirements}
+                  </div>
                 )}
               </div>
 
-              <div className="overflow-x-auto">
-                <table className="w-full text-xs text-left">
-                  <thead className="bg-[#F8F1E7] text-[#173247] uppercase font-bold border-b border-[#EFE7DA]">
-                    <tr>
-                      <th className="py-3 px-3 w-8"></th>
-                      <th className="py-3 px-3">Lead / Client</th>
-                      <th className="py-3 px-3">Destination</th>
-                      <th className="py-3 px-3">Assigned Staff</th>
-                      <th className="py-3 px-3">Status</th>
-                      <th className="py-3 px-3">Source</th>
-                      <th className="py-3 px-3 text-right">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-[#EFE7DA]">
-                    {leads.length === 0 ? (
-                      <tr>
-                        <td colSpan={7} className="py-12 text-center text-slate-400">
-                          No leads matching the selected filter criteria.
-                        </td>
-                      </tr>
-                    ) : (
-                      leads.map((l) => {
-                        const isChecked = selectedLeadIds.includes(l.id);
-                        const isSelected = selectedLead?.id === l.id;
-
-                        return (
-                          <tr
-                            key={l.id}
-                            className={`transition-colors ${
-                              isSelected ? 'bg-[#FF795C]/10 font-medium' : 'hover:bg-[#F8F1E7]/30'
-                            }`}
-                          >
-                            <td className="py-3 px-3">
-                              <input
-                                type="checkbox"
-                                checked={isChecked}
-                                onChange={() => toggleSelectLead(l.id)}
-                                className="rounded text-[#FF795C] focus:ring-[#FF795C] cursor-pointer"
-                              />
-                            </td>
-                            <td
-                              className="py-3 px-3 cursor-pointer"
-                              onClick={() => handleSelectLeadDetail(l)}
-                            >
-                              {(l as any).enquiry_id && (
-                                <span className="text-[10px] text-[#FF795C] font-mono font-bold block">
-                                  {(l as any).enquiry_id}
-                                </span>
-                              )}
-                              <strong className="text-[#082C43] block">{l.customer_name || (l as any).name || 'Traveler'}</strong>
-                              <span className="text-[11px] text-slate-500">{l.customer_phone || l.customer_email || (l as any).phone || (l as any).email || 'No contact info'}</span>
-                            </td>
-                            <td
-                              className="py-3 px-3 font-semibold text-[#17648A] cursor-pointer"
-                              onClick={() => handleSelectLeadDetail(l)}
-                            >
-                              {l.interested_destination || (l as any).destination || 'Custom Tour'}
-                            </td>
-                            <td className="py-3 px-3">
-                              {l.assigned_staff_name ? (
-                                <span className="font-semibold text-slate-700">{l.assigned_staff_name}</span>
-                              ) : (
-                                <span className="text-amber-700 bg-amber-50 px-2 py-0.5 rounded font-bold">
-                                  Unassigned
-                                </span>
-                              )}
-                            </td>
-                            <td className="py-3 px-3">
-                              <StatusBadge status={l.status || 'New'} />
-                            </td>
-                            <td className="py-3 px-3 text-slate-500">
-                              {l.lead_source || (l as any).source || 'Website Enquiry'}
-                            </td>
-                            <td className="py-3 px-3 text-right">
-                              <div className="flex items-center justify-end gap-1.5">
-                                <Button
-                                  variant="outline"
-                                  size="xs"
-                                  className="text-xs text-[#17648A] border-[#17648A]/30 hover:bg-[#17648A]/10 font-bold"
-                                  onClick={() => {
-                                    setSelectedLeadIds([l.id]);
-                                    setIsAssignModalOpen(true);
-                                  }}
-                                >
-                                  Assign
-                                </Button>
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  className="text-xs"
-                                  onClick={() => handleSelectLeadDetail(l)}
-                                >
-                                  View
-                                </Button>
-                                <button
-                                  onClick={() => handleDeleteLead(l.id)}
-                                  className="p-1 text-slate-400 hover:text-rose-600 rounded transition-colors cursor-pointer"
-                                  title="Delete Lead"
-                                >
-                                  <Trash2 className="w-3.5 h-3.5" />
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
-                        );
-                      })
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <Pagination
-              currentPage={page}
-              totalPages={totalPages}
-              onPageChange={setPage}
-              totalItems={totalLeads}
-              pageSize={15}
-            />
-          </div>
-
-          {/* Lead Detail & Timeline Sidebar */}
-          {selectedLead && (
-            <div className="lg:col-span-5 bg-white rounded-2xl border border-[#EFE7DA] shadow-xl p-6 space-y-5 flex flex-col justify-between">
-              <div className="space-y-4">
-                <div className="flex items-start justify-between pb-4 border-b border-[#EFE7DA]">
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <h3 className="text-base font-bold text-[#082C43] font-display">
-                        {selectedLead.customer_name || (selectedLead as any).name || 'Traveler'}
-                      </h3>
-                      <StatusBadge status={selectedLead.status || 'New'} />
-                    </div>
-                    <p className="text-xs text-slate-500 mt-0.5">
-                      {(selectedLead as any).enquiry_id ? `Enquiry #${(selectedLead as any).enquiry_id} • ` : ''}Lead #{selectedLead.id} • Source: {selectedLead.lead_source || (selectedLead as any).source || 'Website'}
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => setSelectedLead(null)}
-                    className="text-xs text-slate-400 hover:text-[#082C43] cursor-pointer"
-                  >
-                    Close
-                  </button>
+              {/* Quick Reassignment from Popup */}
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs flex flex-col gap-2">
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-[#082C43]">Reassign Lead:</span>
+                  <span className="text-[10px] font-semibold text-[#17648A] uppercase">
+                    {getLeadEnquiryType(selectedLead)} Enquiry
+                  </span>
                 </div>
-
-                {/* Lead Parameters */}
-                <div className="p-3.5 rounded-xl bg-[#F8F1E7]/50 border border-[#EFE7DA] text-xs space-y-1.5 text-[#173247]">
-                  <div><strong>Email:</strong> {selectedLead.customer_email || (selectedLead as any).email || 'Not provided'}</div>
-                  <div><strong>Phone:</strong> {selectedLead.customer_phone || (selectedLead as any).phone || 'Not provided'}</div>
-                  <div><strong>Destination:</strong> {selectedLead.interested_destination || (selectedLead as any).destination || 'Custom Tour'}</div>
-                  <div><strong>Travel Date:</strong> {selectedLead.travel_date || (selectedLead as any).departure_date || 'Flexible'}</div>
-                  <div><strong>Travelers:</strong> {selectedLead.travelers_count || 2} Guests</div>
-                  <div><strong>Budget:</strong> {selectedLead.budget || 'Comfort'}</div>
-                  <div><strong>Assigned Consultant:</strong> {selectedLead.assigned_staff_name || 'Unassigned'}</div>
-                  {(selectedLead.notes || (selectedLead as any).additional_requirements) && (
-                    <div className="pt-1.5 border-t border-[#EFE7DA] text-slate-600">
-                      <strong>Notes:</strong> {selectedLead.notes || (selectedLead as any).additional_requirements}
-                    </div>
-                  )}
-                </div>
-
-                {/* Quick Reassignment from Drawer */}
-                <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs flex flex-col gap-2">
-                  <div className="flex items-center justify-between">
-                    <span className="font-bold text-[#082C43]">Reassign Lead:</span>
-                    <span className="text-[10px] font-semibold text-[#17648A] uppercase">
-                      {getLeadEnquiryType(selectedLead)} Enquiry
-                    </span>
-                  </div>
-                  <select
-                    value={selectedLead.assigned_staff_id || ''}
-                    onChange={async (e) => {
-                      const staffId = e.target.value;
-                      if (!staffId) {
-                        try {
-                          await api.assignLeads({
-                            lead_ids: [selectedLead.id],
-                            staff_id: '',
-                            notes: 'Unassigned via lead drawer.'
-                          });
-                          success('Lead unassigned.');
-                          loadLeads();
-                          setSelectedLead((prev) => prev ? {
-                            ...prev,
-                            assigned_staff_id: null,
-                            assigned_staff_name: 'Unassigned',
-                            status: 'Unassigned'
-                          } : null);
-                        } catch (err: any) {
-                          error(err.message || 'Failed to unassign lead.');
-                        }
-                        return;
-                      }
-
-                      const assignedStaff = staffList.find((s) => s.id === staffId);
-                      if (assignedStaff) {
-                        const check = checkStaffLeadEligibility(assignedStaff, selectedLead);
-                        if (!check.eligible) {
-                          error(check.reason || 'Staff member is not eligible for this enquiry.');
-                          return;
-                        }
-                      }
-
+                <select
+                  value={selectedLead.assigned_staff_id || ''}
+                  onChange={async (e) => {
+                    const staffId = e.target.value;
+                    if (!staffId) {
                       try {
                         await api.assignLeads({
                           lead_ids: [selectedLead.id],
-                          staff_id: staffId,
-                          notes: 'Reassigned via lead drawer.'
+                          staff_id: '',
+                          notes: 'Unassigned via lead modal.'
                         });
-                        const assignedName = assignedStaff ? assignedStaff.name : 'Unassigned';
-                        success(`Lead reassigned to ${assignedName}.`);
+                        success('Lead unassigned.');
                         loadLeads();
                         setSelectedLead((prev) => prev ? {
                           ...prev,
-                          assigned_staff_id: staffId,
-                          assigned_staff_name: assignedName,
-                          status: 'Assigned'
+                          assigned_staff_id: null,
+                          assigned_staff_name: 'Unassigned',
+                          status: 'Unassigned'
                         } : null);
                       } catch (err: any) {
-                        error(err.message || 'Failed to reassign lead.');
+                        error(err.message || 'Failed to unassign lead.');
                       }
-                    }}
-                    className="p-2 rounded-lg border border-[#EFE7DA] bg-white font-semibold text-xs text-[#082C43]"
-                  >
-                    <option value="">-- Unassigned --</option>
-                    {staffList.map((s) => {
-                      const check = checkStaffLeadEligibility(s, selectedLead);
-                      return (
-                        <option key={s.id} value={s.id} disabled={!check.eligible}>
-                          {check.eligible ? '✓ ' : '✕ '} {s.name} ({s.profile?.role_type === 'operations' || s.role === 'operations' ? 'Ops' : 'Sales'} • {s.profile?.department || s.department || 'General'})
-                          {!check.eligible ? ` [Ineligible]` : ''}
-                        </option>
-                      );
-                    })}
-                  </select>
-                </div>
+                      return;
+                    }
 
-                {/* Activity History Timeline */}
-                <div className="pt-2 border-t border-[#EFE7DA]">
-                  <span className="text-xs font-bold text-[#082C43] block mb-2">
-                    Activity & Audit Trail:
-                  </span>
-                  <div className="space-y-2 max-h-48 overflow-y-auto">
-                    {leadDetails?.activities?.map((act: any) => (
+                    const assignedStaff = staffList.find((s) => s.id === staffId);
+                    if (assignedStaff) {
+                      const check = checkStaffLeadEligibility(assignedStaff, selectedLead);
+                      if (!check.eligible) {
+                        error(check.reason || 'Staff member is not eligible for this enquiry.');
+                        return;
+                      }
+                    }
+
+                    try {
+                      await api.assignLeads({
+                        lead_ids: [selectedLead.id],
+                        staff_id: staffId,
+                        notes: 'Reassigned via lead modal.'
+                      });
+                      const assignedName = assignedStaff ? assignedStaff.name : 'Unassigned';
+                      success(`Lead reassigned to ${assignedName}.`);
+                      loadLeads();
+                      setSelectedLead((prev) => prev ? {
+                        ...prev,
+                        assigned_staff_id: staffId,
+                        assigned_staff_name: assignedName,
+                        status: 'Assigned'
+                      } : null);
+                    } catch (err: any) {
+                      error(err.message || 'Failed to reassign lead.');
+                    }
+                  }}
+                  className="p-2 rounded-lg border border-[#EFE7DA] bg-white font-semibold text-xs text-[#082C43]"
+                >
+                  <option value="">-- Unassigned --</option>
+                  {staffList.map((s) => {
+                    const check = checkStaffLeadEligibility(s, selectedLead);
+                    return (
+                      <option key={s.id} value={s.id} disabled={!check.eligible}>
+                        {check.eligible ? '✓ ' : '✕ '} {s.name} ({s.profile?.role_type === 'operations' || s.role === 'operations' ? 'Ops' : 'Sales'} • {s.profile?.department || s.department || 'General'})
+                        {!check.eligible ? ` [Ineligible]` : ''}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+
+              {/* Activity History Timeline */}
+              <div className="pt-2 border-t border-[#EFE7DA]">
+                <span className="text-xs font-bold text-[#082C43] block mb-2">
+                  Activity & Audit Trail:
+                </span>
+                <div className="space-y-2 max-h-56 overflow-y-auto">
+                  {leadDetails?.activities?.length === 0 ? (
+                    <p className="text-slate-400 py-4 text-center">No recorded activity on this enquiry yet.</p>
+                  ) : (
+                    leadDetails?.activities?.map((act: any) => (
                       <div key={act.id} className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs">
                         <span className="font-semibold text-[#082C43] block">{act.description}</span>
                         <span className="text-[10px] text-slate-400">
                           {new Date(act.created_at).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}
                         </span>
                       </div>
-                    ))}
-                  </div>
+                    ))
+                  )}
                 </div>
               </div>
+
+              <div className="pt-3 border-t border-[#EFE7DA] flex justify-end">
+                <Button variant="outline" size="sm" onClick={() => setSelectedLead(null)}>
+                  Close
+                </Button>
+              </div>
             </div>
-          )}
-        </div>
+          </Modal>
+        )}
       </div>
 
       {/* Bulk / Single Lead Assignment Modal */}

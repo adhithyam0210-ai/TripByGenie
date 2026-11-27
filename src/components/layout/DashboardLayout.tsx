@@ -18,6 +18,7 @@ import {
   ChevronRight,
   Menu,
   X,
+  Trash2,
   UserCheck,
   Building2,
   Tag,
@@ -37,6 +38,8 @@ import { api } from '../../services/api';
 import { useToast } from '../../context/ToastContext';
 import { AppNotification } from '../../types';
 import { BrandLogo } from '../common/BrandLogo';
+import { Modal } from '../common/Modal';
+import { Button } from '../common/Button';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -69,8 +72,7 @@ const getManagementGroups = (prefix: string): NavGroup[] => [
     badge: 'Staff',
     badgeColor: 'bg-[#55C9BD]/20 text-[#55C9BD]',
     items: [
-      { name: 'Staff Roster & Allocation', path: `${prefix}/staff`, icon: UserCheck },
-      { name: 'Follow-ups Agenda', path: '/staff/follow-ups', icon: Clock }
+      { name: 'Staff Roster & Allocation', path: `${prefix}/staff`, icon: UserCheck }
     ]
   },
   {
@@ -182,6 +184,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [isSignOutConfirmOpen, setIsSignOutConfirmOpen] = useState(false);
   const [notifications, setNotifications] = useState<AppNotification[]>([]);
+  const [selectedNotification, setSelectedNotification] = useState<AppNotification | null>(null);
 
   // Grouped management dropdowns for Manager and Admin
   const [managementDropdowns, setManagementDropdowns] = useState<Record<string, boolean>>({
@@ -270,6 +273,34 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     }
   };
 
+  const handleMarkSingleAsRead = async (id: string) => {
+    try {
+      await api.markNotificationRead(id, true);
+      setNotifications((prev) =>
+        prev.map((n) => (n.id === id ? { ...n, is_read: true } : n))
+      );
+      if (selectedNotification && selectedNotification.id === id) {
+        setSelectedNotification((prev) => (prev ? { ...prev, is_read: true } : null));
+      }
+      success('Notification marked as read.');
+    } catch (e) {
+      error('Failed to mark notification as read.');
+    }
+  };
+
+  const handleDeleteNotification = async (id: string) => {
+    try {
+      await api.deleteNotification(id);
+      setNotifications((prev) => prev.filter((n) => n.id !== id));
+      if (selectedNotification && selectedNotification.id === id) {
+        setSelectedNotification(null);
+      }
+      success('Notification deleted.');
+    } catch (e) {
+      error('Failed to delete notification.');
+    }
+  };
+
   // Nav menus configured per role
   const getNavLinks = () => {
     if (role === 'admin') {
@@ -297,7 +328,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       return [
         { name: 'Sales Overview', path: '/staff/dashboard', icon: LayoutDashboard },
         { name: 'My Assigned Leads', path: '/staff/leads', icon: Users },
-        { name: 'Follow-ups Agenda', path: '/staff/follow-ups', icon: Clock },
         { name: 'Bookings & Conversions', path: '/staff/bookings', icon: CalendarCheck },
         { name: 'My Profile', path: '/staff/profile', icon: UserCheck }
       ];
@@ -341,11 +371,11 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const unreadCount = notifications.filter((n) => !n.is_read).length;
 
   return (
-      <div className="min-h-screen bg-[#F8F1E7]/40 flex w-full overflow-x-hidden">
+      <div className="h-screen bg-[#F8F1E7]/40 flex w-full overflow-hidden">
         {/* Desktop Sidebar with Protruding Toggle Button */}
         <aside
           className={`hidden lg:flex ${isSidebarCollapsed ? 'w-20' : 'w-64'
-            } h-screen sticky top-0 bg-[#485264] text-white flex-col shrink-0 border-r border-[#5F6B82] z-40 transition-all duration-300 ease-in-out relative`}
+            } h-full bg-[#485264] text-white flex-col shrink-0 border-r border-[#5F6B82] z-40 transition-all duration-300 ease-in-out relative`}
         >
           {/* Protruding Sidebar Collapse / Expand Toggle Button (Compact & Sleek, positioned clearly below the header) */}
           <button
@@ -709,7 +739,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         </aside>
 
         {/* Main Content Area */}
-          <div className="flex-1 flex flex-col min-w-0 min-h-screen overflow-x-hidden">
+          <div className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto overflow-x-hidden">
             {/* Top Header */}
             <header className="sticky top-0 z-30 bg-white border-b border-[#EFE7DA] px-4 sm:px-6 py-3 flex items-center justify-between shadow-xs">
               {/* Mobile hamburger & Title */}
@@ -823,12 +853,25 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                             </span>
                           )}
                         </div>
-                        <button
-                          onClick={markAllNotifications}
-                          className="text-xs text-[#2563EB] hover:underline cursor-pointer"
-                        >
-                          Mark all as read
-                        </button>
+                        <div className="flex items-center gap-2.5">
+                          {unreadCount > 0 && (
+                            <button
+                              onClick={markAllNotifications}
+                              className="text-xs text-[#2563EB] hover:underline cursor-pointer font-medium"
+                            >
+                              Mark all as read
+                            </button>
+                          )}
+                          <button
+                            type="button"
+                            onClick={() => setIsNotificationsOpen(false)}
+                            className="p-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
+                            title="Close notifications"
+                            aria-label="Close notifications"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
+                        </div>
                       </div>
 
                       <div className="py-2 max-h-72 overflow-y-auto space-y-2">
@@ -837,21 +880,41 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                             No notifications yet.
                           </p>
                         ) : (
-                          notifications.slice(0, 6).map((n) => (
+                          notifications.slice(0, 10).map((n) => (
                             <div
                               key={n.id}
-                              className={`p-2.5 rounded-xl border text-xs transition-colors ${n.is_read
-                                  ? 'bg-white border-[#EFE7DA]/50 text-slate-600'
-                                  : 'bg-[#F8F1E7] border-[#17648A]/30 text-[#082C43] font-medium'
+                              onClick={() => setSelectedNotification(n)}
+                              className={`p-2.5 rounded-xl border text-xs transition-all cursor-pointer relative group ${n.is_read
+                                  ? 'bg-white border-[#EFE7DA]/60 text-slate-600 hover:border-[#17648A]/40 hover:bg-[#F8F1E7]/20'
+                                  : 'bg-[#F8F1E7] border-[#17648A]/30 text-[#082C43] font-medium hover:border-[#17648A]/60'
                                 }`}
                             >
-                              <div className="font-bold flex items-center justify-between">
-                                <span>{n.title}</span>
-                                <span className="text-[10px] text-slate-400 font-normal">
-                                  {new Date(n.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                </span>
+                              <div className="font-bold flex items-start justify-between gap-2">
+                                <div className="flex items-center gap-1.5 flex-1 min-w-0">
+                                  {!n.is_read && (
+                                    <span className="w-2 h-2 rounded-full bg-[#2563EB] shrink-0" />
+                                  )}
+                                  <span className="truncate">{n.title}</span>
+                                </div>
+                                <div className="flex items-center gap-1 shrink-0">
+                                  <span className="text-[10px] text-slate-400 font-normal">
+                                    {new Date(n.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                  </span>
+                                  <button
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleDeleteNotification(n.id);
+                                    }}
+                                    className="opacity-0 group-hover:opacity-100 p-0.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded transition-all ml-1 cursor-pointer"
+                                    title="Delete notification"
+                                    aria-label="Delete notification"
+                                  >
+                                    <X className="w-3.5 h-3.5" />
+                                  </button>
+                                </div>
                               </div>
-                              <p className="text-[11px] text-slate-600 mt-1 leading-snug">
+                              <p className="text-[11px] text-slate-600 mt-1 leading-snug line-clamp-2">
                                 {n.message}
                               </p>
                             </div>
@@ -1246,6 +1309,59 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 </div>
               </div>
             </div>
+          )}
+
+          {/* Specific Notification Details Popup Modal */}
+          {selectedNotification && (
+            <Modal
+              isOpen={!!selectedNotification}
+              onClose={() => setSelectedNotification(null)}
+              title={selectedNotification.title}
+              subtitle={new Date(selectedNotification.created_at).toLocaleString([], {
+                dateStyle: 'medium',
+                timeStyle: 'short'
+              })}
+              maxWidth="md"
+            >
+              <div className="space-y-4 text-xs">
+                {/* Message Body */}
+                <div className="p-4 rounded-xl bg-[#F8F1E7]/40 border border-[#EFE7DA] text-slate-800 text-sm leading-relaxed whitespace-pre-wrap">
+                  {selectedNotification.message}
+                </div>
+
+                {/* Action Buttons: Mark as Read & Delete Notification */}
+                <div className="flex items-center justify-between pt-3 border-t border-[#EFE7DA]">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="text-rose-600 hover:text-rose-700 hover:bg-rose-50 border-rose-200"
+                    onClick={() => handleDeleteNotification(selectedNotification.id)}
+                    leftIcon={<Trash2 className="w-3.5 h-3.5" />}
+                  >
+                    Delete Message
+                  </Button>
+
+                  <div className="flex items-center gap-2">
+                    {!selectedNotification.is_read ? (
+                      <Button
+                        type="button"
+                        variant="primary"
+                        size="sm"
+                        onClick={() => handleMarkSingleAsRead(selectedNotification.id)}
+                        leftIcon={<Check className="w-3.5 h-3.5" />}
+                      >
+                        Mark as Read
+                      </Button>
+                    ) : (
+                      <span className="text-xs font-semibold text-emerald-700 flex items-center gap-1">
+                        <Check className="w-3.5 h-3.5" /> Marked as Read
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </Modal>
           )}
         </div>
         );

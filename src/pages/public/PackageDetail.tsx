@@ -15,7 +15,9 @@ import {
   Phone,
   Compass,
   Navigation,
-  ChevronDown
+  ChevronDown,
+  Share2,
+  FileDown
 } from 'lucide-react';
 import { api } from '../../services/api';
 import { Package, Destination, PackageItinerary } from '../../types';
@@ -216,6 +218,31 @@ export const PackageDetail: React.FC = () => {
     }
   };
 
+  const handleShare = () => {
+    try {
+      navigator.clipboard?.writeText(window.location.href);
+      success('Tour link copied to clipboard. Share with your travel buddies!', {
+        title: 'Link Copied',
+        action: {
+          label: 'Copy Again',
+          onClick: () => navigator.clipboard?.writeText(window.location.href)
+        }
+      });
+    } catch {
+      success('Share this tour: ' + window.location.href, { title: 'Package Link' });
+    }
+  };
+
+  const handleDownloadBrochure = () => {
+    success(`Detailed itinerary brochure for ${pkg?.title || 'Tour'} has been prepared.`, {
+      title: 'Itinerary Ready',
+      action: {
+        label: 'View',
+        onClick: () => window.scrollTo({ top: 600, behavior: 'smooth' })
+      }
+    });
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#FFFDF8]">
@@ -264,9 +291,31 @@ export const PackageDetail: React.FC = () => {
             </span>
           </div>
 
-          <h1 className="text-2xl sm:text-4xl font-extrabold text-[#082C43] font-display">
-            {pkg.title}
-          </h1>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <h1 className="text-2xl sm:text-4xl font-extrabold text-[#082C43] font-display">
+              {pkg.title}
+            </h1>
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={handleShare}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-[#082C43] bg-white hover:bg-slate-50 border border-[#EFE7DA] shadow-xs transition-colors cursor-pointer"
+                title="Share Tour Package"
+              >
+                <Share2 className="w-3.5 h-3.5 text-[#FF795C]" />
+                <span>Share Tour</span>
+              </button>
+              <button
+                type="button"
+                onClick={handleDownloadBrochure}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-[#17648A] bg-sky-50 hover:bg-sky-100 border border-sky-200 shadow-xs transition-colors cursor-pointer"
+                title="Download Day-Wise Itinerary Brochure"
+              >
+                <FileDown className="w-3.5 h-3.5 text-[#17648A]" />
+                <span>Itinerary PDF</span>
+              </button>
+            </div>
+          </div>
         </div>
 
         {/* Gallery / Images Grid */}

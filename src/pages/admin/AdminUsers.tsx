@@ -18,7 +18,12 @@ import {
   Mail,
   User as UserIcon,
   ChevronDown,
-  Filter
+  Filter,
+  Layers,
+  RefreshCw,
+  Copy,
+  ExternalLink,
+  Check
 } from 'lucide-react';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { Button } from '../../components/common/Button';
@@ -27,6 +32,26 @@ import { api } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
 import { User, UserRole } from '../../types';
+import {
+  SALES_DEPARTMENT_OPTIONS,
+  OPERATIONS_DEPARTMENT_OPTIONS,
+  generateNextEmployeeId,
+  generateTemporaryPassword
+} from '../../utils/leadEligibility';
+
+const PHONE_EXTENSIONS = [
+  { code: '+91', country: 'IN (+91)' },
+  { code: '+1', country: 'US (+1)' },
+  { code: '+44', country: 'UK (+44)' },
+  { code: '+971', country: 'UAE (+971)' },
+  { code: '+65', country: 'SG (+65)' },
+  { code: '+61', country: 'AU (+61)' },
+  { code: '+966', country: 'SA (+966)' },
+  { code: '+60', country: 'MY (+60)' },
+  { code: '+66', country: 'TH (+66)' },
+  { code: '+49', country: 'DE (+49)' },
+  { code: '+33', country: 'FR (+33)' }
+];
 
 export const AdminUsers: React.FC = () => {
   const { demoLogin, getRoleDashboardPath, user: currentUser } = useAuth();
@@ -61,14 +86,17 @@ export const AdminUsers: React.FC = () => {
 
   // Form State for Creation
   const [formData, setFormData] = useState({
-    role: 'manager' as 'manager' | 'staff' | 'operations' | 'agent' | 'customer',
+    role: 'sales' as 'manager' | 'staff' | 'sales' | 'operations' | 'agent' | 'customer',
     name: '',
     email: '',
+    phoneExtension: '+91',
     phone: '',
-    password: 'password123',
+    password: '',
+    employee_id: 'TBG_SAL_001',
     agency_id: 'agency_travel_genie',
-    department: 'Operations & Logistics',
-    designation: 'Senior Tour Consultant',
+    department: 'Holidays & International',
+    departments: ['Holidays & International'] as string[],
+    designation: 'Sales',
     company_name: '',
     discount_pct: 12,
     address: ''
@@ -110,7 +138,6 @@ export const AdminUsers: React.FC = () => {
     }
   };
 
-
   const filteredUsers = users.filter((u) => {
     if (roleFilter !== 'all' && u.role !== roleFilter) return false;
     if (searchQuery.trim()) {
@@ -132,30 +159,124 @@ export const AdminUsers: React.FC = () => {
   const customerCount = users.filter((u) => u.role === 'customer').length;
   const totalCount = users.length;
 
+  const getNextIdForRole = (targetRole: string) => {
+    if (targetRole === 'sales' || targetRole === 'staff') {
+      return generateNextEmployeeId('Sales', users);
+    }
+    if (targetRole === 'operations') {
+      return generateNextEmployeeId('Operations', users);
+    }
+    if (targetRole === 'manager') {
+      const mgrCount = users.filter((u) => u.role === 'manager').length + 1;
+      return `MGR-2026-${String(mgrCount).padStart(3, '0')}`;
+    }
+    if (targetRole === 'agent') {
+      const agtCount = users.filter((u) => u.role === 'agent').length + 1;
+      return `AGT-2026-${String(agtCount).padStart(3, '0')}`;
+    }
+    if (targetRole === 'customer') {
+      const cusCount = users.filter((u) => u.role === 'customer').length + 1;
+      return `CUS-2026-${String(cusCount).padStart(3, '0')}`;
+    }
+    return `USR-${Math.floor(1000 + Math.random() * 9000)}`;
+  };
+
+  const handleOpenCreateModal = () => {
+    const initialRole = 'sales';
+    const nextId = getNextIdForRole(initialRole);
+    const nextPass = generateTemporaryPassword();
+    setFormData({
+      role: initialRole,
+      name: '',
+      email: '',
+      phoneExtension: '+91',
+      phone: '',
+      password: nextPass,
+      employee_id: nextId,
+      designation: 'Sales',
+      departments: ['Holidays & International'],
+      department: 'Holidays & International',
+      agency_id: 'agency_travel_genie',
+      company_name: '',
+      discount_pct: 12,
+      address: ''
+    });
+    setIsCreateModalOpen(true);
+  };
+
+  const handleRoleChange = (newRole: 'manager' | 'sales' | 'operations' | 'agent' | 'customer') => {
+    const nextId = getNextIdForRole(newRole);
+    const nextPass = generateTemporaryPassword();
+    const defaultDesig =
+      newRole === 'sales' ? 'Sales' :
+      newRole === 'operations' ? 'Operations' :
+      newRole === 'manager' ? 'Operations Manager' :
+      newRole === 'agent' ? 'B2B Travel Partner' : 'Traveler';
+    const defaultDepts =
+      newRole === 'operations' ? ['Travel & Transportation Operations'] :
+      ['Holidays & International'];
+    setFormData((prev) => ({
+      ...prev,
+      role: newRole,
+      employee_id: nextId,
+      password: nextPass,
+      designation: defaultDesig,
+      departments: defaultDepts,
+      department: defaultDepts.join(', ')
+    }));
+  };
+
+  const handleRegeneratePassword = () => {
+    const newPass = generateTemporaryPassword();
+    setFormData((prev) => ({ ...prev, password: newPass }));
+    success('New temporary password generated.');
+  };
+
+  const toggleDepartment = (dept: string) => {
+    setFormData((prev) => {
+      const exists = prev.departments.includes(dept);
+      const next = exists
+        ? prev.departments.filter((d) => d !== dept)
+        : [...prev.departments, dept];
+      return {
+        ...prev,
+        departments: next.length > 0 ? next : [dept],
+        department: next.join(', ')
+      };
+    });
+  };
+
   const handleCreateSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.password) {
       error('Please complete Name, Email, and Password.');
       return;
     }
+    const formattedPhone = formData.phone.trim()
+      ? `${formData.phoneExtension} ${formData.phone.trim()}`
+      : '';
     setIsSubmitting(true);
     try {
-      await api.createAdminUser(formData);
-      success(`Successfully created ${formData.role.toUpperCase()} account for ${formData.name}!`);
-      setIsCreateModalOpen(false);
-      setFormData({
-        role: 'manager',
-        name: '',
-        email: '',
-        phone: '',
-        password: 'password123',
-        agency_id: 'agency_travel_genie',
-        department: 'Operations & Catalog Management',
-        designation: 'Senior Tour Consultant',
-        company_name: '',
-        discount_pct: 12,
-        address: ''
+      const res = await api.createAdminUser({
+        ...formData,
+        phone: formattedPhone
       });
+      const roleName =
+        formData.role === 'customer'
+          ? 'Customer'
+          : formData.role === 'agent'
+          ? 'B2B Agent'
+          : formData.role === 'manager'
+          ? 'Operations Manager'
+          : formData.role === 'operations'
+          ? 'Operations Staff'
+          : 'Sales Staff';
+      success(
+        formData.role === 'customer'
+          ? `Successfully created Customer account for ${formData.name}! Welcoming email link dispatched.`
+          : `Successfully created ${roleName} account for ${formData.name}! Onboarding invitation email link dispatched.`
+      );
+      setIsCreateModalOpen(false);
       loadUsers();
     } catch (err: any) {
       error(err.message || 'Failed to create user.');
@@ -279,7 +400,7 @@ export const AdminUsers: React.FC = () => {
           variant="primary"
           size="sm"
           className="shadow-md shadow-[#FF795C]/25 text-xs font-bold whitespace-nowrap shrink-0 px-3.5 py-2 inline-flex items-center gap-1.5"
-          onClick={() => setIsCreateModalOpen(true)}
+          onClick={handleOpenCreateModal}
         >
           <Plus className="w-4 h-4 shrink-0" />
           <span>Create New User / ID</span>
@@ -589,18 +710,19 @@ export const AdminUsers: React.FC = () => {
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
         title="Create New User / ID (Super Admin)"
-        size="lg"
+        subtitle="Designation determines dashboard access. Credentials & invitation link are automatically generated and dispatched."
+        maxWidth="2xl"
       >
-        <form onSubmit={handleCreateSubmit} className="space-y-4">
+        <form onSubmit={handleCreateSubmit} className="space-y-3.5 text-xs">
           {/* Role Selection Tabs */}
           <div>
-            <label className="text-xs font-bold text-[#082C43] block mb-1.5">
+            <label className="font-bold text-[#082C43] block mb-1.5">
               Select ID Role to Provision:
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
               <button
                 type="button"
-                onClick={() => setFormData({ ...formData, role: 'manager' })}
+                onClick={() => handleRoleChange('manager')}
                 className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer ${
                   formData.role === 'manager'
                     ? 'border-purple-600 bg-purple-50 text-purple-900 ring-2 ring-purple-600/20'
@@ -616,9 +738,9 @@ export const AdminUsers: React.FC = () => {
 
               <button
                 type="button"
-                onClick={() => setFormData({ ...formData, role: 'staff' })}
+                onClick={() => handleRoleChange('sales')}
                 className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer ${
-                  formData.role === 'staff'
+                  formData.role === 'sales' || formData.role === 'staff'
                     ? 'border-teal-600 bg-teal-50 text-teal-900 ring-2 ring-teal-600/20'
                     : 'border-[#EFE7DA] bg-white hover:bg-[#F8F1E7]/50 text-slate-700'
                 }`}
@@ -627,12 +749,12 @@ export const AdminUsers: React.FC = () => {
                   <UserCheck className="w-4 h-4 text-teal-600" />
                   Sales ID
                 </div>
-                <span className="text-[10px] text-slate-500 block">Prefix: SLS-xxxx</span>
+                <span className="text-[10px] text-slate-500 block">Prefix: TBG_SAL</span>
               </button>
 
               <button
                 type="button"
-                onClick={() => setFormData({ ...formData, role: 'operations' })}
+                onClick={() => handleRoleChange('operations')}
                 className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer ${
                   formData.role === 'operations'
                     ? 'border-blue-600 bg-blue-50 text-blue-900 ring-2 ring-blue-600/20'
@@ -643,12 +765,12 @@ export const AdminUsers: React.FC = () => {
                   <Building2 className="w-4 h-4 text-blue-600" />
                   Operations ID
                 </div>
-                <span className="text-[10px] text-slate-500 block">Prefix: OPS-xxxx</span>
+                <span className="text-[10px] text-slate-500 block">Prefix: TBG_OPE</span>
               </button>
 
               <button
                 type="button"
-                onClick={() => setFormData({ ...formData, role: 'agent' })}
+                onClick={() => handleRoleChange('agent')}
                 className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer ${
                   formData.role === 'agent'
                     ? 'border-amber-500 bg-amber-50 text-amber-900 ring-2 ring-amber-500/20'
@@ -664,7 +786,7 @@ export const AdminUsers: React.FC = () => {
 
               <button
                 type="button"
-                onClick={() => setFormData({ ...formData, role: 'customer' })}
+                onClick={() => handleRoleChange('customer')}
                 className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer ${
                   formData.role === 'customer'
                     ? 'border-emerald-600 bg-emerald-50 text-emerald-900 ring-2 ring-emerald-600/20'
@@ -680,141 +802,284 @@ export const AdminUsers: React.FC = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
+          {/* Row 1: Full Name & Corporate / Login Email */}
+          <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-xs font-bold text-[#082C43] block mb-1">
-                Full Name *
+              <label className="font-bold text-[#082C43] block mb-1">
+                {formData.role === 'customer' ? 'Customer Full Name *' : 'Employee Full Name *'}
               </label>
               <input
                 type="text"
                 required
-                placeholder="e.g. Anand Varma"
+                placeholder={formData.role === 'customer' ? 'e.g. Anand Varma' : 'e.g. Rahul Verma'}
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full px-3 py-2 text-xs rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:outline-none focus:ring-2 focus:ring-[#FF795C]/30"
+                className="w-full p-2 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] font-semibold text-xs text-[#082C43] transition-colors focus:outline-none focus:border-[#17648A]"
               />
             </div>
-
             <div>
-              <label className="text-xs font-bold text-[#082C43] block mb-1">
-                Email Address (Login ID) *
+              <label className="font-bold text-[#082C43] block mb-1">
+                {formData.role === 'customer' ? 'Customer Email (Login ID) *' : 'Corporate Email *'}
               </label>
               <input
                 type="email"
                 required
-                placeholder="e.g. anand@travelgenie.com"
+                placeholder={formData.role === 'customer' ? 'anand@gmail.com' : 'rahul.staff@travelgenie.com'}
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full px-3 py-2 text-xs rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:outline-none focus:ring-2 focus:ring-[#FF795C]/30"
-              />
-            </div>
-
-            <div>
-              <label className="text-xs font-bold text-[#082C43] block mb-1">
-                Direct Phone Number
-              </label>
-              <input
-                type="text"
-                placeholder="e.g. +91 99404 12345"
-                value={formData.phone}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                className="w-full px-3 py-2 text-xs rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:outline-none focus:ring-2 focus:ring-[#FF795C]/30"
-              />
-            </div>
-
-            <div>
-              <label className="text-xs font-bold text-[#082C43] block mb-1">
-                Initial Account Password *
-              </label>
-              <input
-                type="text"
-                required
-                placeholder="password123"
-                value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                className="w-full px-3 py-2 text-xs rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] focus:outline-none focus:ring-2 focus:ring-[#FF795C]/30 font-mono"
+                className="w-full p-2 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] font-semibold text-xs text-[#082C43] transition-colors focus:outline-none focus:border-[#17648A]"
               />
             </div>
           </div>
 
-          {/* Role specific dynamic fields */}
-          {formData.role === 'staff' && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2 border-t border-[#EFE7DA]">
-              <div>
-                <label className="text-xs font-bold text-[#082C43] block mb-1">
-                  Staff Designation
-                </label>
+          {/* Row 2: Mobile Number (with Country select) & ID Code */}
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="font-bold text-[#082C43] block mb-1">Mobile Number *</label>
+              <div className="flex gap-1.5">
+                <select
+                  value={formData.phoneExtension}
+                  onChange={(e) => setFormData({ ...formData, phoneExtension: e.target.value })}
+                  className="w-24 p-2 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] font-bold text-xs text-[#082C43] focus:outline-none shrink-0 cursor-pointer"
+                >
+                  {PHONE_EXTENSIONS.map((ext) => (
+                    <option key={ext.code} value={ext.code}>
+                      {ext.country}
+                    </option>
+                  ))}
+                </select>
                 <input
-                  type="text"
-                  placeholder="e.g. Senior Holiday Specialist"
-                  value={formData.designation}
-                  onChange={(e) => setFormData({ ...formData, designation: e.target.value })}
-                  className="w-full px-3 py-2 text-xs rounded-xl border border-[#EFE7DA] bg-[#FFFDF8]"
+                  type="tel"
+                  placeholder="98765 43210"
+                  value={formData.phone}
+                  onChange={(e) => {
+                    const val = e.target.value.replace(/[^\d\s-]/g, '');
+                    setFormData({ ...formData, phone: val });
+                  }}
+                  className="w-full p-2 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] font-semibold text-xs text-[#082C43] transition-colors focus:outline-none focus:border-[#17648A]"
                 />
               </div>
-              <div>
-                <label className="text-xs font-bold text-[#082C43] block mb-1">
-                  Department
+            </div>
+
+            <div>
+              <label className="font-bold text-[#082C43] block mb-1">
+                {formData.role === 'customer'
+                  ? 'Customer ID Code'
+                  : formData.role === 'agent'
+                  ? 'Agent Commercial ID'
+                  : 'Employee ID Code'}
+              </label>
+              <input
+                type="text"
+                value={formData.employee_id}
+                onChange={(e) => setFormData({ ...formData, employee_id: e.target.value })}
+                className="w-full p-2 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] font-mono font-bold text-xs text-[#082C43] transition-colors focus:outline-none focus:border-[#17648A]"
+              />
+              <span className="text-[10px] text-slate-400 mt-0.5 block truncate">
+                Auto-generated unique code (can be customized)
+              </span>
+            </div>
+          </div>
+
+          {/* Row 3: Temporary Password & Designation */}
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <div className="flex items-center justify-between mb-1">
+                <label className="font-bold text-[#082C43]">
+                  Temporary Login Password *
                 </label>
+                <button
+                  type="button"
+                  onClick={handleRegeneratePassword}
+                  className="text-[10px] font-semibold text-[#17648A] hover:underline flex items-center gap-1 cursor-pointer"
+                  title="Generate another password"
+                >
+                  <RefreshCw className="w-3 h-3" />
+                  Regenerate
+                </button>
+              </div>
+              <input
+                type="text"
+                readOnly
+                value={formData.password}
+                className="w-full p-2 rounded-xl border border-[#EFE7DA] bg-[#F8F1E7]/40 font-mono font-bold text-xs text-[#082C43] select-all cursor-not-allowed"
+              />
+              <span className="text-[10px] text-slate-400 mt-0.5 block truncate">
+                Auto-generated & encrypted on save
+              </span>
+            </div>
+
+            <div>
+              <label className="font-bold text-[#082C43] block mb-1">
+                Designation *
+              </label>
+              {formData.role === 'sales' || formData.role === 'operations' || formData.role === 'staff' ? (
+                <select
+                  value={formData.designation}
+                  onChange={(e) => {
+                    const desig = e.target.value;
+                    const isOps = desig === 'Operations';
+                    setFormData((prev) => ({
+                      ...prev,
+                      designation: desig,
+                      role: isOps ? 'operations' : 'sales',
+                      employee_id: generateNextEmployeeId(isOps ? 'Operations' : 'Sales', users),
+                      departments: isOps ? ['Travel & Transportation Operations'] : ['Holidays & International']
+                    }));
+                  }}
+                  className="w-full p-2 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] font-semibold text-xs text-[#082C43] focus:outline-none cursor-pointer"
+                >
+                  <option value="Sales">Sales</option>
+                  <option value="Operations">Operations</option>
+                </select>
+              ) : formData.role === 'manager' ? (
+                <select
+                  value={formData.designation}
+                  onChange={(e) => setFormData({ ...formData, designation: e.target.value })}
+                  className="w-full p-2 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] font-semibold text-xs text-[#082C43] focus:outline-none cursor-pointer"
+                >
+                  <option value="Operations Manager">Operations Manager</option>
+                  <option value="Sales & Business Manager">Sales & Business Manager</option>
+                  <option value="Branch Operations Lead">Branch Operations Lead</option>
+                </select>
+              ) : formData.role === 'agent' ? (
                 <input
                   type="text"
-                  placeholder="e.g. South India & International"
-                  value={formData.department}
-                  onChange={(e) => setFormData({ ...formData, department: e.target.value })}
-                  className="w-full px-3 py-2 text-xs rounded-xl border border-[#EFE7DA] bg-[#FFFDF8]"
+                  value={formData.designation}
+                  onChange={(e) => setFormData({ ...formData, designation: e.target.value })}
+                  placeholder="e.g. B2B Travel Partner"
+                  className="w-full p-2 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] font-semibold text-xs text-[#082C43] focus:outline-none"
                 />
+              ) : (
+                <input
+                  type="text"
+                  value={formData.designation}
+                  onChange={(e) => setFormData({ ...formData, designation: e.target.value })}
+                  placeholder="e.g. Traveler / Guest"
+                  className="w-full p-2 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] font-semibold text-xs text-[#082C43] focus:outline-none"
+                />
+              )}
+              <span className="text-[10px] text-slate-400 mt-0.5 block truncate">
+                {formData.role === 'sales' || formData.role === 'staff'
+                  ? 'Sales Dashboard Access'
+                  : formData.role === 'operations'
+                  ? 'Operations Dashboard Access'
+                  : formData.role === 'manager'
+                  ? 'Manager Operations Access'
+                  : formData.role === 'agent'
+                  ? 'B2B Wholesale Portal Access'
+                  : 'Customer Travel Portal Access'}
+              </span>
+            </div>
+          </div>
+
+          {/* Row 4: Department Multi-Select (for staff, sales, operations, manager) */}
+          {(formData.role === 'sales' || formData.role === 'operations' || formData.role === 'staff' || formData.role === 'manager') && (
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="font-bold text-[#082C43] flex items-center gap-1.5">
+                  <Layers className="w-3.5 h-3.5 text-[#17648A]" />
+                  Department (Multi-Select) *
+                </label>
+                <span className="text-[10px] font-bold text-[#17648A] bg-[#17648A]/10 px-2 py-0.5 rounded-full">
+                  {formData.departments.length} selected
+                </span>
+              </div>
+              <div className="grid grid-cols-2 gap-2 p-2.5 bg-[#FFFDF8] rounded-xl border border-[#EFE7DA]">
+                {(formData.role === 'operations' ? OPERATIONS_DEPARTMENT_OPTIONS : SALES_DEPARTMENT_OPTIONS).map((dept) => {
+                  const isSelected = formData.departments.includes(dept);
+                  return (
+                    <button
+                      key={dept}
+                      type="button"
+                      onClick={() => toggleDepartment(dept)}
+                      className={`flex items-center gap-2 p-2 rounded-lg text-xs font-semibold text-left transition-all border cursor-pointer ${
+                        isSelected
+                          ? 'bg-[#17648A] text-white border-[#17648A] shadow-xs'
+                          : 'bg-white text-slate-600 border-[#EFE7DA] hover:border-[#17648A]/40'
+                      }`}
+                    >
+                      <div
+                        className={`w-4 h-4 rounded flex items-center justify-center border text-[10px] shrink-0 ${
+                          isSelected ? 'bg-white text-[#17648A] border-white font-bold' : 'border-slate-300 bg-white'
+                        }`}
+                      >
+                        {isSelected ? '✓' : ''}
+                      </div>
+                      <span className="truncate">{dept}</span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
           )}
 
+          {/* Agent Specific Fields */}
           {formData.role === 'agent' && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2 border-t border-[#EFE7DA]">
+            <div className="grid grid-cols-2 gap-3 pt-1">
               <div>
-                <label className="text-xs font-bold text-[#082C43] block mb-1">
-                  B2B Agency / Company Name
+                <label className="font-bold text-[#082C43] block mb-1">
+                  B2B Agency / Company Name *
                 </label>
                 <input
                   type="text"
                   placeholder="e.g. Royal Travels Pvt Ltd"
                   value={formData.company_name}
                   onChange={(e) => setFormData({ ...formData, company_name: e.target.value })}
-                  className="w-full px-3 py-2 text-xs rounded-xl border border-[#EFE7DA] bg-[#FFFDF8]"
+                  className="w-full p-2 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] font-semibold text-xs text-[#082C43]"
+                  required
                 />
               </div>
               <div>
-                <label className="text-xs font-bold text-[#082C43] block mb-1">
-                  Wholesale Discount (%)
+                <label className="font-bold text-[#082C43] block mb-1">
+                  Wholesale Discount (%) *
                 </label>
                 <input
                   type="number"
                   placeholder="12"
                   value={formData.discount_pct}
                   onChange={(e) => setFormData({ ...formData, discount_pct: Number(e.target.value) })}
-                  className="w-full px-3 py-2 text-xs rounded-xl border border-[#EFE7DA] bg-[#FFFDF8]"
+                  className="w-full p-2 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] font-semibold text-xs text-[#082C43]"
+                  required
                 />
               </div>
             </div>
           )}
 
-          {formData.role === 'manager' && (
-            <div className="pt-2 border-t border-[#EFE7DA]">
-              <label className="text-xs font-bold text-[#082C43] block mb-1">
-                Managerial Portfolio / Division
-              </label>
-              <input
-                type="text"
-                placeholder="e.g. Operations & Catalog Lead"
-                value={formData.department}
-                onChange={(e) => setFormData({ ...formData, department: e.target.value })}
-                className="w-full px-3 py-2 text-xs rounded-xl border border-[#EFE7DA] bg-[#FFFDF8]"
-              />
+          {/* Customer Specific Fields */}
+          {formData.role === 'customer' && (
+            <div className="grid grid-cols-2 gap-3 pt-1">
+              <div>
+                <label className="font-bold text-[#082C43] block mb-1">
+                  Holiday Preference / Travel Notes
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. Luxury Family Tours, Beach & Adventure"
+                  value={formData.address}
+                  onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                  className="w-full p-2 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] font-semibold text-xs text-[#082C43]"
+                />
+              </div>
+              <div>
+                <label className="font-bold text-[#082C43] block mb-1">
+                  Emergency Contact / City
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. Mumbai, Maharashtra"
+                  value={formData.department}
+                  onChange={(e) => setFormData({ ...formData, department: e.target.value })}
+                  className="w-full p-2 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] font-semibold text-xs text-[#082C43]"
+                />
+              </div>
             </div>
           )}
 
-          <div className="flex items-center justify-end gap-2 pt-4 border-t border-[#EFE7DA]">
+          <div className="pt-2 flex justify-end gap-2 border-t border-[#EFE7DA]">
             <Button
               type="button"
-              variant="outline"
+              variant="ghost"
               size="sm"
               onClick={() => setIsCreateModalOpen(false)}
             >
@@ -826,7 +1091,7 @@ export const AdminUsers: React.FC = () => {
               size="sm"
               isLoading={isSubmitting}
             >
-              Activate & Issue ID
+              Create Account & Send Invite
             </Button>
           </div>
         </form>

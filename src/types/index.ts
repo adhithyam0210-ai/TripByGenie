@@ -369,6 +369,7 @@ export interface Booking {
   customer_name: string;
   customer_email?: string;
   agent_id?: string | null;
+  agent_name?: string | null;
   package_id: string;
   package_title: string;
   travel_start_date: string;
@@ -381,6 +382,12 @@ export interface Booking {
   booking_status: BookingStatus;
   special_requests?: string;
   created_at: string;
+  sales_executive_id?: string | null;
+  sales_executive_name?: string | null;
+  assigned_staff_id?: string | null;
+  assigned_staff_name?: string | null;
+  assigned_staff_department?: string | null;
+  assigned_team?: any[];
 }
 
 export interface Payment {

@@ -802,66 +802,9 @@ export const Home: React.FC = () => {
       </section>
 
       {/* ======================================================== */}
-      {/* SECTION 2: TOURISM PACKAGE CATEGORIES (from tripbygenie) */}
+      {/* SECTION 2: POPULAR DESTINATIONS                          */}
       {/* ======================================================== */}
-      <section className="py-6 sm:py-8 bg-[#FFFDF8] relative">
-        <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
-          <div className="text-center max-w-3xl mx-auto mb-5 sm:mb-6">
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-[#082C43] font-display">
-              Handpicked Holiday Collections
-            </h2>
-            <p className="text-sm text-[#173247]/75 mt-1.5">
-              From idyllic backwaters and tea hills in South India to world-renowned global landmarks, find the perfect tour crafted with 4-star comfort.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
-            {quickTourismCategories.map((cat) => (
-              <Link
-                key={cat.title}
-                to={cat.link}
-                className="group relative rounded-3xl overflow-hidden shadow-lg border border-[#EFE7DA] bg-white hover:-translate-y-1.5 transition-all duration-300"
-              >
-                <div className="relative h-56 overflow-hidden">
-                  <img
-                    src={cat.img}
-                    alt={cat.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                    onError={(e) => {
-                      const target = e.currentTarget;
-                      target.onerror = null;
-                      target.src = 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=600&q=80';
-                    }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#082C43]/90 via-[#082C43]/30 to-transparent" />
-                  <span className="absolute top-4 right-4 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[#082C43]/85 text-white shadow-sm border border-white/20 backdrop-blur-xs">
-                    {cat.tag}
-                  </span>
-                </div>
-
-                <div className="p-5">
-                  <h3 className="text-lg font-bold text-[#082C43] group-hover:text-[#FF795C] transition-colors font-display">
-                    {cat.title}
-                  </h3>
-                  <p className="text-xs text-gray-500 mt-1 line-clamp-2">
-                    {cat.desc}
-                  </p>
-                  <div className="mt-4 flex items-center justify-between text-xs font-bold text-[#17648A] group-hover:text-[#FF795C]">
-                    <span>View Itineraries & Pricing</span>
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ======================================================== */}
-      {/* SECTION 3: POPULAR DESTINATIONS                          */}
-      {/* ======================================================== */}
-      <section className="py-6 sm:py-8 relative bg-[#F8F1E7]/40 border-y border-[#EFE7DA]">
+      <section className="py-6 sm:py-8 relative bg-[#F8F1E7]/40 border-b border-[#EFE7DA]">
         <TravelPatternBg variant="cream" opacity={0.04} />
 
         <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 relative z-10">
@@ -922,6 +865,63 @@ export const Home: React.FC = () => {
                 Explore All Destinations →
               </Button>
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ======================================================== */}
+      {/* SECTION 3: TOURISM PACKAGE CATEGORIES (from tripbygenie) */}
+      {/* ======================================================== */}
+      <section className="py-6 sm:py-8 bg-[#FFFDF8] relative">
+        <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
+          <div className="text-center max-w-3xl mx-auto mb-5 sm:mb-6">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-[#082C43] font-display">
+              Handpicked Holiday Collections
+            </h2>
+            <p className="text-sm text-[#173247]/75 mt-1.5">
+              From idyllic backwaters and tea hills in South India to world-renowned global landmarks, find the perfect tour crafted with 4-star comfort.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+            {quickTourismCategories.map((cat) => (
+              <Link
+                key={cat.title}
+                to={cat.link}
+                className="group relative rounded-3xl overflow-hidden shadow-lg border border-[#EFE7DA] bg-white hover:-translate-y-1.5 transition-all duration-300"
+              >
+                <div className="relative h-56 overflow-hidden">
+                  <img
+                    src={cat.img}
+                    alt={cat.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      target.onerror = null;
+                      target.src = 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=600&q=80';
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#082C43]/90 via-[#082C43]/30 to-transparent" />
+                  <span className="absolute top-4 right-4 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[#082C43]/85 text-white shadow-sm border border-white/20 backdrop-blur-xs">
+                    {cat.tag}
+                  </span>
+                </div>
+
+                <div className="p-5">
+                  <h3 className="text-lg font-bold text-[#082C43] group-hover:text-[#FF795C] transition-colors font-display">
+                    {cat.title}
+                  </h3>
+                  <p className="text-xs text-gray-500 mt-1 line-clamp-2">
+                    {cat.desc}
+                  </p>
+                  <div className="mt-4 flex items-center justify-between text-xs font-bold text-[#17648A] group-hover:text-[#FF795C]">
+                    <span>View Itineraries & Pricing</span>
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
       </section>

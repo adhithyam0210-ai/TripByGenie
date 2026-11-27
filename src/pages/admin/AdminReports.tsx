@@ -46,7 +46,10 @@ export const AdminReports: React.FC = () => {
       a.remove();
       window.URL.revokeObjectURL(url);
 
-      success(`Exported ${type} data as CSV file!`);
+      success(
+        `Generated and downloaded ${type === 'leads' ? 'Leads & Enquiries' : 'Confirmed Bookings'} archive as CSV.`,
+        { title: `${type === 'leads' ? 'Leads' : 'Bookings'} CSV Ready` }
+      );
     } catch (err: any) {
       error(err.message || 'Export error');
     }

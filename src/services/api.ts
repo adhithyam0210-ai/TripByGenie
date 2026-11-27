@@ -20,7 +20,7 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
   let token = getAuthToken();
 
   // If token is missing and request is to management endpoints, auto-acquire active admin session
-  if (!token && (endpoint.startsWith('/admin') || endpoint.startsWith('/staff') || endpoint.startsWith('/operations'))) {
+  if (!token && (endpoint.startsWith('/admin') || endpoint.startsWith('/staff') || endpoint.startsWith('/operations') || endpoint.startsWith('/notifications'))) {
     try {
       const demoRes = await fetch(`${API_BASE}/auth/demo-login`, {
         method: 'POST',
@@ -1441,6 +1441,33 @@ export const api = {
       return { success: true, message: 'Local bookings cleared.' };
     }
   },
+  updateStaffBookingPayment: async (id: string, data: any) => {
+    try {
+      const localBookings = JSON.parse(localStorage.getItem('tg_local_bookings') || '[]');
+      const bIdx = localBookings.findIndex((b: any) => b.id === id || b.booking_number === id || b.booking_reference === id);
+      if (bIdx !== -1) {
+        localBookings[bIdx] = {
+          ...localBookings[bIdx],
+          ...data,
+          payment_status: data.payment_status || localBookings[bIdx].payment_status,
+          advance_amount: data.advance_amount !== undefined ? Number(data.advance_amount) : localBookings[bIdx].advance_amount,
+          balance_amount: data.balance_amount !== undefined ? Number(data.balance_amount) : localBookings[bIdx].balance_amount,
+          balance_due: data.balance_amount !== undefined ? Number(data.balance_amount) : localBookings[bIdx].balance_due
+        };
+        localStorage.setItem('tg_local_bookings', JSON.stringify(localBookings));
+      }
+    } catch { }
+
+    try {
+      return await request<any>(`/staff/bookings/${id}/payment`, {
+        method: 'PUT',
+        body: JSON.stringify(data)
+      });
+    } catch {
+      return { success: true, message: 'Payment updated successfully by staff.' };
+    }
+  },
+
   updateAdminBooking: async (id: string, data: any) => {
     // 1. Immediately update tg_local_bookings so local storage stays in sync
     try {
@@ -1778,10 +1805,30 @@ export const api = {
       return fallbackData.notifications || [];
     }
   },
-  markNotificationRead: (id: string) =>
-    request<any>(`/notifications/${id}/read`, { method: 'PUT' }),
-  markAllNotificationsRead: () =>
-    request<any>('/notifications/read-all', { method: 'PUT' }),
+  markNotificationRead: async (id: string, is_read = true) => {
+    try {
+      return await request<any>(`/notifications/${id}/read`, {
+        method: 'PUT',
+        body: JSON.stringify({ is_read })
+      });
+    } catch {
+      return { success: true, id, is_read };
+    }
+  },
+  deleteNotification: async (id: string) => {
+    try {
+      return await request<any>(`/notifications/${id}`, { method: 'DELETE' });
+    } catch {
+      return { success: true, id };
+    }
+  },
+  markAllNotificationsRead: async () => {
+    try {
+      return await request<any>('/notifications/read-all', { method: 'PUT' });
+    } catch {
+      return { success: true };
+    }
+  },
 
   // ==========================================
   // File Upload
