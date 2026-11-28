@@ -2074,8 +2074,9 @@ app.get('/api/admin/leads', authenticate, authorize(['admin', 'manager']), (req,
   if (status && status !== 'all') {
     const sLower = status.toLowerCase();
     if (sLower === 'unassigned' || sLower === 'new') {
-      allLeads = allLeads.filter(l => !l.assigned_staff_id || (l.status && (l.status.toLowerCase() === 'new' || l.status.toLowerCase() === 'unassigned')));
+      allLeads = allLeads.filter(l => !l.assigned_staff_id && (!l.status || l.status.toLowerCase() === 'new' || l.status.toLowerCase() === 'unassigned'));
     } else if (sLower === 'assigned') {
+      allLeads = allLeads.filter(l => !!l.assigned_staff_id || (l.status && (l.status.toLowerCase() === 'assigned' || l.status.toLowerCase() === 'new assigned')));
     } else if (sLower === 'contacted') {
       allLeads = allLeads.filter(l => l.status && l.status.toLowerCase() === 'contacted');
     } else if (sLower === 'qualified') {

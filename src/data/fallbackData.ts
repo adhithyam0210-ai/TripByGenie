@@ -67286,6 +67286,25 @@ export const fallbackData = {
   ],
   "leads": [
     {
+      "id": "lead_adhithya_test1",
+      "agency_id": "agency_travel_genie",
+      "customer_id": "cust_adhithya_test1",
+      "customer_name": "Adhithya test1",
+      "customer_email": "adhithya.test1@example.com",
+      "customer_phone": "+91 9361814601",
+      "interested_destination": "Manali",
+      "travel_date": "",
+      "travelers_count": 2,
+      "budget": "Flexible",
+      "lead_source": "Universal Landing Page",
+      "status": "New",
+      "assigned_staff_id": null,
+      "assigned_staff_name": "Unassigned",
+      "follow_up_date": null,
+      "notes": "Tour enquiry for Manali.",
+      "created_at": "2026-11-28T08:00:00.000Z"
+    },
+    {
       "id": "lead_pn83s3uel",
       "agency_id": "agency_travel_genie",
       "customer_id": "cust_nithin",

@@ -176,13 +176,16 @@ export const AdminLeads: React.FC = () => {
           notes: 'Unassigned via lead details modal.'
         });
         success('Lead unassigned successfully.');
+        setSelectedLead(null);
+        setLeadDetails(null);
+        setLeads((prev) =>
+          prev.map((l) =>
+            l.id === selectedLead.id
+              ? { ...l, assigned_staff_id: null, assigned_staff_name: 'Unassigned', status: 'New' }
+              : l
+          )
+        );
         loadLeads();
-        setSelectedLead((prev) => prev ? {
-          ...prev,
-          assigned_staff_id: null,
-          assigned_staff_name: 'Unassigned',
-          status: 'New'
-        } : null);
       } catch (err: any) {
         error(err.message || 'Failed to unassign lead.');
       } finally {
@@ -209,13 +212,18 @@ export const AdminLeads: React.FC = () => {
       });
       const assignedName = assignedStaff ? assignedStaff.name : 'Unassigned';
       success(`Lead successfully assigned to ${assignedName}!`);
+      // Close the modal immediately so it does not stay open
+      setSelectedLead(null);
+      setLeadDetails(null);
+      // Optimistically update the lead in the table
+      setLeads((prev) =>
+        prev.map((l) =>
+          l.id === selectedLead.id
+            ? { ...l, assigned_staff_id: modalSelectedStaffId, assigned_staff_name: assignedName, status: 'Assigned' }
+            : l
+        )
+      );
       loadLeads();
-      setSelectedLead((prev) => prev ? {
-        ...prev,
-        assigned_staff_id: modalSelectedStaffId,
-        assigned_staff_name: assignedName,
-        status: 'Assigned'
-      } : null);
     } catch (err: any) {
       error(err.message || 'Failed to assign lead.');
     } finally {
@@ -304,13 +312,21 @@ export const AdminLeads: React.FC = () => {
   const handleDeleteLead = async (id: string) => {
     if (!confirm('Are you sure you want to delete this lead?')) return;
     try {
+      // Optimistically remove from state so the item disappears immediately
+      setLeads((prev) => prev.filter((item) => item.id !== id));
+      setTotalLeads((prev) => Math.max(0, prev - 1));
+      if (selectedLead?.id === id) {
+        setSelectedLead(null);
+        setLeadDetails(null);
+      }
+      setSelectedLeadIds((prev) => prev.filter((item) => item !== id));
+
       await api.deleteAdminLead(id);
       success('Lead deleted successfully.');
-      if (selectedLead?.id === id) setSelectedLead(null);
-      setSelectedLeadIds((prev) => prev.filter((item) => item !== id));
       loadLeads();
     } catch (err: any) {
       error(err.message || 'Failed to delete lead.');
+      loadLeads();
     }
   };
 
@@ -372,6 +388,7 @@ export const AdminLeads: React.FC = () => {
               }}
               className="p-2 rounded-xl bg-[#F8F1E7]/50 border border-[#EFE7DA] font-semibold text-[#082C43] focus:outline-none"
             >
+              <option value="all">All Enquiries & Leads</option>
               <option value="New">New Enquiries</option>
               <option value="Assigned">Assigned Leads</option>
               <option value="Contacted">Contacted Leads</option>

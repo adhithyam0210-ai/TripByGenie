@@ -78,9 +78,9 @@
       "status": "active",
       "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
       "created_at": "2026-01-01T10:00:00.000Z",
-      "updated_at": "2026-11-28T07:24:59.252Z",
+      "updated_at": "2026-11-28T08:32:45.434Z",
       "branch_id": "br_chennai_hq",
-      "last_login_at": "2026-11-28T07:24:59.252Z"
+      "last_login_at": "2026-11-28T08:32:45.433Z"
     },
     {
       "id": "usr_manager_genie",
@@ -624,14 +624,14 @@
       "name": "ADHITHYA M",
       "email": "2224084@saec.ac.in",
       "phone": "+91 9361814601",
-      "password_hash": "$2b$10$SkOZtyGlVQ1MAIgrtbZAAecp0Y21Z8fDe3JZ1CWB.awYxn9.y/TlG",
+      "password_hash": "$2b$10$7iLXblZUWDjYhvuhQ0Sa..OFJJMmGzRKDPv8Kq5UtafCaANdQRsWG",
       "status": "active",
       "account_status": "ACTIVE",
       "activation_status": "ACTIVE",
       "created_at": "2026-11-24T03:13:04.709Z",
       "id": "use_ea6bb81016",
-      "updated_at": "2026-11-28T05:47:22.438Z",
-      "temp_password": "TestPassword@123"
+      "updated_at": "2026-11-28T08:34:44.347Z",
+      "temp_password": "Genie@2171"
     },
     {
       "agency_id": "agency_travel_genie",
@@ -4524,7 +4524,8 @@
       "preferred_currency": "INR",
       "id": "cus_f115f60040",
       "created_at": "2026-11-24T03:13:04.818Z",
-      "updated_at": "2026-11-24T03:13:04.818Z"
+      "updated_at": "2026-11-28T08:34:44.516Z",
+      "emergency_contact": "+91 9361814601"
     },
     {
       "user_id": "use_33588e349b",
@@ -72078,6 +72079,25 @@
   ],
   "leads": [
     {
+      "id": "lead_adhithya_test1",
+      "agency_id": "agency_travel_genie",
+      "customer_id": "cust_adhithya_test1",
+      "customer_name": "Adhithya test1",
+      "customer_email": "adhithya.test1@example.com",
+      "customer_phone": "+91 9361814601",
+      "interested_destination": "Manali",
+      "travel_date": "",
+      "travelers_count": 2,
+      "budget": "Flexible",
+      "lead_source": "Universal Landing Page",
+      "status": "New",
+      "assigned_staff_id": null,
+      "assigned_staff_name": "Unassigned",
+      "follow_up_date": null,
+      "notes": "Tour enquiry for Manali.",
+      "created_at": "2026-11-28T08:54:05.884Z"
+    },
+    {
       "id": "lead_pn83s3uel",
       "agency_id": "agency_travel_genie",
       "customer_id": "cust_nithin",
@@ -72094,7 +72114,64 @@
       "assigned_staff_name": "Unassigned",
       "follow_up_date": null,
       "notes": "New customer self-signup. Manager: Assign to Sales Executive to verify travel preferences and issue official Customer ID & Credentials.",
-      "created_at": "2026-11-27T16:52:11.435Z"
+      "created_at": "2026-11-27T16:52:00.000Z"
+    },
+    {
+      "id": "lead_0ugrv87jz",
+      "agency_id": "agency_travel_genie",
+      "customer_id": "cust_ramesh",
+      "customer_name": "Ramesh Sharma",
+      "customer_email": "ramesh.paid_1795458419670@example.com",
+      "customer_phone": "+91 9876543211",
+      "interested_destination": "Direct Traveler Registration",
+      "travel_date": "",
+      "travelers_count": 2,
+      "budget": "Flexible",
+      "lead_source": "New User Sign Up",
+      "status": "New",
+      "assigned_staff_id": null,
+      "assigned_staff_name": "Unassigned",
+      "follow_up_date": null,
+      "notes": "New customer self-signup. Manager: Assign to Sales Executive to verify travel preferences and issue official Customer ID & Credentials.",
+      "created_at": "2026-11-27T16:22:37.551Z"
+    },
+    {
+      "id": "lead_48jjwvr78",
+      "agency_id": "agency_travel_genie",
+      "customer_id": "cust_adhithya",
+      "customer_name": "ADHITHYA M",
+      "customer_email": "2224084@saec.ac.in",
+      "customer_phone": "+91 9361814601",
+      "interested_destination": "Direct Traveler Registration",
+      "travel_date": "",
+      "travelers_count": 2,
+      "budget": "Flexible",
+      "lead_source": "New User Sign Up",
+      "status": "New",
+      "assigned_staff_id": null,
+      "assigned_staff_name": "Unassigned",
+      "follow_up_date": null,
+      "notes": "New customer self-signup. Manager: Assign to Sales Executive to verify travel preferences and issue official Customer ID & Credentials.",
+      "created_at": "2026-11-27T16:22:37.554Z"
+    },
+    {
+      "id": "lead_mig2lh20d",
+      "agency_id": "agency_travel_genie",
+      "customer_id": "cust_zomato",
+      "customer_name": "Zomato Regional Marketing Meet",
+      "customer_email": "cr9092819654@gmail.com",
+      "customer_phone": "+91 9092819654",
+      "interested_destination": "Direct Traveler Registration",
+      "travel_date": "",
+      "travelers_count": 2,
+      "budget": "Flexible",
+      "lead_source": "New User Sign Up",
+      "status": "New",
+      "assigned_staff_id": null,
+      "assigned_staff_name": "Unassigned",
+      "follow_up_date": null,
+      "notes": "New customer self-signup. Manager: Assign to Sales Executive to verify travel preferences and issue official Customer ID & Credentials.",
+      "created_at": "2026-11-27T16:22:37.554Z"
     },
     {
       "id": "ENQ-2026-0101",
@@ -72418,26 +72495,6 @@
       "assigned_staff_name": "Vikramaditya Rao",
       "assigned_to": "Vikramaditya Rao",
       "created_at": "2026-11-24T05:28:32.809Z"
-    },
-    {
-      "id": "ENQ-2026-0402",
-      "agency_id": "agency_travel_genie",
-      "enquiry_id": "ENQ-2026-0402",
-      "customer_id": null,
-      "customer_name": "Zomato Regional Marketing Meet",
-      "customer_email": "marketing.offsite@zomato.com",
-      "customer_phone": "+91 9887982157",
-      "country": "India",
-      "city": "Mumbai",
-      "departure_city": "Mumbai",
-      "destination": "Udaipur Fateh Garh Heritage Conclave",
-      "interested_destination": "Udaipur Fateh Garh Heritage Conclave",
-      "budget": "₹4,90,000",
-      "status": "Converted",
-      "assigned_staff_id": "usr_staff_vikram",
-      "assigned_staff_name": "Vikramaditya Rao",
-      "assigned_to": "Vikramaditya Rao",
-      "created_at": "2026-11-23T04:50:19.344Z"
     },
     {
       "id": "ENQ-2026-0403",
@@ -75274,72 +75331,6 @@
       "conversion_status": "APPROVED",
       "customer_id": "use_404e7a4066",
       "customer_code": "CUS-2026-0195"
-    },
-    {
-      "id": "lead_0ugrv87jz",
-      "agency_id": "agency_travel_genie",
-      "customer_id": "use_c819b0a987",
-      "customer_name": "Ramesh Sharma",
-      "customer_email": "ramesh.paid_1795458419670@example.com",
-      "customer_phone": "9876543210",
-      "interested_destination": "Direct Traveler Registration",
-      "interested_package_id": null,
-      "travel_date": "",
-      "travelers_count": 2,
-      "budget": "Flexible",
-      "lead_source": "New User Sign Up",
-      "status": "New",
-      "assigned_staff_id": null,
-      "assigned_staff_name": "Unassigned",
-      "follow_up_date": null,
-      "notes": "New customer self-signup. Manager: Assign to Sales Executive to verify travel preferences and issue official Customer ID & Credentials.\n[28/11/2026, 11:16:51 am] Customer portal credentials created by Priya Nair. Invitation link dispatched to ramesh.paid_1795458419670@example.com.",
-      "created_at": "2026-11-27T16:22:37.551Z",
-      "customer_code": "CUS-2026-0032",
-      "updated_at": "2026-11-28T05:46:51.896Z"
-    },
-    {
-      "id": "lead_48jjwvr78",
-      "agency_id": "agency_travel_genie",
-      "customer_id": "use_ea6bb81016",
-      "customer_name": "ADHITHYA M",
-      "customer_email": "2224084@saec.ac.in",
-      "customer_phone": "+91 9361814601",
-      "interested_destination": "Direct Traveler Registration",
-      "interested_package_id": null,
-      "travel_date": "",
-      "travelers_count": 2,
-      "budget": "Flexible",
-      "lead_source": "New User Sign Up",
-      "status": "New",
-      "assigned_staff_id": null,
-      "assigned_staff_name": "Unassigned",
-      "follow_up_date": null,
-      "notes": "New customer self-signup. Manager: Assign to Sales Executive to verify travel preferences and issue official Customer ID & Credentials.\n[28/11/2026, 11:17:22 am] Customer portal credentials created by Priya Nair. Invitation link dispatched to 2224084@saec.ac.in.",
-      "created_at": "2026-11-27T16:22:37.554Z",
-      "customer_code": "CUS-2026-0037",
-      "updated_at": "2026-11-28T05:47:22.658Z"
-    },
-    {
-      "id": "lead_mig2lh20d",
-      "agency_id": "agency_travel_genie",
-      "customer_id": "use_b47a34b8c3",
-      "customer_name": "Zomato Regional Marketing Meet",
-      "customer_email": "cr9092819654@gmail.com",
-      "customer_phone": "",
-      "interested_destination": "Direct Traveler Registration",
-      "interested_package_id": null,
-      "travel_date": "",
-      "travelers_count": 2,
-      "budget": "Flexible",
-      "lead_source": "New User Sign Up",
-      "status": "New",
-      "assigned_staff_id": null,
-      "assigned_staff_name": "Unassigned",
-      "follow_up_date": null,
-      "notes": "New customer self-signup. Manager: Assign to Sales Executive to verify travel preferences and issue official Customer ID & Credentials.\n[28/11/2026, 11:17:53 am] Customer portal credentials created by Priya Nair. Invitation link dispatched to cr9092819654@gmail.com.",
-      "created_at": "2026-11-27T16:22:37.554Z",
-      "customer_code": "CUS-2026-0114",
-      "updated_at": "2026-11-28T05:47:53.453Z"
     },
     {
       "agency_id": "agency_travel_genie",
@@ -80080,6 +80071,35 @@
       "id": "lea_0132f92bf4",
       "created_at": "2026-11-28T07:25:03.701Z",
       "updated_at": "2026-11-28T07:25:03.701Z"
+    },
+    {
+      "lead_id": "lead_pn83s3uel",
+      "user_id": "usr_admin_genie",
+      "activity_type": "assignment",
+      "description": "Assigned to Priya Nair (Team: Priya Nair) by Admin/Manager. ",
+      "id": "lea_8a3f22374b",
+      "created_at": "2026-11-28T08:20:43.030Z",
+      "updated_at": "2026-11-28T08:20:43.030Z"
+    },
+    {
+      "lead_id": "lead_48jjwvr78",
+      "user_id": "usr_manager_genie",
+      "activity_type": "assignment",
+      "description": "Assigned to Priya Nair (Team: Priya Nair) by Admin/Manager. Assigned via lead details modal.",
+      "id": "lea_152dbfa4b3",
+      "created_at": "2026-11-28T08:33:23.982Z",
+      "updated_at": "2026-11-28T08:33:23.982Z"
+    },
+    {
+      "lead_id": "lead_48jjwvr78",
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_staff_priya",
+      "user_name": "Priya Nair",
+      "type": "CREDENTIALS_PROVISIONED",
+      "description": "Staff Priya Nair created customer login ID (CUS-2026-0037) and sent invitation link to 2224084@saec.ac.in.",
+      "created_at": "2026-11-28T08:34:45.227Z",
+      "id": "lea_d4ce4daff1",
+      "updated_at": "2026-11-28T08:34:45.371Z"
     }
   ],
   "quotations": [
@@ -99361,6 +99381,30 @@
       "id": "not_9bb0d80f62",
       "created_at": "2026-11-28T07:25:10.045Z",
       "updated_at": "2026-11-28T07:25:10.045Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_staff_priya",
+      "title": "Leads Assigned",
+      "message": "You have been assigned 1 lead(s) by Operations Manager.",
+      "type": "info",
+      "link": "/staff/leads",
+      "is_read": false,
+      "id": "not_0aba486bb6",
+      "created_at": "2026-11-28T08:20:43.262Z",
+      "updated_at": "2026-11-28T08:20:43.262Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_staff_priya",
+      "title": "Leads Assigned",
+      "message": "You have been assigned 1 lead(s) by Operations Manager.",
+      "type": "info",
+      "link": "/staff/leads",
+      "is_read": false,
+      "id": "not_febeaa6dd0",
+      "created_at": "2026-11-28T08:33:25.604Z",
+      "updated_at": "2026-11-28T08:33:25.604Z"
     }
   ],
   "travel_services": [
@@ -100962,7 +101006,7 @@
       "phone": "+91 9361814601",
       "status": "ACTIVE",
       "created_at": "2026-11-24T03:13:04.927Z",
-      "updated_at": "2026-11-28T05:47:22.558Z"
+      "updated_at": "2026-11-28T08:34:44.758Z"
     },
     {
       "id": "CUS-2026-0039",
@@ -105880,6 +105924,38 @@
       "id": "lea_5add3b710e",
       "created_at": "2026-11-28T07:24:59.648Z",
       "updated_at": "2026-11-28T07:24:59.648Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lead_pn83s3uel",
+      "assigned_by": "usr_admin_genie",
+      "assigned_by_name": "Aditya Sharma (Super Admin)",
+      "staff_id": "usr_staff_priya",
+      "staff_name": "Priya Nair",
+      "is_primary": true,
+      "previous_staff_id": null,
+      "previous_staff_name": "Unassigned",
+      "notes": "",
+      "assigned_at": "2026-11-28T08:20:42.733Z",
+      "id": "lea_c9d02a0542",
+      "created_at": "2026-11-28T08:20:42.799Z",
+      "updated_at": "2026-11-28T08:20:42.799Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lead_48jjwvr78",
+      "assigned_by": "usr_manager_genie",
+      "assigned_by_name": "Rajesh Kumar (Operations Manager)",
+      "staff_id": "usr_staff_priya",
+      "staff_name": "Priya Nair",
+      "is_primary": true,
+      "previous_staff_id": null,
+      "previous_staff_name": "Unassigned",
+      "notes": "Assigned via lead details modal.",
+      "assigned_at": "2026-11-28T08:33:23.041Z",
+      "id": "lea_64355d4a68",
+      "created_at": "2026-11-28T08:33:23.222Z",
+      "updated_at": "2026-11-28T08:33:23.222Z"
     }
   ],
   "follow_ups": [
@@ -120622,6 +120698,81 @@
       "id": "aud_3e32b538fe",
       "created_at": "2026-11-28T07:25:09.650Z",
       "updated_at": "2026-11-28T07:25:09.650Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_admin_genie",
+      "action": "ASSIGN_LEAD",
+      "entity_type": "lead",
+      "entity_id": "lead_pn83s3uel",
+      "details": {
+        "primary_staff_id": "usr_staff_priya",
+        "primary_staff_name": "Priya Nair",
+        "team": [
+          {
+            "staff_id": "usr_staff_priya",
+            "staff_name": "Priya Nair",
+            "role": "staff",
+            "departments": [
+              "Holidays & International",
+              "Honeymoon Specialists"
+            ],
+            "is_primary": true,
+            "assigned_at": "2026-11-28T08:20:42.675Z"
+          }
+        ],
+        "previous_staff_id": null
+      },
+      "timestamp": "2026-11-28T08:20:43.089Z",
+      "id": "aud_fc19f9f57d",
+      "created_at": "2026-11-28T08:20:43.143Z",
+      "updated_at": "2026-11-28T08:20:43.143Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_manager_genie",
+      "action": "ASSIGN_LEAD",
+      "entity_type": "lead",
+      "entity_id": "lead_48jjwvr78",
+      "details": {
+        "primary_staff_id": "usr_staff_priya",
+        "primary_staff_name": "Priya Nair",
+        "team": [
+          {
+            "staff_id": "usr_staff_priya",
+            "staff_name": "Priya Nair",
+            "role": "staff",
+            "departments": [
+              "Holidays & International",
+              "Honeymoon Specialists"
+            ],
+            "is_primary": true,
+            "assigned_at": "2026-11-28T08:33:22.892Z"
+          }
+        ],
+        "previous_staff_id": null,
+        "notes": "Assigned via lead details modal."
+      },
+      "timestamp": "2026-11-28T08:33:24.327Z",
+      "id": "aud_3a4c56fa5f",
+      "created_at": "2026-11-28T08:33:24.631Z",
+      "updated_at": "2026-11-28T08:33:24.631Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "user_id": "usr_staff_priya",
+      "action": "CREATE_CUSTOMER_LOGIN_FOR_LEAD",
+      "entity_type": "lead",
+      "entity_id": "lead_48jjwvr78",
+      "details": {
+        "customer_id": "CUS-2026-0037",
+        "customer_email": "2224084@saec.ac.in",
+        "lead_id": "lead_48jjwvr78"
+      },
+      "timestamp": "2026-11-28T08:34:45.588Z",
+      "id": "aud_6cecc9b417",
+      "created_at": "2026-11-28T08:34:45.692Z",
+      "updated_at": "2026-11-28T08:34:45.692Z"
     }
   ],
   "system_settings": [
@@ -125245,6 +125396,28 @@
       "created_at": "2026-11-28T07:25:03.553Z",
       "id": "lea_c9b08c875f",
       "updated_at": "2026-11-28T07:25:03.596Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lead_pn83s3uel",
+      "from_status": "New",
+      "to_status": "Assigned",
+      "changed_by": "usr_admin_genie",
+      "notes": "Lead assigned to Priya Nair. ",
+      "created_at": "2026-11-28T08:20:42.859Z",
+      "id": "lea_396f2386ab",
+      "updated_at": "2026-11-28T08:20:42.924Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "lead_id": "lead_48jjwvr78",
+      "from_status": "New",
+      "to_status": "Assigned",
+      "changed_by": "usr_manager_genie",
+      "notes": "Lead assigned to Priya Nair. Assigned via lead details modal.",
+      "created_at": "2026-11-28T08:33:23.351Z",
+      "id": "lea_3e0d38c5d6",
+      "updated_at": "2026-11-28T08:33:23.476Z"
     }
   ],
   "email_logs": [
@@ -131762,6 +131935,23 @@
       "id": "ema_f5f2fa3469",
       "created_at": "2026-11-28T07:25:08.701Z",
       "updated_at": "2026-11-28T07:25:08.701Z"
+    },
+    {
+      "agency_id": "agency_travel_genie",
+      "to_email": "2224084@saec.ac.in",
+      "subject": "Your Travel Account Is Ready – Access Your Booking Details",
+      "template_name": "CUSTOMER_ACCOUNT_INVITATION",
+      "status": "DELIVERED",
+      "metadata": {
+        "customer_id": "CUS-2026-0037",
+        "booking_id": "lead_48jjwvr78",
+        "activation_link": "http://localhost:3002/activate-account?token=direct_login",
+        "activation_token_preview": "direct_l..."
+      },
+      "sent_at": "2026-11-28T08:34:51.681Z",
+      "id": "ema_a176a109ff",
+      "created_at": "2026-11-28T08:34:51.706Z",
+      "updated_at": "2026-11-28T08:34:51.706Z"
     }
   ],
   "customer_account_invitations": [
@@ -143195,6 +143385,32 @@
       "created_at": "2026-11-28T07:25:10.386Z",
       "id": "ref_d3de6f6f89",
       "updated_at": "2026-11-28T07:25:10.435Z"
+    },
+    {
+      "user_id": "usr_admin_genie",
+      "token_hash": "129641b2c2089df9b8b2e768c0598a760200427e69bd2f13f965f3ce5d94e029",
+      "family_id": "17ff34c8-7394-4446-9603-4aee1fe7934d",
+      "is_revoked": true,
+      "expires_at": "2026-12-05T08:32:45.540Z",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/158.0.0.0 Safari/537.36 Edg/158.0.0.0",
+      "ip_address": "::1",
+      "created_at": "2026-11-28T08:32:45.541Z",
+      "id": "ref_3a2cc10287",
+      "updated_at": "2026-11-28T09:13:15.278Z",
+      "revoked_at": "2026-11-28T09:13:15.277Z"
+    },
+    {
+      "user_id": "usr_admin_genie",
+      "token_hash": "4a854b4d1d0934617241a267582342eb4e6cc1e227b297793f13e60d2b9c5fa0",
+      "family_id": "17ff34c8-7394-4446-9603-4aee1fe7934d",
+      "is_revoked": true,
+      "expires_at": "2026-12-05T09:13:15.395Z",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/158.0.0.0 Safari/537.36 Edg/158.0.0.0",
+      "ip_address": "::1",
+      "created_at": "2026-11-28T09:13:15.395Z",
+      "id": "ref_3d48671ffe",
+      "updated_at": "2026-11-28T09:13:16.379Z",
+      "revoked_at": "2026-11-28T09:13:16.379Z"
     }
   ],
   "user_consents": [

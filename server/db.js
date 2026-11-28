@@ -4,7 +4,9 @@ const crypto = require('crypto');
 const uuidv4 = () => crypto.randomUUID();
 const { seedData } = require('./seedData');
 
-const DB_FILE = path.join(__dirname, 'database.json');
+const DB_FILE = process.env.VERCEL
+  ? path.join('/tmp', 'database.json')
+  : path.join(__dirname, 'database.json');
 
 class DatabaseEngine {
   constructor() {
@@ -12,8 +14,17 @@ class DatabaseEngine {
     this.init();
   }
 
-  
+
   init() {
+    const seedSource = path.join(__dirname, 'database.json');
+    if (process.env.VERCEL && !fs.existsSync(DB_FILE) && fs.existsSync(seedSource)) {
+      try {
+        fs.copyFileSync(seedSource, DB_FILE);
+      } catch (e) {
+        console.warn('Failed to copy database.json to /tmp on Vercel:', e);
+      }
+    }
+
     if (!fs.existsSync(DB_FILE)) {
       console.log('Database file not found. Seeding initial data from seedData...');
       this.data = JSON.parse(JSON.stringify(seedData));

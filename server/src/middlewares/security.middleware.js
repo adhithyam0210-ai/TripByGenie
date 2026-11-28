@@ -59,6 +59,7 @@ const corsOptions = {
  * Helmet Security Configuration
  */
 const helmetMiddleware = helmet({
+  hidePoweredBy: false,
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],

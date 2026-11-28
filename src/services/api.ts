@@ -732,10 +732,13 @@ export const api = {
         res.data = res.data.map(normalizeLead);
         res.leads = res.data;
       }
+      // Keep local device cache in sync with the central server
+      try {
+        localStorage.removeItem('tg_local_leads');
+      } catch {}
       return res;
     } catch {
-      const localLeads = JSON.parse(localStorage.getItem('tg_local_leads') || '[]');
-      let combined = [...localLeads, ...(fallbackData.leads || [])].map(normalizeLead);
+      let combined = [...(fallbackData.leads || [])].map(normalizeLead);
 
       if (params?.status && params.status !== 'all') {
         const sLower = params.status.toLowerCase();
@@ -870,17 +873,10 @@ export const api = {
     }
 
     // 2. Call backend
-    try {
-      return await request<any>('/admin/leads/assign', {
-        method: 'POST',
-        body: JSON.stringify(data)
-      });
-    } catch {
-      return {
-        success: true,
-        message: 'Lead(s) assigned successfully.'
-      };
-    }
+    return await request<any>('/admin/leads/assign', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
   },
   deleteAdminLead: async (id: string) => {
     // 1. Remove from tg_local_leads
@@ -893,11 +889,7 @@ export const api = {
     }
 
     // 2. Call backend
-    try {
-      return await request<any>(`/admin/leads/${id}`, { method: 'DELETE' });
-    } catch {
-      return { success: true, message: 'Lead deleted successfully.' };
-    }
+    return await request<any>(`/admin/leads/${id}`, { method: 'DELETE' });
   },
 
   getAdminUsers: async (params?: { role?: string; search?: string }) => {
@@ -1743,8 +1735,7 @@ export const api = {
       }
       return data;
     } catch {
-      const localLeads = JSON.parse(localStorage.getItem('tg_local_leads') || '[]');
-      const combined = [...localLeads, ...fallbackData.leads].map(normalizeLead);
+      const combined = [...(fallbackData.leads || [])].map(normalizeLead);
       if (params?.status && params.status !== 'all') {
         const target = params.status.toLowerCase();
         return combined.filter((l: any) => {

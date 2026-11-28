@@ -12,7 +12,9 @@ import {
   Plus,
   ArrowRight,
   Key,
-  ShieldCheck
+  ShieldCheck,
+  Copy,
+  Check
 } from 'lucide-react';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { StatusBadge } from '../../components/common/Badge';
@@ -66,6 +68,13 @@ export const StaffLeads: React.FC = () => {
   const [isCreateLoginModalOpen, setIsCreateLoginModalOpen] = useState(false);
   const [tempPassword, setTempPassword] = useState('');
   const [isCreatingLogin, setIsCreatingLogin] = useState(false);
+  const [createdCredentials, setCreatedCredentials] = useState<{
+    customerId: string;
+    email: string;
+    password?: string;
+    loginUrl?: string;
+  } | null>(null);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     loadLeads();
@@ -183,6 +192,13 @@ export const StaffLeads: React.FC = () => {
         temp_password: tempPassword.trim()
       });
       const customerCode = res?.customer_id || 'Active';
+      const createdPw = tempPassword.trim();
+      setCreatedCredentials({
+        customerId: customerCode,
+        email: selectedLead.customer_email || '',
+        password: createdPw,
+        loginUrl: `${window.location.origin}/login`
+      });
       success(res?.message || `Customer credentials generated (ID: ${customerCode})! Login details sent to ${selectedLead.customer_email}.`);
       setIsCreateLoginModalOpen(false);
       const updatedLead = {
@@ -721,6 +737,87 @@ export const StaffLeads: React.FC = () => {
               </Button>
             </div>
           </form>
+        </Modal>
+      )}
+
+      {/* Generated Credentials Success & Direct Copy Modal */}
+      {createdCredentials && (
+        <Modal
+          isOpen={!!createdCredentials}
+          onClose={() => {
+            setCreatedCredentials(null);
+            setCopied(false);
+          }}
+          title="Customer Credentials Provisioned"
+          subtitle="Official customer account login details generated successfully"
+        >
+          <div className="space-y-4 text-xs">
+            <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 space-y-1">
+              <p className="font-bold flex items-center gap-1.5">
+                <CheckCircle className="w-4 h-4 text-emerald-600" />
+                Customer Account Active
+              </p>
+              <p className="text-[11px] text-emerald-800">
+                You can copy these credentials and share them directly with the customer via WhatsApp, SMS, or phone if the customer did not receive the automated email.
+              </p>
+            </div>
+
+            <div className="space-y-2.5 bg-[#F8F1E7]/40 p-3.5 rounded-xl border border-[#EFE7DA]">
+              <div className="flex justify-between items-center py-1 border-b border-[#EFE7DA]/60">
+                <span className="font-bold text-slate-500">Customer ID:</span>
+                <span className="font-mono font-black text-sm text-[#0070E0] select-all">
+                  {createdCredentials.customerId}
+                </span>
+              </div>
+              <div className="flex justify-between items-center py-1 border-b border-[#EFE7DA]/60">
+                <span className="font-bold text-slate-500">Email:</span>
+                <span className="font-semibold text-slate-800 select-all">
+                  {createdCredentials.email}
+                </span>
+              </div>
+              <div className="flex justify-between items-center py-1 border-b border-[#EFE7DA]/60">
+                <span className="font-bold text-slate-500">Temporary Password:</span>
+                <span className="font-mono font-black text-sm text-slate-900 bg-amber-100 px-2 py-0.5 rounded border border-amber-300 select-all">
+                  {createdCredentials.password}
+                </span>
+              </div>
+              <div className="flex justify-between items-center py-1">
+                <span className="font-bold text-slate-500">Login Portal:</span>
+                <span className="font-mono text-[11px] text-slate-700 select-all">
+                  {createdCredentials.loginUrl}
+                </span>
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-2 pt-2 border-t border-[#EFE7DA]">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  setCreatedCredentials(null);
+                  setCopied(false);
+                }}
+              >
+                Close
+              </Button>
+              <Button
+                type="button"
+                variant="primary"
+                size="sm"
+                leftIcon={copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                onClick={() => {
+                  const textToCopy = `TripByGenie Portal Credentials:\n\nCustomer ID: ${createdCredentials.customerId}\nEmail / Username: ${createdCredentials.email}\nTemporary Password: ${createdCredentials.password}\nLogin Portal: ${createdCredentials.loginUrl}`;
+                  navigator.clipboard.writeText(textToCopy);
+                  setCopied(true);
+                  success('Credentials copied to clipboard!');
+                  setTimeout(() => setCopied(false), 3000);
+                }}
+              >
+                {copied ? 'Copied to Clipboard!' : 'Copy Credentials'}
+              </Button>
+            </div>
+          </div>
         </Modal>
       )}
     </DashboardLayout>
