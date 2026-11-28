@@ -342,7 +342,7 @@ Trip by Genie Customer Support Team`;
       customer_id,
       booking_id,
       activation_link: activationLink,
-      activation_token_preview: activation_token.substring(0, 8) + '...'
+      activation_token_preview: (activation_token ? activation_token.substring(0, 8) + '...' : 'direct')
     });
 
     return {

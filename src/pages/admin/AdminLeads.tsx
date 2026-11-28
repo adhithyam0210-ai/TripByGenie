@@ -464,9 +464,8 @@ export const AdminLeads: React.FC = () => {
                       return (
                         <tr
                           key={l.id}
-                          className={`transition-colors ${
-                            isSelected ? 'bg-[#FF795C]/10 font-medium' : 'hover:bg-[#F8F1E7]/30'
-                          }`}
+                          className={`transition-colors ${isSelected ? 'bg-[#FF795C]/10 font-medium' : 'hover:bg-[#F8F1E7]/30'
+                            }`}
                         >
                           <td
                             className="py-3 px-3 cursor-pointer"
@@ -474,7 +473,7 @@ export const AdminLeads: React.FC = () => {
                           >
                             {(l as any).enquiry_id && (
                               <span className="text-[10px] text-[#FF795C] font-mono font-bold block">
-                                 {(l as any).enquiry_id}
+                                {(l as any).enquiry_id}
                               </span>
                             )}
                             <strong className="text-[#082C43] block">{l.customer_name || (l as any).name || 'Traveler'}</strong>
@@ -665,13 +664,12 @@ export const AdminLeads: React.FC = () => {
                     {leadTypes.map((t) => (
                       <span
                         key={t}
-                        className={`px-2 py-0.5 rounded-md font-bold text-[10px] uppercase border ${
-                          t === 'international'
+                        className={`px-2 py-0.5 rounded-md font-bold text-[10px] uppercase border ${t === 'international'
                             ? 'bg-blue-100 text-blue-800 border-blue-200'
                             : t === 'travels'
-                            ? 'bg-purple-100 text-purple-800 border-purple-200'
-                            : 'bg-amber-100 text-amber-800 border-amber-200'
-                        }`}
+                              ? 'bg-purple-100 text-purple-800 border-purple-200'
+                              : 'bg-amber-100 text-amber-800 border-amber-200'
+                          }`}
                       >
                         {t === 'international' ? '🌍 International Package' : t === 'travels' ? '🚗 Travels & Transport' : '🏔️ Domestic Tour'}
                       </span>

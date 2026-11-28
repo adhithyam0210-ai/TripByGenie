@@ -31,11 +31,21 @@ const envAllowed = (process.env.ALLOWED_ORIGINS || '')
 
 const allowedOrigins = [...new Set([...defaultAllowedOrigins, ...envAllowed])];
 
+// Match LAN private IPs (192.168.x.x, 10.x.x.x, 172.16-31.x.x, localhost, 127.0.0.1) on any port
+const lanOriginRegex = /^https?:\/\/(localhost|127\.0\.0\.1|192\.168\.\d{1,3}\.\d{1,3}|10\.\d{1,3}\.\d{1,3}\.\d{1,3}|172\.(1[6-9]|2\d|3[01])\.\d{1,3}\.\d{1,3})(:\d+)?$/;
+
+const isAllowedOrigin = (origin) => {
+  if (!origin) return true;
+  if (allowedOrigins.includes(origin) || origin.endsWith('.vercel.app') || origin.endsWith('tripbygenie.com')) {
+    return true;
+  }
+  return lanOriginRegex.test(origin);
+};
+
 const corsOptions = {
   origin: (origin, callback) => {
     // Allow non-browser agents (curl, server-to-server, test scripts) where origin is undefined
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin) || origin.endsWith('.vercel.app') || origin.endsWith('tripbygenie.com')) {
+    if (isAllowedOrigin(origin)) {
       return callback(null, true);
     }
     return callback(new Error(`CORS policy violation: origin ${origin} is not allowed.`));
@@ -57,7 +67,7 @@ const helmetMiddleware = helmet({
       fontSrc: ["'self'", 'https://fonts.gstatic.com'],
       imgSrc: ["'self'", 'data:', 'blob:', 'https://images.unsplash.com', 'https://*.unsplash.com'],
       mediaSrc: ["'self'", 'blob:', 'data:'],
-      connectSrc: ["'self'", ...allowedOrigins],
+      connectSrc: ["'self'", ...allowedOrigins, 'http:', 'https:', 'ws:', 'wss:'],
       objectSrc: ["'none'"],
       upgradeInsecureRequests: process.env.NODE_ENV === 'production' ? [] : null
     }

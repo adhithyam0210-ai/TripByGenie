@@ -235,7 +235,7 @@ async function runC2BWorkflowTests() {
       channel: 'CALL',
       summary: 'Spoke with Mrs. Ananya. Discussed 5-star mountain chalet in Zermatt and 1st-class Swiss Travel Pass.',
       customer_response: 'Customer very interested in customized itinerary with private airport transfers.',
-      follow_up_date: '2026-11-25'
+      follow_up_date: new Date(Date.now() + 86400000 * 2).toISOString().split('T')[0]
     });
     assert('T3.4: Customer call notes & preferences saved in customer_interactions', interactionRes.status === 201);
 

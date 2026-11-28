@@ -179,12 +179,18 @@ export const StaffLeads: React.FC = () => {
 
     setIsCreatingLogin(true);
     try {
-      await api.createCustomerLoginForLead(selectedLead.id, {
+      const res = await api.createCustomerLoginForLead(selectedLead.id, {
         temp_password: tempPassword.trim()
       });
-      success(`Customer credentials generated! Invitation link sent to ${selectedLead.customer_email}.`);
+      const customerCode = res?.customer_id || 'Active';
+      success(res?.message || `Customer credentials generated (ID: ${customerCode})! Login details sent to ${selectedLead.customer_email}.`);
       setIsCreateLoginModalOpen(false);
-      handleSelectLead(selectedLead);
+      const updatedLead = {
+        ...selectedLead,
+        customer_id: res?.customer_id || selectedLead.customer_id,
+        customer_code: res?.customer_id || selectedLead.customer_code
+      };
+      setSelectedLead(updatedLead);
       loadLeads();
     } catch (err: any) {
       error(err.message || 'Failed to provision customer credentials.');

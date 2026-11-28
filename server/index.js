@@ -1298,7 +1298,7 @@ app.post('/api/public/b2b-enquiry', (req, res, next) => {
   const thirtySecsAgo = new Date(Date.now() - 30 * 1000).toISOString();
   const recentDuplicate = db.findOne('leads', (l) => {
     const isSameEmail = (l.customer_email && l.customer_email.toLowerCase() === trimmedContactEmail) ||
-                        (l.business_email && l.business_email.toLowerCase() === trimmedBusinessEmail);
+      (l.business_email && l.business_email.toLowerCase() === trimmedBusinessEmail);
     const isSameCompany = (l.company_name || '').toLowerCase() === trimmedCompany.toLowerCase();
     const isRecent = l.created_at && l.created_at >= thirtySecsAgo;
     return (isSameEmail || isSameCompany) && isRecent;
@@ -1779,7 +1779,7 @@ app.post('/api/admin/users', authenticate, authorize(['admin']), async (req, res
     customer: 'CUS'
   };
   const prefix = prefixMap[role] || 'USR';
-  const defaultDisplayId = prefix.startsWith('TBG_') 
+  const defaultDisplayId = prefix.startsWith('TBG_')
     ? `${prefix}_${Math.floor(100 + Math.random() * 900)}`
     : `${prefix}-${Math.floor(1000 + Math.random() * 9000)}`;
   const effectiveDisplayId = (employee_id && employee_id.trim()) ? employee_id.trim() : defaultDisplayId;
@@ -4584,147 +4584,175 @@ app.post('/api/staff/quotations', authenticate, authorize(['staff', 'admin', 'ma
 
 // Staff Create Customer Login & Dispatch Invitation (for worthy leads)
 app.post('/api/staff/leads/:id/create-customer-login', authenticate, authorize(['staff', 'sales', 'manager', 'admin']), async (req, res) => {
-  const staffId = req.user.id;
-  const staffRole = req.user.role;
-  const agencyId = req.user.agency_id || 'agency_travel_genie';
-  const { temp_password } = req.body;
-
-  const lead = db.findById('leads', req.params.id);
-  if (!lead) {
-    return res.status(404).json({ error: 'Lead not found.' });
-  }
-
-  // Verify staff assignment: staff/sales must be assigned to this lead unless manager/admin
-  if (['staff', 'sales'].includes(staffRole) && lead.assigned_staff_id && lead.assigned_staff_id !== staffId) {
-    return res.status(403).json({ error: 'Access denied: This lead is assigned to another staff member.' });
-  }
-
-  const customerEmail = (lead.customer_email || '').trim().toLowerCase();
-  if (!customerEmail || !customerEmail.includes('@')) {
-    return res.status(400).json({ error: 'A valid customer email is required to create login credentials.' });
-  }
-
-  const finalTempPassword = (temp_password || '').trim() || `Genie@${Math.floor(1000 + Math.random() * 9000)}`;
-  const passwordHash = bcrypt.hashSync(finalTempPassword, 10);
-  const appUrl = req.headers.origin || 'http://localhost:3000';
-
-  let userRecord = db.findOne('users', (u) => u && u.email && u.email.toLowerCase() === customerEmail);
-  let customerCode = userRecord?.customer_code || db.generateUniqueCode('users', 'CUS', true);
-
-  if (userRecord) {
-    db.update('users', userRecord.id, {
-      password_hash: passwordHash,
-      temp_password: finalTempPassword,
-      status: 'active',
-      account_status: 'ACTIVE',
-      activation_status: 'ACTIVE',
-      customer_code: customerCode
-    });
-  } else {
-    userRecord = db.insert('users', {
-      agency_id: agencyId,
-      role: 'customer',
-      customer_code: customerCode,
-      name: lead.customer_name,
-      email: customerEmail,
-      phone: lead.customer_phone || '',
-      password_hash: passwordHash,
-      temp_password: finalTempPassword,
-      status: 'active',
-      account_status: 'ACTIVE',
-      activation_status: 'ACTIVE',
-      created_at: new Date().toISOString()
-    });
-  }
-
-  // Ensure customer profile exists
-  let custProfile = db.findOne('customer_profiles', (cp) => cp && cp.user_id === userRecord.id);
-  if (!custProfile) {
-    db.insert('customer_profiles', {
-      user_id: userRecord.id,
-      customer_code: customerCode,
-      agency_id: agencyId,
-      name: lead.customer_name,
-      email: customerEmail,
-      emergency_contact: lead.customer_phone || '',
-      preferred_currency: 'INR'
-    });
-  }
-
-  // Ensure customer directory record exists
-  let customerDir = db.findOne('customers', (c) => c && c.email && c.email.toLowerCase() === customerEmail);
-  if (!customerDir) {
-    db.insert('customers', {
-      id: customerCode,
-      customer_code: customerCode,
-      user_id: userRecord.id,
-      agency_id: agencyId,
-      name: lead.customer_name,
-      email: customerEmail,
-      phone: lead.customer_phone || '',
-      status: 'ACTIVE',
-      created_at: new Date().toISOString()
-    });
-  } else {
-    db.update('customers', customerDir.id, {
-      status: 'ACTIVE',
-      customer_code: customerCode
-    });
-  }
-
-  // Link lead to customer
-  db.update('leads', lead.id, {
-    customer_id: userRecord.id,
-    customer_code: customerCode,
-    notes: `${lead.notes ? lead.notes + '\n' : ''}[${new Date().toLocaleString()}] Customer portal credentials created by ${req.user.name}. Invitation link dispatched to ${customerEmail}.`
-  });
-
-  // Record lead activity
-  db.insert('lead_activities', {
-    lead_id: lead.id,
-    agency_id: agencyId,
-    user_id: req.user.id,
-    user_name: req.user.name,
-    type: 'CREDENTIALS_PROVISIONED',
-    description: `Staff ${req.user.name} created customer login ID (${customerCode}) and sent invitation link to ${customerEmail}.`,
-    created_at: new Date().toISOString()
-  });
-
-  // Record audit log
-  db.recordAuditLog(agencyId, req.user.id, 'CREATE_CUSTOMER_LOGIN_FOR_LEAD', 'lead', lead.id, {
-    customer_id: customerCode,
-    customer_email: customerEmail,
-    lead_id: lead.id
-  });
-
-  const loginUrl = `${appUrl}/login?email=${encodeURIComponent(customerEmail)}`;
-
-  // Send invitation email simulation
   try {
+    const staffId = req.user.id;
+    const staffRole = req.user.role;
+    const staffName = req.user.name || 'Sales Staff';
+    const agencyId = req.user.agency_id || 'agency_travel_genie';
+    const { temp_password } = req.body || {};
+
+    const lead = db.findById('leads', req.params.id);
+    if (!lead) {
+      return res.status(404).json({ error: 'Lead not found.' });
+    }
+
+    // Verify staff assignment: staff/sales must be assigned to this lead unless manager/admin
+    // If lead is unassigned, auto-assign to the creating sales/staff member so workflow can proceed smoothly
+    if (['staff', 'sales'].includes(staffRole)) {
+      const isAssigned = !lead.assigned_staff_id || lead.assigned_staff_id === staffId || (Array.isArray(lead.assigned_team) && lead.assigned_team.some((m) => m.staff_id === staffId));
+      if (!isAssigned) {
+        return res.status(403).json({ error: 'Access denied: This lead is assigned to another staff member.' });
+      }
+      if (!lead.assigned_staff_id) {
+        db.update('leads', lead.id, {
+          assigned_staff_id: staffId,
+          assigned_staff_name: staffName,
+          status: lead.status === 'New Enquiries' ? 'New Assigned' : lead.status
+        });
+      }
+    }
+
+    const customerEmail = (lead.customer_email || '').trim().toLowerCase();
+    if (!customerEmail || !customerEmail.includes('@')) {
+      return res.status(400).json({ error: 'A valid customer email is required to create login credentials.' });
+    }
+
+    const customerName = (lead.customer_name || '').trim() || 'Valued Customer';
+    const customerPhone = lead.customer_phone || '';
+    const finalTempPassword = (temp_password || '').trim() || `Genie@${Math.floor(1000 + Math.random() * 9000)}`;
+    const passwordHash = bcrypt.hashSync(finalTempPassword, 10);
+    const appUrl = (req.headers.origin || 'http://localhost:3000').replace(/\/+$/, '');
+
+    let userRecord = db.findOne('users', (u) => u && u.email && u.email.toLowerCase() === customerEmail);
+    let customerCode = userRecord?.customer_code || db.generateUniqueCode('users', 'CUS', true);
+
+    if (userRecord) {
+      db.update('users', userRecord.id, {
+        password_hash: passwordHash,
+        temp_password: finalTempPassword,
+        status: 'active',
+        account_status: 'ACTIVE',
+        activation_status: 'ACTIVE',
+        customer_code: customerCode,
+        name: userRecord.name || customerName,
+        phone: userRecord.phone || customerPhone
+      });
+    } else {
+      userRecord = db.insert('users', {
+        agency_id: agencyId,
+        role: 'customer',
+        customer_code: customerCode,
+        name: customerName,
+        email: customerEmail,
+        phone: customerPhone,
+        password_hash: passwordHash,
+        temp_password: finalTempPassword,
+        status: 'active',
+        account_status: 'ACTIVE',
+        activation_status: 'ACTIVE',
+        created_at: new Date().toISOString()
+      });
+    }
+
+    // Ensure customer profile exists
+    let custProfile = db.findOne('customer_profiles', (cp) => cp && cp.user_id === userRecord.id);
+    if (!custProfile) {
+      db.insert('customer_profiles', {
+        user_id: userRecord.id,
+        customer_code: customerCode,
+        agency_id: agencyId,
+        name: customerName,
+        email: customerEmail,
+        emergency_contact: customerPhone,
+        preferred_currency: 'INR'
+      });
+    } else {
+      db.update('customer_profiles', custProfile.id, {
+        customer_code: customerCode,
+        name: custProfile.name || customerName,
+        emergency_contact: custProfile.emergency_contact || customerPhone
+      });
+    }
+
+    // Ensure customer directory record exists without ID collision
+    let customerDir = db.findOne('customers', (c) => c && c.email && c.email.toLowerCase() === customerEmail);
+    if (!customerDir) {
+      db.insert('customers', {
+        customer_code: customerCode,
+        user_id: userRecord.id,
+        agency_id: agencyId,
+        name: customerName,
+        email: customerEmail,
+        phone: customerPhone,
+        status: 'ACTIVE',
+        created_at: new Date().toISOString()
+      });
+    } else {
+      db.update('customers', customerDir.id, {
+        status: 'ACTIVE',
+        customer_code: customerCode,
+        name: customerDir.name || customerName,
+        phone: customerDir.phone || customerPhone
+      });
+    }
+
+    // Link lead to customer
+    db.update('leads', lead.id, {
+      customer_id: userRecord.id,
+      customer_code: customerCode,
+      notes: `${lead.notes ? lead.notes + '\n' : ''}[${new Date().toLocaleString()}] Customer portal credentials created by ${staffName}. Invitation link dispatched to ${customerEmail}.`
+    });
+
+    // Record lead activity
+    db.insert('lead_activities', {
+      lead_id: lead.id,
+      agency_id: agencyId,
+      user_id: staffId,
+      user_name: staffName,
+      type: 'CREDENTIALS_PROVISIONED',
+      description: `Staff ${staffName} created customer login ID (${customerCode}) and sent invitation link to ${customerEmail}.`,
+      created_at: new Date().toISOString()
+    });
+
+    // Record audit log
+    db.recordAuditLog(agencyId, staffId, 'CREATE_CUSTOMER_LOGIN_FOR_LEAD', 'lead', lead.id, {
+      customer_id: customerCode,
+      customer_email: customerEmail,
+      lead_id: lead.id
+    });
+
+    const loginUrl = `${appUrl}/login?email=${encodeURIComponent(customerEmail)}`;
+
+    // Dispatch activation email asynchronously in background so SMTP latency or DNS timeout never blocks HTTP response
     if (typeof emailService.sendAccountActivationEmail === 'function') {
-      await emailService.sendAccountActivationEmail({
+      emailService.sendAccountActivationEmail({
         agency_id: agencyId,
         to: customerEmail,
-        name: lead.customer_name,
+        name: customerName,
         customer_id: customerCode,
         booking_id: lead.id,
         activation_token: 'direct_login',
         app_url: appUrl
+      }).catch((mailErr) => {
+        console.error('Non-blocking onboarding email delivery error:', mailErr?.message || mailErr);
       });
     }
-  } catch (mailErr) {
-    console.error('Failed to send onboarding email:', mailErr);
-  }
 
-  res.status(200).json({
-    success: true,
-    message: `Customer login created and invitation link dispatched to ${customerEmail}!`,
-    customer_id: customerCode,
-    email: customerEmail,
-    temp_password: finalTempPassword,
-    login_url: loginUrl,
-    account_status: 'ACTIVE'
-  });
+    return res.status(200).json({
+      success: true,
+      message: `Customer login created and invitation link dispatched to ${customerEmail}!`,
+      customer_id: customerCode,
+      email: customerEmail,
+      temp_password: finalTempPassword,
+      login_url: loginUrl,
+      account_status: 'ACTIVE'
+    });
+  } catch (err) {
+    console.error('Error generating customer login credentials:', err);
+    return res.status(500).json({
+      error: err.message || 'Internal server error while creating customer credentials.'
+    });
+  }
 });
 
 // Staff Customer Trip Confirmation (Lead Status -> CUSTOMER_CONFIRMED -> PAYMENT_PENDING)
@@ -5895,13 +5923,17 @@ app.post('/api/admin/customers/create-login', authenticate, authorize(['admin', 
     return res.status(400).json({ error: 'A valid customer email address is required from the enquiry form.' });
   }
 
-  // 1. Business Rule: Staff/Manager authorized creation (advance payment is optional for early customer onboarding)
+  // 1. Business Rule: Advance payment must be verified before generating customer credentials on booking
   const isConfirmed = booking.booking_status === 'BOOKING_CONFIRMED' || booking.booking_status === 'Confirmed';
   const hasAdvance = (Number(booking.advance_amount) || 0) > 0 ||
     booking.payment_status === 'PARTIALLY_PAID' ||
     booking.payment_status === 'PAID' ||
     booking.payment_status === 'Partial' ||
     booking.payment_status === 'Paid';
+
+  if (!hasAdvance && !isConfirmed) {
+    return res.status(400).json({ error: 'Advance payment must be verified before generating customer credentials. (advance payment required)' });
+  }
 
   const finalTempPassword = (temp_password || '').trim() || `Genie@${Math.floor(1000 + Math.random() * 9000)}`;
   const passwordHash = bcrypt.hashSync(finalTempPassword, 10);
@@ -6911,7 +6943,7 @@ app.get('/api/notifications', authenticate, (req, res) => {
 app.put('/api/notifications/:id/read', authenticate, (req, res) => {
   const targetId = String(req.params.id);
   let notif = db.findById('notifications', req.params.id) ||
-              db.findOne('notifications', (n) => String(n.id) === targetId);
+    db.findOne('notifications', (n) => String(n.id) === targetId);
   const isRead = req.body && req.body.is_read !== undefined ? Boolean(req.body.is_read) : true;
   if (!notif) {
     return res.json({ id: req.params.id, is_read: isRead, success: true });
@@ -6923,7 +6955,7 @@ app.put('/api/notifications/:id/read', authenticate, (req, res) => {
 app.delete('/api/notifications/:id', authenticate, (req, res) => {
   const targetId = String(req.params.id);
   let notif = db.findById('notifications', req.params.id) ||
-              db.findOne('notifications', (n) => String(n.id) === targetId);
+    db.findOne('notifications', (n) => String(n.id) === targetId);
   if (notif) {
     db.delete('notifications', notif.id);
   }

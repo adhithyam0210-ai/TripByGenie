@@ -732,29 +732,6 @@ export const api = {
         res.data = res.data.map(normalizeLead);
         res.leads = res.data;
       }
-      // Merge in any local leads from offline enquiry form
-      try {
-        const localLeads = JSON.parse(localStorage.getItem('tg_local_leads') || '[]');
-        if (localLeads.length > 0 && res && Array.isArray(res.data)) {
-          const existingIds = new Set(res.data.map((l: any) => l.id));
-          let missingLocals = localLeads.filter((l: any) => !existingIds.has(l.id)).map(normalizeLead);
-
-          if (params?.status && params.status !== 'all') {
-            const sLower = params.status.toLowerCase();
-            if (sLower === 'unassigned' || sLower === 'new') {
-              missingLocals = missingLocals.filter((l: any) => !l.assigned_staff_id || (l.status && (l.status.toLowerCase() === 'new' || l.status.toLowerCase() === 'unassigned')));
-            } else {
-              missingLocals = missingLocals.filter((l: any) => (l.status || '').toLowerCase() === sLower);
-            }
-          }
-
-          if (missingLocals.length > 0) {
-            res.data = [...missingLocals, ...res.data];
-            res.leads = res.data;
-            res.total = (res.total || 0) + missingLocals.length;
-          }
-        }
-      } catch { }
       return res;
     } catch {
       const localLeads = JSON.parse(localStorage.getItem('tg_local_leads') || '[]');
@@ -1557,19 +1534,12 @@ export const api = {
 
     try {
       const serverBookings = await request<any[]>('/admin/bookings');
-      const localBookings = JSON.parse(localStorage.getItem('tg_local_bookings') || '[]');
-      let combined: any[] = [];
-      if (Array.isArray(serverBookings) && localBookings.length > 0) {
-        const existingIds = new Set(serverBookings.map((b: any) => b.id || b.booking_number));
-        const missingLocals = localBookings.filter((b: any) => !existingIds.has(b.id) && !existingIds.has(b.booking_number));
-        combined = [...missingLocals, ...serverBookings];
-      } else {
-        combined = Array.isArray(serverBookings) && serverBookings.length > 0 ? serverBookings : [...localBookings, ...(fallbackData.bookings || [])];
+      if (Array.isArray(serverBookings)) {
+        return serverBookings.map(normalizeBooking);
       }
-      return combined.map(normalizeBooking);
+      return (fallbackData.bookings || []).map(normalizeBooking);
     } catch {
-      const localBookings = JSON.parse(localStorage.getItem('tg_local_bookings') || '[]');
-      return [...localBookings, ...(fallbackData.bookings || [])].map(normalizeBooking);
+      return (fallbackData.bookings || []).map(normalizeBooking);
     }
   },
   flushBookings: async () => {
@@ -1837,58 +1807,10 @@ export const api = {
     });
   },
   convertLeadToBooking: async (id: string, data: any) => {
-    try {
-      const localLeads = JSON.parse(localStorage.getItem('tg_local_leads') || '[]');
-      const lead = localLeads.find((l: any) => l.id === id);
-      if (lead) {
-        lead.status = 'Converted';
-        localStorage.setItem('tg_local_leads', JSON.stringify(localLeads));
-
-        const localBookings = JSON.parse(localStorage.getItem('tg_local_bookings') || '[]');
-        const advanceAmount = Number(data.advance_amount) || 0;
-        const totalAmount = Number(data.total_amount) || 0;
-        const balanceDue = Math.max(0, totalAmount - advanceAmount);
-        const paymentStatus = balanceDue === 0 ? 'Paid' : (advanceAmount > 0 ? 'Partial' : 'Pending');
-        const bookingNum = `BK-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
-
-        const newBooking = {
-          id: `bk_${Date.now()}`,
-          booking_number: bookingNum,
-          booking_reference: bookingNum,
-          customer_name: lead.customer_name || 'Direct Customer',
-          customer_email: lead.customer_email || '',
-          customer_phone: lead.customer_phone || '',
-          package_title: lead.interested_destination || 'Customized Tour Package',
-          package_name: lead.interested_destination || 'Customized Tour Package',
-          travel_start_date: data.travel_start_date || lead.travel_date || '2026-12-15',
-          departure_date: data.travel_start_date || lead.travel_date || '2026-12-15',
-          travelers_count: Number(lead.travelers_count) || 2,
-          total_amount: totalAmount,
-          advance_amount: advanceAmount,
-          balance_amount: balanceDue,
-          balance_due: balanceDue,
-          payment_status: paymentStatus,
-          booking_status: 'Confirmed',
-          status: 'Confirmed',
-          type: 'B2C',
-          payment_proof: data.payment_proof || 'Direct Bank Transfer',
-          created_at: new Date().toISOString()
-        };
-        localBookings.unshift(newBooking);
-        localStorage.setItem('tg_local_bookings', JSON.stringify(localBookings));
-      }
-    } catch (e) {
-      console.warn('Could not update local storage on lead convert', e);
-    }
-
-    try {
-      return await request<any>(`/staff/leads/${id}/convert`, {
-        method: 'POST',
-        body: JSON.stringify(data)
-      });
-    } catch {
-      return { success: true, message: 'Booking confirmed and converted successfully!' };
-    }
+    return await request<any>(`/staff/leads/${id}/convert`, {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
   },
   getStaffFollowUps: async () => {
     try {

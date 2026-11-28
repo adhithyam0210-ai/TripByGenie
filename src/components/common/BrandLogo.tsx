@@ -35,7 +35,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
     <div
       className={`inline-flex items-center ${
         variant === 'light' ? 'bg-white px-3 py-1.5 rounded-xl shadow-xs' : ''
-      } ${className}`}
+      }`}
     >
       {/* Official TripByGenie logo */}
       <img
@@ -68,7 +68,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
       <Link
         to={to}
         onClick={handleClick}
-        className="inline-block transition-transform hover:scale-[1.02] focus:outline-none"
+        className={`inline-block transition-transform hover:scale-[1.02] focus:outline-none ${className}`}
       >
         {logoImg}
       </Link>
@@ -76,7 +76,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
   }
 
   return (
-    <div onClick={handleClick} className="cursor-pointer">
+    <div onClick={handleClick} className={`cursor-pointer ${className}`}>
       {logoImg}
     </div>
   );
