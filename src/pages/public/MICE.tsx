@@ -23,6 +23,7 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { TravelPatternBg } from '../../components/travel/TravelPatternBg';
+import { getGmailComposeUrl } from '../../utils/mail';
 import { Button } from '../../components/common/Button';
 import { api } from '../../services/api';
 import { useToast } from '../../context/ToastContext';
@@ -735,7 +736,7 @@ export const MICE: React.FC = () => {
             </div>
             <div className="flex items-center gap-2">
               <Mail className="w-4 h-4 text-[#FF795C]" />
-              <span>Corporate RFP Email: <a href="mailto:info@tripbygenie.in" className="font-bold text-white hover:underline">info@tripbygenie.in</a></span>
+              <span>Corporate RFP Email: <a href={getGmailComposeUrl("info@tripbygenie.in", "Corporate MICE RFP Inquiry")} target="_blank" rel="noopener noreferrer" className="font-bold text-white hover:underline" title="Compose in Gmail">info@tripbygenie.in</a></span>
             </div>
             <div className="flex items-center gap-2">
               <Headphones className="w-4 h-4 text-[#55C9BD]" />

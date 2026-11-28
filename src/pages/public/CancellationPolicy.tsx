@@ -1,5 +1,6 @@
 import React from 'react';
 import { TravelPatternBg } from '../../components/travel/TravelPatternBg';
+import { getGmailComposeUrl } from '../../utils/mail';
 
 export const CancellationPolicy: React.FC = () => {
   return (
@@ -25,7 +26,7 @@ export const CancellationPolicy: React.FC = () => {
               At <strong className="text-[#004c8f]">Trip by Genie</strong>, we recognize that unforeseen life events, work emergencies, or health conditions can sometimes require plans to change. Our Cancellation and Refund Policy is designed to be fair, clear, and transparent, balancing guest flexibility with advance supplier commitments (hotels, flights, transport blocks).
             </p>
             <p className="text-xs sm:text-sm leading-relaxed text-[#173247]/80">
-              All cancellation requests must be communicated in writing via registered email to <a href="mailto:info@tripbygenie.com" className="text-[#004c8f] hover:underline font-semibold">info@tripbygenie.com</a> or submitted through your client dashboard to establish an exact timestamp.
+              All cancellation requests must be communicated in writing via registered email to <a href={getGmailComposeUrl("info@tripbygenie.com", "Cancellation Request")} target="_blank" rel="noopener noreferrer" className="text-[#004c8f] hover:underline font-semibold" title="Compose in Gmail">info@tripbygenie.com</a> or submitted through your client dashboard to establish an exact timestamp.
             </p>
           </div>
 
@@ -136,7 +137,7 @@ export const CancellationPolicy: React.FC = () => {
               <p><strong>Trip by Genie Holiday Cancellations Desk</strong></p>
               <p>31/A East Jones Road, Saidapet, Chennai 600035, Tamil Nadu, India</p>
               <p>
-                Email: <a href="mailto:info@tripbygenie.com" className="text-[#004c8f] hover:underline font-semibold">info@tripbygenie.com</a> | 
+                Email: <a href={getGmailComposeUrl("info@tripbygenie.com", "Cancellation Request")} target="_blank" rel="noopener noreferrer" className="text-[#004c8f] hover:underline font-semibold" title="Compose in Gmail">info@tripbygenie.com</a> | 
                 Phone: <a href="tel:+914446071374" className="text-[#004c8f] hover:underline font-semibold">+91 (44) 46071374</a> | 
                 WhatsApp: <a href="https://wa.me/919940463566" target="_blank" rel="noreferrer" className="text-[#004c8f] hover:underline font-semibold">+91 99404 63566</a>
               </p>

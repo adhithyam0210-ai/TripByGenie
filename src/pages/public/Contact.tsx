@@ -5,6 +5,7 @@ import { useToast } from '../../context/ToastContext';
 import { useAuth } from '../../context/AuthContext';
 import { TravelPatternBg } from '../../components/travel/TravelPatternBg';
 import { Button } from '../../components/common/Button';
+import { getGmailComposeUrl } from '../../utils/mail';
 
 export const Contact: React.FC = () => {
   const { agency } = useAuth();
@@ -155,122 +156,128 @@ export const Contact: React.FC = () => {
               </p>
 
               <div className="space-y-5">
-              {/* Head Office Address */}
-              <div className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-[#FF795C] shrink-0 mt-0.5" />
-                <div>
-                  <h4 className="text-xs font-bold text-[#082C43]">Regional Head Office (South India)</h4>
-                  <p className="text-xs text-[#173247]/70 mt-0.5 leading-relaxed">
-                    {officeAddress}
-                  </p>
-                  <div className="mt-1.5">
-                    <a
-                      href={mapsLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-xs font-bold text-[#004c8f] hover:text-[#FF0000] hover:underline transition-colors"
-                    >
-                      <span>Open in Google Maps</span>
-                      <ArrowUpRight className="w-3.5 h-3.5" />
-                    </a>
+                {/* Head Office Address */}
+                <div className="flex items-start gap-3">
+                  <MapPin className="w-5 h-5 text-[#FF795C] shrink-0 mt-0.5" />
+                  <div>
+                    <h4 className="text-xs font-bold text-[#082C43]">Regional Head Office (South India)</h4>
+                    <p className="text-xs text-[#173247]/70 mt-0.5 leading-relaxed">
+                      {officeAddress}
+                    </p>
+                    <div className="mt-1.5">
+                      <a
+                        href={mapsLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-xs font-bold text-[#004c8f] hover:text-[#FF0000] hover:underline transition-colors"
+                      >
+                        <span>Open in Google Maps</span>
+                        <ArrowUpRight className="w-3.5 h-3.5" />
+                      </a>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Direct Phone Numbers */}
-              <div className="flex items-start gap-3 pt-4 border-t border-[#EFE7DA]">
-                <Phone className="w-5 h-5 text-[#55C9BD] shrink-0 mt-0.5" />
-                <div className="space-y-1">
-                  <h4 className="text-xs font-bold text-[#082C43]">Direct Phone Line</h4>
-                  <p className="text-xs text-[#173247]/70">
-                    Click to call our customer reservation desk directly:
-                  </p>
-                  <div className="flex flex-wrap items-center gap-3 pt-1">
-                    <a
-                      href={`tel:${phone1Clean}`}
-                      className="text-xs font-bold text-[#082C43] hover:text-[#FF0000] hover:underline bg-[#F8F1E7] px-3 py-1.5 rounded-lg border border-[#EFE7DA] transition-colors inline-flex items-center gap-1.5"
-                    >
-                      <Phone className="w-3 h-3 text-[#55C9BD]" />
-                      {phone1}
-                    </a>
-                    <a
-                      href={`tel:${phone2Clean}`}
-                      className="text-xs font-bold text-[#082C43] hover:text-[#FF0000] hover:underline bg-[#F8F1E7] px-3 py-1.5 rounded-lg border border-[#EFE7DA] transition-colors inline-flex items-center gap-1.5"
-                    >
-                      <Phone className="w-3 h-3 text-[#55C9BD]" />
-                      {phone2}
-                    </a>
+                {/* Direct Phone Numbers */}
+                <div className="flex items-start gap-3 pt-4 border-t border-[#EFE7DA]">
+                  <Phone className="w-5 h-5 text-[#55C9BD] shrink-0 mt-0.5" />
+                  <div className="space-y-1">
+                    <h4 className="text-xs font-bold text-[#082C43]">Direct Phone Line</h4>
+                    <p className="text-xs text-[#173247]/70">
+                      Click to call our customer reservation desk directly:
+                    </p>
+                    <div className="flex flex-wrap items-center gap-3 pt-1">
+                      <a
+                        href={`tel:${phone1Clean}`}
+                        className="text-xs font-bold text-[#082C43] hover:text-[#FF0000] hover:underline bg-[#F8F1E7] px-3 py-1.5 rounded-lg border border-[#EFE7DA] transition-colors inline-flex items-center gap-1.5"
+                      >
+                        <Phone className="w-3 h-3 text-[#55C9BD]" />
+                        {phone1}
+                      </a>
+                      <a
+                        href={`tel:${phone2Clean}`}
+                        className="text-xs font-bold text-[#082C43] hover:text-[#FF0000] hover:underline bg-[#F8F1E7] px-3 py-1.5 rounded-lg border border-[#EFE7DA] transition-colors inline-flex items-center gap-1.5"
+                      >
+                        <Phone className="w-3 h-3 text-[#55C9BD]" />
+                        {phone2}
+                      </a>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* WhatsApp Support Link */}
-              <div className="flex items-start gap-3 pt-4 border-t border-[#EFE7DA]">
-                <MessageSquare className="w-5 h-5 text-[#00A854] shrink-0 mt-0.5" />
-                <div className="space-y-1">
-                  <h4 className="text-xs font-bold text-[#082C43]">WhatsApp Instant Support Desk</h4>
-                  <p className="text-xs text-[#173247]/70">
-                    Instant quotes, itinerary customized queries & 24/7 on-tour assistance:
-                  </p>
-                  <div className="pt-1">
-                    <a
-                      href={whatsappLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-xs font-bold text-white bg-[#00A854] hover:bg-emerald-600 px-3.5 py-1.5 rounded-xl transition-all shadow-sm"
-                    >
-                      <MessageSquare className="w-3.5 h-3.5" />
-                      Chat on WhatsApp (+91 99404 63566)
-                      <ArrowUpRight className="w-3 h-3" />
-                    </a>
+                {/* WhatsApp Support Link */}
+                <div className="flex items-start gap-3 pt-4 border-t border-[#EFE7DA]">
+                  <MessageSquare className="w-5 h-5 text-[#00A854] shrink-0 mt-0.5" />
+                  <div className="space-y-1">
+                    <h4 className="text-xs font-bold text-[#082C43]">WhatsApp Instant Support Desk</h4>
+                    <p className="text-xs text-[#173247]/70">
+                      Instant quotes, itinerary customized queries & 24/7 on-tour assistance:
+                    </p>
+                    <div className="pt-1">
+                      <a
+                        href={whatsappLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 text-xs font-bold text-white bg-[#00A854] hover:bg-emerald-600 px-3.5 py-1.5 rounded-xl transition-all shadow-sm"
+                      >
+                        <MessageSquare className="w-3.5 h-3.5" />
+                        Chat on WhatsApp (+91 99404 63566)
+                        <ArrowUpRight className="w-3 h-3" />
+                      </a>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Email Addresses */}
-              <div className="flex items-start gap-3 pt-4 border-t border-[#EFE7DA]">
-                <Mail className="w-5 h-5 text-[#17648A] shrink-0 mt-0.5" />
-                <div className="space-y-1">
-                  <h4 className="text-xs font-bold text-[#082C43]">Email Inquiries</h4>
-                  <p className="text-xs text-[#173247]/70">
-                    Write to our specialist travel consultants:
-                  </p>
-                  <div className="flex flex-wrap items-center gap-3 pt-1">
-                    <a
-                      href={`mailto:${primaryEmail}`}
-                      className="text-xs font-bold text-[#17648A] hover:text-[#FF0000] hover:underline bg-[#F8F1E7] px-3 py-1.5 rounded-lg border border-[#EFE7DA] transition-colors inline-flex items-center gap-1.5"
-                    >
-                      <Mail className="w-3 h-3 text-[#17648A]" />
-                      {primaryEmail}
-                    </a>
-                    <a
-                      href={`mailto:${secondaryEmail}`}
-                      className="text-xs font-bold text-[#17648A] hover:text-[#FF0000] hover:underline bg-[#F8F1E7] px-3 py-1.5 rounded-lg border border-[#EFE7DA] transition-colors inline-flex items-center gap-1.5"
-                    >
-                      <Mail className="w-3 h-3 text-[#17648A]" />
-                      {secondaryEmail}
-                    </a>
+                {/* Email Addresses */}
+                <div className="flex items-start gap-3 pt-4 border-t border-[#EFE7DA]">
+                  <Mail className="w-5 h-5 text-[#17648A] shrink-0 mt-0.5" />
+                  <div className="space-y-1">
+                    <h4 className="text-xs font-bold text-[#082C43]">Email Inquiries</h4>
+                    <p className="text-xs text-[#173247]/70">
+                      Write to our specialist travel consultants:
+                    </p>
+                    <div className="flex flex-wrap items-center gap-3 pt-1">
+                      <a
+                        href={getGmailComposeUrl(primaryEmail, 'Inquiry - Trip by Genie')}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs font-bold text-[#17648A] hover:text-[#FF0000] hover:underline bg-[#F8F1E7] px-3 py-1.5 rounded-lg border border-[#EFE7DA] transition-colors inline-flex items-center gap-1.5"
+                        title="Compose in Gmail"
+                      >
+                        <Mail className="w-3 h-3 text-[#17648A]" />
+                        {primaryEmail}
+                      </a>
+                      <a
+                        href={getGmailComposeUrl(secondaryEmail, 'Inquiry - Trip by Genie')}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs font-bold text-[#17648A] hover:text-[#FF0000] hover:underline bg-[#F8F1E7] px-3 py-1.5 rounded-lg border border-[#EFE7DA] transition-colors inline-flex items-center gap-1.5"
+                        title="Compose in Gmail"
+                      >
+                        <Mail className="w-3 h-3 text-[#17648A]" />
+                        {secondaryEmail}
+                      </a>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Working Hours */}
-              <div className="flex items-start gap-3 pt-4 border-t border-[#EFE7DA]">
-                <Clock className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
-                <div>
-                  <h4 className="text-xs font-bold text-[#082C43]">Working Hours</h4>
-                  <p className="text-xs text-[#173247]/70 mt-0.5 leading-relaxed">
-                    Mon - Sat: 9:00 AM - 8:30 PM IST
-                    <br />
-                    <span className="text-emerald-700 font-semibold">
-                      (24/7 dedicated WhatsApp emergency assistance for travelers currently on tour)
-                    </span>
-                  </p>
+                {/* Working Hours */}
+                <div className="flex items-start gap-3 pt-4 border-t border-[#EFE7DA]">
+                  <Clock className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
+                  <div>
+                    <h4 className="text-xs font-bold text-[#082C43]">Working Hours</h4>
+                    <p className="text-xs text-[#173247]/70 mt-0.5 leading-relaxed">
+                      Mon - Sat: 9:00 AM - 8:30 PM IST
+                      <br />
+                      <span className="text-emerald-700 font-semibold">
+                        (24/7 dedicated WhatsApp emergency assistance for travelers currently on tour)
+                      </span>
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
           {/* Contact Form */}
           <div className="lg:col-span-7">
@@ -297,11 +304,10 @@ export const Contact: React.FC = () => {
                         if (errors.name) validateField('name', e.target.value);
                       }}
                       onBlur={() => validateField('name', formData.name)}
-                      className={`w-full text-xs p-3 rounded-xl border bg-[#FFFDF8] focus:outline-none transition-colors ${
-                        errors.name
+                      className={`w-full text-xs p-3 rounded-xl border bg-[#FFFDF8] focus:outline-none transition-colors ${errors.name
                           ? 'border-red-400 focus:border-red-500 bg-red-50/15'
                           : 'border-[#EFE7DA] focus:border-[#FF795C]'
-                      }`}
+                        }`}
                     />
                     {errors.name && (
                       <p className="text-[11px] text-red-500 font-medium mt-1 flex items-center gap-1 animate-in fade-in">
@@ -324,11 +330,10 @@ export const Contact: React.FC = () => {
                         if (errors.email) validateField('email', e.target.value);
                       }}
                       onBlur={() => validateField('email', formData.email)}
-                      className={`w-full text-xs p-3 rounded-xl border bg-[#FFFDF8] focus:outline-none transition-colors ${
-                        errors.email
+                      className={`w-full text-xs p-3 rounded-xl border bg-[#FFFDF8] focus:outline-none transition-colors ${errors.email
                           ? 'border-red-400 focus:border-red-500 bg-red-50/15'
                           : 'border-[#EFE7DA] focus:border-[#FF795C]'
-                      }`}
+                        }`}
                     />
                     {errors.email && (
                       <p className="text-[11px] text-red-500 font-medium mt-1 flex items-center gap-1 animate-in fade-in">
@@ -353,11 +358,10 @@ export const Contact: React.FC = () => {
                         if (errors.phone) validateField('phone', e.target.value);
                       }}
                       onBlur={() => validateField('phone', formData.phone)}
-                      className={`w-full text-xs p-3 rounded-xl border bg-[#FFFDF8] focus:outline-none transition-colors ${
-                        errors.phone
+                      className={`w-full text-xs p-3 rounded-xl border bg-[#FFFDF8] focus:outline-none transition-colors ${errors.phone
                           ? 'border-red-400 focus:border-red-500 bg-red-50/15'
                           : 'border-[#EFE7DA] focus:border-[#FF795C]'
-                      }`}
+                        }`}
                     />
                     {errors.phone && (
                       <p className="text-[11px] text-red-500 font-medium mt-1 flex items-center gap-1 animate-in fade-in">
@@ -394,11 +398,10 @@ export const Contact: React.FC = () => {
                       if (errors.message) validateField('message', e.target.value);
                     }}
                     onBlur={() => validateField('message', formData.message)}
-                    className={`w-full text-xs p-3 rounded-xl border bg-[#FFFDF8] focus:outline-none resize-none transition-colors ${
-                      errors.message
+                    className={`w-full text-xs p-3 rounded-xl border bg-[#FFFDF8] focus:outline-none resize-none transition-colors ${errors.message
                         ? 'border-red-400 focus:border-red-500 bg-red-50/15'
                         : 'border-[#EFE7DA] focus:border-[#FF795C]'
-                    }`}
+                      }`}
                   />
                   {errors.message && (
                     <p className="text-[11px] text-red-500 font-medium mt-1 flex items-center gap-1 animate-in fade-in">

@@ -97,7 +97,7 @@ class EmailService {
   /**
    * Send mail through real transporter if configured
    */
-  async sendMail({ to, subject, text, html }) {
+  async sendMail({ to, subject, text, html, attachments }) {
     const transporter = this.getTransporter();
     const fromAddress = process.env.SMTP_FROM || process.env.EMAIL_FROM || '"Trip by Genie" <no-reply@tripbygenie.in>';
 
@@ -107,13 +107,17 @@ class EmailService {
     }
 
     try {
-      const info = await transporter.sendMail({
+      const mailOptions = {
         from: fromAddress,
         to,
         subject,
         text,
         html
-      });
+      };
+      if (Array.isArray(attachments) && attachments.length > 0) {
+        mailOptions.attachments = attachments;
+      }
+      const info = await transporter.sendMail(mailOptions);
       console.log(`[REAL SMTP EMAIL SENT] Delivered email to ${to} (Message ID: ${info.messageId})`);
       return { sent: true, messageId: info.messageId };
     } catch (err) {
@@ -213,9 +217,9 @@ TripByGenie B2B Wholesale & Partnerships Team`;
   /**
    * Send Quotation to Customer
    */
-  async sendQuotationEmail({ agency_id, to, name, quote_number, destination, total_amount, required_advance, valid_until }) {
+  async sendQuotationEmail({ agency_id, to, name, quote_number, destination, total_amount, required_advance, valid_until, custom_body, attachment_name, attachment_data, attachment_type }) {
     const subject = `Your Custom Travel Quotation: ${quote_number} for ${destination}`;
-    const content = `Dear ${name},
+    let content = custom_body ? `Dear ${name},\n\n${custom_body}\n\nBest regards,\nTrip by Genie Sales Team` : `Dear ${name},
 
 We are thrilled to present your customized holiday proposal for ${destination}!
 
@@ -224,18 +228,71 @@ Total Booking Amount: ₹${Number(total_amount).toLocaleString('en-IN')}
 Required Advance Deposit: ₹${Number(required_advance).toLocaleString('en-IN')}
 Validity: ${valid_until || '7 Days'}
 
-Please review your day-wise itinerary and package inclusions. Once you are ready to confirm your trip, our team will arrange the initial deposit to lock in your flights and hotels.
+Please review your customized quotation proposal. Once you are ready to confirm your trip, our team will arrange the initial deposit to lock in your booking.
 
 Best regards,
 Trip by Genie Sales Team`;
 
-    console.log(`[EMAIL DISPATCH] Sent Quotation ${quote_number} to ${to}`);
+    if (attachment_name) {
+      content += `\n\n[Attached Document/Image: ${attachment_name}]`;
+    }
+
+    console.log(`[EMAIL DISPATCH] Sent Quotation ${quote_number} to ${to} (Attachment: ${attachment_name || 'None'})`);
+
+    const attachments = [];
+    if (attachment_name && attachment_data) {
+      try {
+        if (attachment_data.startsWith('data:')) {
+          const parts = attachment_data.split(',');
+          attachments.push({
+            filename: attachment_name,
+            content: Buffer.from(parts[1], 'base64'),
+            contentType: attachment_type || 'application/octet-stream'
+          });
+        }
+      } catch (attachErr) {
+        console.warn('Could not parse attachment data buffer:', attachErr.message);
+      }
+    }
+
+    const htmlContent = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #EFE7DA; border-radius: 16px; background-color: #FFFDF8;">
+        <div style="background-color: #082C43; padding: 18px 24px; border-radius: 12px; margin-bottom: 20px;">
+          <h2 style="color: #ffffff; margin: 0 0 6px 0; font-size: 20px;">Trip by Genie Travel Quotation</h2>
+          <p style="color: #55C9BD; margin: 0; font-size: 13px; font-weight: bold;">Proposal #${quote_number} • Destination: ${destination}</p>
+        </div>
+        <p style="font-size: 14px; color: #173247; line-height: 1.6;">Dear <strong>${name}</strong>,</p>
+        <div style="font-size: 14px; color: #173247; line-height: 1.6; white-space: pre-wrap; margin: 16px 0;">${custom_body ? custom_body.replace(/\n/g, '<br/>') : `We are thrilled to present your customized holiday proposal for <strong>${destination}</strong>!` }</div>
+        <div style="background-color: #F8F1E7; padding: 16px; border-radius: 12px; margin: 20px 0; border: 1px solid #EFE7DA;">
+          <p style="margin: 6px 0; color: #082C43; font-size: 13px;"><strong>Destination:</strong> ${destination}</p>
+          <p style="margin: 6px 0; color: #082C43; font-size: 13px;"><strong>Total Quoted Price:</strong> <span style="font-size: 16px; font-weight: 800; color: #0070E0;">₹${Number(total_amount).toLocaleString('en-IN')}</span></p>
+          <p style="margin: 6px 0; color: #082C43; font-size: 13px;"><strong>Required Advance (30%):</strong> ₹${Number(required_advance).toLocaleString('en-IN')}</p>
+          <p style="margin: 6px 0; color: #082C43; font-size: 13px;"><strong>Quote Validity:</strong> ${valid_until || '7 Days'}</p>
+          ${attachment_name ? `<p style="margin: 10px 0 4px 0; padding-top: 8px; border-top: 1px dashed #EFE7DA; color: #082C43; font-size: 13px;"><strong>📎 Attached Document/Image:</strong> ${attachment_name}</p>` : ''}
+        </div>
+        <p style="font-size: 13px; color: #64748b; line-height: 1.5;">To confirm this booking or request itinerary adjustments, please reply to this email or contact your dedicated travel consultant.</p>
+        <p style="font-size: 13px; color: #082C43; margin-top: 20px;">Best regards,<br/><strong>Trip by Genie Sales Team</strong></p>
+      </div>
+    `;
+
+    try {
+      await this.sendMail({
+        to,
+        subject,
+        text: content,
+        html: htmlContent,
+        attachments: attachments.length > 0 ? attachments : undefined
+      });
+    } catch (e) {
+      console.warn('Real mail dispatch error (logged locally):', e.message);
+    }
 
     const log = db.logEmail(agency_id, to, subject, 'QUOTATION_PROPOSAL', 'DELIVERED', {
       quote_number,
       customer_name: name,
       total_amount,
-      required_advance
+      required_advance,
+      attachment_name: attachment_name || null
     });
 
     return { success: true, email_id: log.id, subject };

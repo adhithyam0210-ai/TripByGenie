@@ -19,13 +19,15 @@ import {
   CheckCircle2,
   ShieldAlert,
   Globe,
-  Car
+  Car,
+  ClipboardList
 } from 'lucide-react';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { StatusBadge } from '../../components/common/Badge';
 import { Button } from '../../components/common/Button';
 import { Modal } from '../../components/common/Modal';
 import { Pagination } from '../../components/common/Pagination';
+import { ActivityLogList } from '../../components/common/ActivityLogList';
 import { api } from '../../services/api';
 import { Lead, User } from '../../types';
 import { useToast } from '../../context/ToastContext';
@@ -64,6 +66,9 @@ export const AdminLeads: React.FC = () => {
   const [assignNotes, setAssignNotes] = useState('');
 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [createLeadMode, setCreateLeadMode] = useState<'manual' | 'paste'>('manual');
+  const [rawLeadText, setRawLeadText] = useState('');
+  const [parseSuccess, setParseSuccess] = useState(false);
   const [createForm, setCreateForm] = useState({
     customer_name: '',
     customer_email: '',
@@ -76,6 +81,135 @@ export const AdminLeads: React.FC = () => {
     assigned_staff_id: '',
     notes: ''
   });
+
+  const parseDateToISO = (dateStr: string): string => {
+    if (!dateStr) return '';
+    const cleaned = dateStr.trim().replace(/(?:st|nd|rd|th),?/i, '').replace(/[.]/g, '/');
+    if (/^\d{4}-\d{2}-\d{2}$/.test(cleaned)) return cleaned;
+
+    const monthNames: Record<string, string> = {
+      jan: '01', january: '01',
+      feb: '02', february: '02',
+      mar: '03', march: '03',
+      apr: '04', april: '04',
+      may: '05',
+      jun: '06', june: '06',
+      jul: '07', july: '07',
+      aug: '08', august: '08',
+      sep: '09', september: '09',
+      oct: '10', october: '10',
+      nov: '11', november: '11',
+      dec: '12', december: '12'
+    };
+
+    // Match "28 Jan 2027" or "28-Jan-2027"
+    const dmyWord = cleaned.match(/^(\d{1,2})[\s-]+([a-zA-Z]+)[\s-]+(\d{4})$/);
+    if (dmyWord) {
+      const day = dmyWord[1].padStart(2, '0');
+      const mName = dmyWord[2].toLowerCase();
+      const m = monthNames[mName];
+      if (m) return `${dmyWord[3]}-${m}-${day}`;
+    }
+
+    // Match "Jan 28 2027" or "Jan 28, 2027"
+    const mdyWord = cleaned.match(/^([a-zA-Z]+)[\s-]+(\d{1,2}),?[\s-]+(\d{4})$/);
+    if (mdyWord) {
+      const day = mdyWord[2].padStart(2, '0');
+      const mName = mdyWord[1].toLowerCase();
+      const m = monthNames[mName];
+      if (m) return `${mdyWord[3]}-${m}-${day}`;
+    }
+
+    // Match DD/MM/YYYY or DD-MM-YYYY
+    const dmy = cleaned.match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{4})$/);
+    if (dmy) {
+      return `${dmy[3]}-${dmy[2].padStart(2, '0')}-${dmy[1].padStart(2, '0')}`;
+    }
+
+    return '';
+  };
+
+  const parseLeadText = (raw: string) => {
+    if (!raw.trim()) {
+      setParseSuccess(false);
+      return;
+    }
+
+    const lines = raw.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+    const getVal = (regex: RegExp) => {
+      for (const l of lines) {
+        const m = l.match(regex);
+        if (m && m[1]) return m[1].trim();
+      }
+      return '';
+    };
+
+    const name = getVal(/^(?:Name|Customer Name|Client Name|Traveler Name|Lead Name)\s*[:=-]\s*(.+)$/i);
+    const phone =
+      getVal(/^(?:Mobile No|Mobile Number|Mobile|Phone No|Phone Number|Phone|Contact No|Contact|WhatsApp)\s*[:=-]\s*(.+)$/i) ||
+      raw.match(/(?:\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}|\+?91[6-9]\d{9}|[6-9]\d{9}/)?.[0] ||
+      '';
+    const email =
+      getVal(/^(?:Email|Email Id|Email Address|Mail)\s*[:=-]\s*(.+)$/i) ||
+      raw.match(/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/i)?.[1] ||
+      '';
+
+    const toCity = getVal(/^(?:To City|Destination|Traveling To|Travel To|Place)\s*[:=-]\s*(.+)$/i);
+    const packageName = getVal(/^(?:Package Name|Package|Tour Package)\s*[:=-]\s*(.+)$/i);
+    const destination = toCity || packageName || '';
+
+    const fromCity = getVal(/^(?:From City|Departure City|Origin|From|Departing From)\s*[:=-]\s*(.+)$/i);
+    const depDateRaw = getVal(/^(?:Departure Date|Travel Date|Start Date|Journey Date|Date of Travel|Date)\s*[:=-]\s*(.+)$/i);
+
+    let travelers = 2;
+    const travStr = getVal(/^(?:No of Travellers|No of Travelers|Travelers|Travellers|Total Pax|Pax|Guests)\s*[:=-]\s*(\d+)/i);
+    if (travStr) {
+      travelers = parseInt(travStr, 10);
+    } else {
+      const adults = parseInt(getVal(/^Adults?\s*[:=-]\s*(\d+)/i) || '0', 10);
+      const child = parseInt(getVal(/^Child(?:ren)?\s*[:=-]\s*(\d+)/i) || '0', 10);
+      if (adults > 0) travelers = adults + child;
+    }
+
+    const isoDate = parseDateToISO(depDateRaw);
+    let validTravelDate = '';
+    const today = getTodayIST();
+    if (isoDate && isoDate >= today) {
+      validTravelDate = isoDate;
+    }
+
+    const notesParts: string[] = [];
+    if (fromCity) notesParts.push(`From: ${fromCity}`);
+    const nights = getVal(/^(?:No OF Nights|Nights|Duration)\s*[:=-]\s*(.+)$/i);
+    if (nights) notesParts.push(`Duration: ${nights}`);
+    const property = getVal(/^(?:Property|Hotel Category|Hotel Rating|Hotel)\s*[:=-]\s*(.+)$/i);
+    if (property) notesParts.push(`Hotel: ${property}`);
+    const tickets = getVal(/^(?:Tickets Booked|Flight Booked|Tickets)\s*[:=-]\s*(.+)$/i);
+    if (tickets) notesParts.push(`Tickets Booked: ${tickets}`);
+    const bookingIn = getVal(/^(?:Booking In|Booking Urgency|Timeframe)\s*[:=-]\s*(.+)$/i);
+    if (bookingIn) notesParts.push(`Booking Timeline: ${bookingIn}`);
+    let reqs = getVal(/^(?:Requirements|Special Requirements|Notes|Remarks|Message|Comments)\s*[:=-]\s*(.+)$/i);
+    if (reqs) {
+      reqs = reqs.replace(/(?:\[|\()?\d{1,2}:\d{2}\s*(?:am|pm)?(?:\]|\))?$/i, '').trim();
+      notesParts.push(`Requirements: ${reqs}`);
+    }
+    if (depDateRaw && (!isoDate || isoDate < today)) {
+      notesParts.push(`Original Travel Date: ${depDateRaw}`);
+    }
+
+    setCreateForm((prev) => ({
+      ...prev,
+      customer_name: name || prev.customer_name,
+      customer_phone: phone || prev.customer_phone,
+      customer_email: email || prev.customer_email,
+      interested_destination: destination || prev.interested_destination,
+      travel_date: validTravelDate || prev.travel_date,
+      travelers_count: travelers || prev.travelers_count,
+      lead_source: 'WhatsApp / Quick Paste',
+      notes: notesParts.join(' | ') || prev.notes
+    }));
+    setParseSuccess(true);
+  };
 
   useEffect(() => {
     loadStaff();
@@ -291,6 +425,9 @@ export const AdminLeads: React.FC = () => {
       await api.createAdminLead(createForm);
       success('Direct lead created successfully!');
       setIsCreateModalOpen(false);
+      setCreateLeadMode('manual');
+      setRawLeadText('');
+      setParseSuccess(false);
       setCreateForm({
         customer_name: '',
         customer_email: '',
@@ -364,8 +501,8 @@ export const AdminLeads: React.FC = () => {
       }
     >
       <div className="space-y-6">
-        {/* Filters and Search Bar */}
-        <div className="bg-white p-4 rounded-2xl border border-[#EFE7DA] shadow-xs flex flex-col lg:flex-row items-center justify-between gap-3 text-xs">
+        {/* Filters and Search Bar (Sticky so scrolling down keeps it accessible) */}
+        <div className="sticky top-[58px] sm:top-[64px] z-20 bg-white/95 backdrop-blur-md p-4 rounded-2xl border border-[#EFE7DA] shadow-sm flex flex-col lg:flex-row items-center justify-between gap-3 text-xs transition-all">
           {/* Keyword Search */}
           <form onSubmit={handleSearchSubmit} className="relative w-full lg:w-72">
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -619,25 +756,11 @@ export const AdminLeads: React.FC = () => {
               </div>
 
               {/* Activity History Timeline */}
-              <div className="pt-2 border-t border-[#EFE7DA]">
-                <span className="text-xs font-bold text-[#082C43] block mb-2">
-                  Activity & Audit Trail:
-                </span>
-                <div className="space-y-2 max-h-56 overflow-y-auto">
-                  {leadDetails?.activities?.length === 0 ? (
-                    <p className="text-slate-400 py-4 text-center">No recorded activity on this enquiry yet.</p>
-                  ) : (
-                    leadDetails?.activities?.map((act: any) => (
-                      <div key={act.id} className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs">
-                        <span className="font-semibold text-[#082C43] block">{act.description}</span>
-                        <span className="text-[10px] text-slate-400">
-                          {new Date(act.created_at).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}
-                        </span>
-                      </div>
-                    ))
-                  )}
-                </div>
-              </div>
+              <ActivityLogList
+                activities={leadDetails?.activities}
+                title="Activity & Audit Trail:"
+                emptyText="No recorded activity on this enquiry yet."
+              />
 
               <div className="pt-3 border-t border-[#EFE7DA] flex items-center justify-end gap-2">
                 <Button
@@ -800,12 +923,106 @@ export const AdminLeads: React.FC = () => {
       {isCreateModalOpen && (
         <Modal
           isOpen={isCreateModalOpen}
-          onClose={() => setIsCreateModalOpen(false)}
+          onClose={() => {
+            setIsCreateModalOpen(false);
+            setParseSuccess(false);
+            setRawLeadText('');
+          }}
           title="Create New Direct Lead"
-          subtitle="Manually enter phone inquiries, walk-ins, or executive referrals."
-          maxWidth="lg"
+          subtitle="Manually enter phone inquiries, walk-ins, or paste unstructured lead text."
+          maxWidth="2xl"
         >
+          {/* Mode Selector Tabs */}
+          <div className="flex border-b border-[#EFE7DA] mb-4 gap-2 text-xs">
+            <button
+              type="button"
+              onClick={() => setCreateLeadMode('manual')}
+              className={`pb-2.5 px-3 font-bold flex items-center gap-1.5 border-b-2 transition-colors cursor-pointer ${
+                createLeadMode === 'manual'
+                  ? 'border-[#FF795C] text-[#FF795C]'
+                  : 'border-transparent text-slate-500 hover:text-slate-800'
+              }`}
+            >
+              <FileText className="w-3.5 h-3.5" />
+              Option 1: Manual Form
+            </button>
+            <button
+              type="button"
+              onClick={() => setCreateLeadMode('paste')}
+              className={`pb-2.5 px-3 font-bold flex items-center gap-1.5 border-b-2 transition-colors cursor-pointer ${
+                createLeadMode === 'paste'
+                  ? 'border-[#0070E0] text-[#0070E0]'
+                  : 'border-transparent text-slate-500 hover:text-slate-800'
+              }`}
+            >
+              <ClipboardList className="w-3.5 h-3.5" />
+              Option 2: Smart Paste Parser
+            </button>
+          </div>
+
           <form onSubmit={handleCreateLead} className="space-y-4 text-xs">
+            {/* Option 2: Smart Paste Area */}
+            {createLeadMode === 'paste' && (
+              <div className="p-3.5 rounded-2xl bg-[#F0F6FF] border border-blue-200/80 space-y-2.5 animate-in fade-in duration-150">
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-[#082C43] text-xs">
+                    Paste Here
+                  </span>
+                  {rawLeadText && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setRawLeadText('');
+                        setParseSuccess(false);
+                      }}
+                      className="text-[11px] text-slate-400 hover:text-red-500 font-semibold cursor-pointer"
+                    >
+                      Clear Text
+                    </button>
+                  )}
+                </div>
+
+                <textarea
+                  rows={4}
+                  placeholder="Paste lead details here..."
+                  value={rawLeadText}
+                  onChange={(e) => {
+                    const text = e.target.value;
+                    setRawLeadText(text);
+                    if (text.trim()) {
+                      parseLeadText(text);
+                    } else {
+                      setParseSuccess(false);
+                    }
+                  }}
+                  className="w-full p-2.5 rounded-xl border border-blue-200 bg-white font-mono text-[11px] resize-y focus:outline-none focus:border-[#0070E0]"
+                />
+
+                <div className="flex items-center justify-between pt-0.5">
+                  <p className="text-[11px] text-slate-500">
+                    Instantly extracts Name, Phone, Email, Destination, Date, Pax, and Notes.
+                  </p>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="text-xs bg-white text-[#0070E0] border-[#0070E0]/30 hover:bg-[#0070E0]/10"
+                    onClick={() => parseLeadText(rawLeadText)}
+                  >
+                    ⚡ Extract Details
+                  </Button>
+                </div>
+
+                {parseSuccess && (
+                  <div className="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-[11px] font-semibold flex items-center gap-1.5 animate-in fade-in">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <span>Lead details extracted successfully! Verify the fields below and select assigned staff.</span>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Structured Fields: Visible in both options */}
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="font-bold text-[#082C43] block mb-1">Customer Name *</label>
@@ -868,6 +1085,7 @@ export const AdminLeads: React.FC = () => {
                 <label className="font-bold text-[#082C43] block mb-1">Travelers (Pax)</label>
                 <input
                   type="number"
+                  min={1}
                   value={createForm.travelers_count}
                   onChange={(e) => setCreateForm({ ...createForm, travelers_count: Number(e.target.value) })}
                   className="w-full p-2 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8]"
@@ -900,16 +1118,25 @@ export const AdminLeads: React.FC = () => {
             <div>
               <label className="font-bold text-[#082C43] block mb-1">Inquiry Details & Notes</label>
               <textarea
-                rows={2}
-                placeholder="Walk-in inquiry at Bengaluru office..."
+                rows={3}
+                placeholder="Walk-in inquiry at Bengaluru office, WhatsApp requirements, or custom notes..."
                 value={createForm.notes}
                 onChange={(e) => setCreateForm({ ...createForm, notes: e.target.value })}
                 className="w-full p-2 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] resize-none"
               />
             </div>
 
-            <div className="pt-2 flex justify-end gap-2">
-              <Button type="button" variant="ghost" size="sm" onClick={() => setIsCreateModalOpen(false)}>
+            <div className="pt-2 flex justify-end gap-2 border-t border-[#EFE7DA]">
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  setIsCreateModalOpen(false);
+                  setParseSuccess(false);
+                  setRawLeadText('');
+                }}
+              >
                 Cancel
               </Button>
               <Button type="submit" variant="primary" size="sm">

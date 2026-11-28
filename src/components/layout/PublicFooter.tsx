@@ -4,6 +4,7 @@ import { Phone, Mail, MapPin, ArrowUpRight, Clock } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { TravelPatternBg } from '../travel/TravelPatternBg';
 import { BrandLogo } from '../common/BrandLogo';
+import { getGmailComposeUrl } from '../../utils/mail';
 
 // Clean branded SVG icons for official social media channels
 const InstagramIcon: React.FC<{ className?: string }> = ({ className = "w-3.5 h-3.5" }) => (
@@ -92,11 +93,23 @@ export const PublicFooter: React.FC = () => {
               <div className="flex items-start sm:items-center gap-2.5">
                 <Mail className="w-4 h-4 text-[#FF795C] shrink-0 mt-0.5 sm:mt-0" />
                 <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs">
-                  <a href="mailto:info@tripbygenie.in" className="hover:text-white hover:underline whitespace-nowrap">
+                  <a
+                    href={getGmailComposeUrl("info@tripbygenie.in", "Inquiry for Trip by Genie")}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-white hover:underline whitespace-nowrap"
+                    title="Compose in Gmail"
+                  >
                     info@tripbygenie.in
                   </a>
                   <span className="text-white/40">/</span>
-                  <a href="mailto:info@tripbygenie.com" className="hover:text-white hover:underline whitespace-nowrap">
+                  <a
+                    href={getGmailComposeUrl("info@tripbygenie.com", "Inquiry for Trip by Genie")}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-white hover:underline whitespace-nowrap"
+                    title="Compose in Gmail"
+                  >
                     info@tripbygenie.com
                   </a>
                 </div>

@@ -36,7 +36,14 @@ const lanOriginRegex = /^https?:\/\/(localhost|127\.0\.0\.1|192\.168\.\d{1,3}\.\
 
 const isAllowedOrigin = (origin) => {
   if (!origin) return true;
-  if (allowedOrigins.includes(origin) || origin.endsWith('.vercel.app') || origin.endsWith('tripbygenie.com')) {
+  if (
+    allowedOrigins.includes(origin) ||
+    origin.endsWith('.vercel.app') ||
+    origin.endsWith('tripbygenie.com') ||
+    origin.includes('tripbygenie') ||
+    origin.includes('travelgenie') ||
+    Boolean(process.env.ALLOW_ALL_ORIGINS === 'true')
+  ) {
     return true;
   }
   return lanOriginRegex.test(origin);

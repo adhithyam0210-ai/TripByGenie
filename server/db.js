@@ -17,11 +17,13 @@ class DatabaseEngine {
 
   init() {
     const seedSource = path.join(__dirname, 'database.json');
-    if (process.env.VERCEL && !fs.existsSync(DB_FILE) && fs.existsSync(seedSource)) {
-      try {
-        fs.copyFileSync(seedSource, DB_FILE);
-      } catch (e) {
-        console.warn('Failed to copy database.json to /tmp on Vercel:', e);
+    if (process.env.VERCEL && !fs.existsSync(DB_FILE)) {
+      if (fs.existsSync(seedSource)) {
+        try {
+          fs.copyFileSync(seedSource, DB_FILE);
+        } catch (e) {
+          console.warn('Failed to copy database.json to /tmp on Vercel:', e);
+        }
       }
     }
 
@@ -49,15 +51,15 @@ class DatabaseEngine {
 
   persist() {
     const serialized = JSON.stringify(this.data, null, 2);
-    for (let attempt = 0; attempt < 5; attempt++) {
-      try {
-        fs.writeFileSync(DB_FILE, serialized, 'utf8');
-        return;
-      } catch (err) {
-        if (attempt === 4) {
-          console.error('Failed to persist database:', err);
-        }
+    try {
+      // Ensure directory exists
+      const dir = path.dirname(DB_FILE);
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
       }
+      fs.writeFileSync(DB_FILE, serialized, 'utf8');
+    } catch (err) {
+      console.warn('Could not persist database to disk (operating in-memory):', err.message);
     }
   }
 

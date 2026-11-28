@@ -1,5 +1,6 @@
 import React from 'react';
 import { TravelPatternBg } from '../../components/travel/TravelPatternBg';
+import { getGmailComposeUrl } from '../../utils/mail';
 
 export const TermsOfService: React.FC = () => {
   return (
@@ -178,7 +179,7 @@ export const TermsOfService: React.FC = () => {
             <div className="space-y-1 text-xs sm:text-sm text-[#082C43]">
               <p><strong>Trip by Genie Legal & Compliance Desk</strong></p>
               <p>31/A East Jones Road, Saidapet, Chennai 600035, Tamil Nadu, India</p>
-              <p>Email: <a href="mailto:info@tripbygenie.com" className="text-[#004c8f] hover:underline font-semibold">info@tripbygenie.com</a> | Phone: <a href="tel:+914446071374" className="text-[#004c8f] hover:underline font-semibold">+91 (44) 46071374</a></p>
+              <p>Email: <a href={getGmailComposeUrl("info@tripbygenie.com", "Terms of Service Inquiry")} target="_blank" rel="noopener noreferrer" className="text-[#004c8f] hover:underline font-semibold" title="Compose in Gmail">info@tripbygenie.com</a> | Phone: <a href="tel:+914446071374" className="text-[#004c8f] hover:underline font-semibold">+91 (44) 46071374</a></p>
             </div>
           </section>
       </div>

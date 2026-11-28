@@ -2093,8 +2093,22 @@ app.get('/api/admin/leads', authenticate, authorize(['admin', 'manager']), (req,
       allLeads = allLeads.filter(l => l.status && (l.status.toLowerCase() === 'payment pending' || l.status.toLowerCase() === 'payment_pending'));
     } else if (sLower === 'partially_paid' || sLower === 'partially paid') {
       allLeads = allLeads.filter(l => l.status && (l.status.toLowerCase() === 'partially paid' || l.status.toLowerCase() === 'partially_paid'));
-    } else if (sLower === 'converted') {
-      allLeads = allLeads.filter(l => l.status && l.status.toLowerCase() === 'converted');
+    } else if (sLower === 'converted' || sLower === 'converted to booking') {
+      const allBookings = db.findAll('bookings', (b) => Number(b.advance_amount) > 0 || (b.payment_status && b.payment_status.toLowerCase() !== 'pending'));
+      const bookingLeadIds = new Set(allBookings.map((b) => b.lead_id).filter(Boolean));
+      const allEvidence = db.findAll('payment_evidence', (p) => Number(p.amount) > 0);
+      const evidenceLeadIds = new Set(allEvidence.map((p) => p.lead_id).filter(Boolean));
+      const allRequests = db.findAll('booking_conversion_requests', (r) => Number(r.advance_amount) > 0);
+      const requestLeadIds = new Set(allRequests.map((r) => r.lead_id).filter(Boolean));
+
+      allLeads = allLeads.filter(l => {
+        const isConverted = (l.status || '').toLowerCase().includes('convert');
+        if (!isConverted) return false;
+        const hasBooking = bookingLeadIds.has(l.id) || Boolean(l.converted_booking_id) || Boolean(l.booking_id);
+        const hasEvidence = evidenceLeadIds.has(l.id) || Number(l.advance_amount) > 0 || Number(l.advance_paid_amount) > 0 || l.advance_paid === true;
+        const hasRequest = requestLeadIds.has(l.id) || Boolean(l.conversion_request_id);
+        return (hasBooking || hasRequest) && hasEvidence;
+      });
     } else if (sLower === 'lost') {
       allLeads = allLeads.filter(l => l.status && l.status.toLowerCase() === 'lost');
     } else {
@@ -4251,7 +4265,26 @@ app.get('/api/staff/leads', authenticate, authorize(['staff', 'sales', 'manager'
   if (status && status !== 'all') {
     const sLower = status.toLowerCase();
     if (sLower === 'new assigned' || sLower === 'assigned') {
-      leads = leads.filter((l) => (l.status || '').toLowerCase() === 'assigned' || (l.status || '').toLowerCase() === 'new assigned');
+      leads = leads.filter((l) => {
+        const st = (l.status || '').toLowerCase();
+        return st === 'assigned' || st === 'new assigned' || st === 'new';
+      });
+    } else if (sLower === 'converted' || sLower === 'converted to booking') {
+      const allBookings = db.findAll('bookings', (b) => Number(b.advance_amount) > 0 || (b.payment_status && b.payment_status.toLowerCase() !== 'pending'));
+      const bookingLeadIds = new Set(allBookings.map((b) => b.lead_id).filter(Boolean));
+      const allEvidence = db.findAll('payment_evidence', (p) => Number(p.amount) > 0);
+      const evidenceLeadIds = new Set(allEvidence.map((p) => p.lead_id).filter(Boolean));
+      const allRequests = db.findAll('booking_conversion_requests', (r) => Number(r.advance_amount) > 0);
+      const requestLeadIds = new Set(allRequests.map((r) => r.lead_id).filter(Boolean));
+
+      leads = leads.filter((l) => {
+        const isConvertedStatus = (l.status || '').toLowerCase().includes('convert');
+        if (!isConvertedStatus) return false;
+        const hasBooking = bookingLeadIds.has(l.id) || Boolean(l.converted_booking_id) || Boolean(l.booking_id);
+        const hasEvidence = evidenceLeadIds.has(l.id) || Number(l.advance_amount) > 0 || Number(l.advance_paid_amount) > 0 || l.advance_paid === true;
+        const hasRequest = requestLeadIds.has(l.id) || Boolean(l.conversion_request_id);
+        return (hasBooking || hasRequest) && hasEvidence;
+      });
     } else {
       leads = leads.filter((l) => (l.status || '').toLowerCase() === sLower);
     }
@@ -4341,10 +4374,10 @@ app.put('/api/staff/leads/:id/status', authenticate, authorize(['staff', 'sales'
     }
   }
 
-  // 4. Staff cannot approve their own booking conversion directly via /status
-  if ((status === 'Converted' || status === 'Converted to Booking') && !isManagerOrAdmin) {
+  // 4. Converted to Booking is an official financial event; direct status update to Converted is not permitted via /status
+  if (status === 'Converted' || status === 'Converted to Booking') {
     return res.status(400).json({
-      error: 'To convert a lead to booking, please submit a booking conversion request with payment evidence for Manager verification.'
+      error: 'Direct status change to Converted is not permitted. Please use the Convert Lead to Confirmed Booking modal to record package price and advance payment.'
     });
   }
 
@@ -4467,11 +4500,14 @@ app.post('/api/staff/quotations', authenticate, authorize(['staff', 'admin', 'ma
     required_advance_amount,
     terms_and_conditions,
     notes,
-    valid_until
+    valid_until,
+    attachment_name,
+    attachment_type,
+    attachment_data
   } = req.body;
 
   const lead = db.findById('leads', lead_id);
-  if (!lead || lead.assigned_staff_id !== staffId) {
+  if (!lead || (lead.assigned_staff_id !== staffId && req.user.role !== 'admin' && req.user.role !== 'manager')) {
     return res.status(403).json({ error: 'Access denied. Cannot quote for this lead.' });
   }
 
@@ -4525,6 +4561,9 @@ app.post('/api/staff/quotations', authenticate, authorize(['staff', 'admin', 'ma
     itinerary,
     notes: notes || 'Custom holiday quotation prepared and verified by sales executive.',
     status: 'Sent',
+    attachment_name: attachment_name || null,
+    attachment_type: attachment_type || null,
+    attachment_data: attachment_data || null,
     created_at: new Date().toISOString()
   });
 
@@ -4548,7 +4587,7 @@ app.post('/api/staff/quotations', authenticate, authorize(['staff', 'admin', 'ma
   });
 
   db.recordLeadStatusHistory(agencyId, lead.id, lead.status, 'Quotation Sent', staffId, `Quotation #${quoteNum} dispatched.`);
-  db.recordActivity(lead.id, staffId, 'quotation', `Dispatched Quotation #${quoteNum} (v${version}) for ₹${finalAmt.toLocaleString('en-IN')}. Required Advance: ₹${reqAdvance.toLocaleString('en-IN')}`);
+  db.recordActivity(lead.id, staffId, 'quotation', `Dispatched Quotation #${quoteNum} (v${version}) for ₹${finalAmt.toLocaleString('en-IN')}.${attachment_name ? ` Attached: ${attachment_name}` : ''}`);
 
   // Dispatched email notification to customer
   if (lead.customer_email) {
@@ -4561,7 +4600,11 @@ app.post('/api/staff/quotations', authenticate, authorize(['staff', 'admin', 'ma
         destination: pkg ? pkg.title : lead.interested_destination,
         total_amount: finalAmt,
         required_advance: reqAdvance,
-        valid_until: newQuote.valid_until
+        valid_until: newQuote.valid_until,
+        custom_body: notes,
+        attachment_name,
+        attachment_data,
+        attachment_type
       });
     } catch (mailErr) {
       console.error('Error dispatching quotation email:', mailErr);
@@ -5212,7 +5255,10 @@ app.post('/api/staff/leads/:id/convert', authenticate, authorize(['staff', 'sale
     db.update('leads', lead.id, {
       status: 'Converted to Booking',
       conversion_request_id: convRequest.id,
-      conversion_status: 'PENDING_APPROVAL'
+      conversion_status: 'PENDING_APPROVAL',
+      advance_amount: adv,
+      advance_paid: true,
+      total_package_price: tot
     });
 
     db.recordActivity(
@@ -5367,7 +5413,10 @@ app.post('/api/staff/leads/:id/convert', authenticate, authorize(['staff', 'sale
   db.update('leads', lead.id, {
     status: 'Converted',
     booking_id: newBooking.id,
-    conversion_status: 'APPROVED'
+    conversion_status: 'APPROVED',
+    advance_amount: adv,
+    advance_paid: true,
+    total_package_price: tot
   });
   db.recordActivity(lead.id, staffId, 'status_change', `Lead successfully CONVERTED to confirmed Booking #${bookingNum}!`);
 
@@ -5671,7 +5720,10 @@ app.post('/api/admin/bookings/conversion-requests/:id/approve', authenticate, au
   db.update('leads', lead.id, {
     status: 'Converted',
     booking_id: newBooking.id,
-    conversion_status: 'APPROVED'
+    conversion_status: 'APPROVED',
+    advance_amount: adv,
+    advance_paid: true,
+    total_package_price: tot
   });
 
   db.recordLeadStatusHistory(

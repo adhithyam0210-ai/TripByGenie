@@ -28,6 +28,7 @@ import { Button } from '../../components/common/Button';
 import { Badge } from '../../components/common/Badge';
 import { StatCard } from '../../components/common/StatCard';
 import { Modal } from '../../components/common/Modal';
+import { openGmailCompose } from '../../utils/mail';
 import { useToast } from '../../context/ToastContext';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 
@@ -698,7 +699,7 @@ export const AdminCustomers: React.FC = () => {
                 <Button 
                   variant="primary"
                   onClick={() => {
-                    window.location.href = `mailto:${selectedCustomer.email}`;
+                    openGmailCompose(selectedCustomer.email, 'Trip by Genie Customer Inquiry');
                   }}
                 >
                   <Mail className="w-4 h-4 mr-2" />

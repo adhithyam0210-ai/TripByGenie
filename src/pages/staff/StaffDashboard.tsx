@@ -12,17 +12,24 @@ import {
   Mail,
   Send,
   AlertTriangle,
-  ArrowRight
+  ArrowRight,
+  Upload,
+  Paperclip,
+  File,
+  X,
+  ExternalLink
 } from 'lucide-react';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { StatCard } from '../../components/common/StatCard';
 import { StatusBadge } from '../../components/common/Badge';
 import { Button } from '../../components/common/Button';
 import { Modal } from '../../components/common/Modal';
+import { ActivityLogList } from '../../components/common/ActivityLogList';
 import { api } from '../../services/api';
 import { Lead } from '../../types';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
+import { getGmailComposeUrl, openGmailCompose } from '../../utils/mail';
 
 export const StaffDashboard: React.FC = () => {
   const { user } = useAuth();
@@ -43,13 +50,56 @@ export const StaffDashboard: React.FC = () => {
 
   // Quotation Modal
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
-  const [quoteItems, setQuoteItems] = useState<{ description: string; amount: number }[]>([
-    { description: 'Hotel Accommodation & Meals', amount: 80000 },
-    { description: 'Private AC Sightseeing Transfers', amount: 25000 },
-    { description: 'Entry Tickets & Excursions', amount: 15000 }
-  ]);
-  const [quoteDiscount, setQuoteDiscount] = useState(5000);
-  const [quoteNotes, setQuoteNotes] = useState('Includes 5% GST and complimentary airport meet & greet.');
+  const [quoteSubject, setQuoteSubject] = useState('');
+  const [quoteAmount, setQuoteAmount] = useState<number>(115000);
+  const [quoteAdvanceAmount, setQuoteAdvanceAmount] = useState<number>(34500);
+  const [quoteNotes, setQuoteNotes] = useState('');
+  const [quoteFile, setQuoteFile] = useState<{
+    name: string;
+    size: number;
+    type: string;
+    data: string;
+    previewUrl?: string;
+  } | null>(null);
+  const [isSendingQuote, setIsSendingQuote] = useState(false);
+
+  useEffect(() => {
+    if (selectedLead && isQuoteModalOpen) {
+      const dest = selectedLead.interested_destination || 'Holiday Trip';
+      const name = selectedLead.customer_name || 'Valued Traveler';
+      const pax = selectedLead.travelers_count || 2;
+      const date = selectedLead.travel_date || 'Upcoming';
+
+      setQuoteSubject(`Custom Travel Quotation: ${dest} Holiday Proposal`);
+
+      const numBudget = Number(String(selectedLead.budget || '').replace(/[^0-9]/g, '')) || 115000;
+      setQuoteAmount(numBudget);
+      setQuoteAdvanceAmount(Math.round(numBudget * 0.3));
+
+      const defaultBody = `Dear ${name},
+
+Thank you for choosing Trip by Genie! We are delighted to share our customized quotation proposal for your upcoming travel to ${dest}.
+
+Please find our official proposal document attached with this email.
+
+Trip Summary:
+• Destination: ${dest}
+• Travel Date: ${date}
+• Number of Guests: ${pax}
+• Total Quoted Price: ₹${numBudget.toLocaleString('en-IN')}
+• Required Advance (30%): ₹${Math.round(numBudget * 0.3).toLocaleString('en-IN')}
+
+Includes standard hotel accommodations, verified sightseeing transfers, and 24/7 dedicated Genie on-trip concierge assistance.
+
+Feel free to reply directly to this email or call us at +91 99404 63566 if you have any questions or customization requests.
+
+Warm regards,
+Trip by Genie Sales & Holiday Experience Team`;
+
+      setQuoteNotes(defaultBody);
+      setQuoteFile(null);
+    }
+  }, [selectedLead, isQuoteModalOpen]);
 
   // Conversion to Booking Modal
   const [isConvertModalOpen, setIsConvertModalOpen] = useState(false);
@@ -117,25 +167,72 @@ export const StaffDashboard: React.FC = () => {
     }
   };
 
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 15 * 1024 * 1024) {
+      error('File size exceeds 15MB limit. Please choose a smaller file.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (uploadEvent) => {
+      const dataUrl = uploadEvent.target?.result as string;
+      setQuoteFile({
+        name: file.name,
+        size: file.size,
+        type: file.type || 'application/octet-stream',
+        data: dataUrl,
+        previewUrl: file.type.startsWith('image/') ? dataUrl : undefined
+      });
+      success(`Attached: "${file.name}"`);
+    };
+    reader.onerror = () => {
+      error('Could not read the selected file.');
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleOpenInGmail = () => {
+    if (!selectedLead) return;
+    openGmailCompose(selectedLead.customer_email, quoteSubject, quoteNotes);
+  };
+
   const handleSendQuotation = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedLead) return;
 
+    if (!quoteAmount || quoteAmount <= 0) {
+      error('Please enter a valid quoted total amount.');
+      return;
+    }
+
+    setIsSendingQuote(true);
     try {
-      const total = quoteItems.reduce((acc, curr) => acc + Number(curr.amount || 0), 0) - Number(quoteDiscount);
-      await api.sendStaffQuotation({
+      await api.createQuotation({
         lead_id: selectedLead.id,
-        items: quoteItems,
-        discount: quoteDiscount,
-        total_amount: total,
-        notes: quoteNotes
+        package_title: quoteSubject || selectedLead.interested_destination,
+        total_amount: Number(quoteAmount),
+        required_advance_amount: Number(quoteAdvanceAmount),
+        advance_percentage: quoteAmount > 0 ? Math.round((quoteAdvanceAmount / quoteAmount) * 100) : 30,
+        notes: quoteNotes,
+        attachment_name: quoteFile?.name || null,
+        attachment_type: quoteFile?.type || null,
+        attachment_data: quoteFile?.data || null
       });
-      success(`Quotation successfully dispatched to ${selectedLead.customer_name}.`);
+      success(
+        quoteFile
+          ? `Quotation with attached file "${quoteFile.name}" dispatched to ${selectedLead.customer_email || 'client'}!`
+          : `Quotation proposal dispatched to ${selectedLead.customer_email || 'client'}!`
+      );
       setIsQuoteModalOpen(false);
       loadData();
       handleOpenLead({ ...selectedLead, status: 'Quotation Sent' });
     } catch (err: any) {
       error(err.message || 'Failed to send quotation.');
+    } finally {
+      setIsSendingQuote(false);
     }
   };
 
@@ -497,8 +594,14 @@ export const StaffDashboard: React.FC = () => {
                   <Phone className="w-3.5 h-3.5" /> Call Customer
                 </a>
                 <a
-                  href={`mailto:${selectedLead.customer_email}`}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-700 font-bold border border-blue-200 hover:bg-blue-100"
+                  href={getGmailComposeUrl(
+                    selectedLead.customer_email,
+                    `Trip by Genie Inquiry - ${selectedLead.interested_destination || 'Travel Package'}`
+                  )}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-700 font-bold border border-blue-200 hover:bg-blue-100 transition-colors"
+                  title="Compose in Gmail"
                 >
                   <Mail className="w-3.5 h-3.5" /> Email Client
                 </a>
@@ -547,25 +650,11 @@ export const StaffDashboard: React.FC = () => {
             </div>
 
             {/* Communication & Activity Log */}
-            <div className="pt-3 border-t border-[#EFE7DA]">
-              <span className="text-xs font-bold text-[#082C43] block mb-2">
-                Activity & Communication Log:
-              </span>
-              <div className="space-y-2 max-h-48 overflow-y-auto">
-                {leadDetails?.activities?.length === 0 ? (
-                  <p className="text-[11px] text-slate-400 italic">No notes logged yet.</p>
-                ) : (
-                  leadDetails?.activities?.map((act: any) => (
-                    <div key={act.id} className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs">
-                      <span className="font-semibold text-[#082C43] block">{act.description}</span>
-                      <span className="text-[10px] text-slate-400">
-                        {new Date(act.created_at).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}
-                      </span>
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
+            <ActivityLogList
+              activities={leadDetails?.activities}
+              title="Activity & Communication Log:"
+              emptyText="No notes logged yet."
+            />
           </div>
         </Modal>
       )}
@@ -591,7 +680,6 @@ export const StaffDashboard: React.FC = () => {
                 <option value="Follow-up Required">Follow-up Required</option>
                 <option value="Quotation Sent">Quotation Sent</option>
                 <option value="Negotiation">Negotiation</option>
-                <option value="Converted">Converted to Booking</option>
                 <option value="Lost">Lost / Dropped</option>
                 <option value="Cancelled">Cancelled</option>
               </select>
@@ -632,82 +720,156 @@ export const StaffDashboard: React.FC = () => {
       )}
 
       {/* Prepare Quotation Modal */}
-      {isQuoteModalOpen && (
+      {isQuoteModalOpen && selectedLead && (
         <Modal
           isOpen={isQuoteModalOpen}
           onClose={() => setIsQuoteModalOpen(false)}
           title="Prepare & Dispatch Travel Quotation"
-          subtitle={`Dispatched directly to ${selectedLead?.customer_name}`}
-          maxWidth="lg"
+          subtitle={`Dispatched directly to ${selectedLead.customer_name} (${selectedLead.customer_email || 'No email specified'})`}
+          maxWidth="2xl"
         >
           <form onSubmit={handleSendQuotation} className="space-y-4 text-xs">
-            <div>
-              <label className="font-bold text-[#082C43] block mb-1">Itemized Line Items</label>
-              <div className="space-y-2">
-                {quoteItems.map((item, idx) => (
-                  <div key={idx} className="flex gap-2">
-                    <input
-                      type="text"
-                      placeholder="Item description"
-                      value={item.description}
-                      onChange={(e) => {
-                        const copy = [...quoteItems];
-                        copy[idx].description = e.target.value;
-                        setQuoteItems(copy);
-                      }}
-                      className="flex-1 p-2 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8]"
-                    />
-                    <input
-                      type="number"
-                      placeholder="Amount"
-                      value={item.amount}
-                      onChange={(e) => {
-                        const copy = [...quoteItems];
-                        copy[idx].amount = Number(e.target.value);
-                        setQuoteItems(copy);
-                      }}
-                      className="w-28 p-2 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8]"
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="font-bold text-[#082C43] block mb-1">Promotional Discount (₹)</label>
-                <input
-                  type="number"
-                  value={quoteDiscount}
-                  onChange={(e) => setQuoteDiscount(Number(e.target.value))}
-                  className="w-full p-2 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8]"
-                />
-              </div>
-              <div className="p-3 rounded-xl bg-emerald-50 text-right">
-                <span className="text-[10px] text-emerald-800 uppercase font-bold block">Final Quote</span>
-                <span className="text-base font-extrabold text-emerald-950">
-                  ₹{(quoteItems.reduce((s, i) => s + Number(i.amount || 0), 0) - Number(quoteDiscount)).toLocaleString('en-IN')}
+            {/* Recipient Overview Banner */}
+            <div className="p-3 rounded-xl bg-blue-50/70 border border-blue-200/80 flex flex-wrap items-center justify-between gap-2">
+              <div className="space-y-0.5">
+                <span className="font-bold text-[#082C43] text-sm block">{selectedLead.customer_name}</span>
+                <span className="text-[11px] text-blue-900 font-medium flex items-center gap-2">
+                  <span>✉️ {selectedLead.customer_email || 'No email registered'}</span>
+                  <span>📞 {selectedLead.customer_phone || 'No phone'}</span>
                 </span>
               </div>
+              <div className="text-right">
+                <span className="text-[10px] uppercase font-bold text-blue-700 block">Destination</span>
+                <span className="font-extrabold text-[#082C43]">{selectedLead.interested_destination || 'Bespoke Package'}</span>
+              </div>
             </div>
 
+            {/* Quotation Subject & Total Price */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div className="sm:col-span-2">
+                <label className="font-bold text-[#082C43] block mb-1">Quotation Subject / Proposal Title *</label>
+                <input
+                  type="text"
+                  required
+                  value={quoteSubject}
+                  onChange={(e) => setQuoteSubject(e.target.value)}
+                  className="w-full p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] font-semibold text-slate-800 focus:outline-none focus:border-[#0070E0]"
+                  placeholder="e.g. Custom Travel Quotation for Vietnam (8N/9D)"
+                />
+              </div>
+              <div>
+                <label className="font-bold text-[#082C43] block mb-1">Total Quoted Price (₹) *</label>
+                <input
+                  type="number"
+                  required
+                  min={0}
+                  value={quoteAmount}
+                  onChange={(e) => {
+                    const amt = Number(e.target.value);
+                    setQuoteAmount(amt);
+                    setQuoteAdvanceAmount(Math.round(amt * 0.3));
+                  }}
+                  className="w-full p-2.5 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] font-extrabold text-sm text-[#0070E0] focus:outline-none focus:border-[#0070E0]"
+                  placeholder="e.g. 115000"
+                />
+              </div>
+            </div>
+
+            {/* Email Body / Quotation Notes */}
             <div>
-              <label className="font-bold text-[#082C43] block mb-1">Inclusions / Validity Notes</label>
+              <div className="flex items-center justify-between mb-1">
+                <label className="font-bold text-[#082C43]">Quotation Message & Information Body *</label>
+                <span className="text-[10px] text-slate-400">Pre-formatted with trip details • Fully editable</span>
+              </div>
               <textarea
-                rows={2}
+                rows={6}
+                required
                 value={quoteNotes}
                 onChange={(e) => setQuoteNotes(e.target.value)}
-                className="w-full p-2 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] resize-none"
+                placeholder="Enter quotation details, inclusions, day-wise plan or personalized message..."
+                className="w-full p-3 rounded-xl border border-[#EFE7DA] bg-[#FFFDF8] font-sans text-xs text-slate-800 leading-relaxed focus:outline-none focus:border-[#0070E0]"
               />
             </div>
 
-            <div className="flex justify-end gap-2 pt-2">
-              <Button type="button" variant="ghost" size="sm" onClick={() => setIsQuoteModalOpen(false)}>
-                Cancel
-              </Button>
-              <Button type="submit" variant="primary" size="sm" leftIcon={<Send className="w-3.5 h-3.5" />}>
-                Dispatch Quotation
-              </Button>
+            {/* Local Storage File Upload (Document or Image) */}
+            <div>
+              <label className="font-bold text-[#082C43] block mb-1">
+                Upload Quotation File from Local Storage (Document or Image)
+              </label>
+
+              {!quoteFile ? (
+                <label className="border-2 border-dashed border-blue-200 hover:border-[#0070E0] rounded-2xl p-4 flex flex-col items-center justify-center gap-1.5 bg-[#F8FAFC] hover:bg-blue-50/50 cursor-pointer transition-colors group">
+                  <input
+                    type="file"
+                    accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,.webp"
+                    className="hidden"
+                    onChange={handleFileUpload}
+                  />
+                  <div className="w-10 h-10 rounded-xl bg-blue-100 group-hover:bg-blue-200 text-[#0070E0] flex items-center justify-center transition-colors">
+                    <Upload className="w-5 h-5" />
+                  </div>
+                  <span className="font-bold text-xs text-[#082C43]">Click to browse files from your device</span>
+                  <span className="text-[11px] text-slate-500">Supports PDF, Word Documents (.doc, .docx) & Images (PNG, JPG, WebP) up to 15MB</span>
+                </label>
+              ) : (
+                <div className="p-3 rounded-xl border border-emerald-200 bg-emerald-50/70 flex items-center justify-between gap-3 animate-in fade-in">
+                  <div className="flex items-center gap-3 min-w-0">
+                    {quoteFile.previewUrl ? (
+                      <img
+                        src={quoteFile.previewUrl}
+                        alt="Preview"
+                        className="w-12 h-12 rounded-lg object-cover border border-emerald-300 shrink-0"
+                      />
+                    ) : (
+                      <div className="w-10 h-10 rounded-lg bg-emerald-200/80 text-emerald-800 flex items-center justify-center shrink-0">
+                        <FileText className="w-5 h-5" />
+                      </div>
+                    )}
+                    <div className="min-w-0">
+                      <p className="font-bold text-xs text-emerald-950 truncate">{quoteFile.name}</p>
+                      <p className="text-[10px] text-emerald-700">
+                        {(quoteFile.size / 1024 / 1024).toFixed(2)} MB • {quoteFile.type || 'Document'} • Attached
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setQuoteFile(null)}
+                    className="p-1.5 text-slate-400 hover:text-red-600 rounded-lg hover:bg-red-50 transition-colors cursor-pointer"
+                    title="Remove attached file"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Modal Footer Actions */}
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-2 pt-3 border-t border-[#EFE7DA]">
+              <button
+                type="button"
+                onClick={handleOpenInGmail}
+                className="text-xs text-[#0070E0] hover:text-[#005bb8] hover:underline font-bold inline-flex items-center gap-1.5 cursor-pointer"
+                title="Open pre-filled Gmail compose in new tab"
+              >
+                <ExternalLink className="w-3.5 h-3.5" />
+                Open & Send via Gmail Web
+              </button>
+
+              <div className="flex items-center gap-2">
+                <Button type="button" variant="ghost" size="sm" onClick={() => setIsQuoteModalOpen(false)}>
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  variant="primary"
+                  size="sm"
+                  isLoading={isSendingQuote}
+                  leftIcon={<Send className="w-3.5 h-3.5" />}
+                >
+                  Dispatch Quotation
+                </Button>
+              </div>
             </div>
           </form>
         </Modal>
